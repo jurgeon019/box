@@ -1,0 +1,79 @@
+sudo ln -s /home/jurgeon/projects/moto/src/config/moto                    /etc/nginx/sites-enabled/
+sudo ln -s /home/jurgeon/projects/moto/src/config/moto.service            /etc/systemd/system/
+
+
+sudo systemctl enable nginx
+sudo systemctl start nginx
+sudo systemctl restart nginx
+#sudo systemctl status nginx
+
+sudo systemctl enable moto
+sudo systemctl start moto
+sudo systemctl restart moto
+#sudo systemctl status moto
+
+sudo systemctl daemon-reload
+
+
+
+sudo ln -s /home/jurgeon/projects/moto/src/config/celery_moto_worker.conf /etc/supervisor/conf.d/
+sudo ln -s /home/jurgeon/projects/moto/src/config/celery_moto_beat.conf   /etc/supervisor/conf.d/
+sudo mkdir -p /var/log/celery
+sudo touch /var/log/celery/moto_worker.log
+sudo touch /var/log/celery/moto_beat.log
+sudo supervisorctl reread
+sudo supervisorctl update
+
+#sudo supervisorctl stop motoworker
+sudo supervisorctl start motoworker
+sudo supervisorctl restart motoworker
+#sudo supervisorctl status motoworker
+
+#sudo supervisorctl stop motobeat
+sudo supervisorctl start motobeat
+sudo supervisorctl restart motobeat
+#sudo supervisorctl status motobeat
+
+
+sudo certbot --nginx -d moto.mendela.xyz
+sudo certbot --nginx -d mottoex.com.ua 
+
+sudo certbot renew --dry-run
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands
+# https://stackoverflow.com/questions/43537851/difference-between-systemctl-and-service-command
+
+sudo tail -F /var/log/nginx/error.log
+sudo ls UWSGI_SOCKETS_DIR
+sudo journalctl -u uwsgi
+sudo nginx -t
+sudo service nginx configtest
+
+
+
+
+
+sudo service uwsgi start 
+sudo service nginx start 
+sudo service uwsgi restart 
+sudo service nginx restart 
+
+
+sudo /etc/init.d/nginx start 
+sudo /etc/init.d/nginx restart
+#sudo reboot

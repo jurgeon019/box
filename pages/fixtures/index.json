@@ -1,0 +1,70 @@
+[
+    {"model":"pages.Page", "pk":1, "fields":{
+        "code":"index",
+        "meta_title":"Головна",
+        "meta_descr":"Опис головної",
+        "meta_key":"keyword1, keyword2"
+    }},
+
+
+    {"model":"pages.Slider", "pk":3, "fields":{
+        "page":1,
+        "title":"Велосипеди",
+        "text":"Текст",
+        "video":"sliders/bike.mp4",
+        "link":"/item_category/velo/",
+        "category":4
+    }},
+    {"model":"pages.Slider", "pk":2, "fields":{
+        "page":1,
+        "title":"Мототехніка",
+        "text":"Текст",
+        "video":"sliders/moto.mp4",
+        "link":"/item_category/mototech/",
+        "category":2
+    }},
+    {"model":"pages.Slider", "pk":1, "fields":{
+        "page":1,
+        "title":"Сільгосп техніка",
+        "text":"Текст",
+        "video":"sliders/truk.mp4",
+        "link":"/item_category/silgosp/",
+        "category":1
+    }},
+    {"model":"pages.Slider", "pk":4, "fields":{
+        "page":1,
+        "title":"Додаткове обладнання",
+        "text":"Текст",
+        "video":"sliders/truk.mp4",
+        "link":"/item_category/additional/",
+        "category":3
+    }},
+
+
+
+
+
+    {"model":"pages.Icon", "pk":1, "fields":{
+        "page":1,
+        "title":"Сервіс",
+        "text":"Text"
+    }},
+    {"model":"pages.Icon", "pk":2, "fields":{
+        "page":1,
+        "title":"Доставка",
+        "text":"Text"
+    }},
+    {"model":"pages.Icon", "pk":3, "fields":{
+        "page":1,
+        "title":"Кредит",
+        "text":"Text"
+    }},
+    {"model":"pages.Icon", "pk":4, "fields":{
+        "page":1,
+        "title":"Гарантія",
+        "text":"Text"
+    }}
+
+
+    
+]

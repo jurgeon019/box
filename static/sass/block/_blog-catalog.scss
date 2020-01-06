@@ -1,0 +1,172 @@
+// main: ../style.sass
+
+.blog-catalog{
+
+  &-title{
+    font-size: 30px;
+    line-height: 2;
+    color: #000000;
+  }
+  &__header{
+    &-title{
+      font-size: 30px;
+      line-height: 1.4;
+      color: #000000;
+    }
+    display: flex;
+    justify-content: space-between;
+    & .blog-catalog__header-search{
+      position: relative;
+      & .search__form {
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+        border: 1px solid #2a3860;
+        & .search__input{
+          padding: 8px 15px;
+          border: none;
+            border-radius: 5px;
+          margin-right: 40px;
+          &:focus{
+                border: none;
+          }
+        }
+
+        & .search__input_blog{
+          padding: 8px 15px;
+          border: none;
+            border-radius: 5px;
+          margin-right: 40px;
+          &:focus{
+            outline: none;
+          }
+        }
+
+
+      }
+    }
+  }
+  &__wrap{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  &__item{
+    max-width: 300px;
+    margin: 20px 0;
+    position: relative;
+    transition: .3s;
+    &:hover{
+      transition: .3s;
+      transform: scale(1.05);
+    }
+    &_img{
+      & img{
+        width: 100%;
+        display: block;
+      }
+      &-bg{
+        display: block;
+        background: rgba(0,0,0,0.3);
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    &_date{
+      padding: 5px 15px;
+      background: #e04d27;
+      border-radius: 50px;
+      display: inline-block;
+    }
+    &_title{
+      font-weight: 600;
+      font-size: 14px;
+      margin: 8px 0 ;
+    }
+    &_read-on{
+      display:flex;
+      align-items: center;
+      cursor: pointer;
+
+
+      & .icon{
+        height: 16px;
+        display: flex;
+        align-items: center;
+        margin:  0 10px;
+        transition: .2s;
+        & svg{
+          height: 100%;
+          width: auto;
+        }
+      }
+
+      &:hover{
+
+        color: #fff;
+        & .icon{
+          transition: .2s;
+          margin-left: 15px;
+        }
+      }
+    }
+    &_main{
+      position: absolute;
+      width: 80%;
+      bottom: 0;
+      color: #fff;
+      font-size: 14px;
+      bottom: 10%;
+      left: 5%;
+    }
+  }
+  &__control{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__pagen{
+    display: flex;
+    align-items: center;
+    &-item{
+      opacity: 0.4;
+      font-size: 16px;
+      color: #000000;
+      padding: 1px 2px;
+      transition: .3s;
+      &:hover{
+        opacity: 1;
+        transition: .3s;
+        cursor: pointer;
+      }
+      &-active{
+        opacity: 1;
+      }
+    }
+    &-control{
+      height: 15px;
+      width: 15px;
+      display: flex;
+      align-items: center;
+      margin: 0 5px;
+      & svg{
+        height: 100%;
+        & path{
+            fill: #2a3860;
+        }
+      }
+      &:hover{
+        & svg{
+          & path{
+            fill: #F49823;
+
+          }
+        }
+        transition: .3s;
+        cursor: pointer;
+      }
+
+    }
+  }
+}

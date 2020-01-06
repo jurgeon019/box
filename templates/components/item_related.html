@@ -1,0 +1,20 @@
+<div class="swiper-slide">
+<div class="card card__related">
+<a href="{{ similar.get_absolute_url }}">
+    <div class="card__img">
+    <img src="{{similar.main_image.image.url}}" alt="{{similar.main_image.alt}}">
+    </div>
+        <div class="card_main card__related_main">
+        <div class="card_main__text card__related_main__text">
+
+            <div class="title">
+                {{similar.title}}
+            </div>
+            <div class="price">{{similar.price}} {{similar.currency}}</div>
+        </div>
+    </div>
+</a>
+</div>
+</div>
+
+

@@ -1,0 +1,161 @@
+// main: ../style.sass
+
+.about {
+  margin: 30px 0;
+
+  &_title {
+    font-size: 30px;
+    line-height: 2;
+    color: #000000;
+  }
+
+  &__wrap {
+    margin: 20px 0;
+
+    &_header {
+      & img {
+        width: 100%;
+      }
+    }
+
+    &_main {
+      display: flex;
+      margin: 20px 0;
+      justify-content: space-between;
+    }
+  }
+
+  &__section {
+    width: 47%;
+
+    & img {
+      width: 100%;
+    }
+  }
+
+  &_text {
+    font-size: 16px;
+    font-style: normal;
+    line-height: 1.4;
+    color: #95999d;
+  }
+
+  &__our_team {
+    &_item {
+      max-width: 300px;
+      margin: 20px;
+
+      &:first-child {
+        margin-left: 0;
+      }
+
+      &:last-child {
+        margin-right: 0;
+      }
+
+      & img {
+        width: 100%;
+        height: auto;
+        min-height: 230px;
+      }
+
+      &-title {
+        font-size: 22px;
+        font-weight: 600;
+        color: #000000;
+      }
+
+      &-subtitle {
+        font-size: 16px;
+        line-height: 1.63;
+        color: #95999d;
+      }
+    }
+  }
+
+  &__box {
+    margin: 15px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+@media (max-width: 1400px) {
+  .about {
+    &__our_team {
+      &_item {
+        &-img {
+          margin-bottom: 20px;
+        }
+
+        &-title {
+          font-size: 19px;
+          font-weight: 600;
+          color: #000000;
+        }
+
+        &-subtitle {
+          font-size: 15px;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1100px) {
+  .about {
+    &__our_team {
+      &_item {
+        &-title {
+          font-size: 17px;
+        }
+
+        &-subtitle {
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 900px) {
+  .about {
+    &__wrap_main {
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    &__section {
+      width: 100%;
+    }
+
+    &_text {
+      margin-bottom: 20px;
+    }
+  }
+}
+@media (max-width: 820px) {
+  .about{
+    &__box {
+
+      flex-wrap: wrap;
+  }
+  &__our_team{
+    &_item{
+      margin: 0;
+    width: 45%;
+    min-width: 230px;
+    }
+  }
+  }
+}
+@media (max-width: 550px) {
+  .about{
+    &__box {
+
+      justify-content: space-around;
+  }
+   &__our_team_item{
+         width: 90%;
+         max-width: 300px;
+         margin: 20px 0;
+   }
+  }
+}

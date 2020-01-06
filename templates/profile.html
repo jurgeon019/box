@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block styles%}
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/slick.css">
+<link rel="stylesheet" href="/static/css/slick-theme.css">
+<link rel="stylesheet" href="/static/css/jquery.fancybox.min.css">
+<link rel="stylesheet" href="/static/css/style.min.css">
+{% endblock styles%}
+{% block content%}
+<main>
+
+  <section class="section__container">
+    <div class="wrapper">
+      <section class="container profil">
+        <nav class="profil__block">
+          <div class="profil__avatar">
+            <img class="profil__avatar_img " src="/static/img/user_avatar.png" alt="">
+            <h5>{{request.user.username}}</h5>
+          </div>
+          <div class="profil__navigation">
+            <div class="profil__navigation_link profil__navigation_link-active" data-nav="profil__nav1"><span><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="cog" class="svg-inline--fa fa-cog fa-w-16" role="img"
+                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path fill="currentColor"
+                    d="M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z">
+                  </path>
+                </svg></span>
+              Панель управління</div>
+            <div class="profil__navigation_link" data-nav="profil__nav2">
+              <span>
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="list" class="svg-inline--fa fa-list fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                  <path fill="currentColor"
+                    d="M80 368H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm0-320H16A16 16 0 0 0 0 64v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16V64a16 16 0 0 0-16-16zm0 160H16a16 16 0 0 0-16 16v64a16 16 0 0 0 16 16h64a16 16 0 0 0 16-16v-64a16 16 0 0 0-16-16zm416 176H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H176a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h320a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z">
+                  </path>
+                </svg>
+              </span>
+              Замовлення</div>
+
+            <a class="profil__navigation_link-a" href="{% url 'account_logout' %}">
+              <span>
+                <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="door-open" class="svg-inline--fa fa-door-open fa-w-20" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+                  <path fill="currentColor"
+                    d="M624 448h-80V113.45C544 86.19 522.47 64 496 64H384v64h96v384h144c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM312.24 1.01l-192 49.74C105.99 54.44 96 67.7 96 82.92V448H16c-8.84 0-16 7.16-16 16v32c0 8.84 7.16 16 16 16h336V33.18c0-21.58-19.56-37.41-39.76-32.17zM264 288c-13.25 0-24-14.33-24-32s10.75-32 24-32 24 14.33 24 32-10.75 32-24 32z">
+                  </path>
+                </svg>
+              </span>
+              Вихід
+            </a>
+          </div>
+        </nav>
+        <div class="profil__info">
+          <div id="profil__nav1" class="profil__content profil__content-active">
+            <div class="">
+              <div class="">
+
+              </div>
+              <p>Вітаємо, <strong>{{request.user.username}}</strong> </p>
+
+              <form class="form ordering profile" action="{% url 'update_profile' %}" method="POST">
+                {% csrf_token %}
+                <div class="group_row">
+                  <div class="group_box">
+                    <label for="first_name">Імя</label>
+                    <input type="text" id="first_name" name="first_name" value="{{request.user.first_name}}">
+                  </div>
+
+                  <div class="group_box">
+                    <label for="last_name">Прізвище</label>
+                    <input type="text" id="last_name" name="last_name" value="{{request.user.last_name}}">
+                  </div>
+                </div>
+                <div class="group_row">
+                  <div class="group_box">
+                    <label for="phone_number">Телефон</label>
+                    <input type="text" id="phone_number" name="phone_number" value="{{request.user.phone_number}}">
+                  </div>
+
+                  <div class="group_box">
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" value="{{request.user.email}}" required="" aria-required="true">
+                  </div>
+                </div>
+                <a href="sraka"> </a>
+                <div class="form-row">
+                  <input class="btn btn-product " type="submit" id="ordering_form" value="Зберегти зміни">
+                </div>
+              </form>
+            </div>
+          </div>
+          <div id="profil__nav2" class="profil__content">
+            <div class="profil__content_order">
+              {% if not orders %}
+              <div class="profil__content_order-yes">
+                <h4 class="profil__content_title">Замовлення</h4>
+                <p>Ви не здійснили ніяких замовленнь</p>
+              </div>
+              {% elif orders %}
+              <div class="profil__content_order-yes">
+                <h4 class="profil__content_title">Замовлення</h4>
+                {% for order in orders %}
+                <div class="profil__order_item">
+                  <div class="profil__order_item-title"> Заказ № {{order.id}} (<a class="profil__content_link" href="{% url 'delete_order' order.pk %}"> Удалить? </a>)</div>
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th> Название товара </th>
+                        <th>Количество </th>
+                        <th>Цена за единицу </th>
+                        <th>Сумма </th>
+                        <th>Статус </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for cart_item in order.cart_items.all %}
+                      <tr>
+                        <td>{{forloop.counter}}</td>
+                        <td>{{cart_item.item.title}}</td>
+                        <td>{{cart_item.quantity}}</td>
+                        <td>{{cart_item.item.price}} {{cart_item.item.currency}}</td>
+                        <td>{{cart_item.total_price}} {{cart_item.item.currency}}</td>
+                        {% if forloop.counter == 1 %}
+                        <td class="td_status" rowspan="{{order.cart_items.all.count}}">{{order.status}}</td>
+                        {% endif %}
+                      </tr>
+                      {% endfor %}
+                      <tr>
+                        <td colspan="4" style="text-align:right">Всього:</td><td>{{order.cart.total_price}}</td>
+                      </tr>
+                      <tr></tr>
+                    </tbody>
+                  </table>
+                </div>
+                {% endfor %}
+              </div>
+              {% endif %}
+              {% include 'components/user_orders.html'  %}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+
+
+</main>
+{% endblock content%}
+{% block scripts%}
+<script src="/static/js/jquery-3.4.1.min.js" type="text/javascript"></script>
+<script src="/static/js/slick.min.js" type="text/javascript"></script>
+<script src="/static/js/maskinput.js" type="text/javascript"></script>
+<script src="/static/js/jquery.fancybox.min.js" type="text/javascript"></script>
+<script src="/static/js/validation.min.js" type="text/javascript"></script>
+<script src="/static/js/ajax_form.js" type="text/javascript"></script>
+<script src="/static/js/script.js" type="text/javascript"></script>
+{% endblock scripts%}

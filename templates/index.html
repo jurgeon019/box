@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+{% block styles%}
+<link href="https://fonts.googleapis.com/css?family=Noto+Sans:400,700&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/slick.css">
+<link rel="stylesheet" href="/static/css/slick-theme.css">
+<link rel="stylesheet" href="/static/css/jquery.fancybox.min.css">
+<link rel="stylesheet" href="/static/css/style.min.css">
+{% endblock styles%}
+
+{% block content%}
+<main>
+  <section class="section main_slider">
+    <div class="wrapper">
+      <div class="main_slider_wrap">
+        {% for slider in page.sliders.all %}
+        <div class="main_slider_box">
+          <div class="main_slider_item">
+            <div class="main_slider_section">
+              <div class="main_slider_title">{{slider.title}}</div>
+              <div class="main_slider_main">{{slider.text}}</div>
+              <a href="{{slider.category.get_absolute_url}}">
+              <div class="main_slider_btn btn btn_slide">
+                  Деталі
+                </div>
+              </a>
+            </div>
+            <div class="main_slider_section">
+              <div class="main_slider_animation">
+                <video src="{{slider.video.url}}" autoplay muted loop></video>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrapper">
+      <div class="section_title">Топ продаж</div>
+      <div class="card-list__wrap">
+        <div class="card-list__main">
+          {% for item in top_items %}
+          <a href="{{item.get_absolute_url}}">
+            <div class="card">
+            <div class="card__img">
+              <img src="{{item.main_image.image.url}}" alt="{{item.main_image.alt}}">
+            </div>
+            <div class="card_main">
+              <div class="card_main__text">
+                <!-- <div class="subtitle">{{item.title}}</div> -->
+                <div class="title">
+                  {{item.title}}
+                </div>
+                <div class="price">{{item.price}} {{item.currency}}</div>
+              </div>
+              <div class="card_main__control">
+                <div class="card_main__control-btn btn btn_card btn_card-credit" data-item_id="{{item.id}}">Купити в кредит</div>
+              </div>
+            </div>
+          </div>
+          </a>
+          {% endfor %}
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrapper">
+      <div class="section_title">Послуги</div>
+      <div class="servants__wrap">
+
+        {% for icon in page.icons.all %}
+        <div class="servants__item">
+          <div class="servants__item_img">
+            {% if forloop.counter == 1 %}
+            {% include 'components/svg1.html' %}
+            {% elif forloop.counter == 2 %}
+            {% include 'components/svg2.html' %}
+            {% elif forloop.counter == 3 %}
+            {% include 'components/svg3.html' %}
+            {% elif forloop.counter == 4 %}
+            {% include 'components/svg4.html' %}
+            {% endif %}
+          </div>
+          <div class="servants__item_main">
+            <div class="title">{{icon.title}}</div>
+            <div class="subtitle">{{icon.text}}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrapper">
+      <div class="section_title">Послуги</div>
+      <div class="please__wrap">
+
+        <div class="please__item">
+          <a href="{{top_blog_categories.0.get_absolute_url}}">
+            <div class="please__item_img">
+              <img src="{{top_blog_categories.0.image.url}}" alt="{{top_blog_categories.0.alt}}">
+            </div>
+            <div class="please__item_main please__item_main-horizont">
+              <div class="please__item_title">{{top_blog_categories.0.title}}</div>
+              <div class="please__item_text">{{top_blog_categories.0.description}}</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="please__item">
+            <a href="{{top_blog_categories.1.get_absolute_url}}">
+
+          <div class="please__item_img">
+            <img src="{{top_blog_categories.1.image.url}}" alt="{{top_blog_categories.0.alt}}">
+          </div>
+          <div class="please__item_main ">
+            <div class="please__item_title">{{top_blog_categories.1.title}}</div>
+            <div class="please__item_text">{{top_blog_categories.1.description}}</div>
+          </div>
+          </a>
+        </div>
+
+        <div class="please__item please__item-big">
+          <a href="{{top_blog_categories.2.get_absolute_url}}">
+
+          <div class="please__item_img">
+            <img src="{{top_blog_categories.2.image.url}}" alt="{{top_blog_categories.2.alt}}">
+          </div>
+          <div class="please__item_main">
+            <div class="please__item_title">{{top_blog_categories.2.title}}</div>
+            <div class="please__item_text">{{top_blog_categories.2.description}}</div>
+          </div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="wrapper">
+      <div class="section_title">Звяжіться з нами </div>
+      <div class="contact-us__wrap">
+        <div class="contact-us__section">
+          <div class="contact-us__map">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d114984.11740053775!2d30.407823834067564!3d50.44456444321558!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sru!2sua!4v1576175345442!5m2!1sru!2sua" frameborder="0" style="border:0;"
+              allowfullscreen=""></iframe>
+          </div>
+        </div>
+        <div class="contact-us__section">
+          <div class="contact-us__form">
+            <form class="form" action="/contact_request/" id="contact-us__form">
+              {%csrf_token%}
+              <div class="form__row">
+                <label for="contact_name">Ім'я <span>*</span></label>
+                <input type="text" name="name" id="contact_name" value="">
+              </div>
+              <div class="form__row">
+                <label for="contact_phone">Телефон <span>*</span></label>
+                <input type="text" name="phone" id="contact_phone" value="">
+              </div>
+              <div class="form__row">
+                <label for="contact_email">Email<span>*</span></label>
+                <input type="text" name="email" id="contact_email" value="">
+              </div>
+              <div class="form__row">
+                <label for="contact_text">Повідомлення<span>*</span></label>
+                <textarea type="text" rows="4" name="" id="contact_text" value="">
+                  </textarea>
+              </div>
+              <div class="form__control">
+                <input class="form__row_btn btn btn_form" type="submit" name="" value="Надiслати">
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+{% endblock content%}
+{% block scripts%}
+<script src="/static/js/jquery-3.4.1.min.js" type="text/javascript" ></script>
+<script src="/static/js/slick.min.js" type="text/javascript"></script>
+<script src="/static/js/jquery.fancybox.min.js" type="text/javascript"></script>
+<script src="/static/js/validation.min.js" type="text/javascript"></script>
+<script src="/static/js/maskinput.js" type="text/javascript"></script>
+<script src="/static/js/ajax_form.js" type="text/javascript"></script>
+
+<script src="/static/js/script.js" type="text/javascript"></script>
+{% endblock scripts%}

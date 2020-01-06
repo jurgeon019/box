@@ -1,0 +1,35 @@
+git remote -v 
+git remote remove origin 
+git remote add origin git@github.com:jurgeon018/moto.git 
+або 
+git remote add origin https://www.github.com/jurgeon018/moto.git 
+
+
+git add . 
+git commit -m 's'
+git pull origin master 
+git add . 
+git commit -m 's'
+git push origin master 
+
+
+rm db.sqlite3
+find . -path \"*/migrations/*.py\" -not -name \"__init__.py\" -delete
+python manage.py makemigrations 
+python manage.py migrate 
+python manage.py createsuperuser 
+python manage.py collectstatic --noinput
+python manage.py load_categories categories.csv
+python manage.py loaddata post_categories 
+python manage.py gen_posts
+
+python manage.py gen_items 
+або
+python manage.py load_items items.csv 
+
+
+python manage.py loaddata pages index about contacts 
+
+python manage.py runserver 127.0.0.1:8000
+
+

@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-21 18:22+0000\n"
+"PO-Revision-Date: 2019-11-21 18:28+0000\n"
+"Last-Translator: b'  <>'\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Translated-Using: django-rosetta 0.9.3\n"
+
+#: static/global.js:21
+msgid "Код товару"
+msgstr "Product code "
+
+#: static/global.js:22 static/global.js:166
+msgid "грн"
+msgstr "UAH"
+
+#: static/global.js:168
+msgid "Додати до кошика"
+msgstr "Add to cart"
+
+#: static/global.js:299
+msgid "До кошика"
+msgstr "To cart"
+
+#: static/js/constructor.js:19
+msgid "Колір серветок"
+msgstr "Colour of napkins"
+
+#: static/js/constructor.js:23
+msgid "Білий"
+msgstr "White"
+
+#: static/js/constructor.js:29
+msgid "Жовтий"
+msgstr "Yellow"
+
+#: static/js/constructor.js:35
+msgid "Бірюза"
+msgstr "Turquoise"
+
+#: static/js/constructor.js:40
+msgid "Червоний"
+msgstr "Red"
+
+#: static/js/constructor.js:45
+msgid "Синій"
+msgstr "Blue"
+
+#: static/js/constructor.js:50
+msgid "Зелений"
+msgstr "Green"
+
+#: static/js/constructor.js:55
+msgid "Бордовий"
+msgstr "Burgundy"
+
+#: static/js/constructor.js:60
+msgid "Чорний"
+msgstr "Black"
+
+#: static/js/constructor.js:66
+msgid "Форм фактор"
+msgstr "Form factor"
+
+#: static/js/constructor.js:79
+msgid "Тиснення"
+msgstr "Embossing"
+
+#: static/js/constructor.js:82
+msgid "Квадрат"
+msgstr "Square"
+
+#: static/js/constructor.js:96
+msgid "Розворот серветки"
+msgstr "Folding"
+
+#: static/js/constructor.js:104
+msgid "Трикутник"
+msgstr "Triangle"
+
+#: static/js/constructor.js:397
+msgid "Формат логотипу не підходить, потрібен '.png'"
+msgstr "Logo format not suitable, '.png' is required"
+
+#: static/js/constructor.js:516
+msgid "Назад"
+msgstr "Back"
+
+#: static/js/constructor.js:528
+msgid "Продовжити"
+msgstr "Continue"
+
+#: static/js/constructor.js:544
+msgid "Замовити серветку"
+msgstr "Order napkin"
+
+#: static/js/constructor.js:99
+msgid "Прямокутник)"
+msgstr "Rectangle"

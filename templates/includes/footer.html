@@ -1,0 +1,125 @@
+<footer class="footer">
+  <div class="section">
+    <div class="wrapper">
+      <div class="footer__wrap">
+        <div class="footer__group footer__group_1">
+          <div class="footer__group_header">
+            <div class="footer__group_logo">
+              <img src="/static/img/svg/logo_motto.svg" alt="">
+            </div>
+          </div>
+          <div class="footer__group_main">
+            <div class="footer__group_row">
+              <a class="link" href="">info@mottoex.com.ua</a>
+            </div>
+            <div class="footer__group_row">
+              <div>м. Тернопіль, вул. Будного 20б</div>
+            </div>
+            <div class="footer__group_row">
+              <a class="link" href="">Tel: +380 (68) 580 33 03</a>
+            </div>
+          </div>
+        </div>
+        <div class="footer__group footer__group_2">
+          <div class="footer__group_header">
+            Магазин
+          </div>
+          <div class="footer__group_main">
+            {% for category in categories %}
+            <div class="footer__group_row">
+              <a class="link" href="{{category.get_absolute_url}}">{{category.title}}</a>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="footer__group footer__group_3">
+          <div class="footer__group_header">
+            Ми приймаємо
+          </div>
+          <div class="footer__group_main">
+            <div class="footer__group_row">
+              <div class="footer__group_info">
+                <div class="footer__group_info-item">
+                  <img src="/static/img/Mastercard.png" width="100%" height="100%">
+                </div>
+                <div class="footer__group_info-item">
+                  <img src="/static/img/visa-logo.png" width="100%" height="100%">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="footer__group footer__group_4">
+          <div class="footer__group_header">
+            Послуги
+          </div>
+          <div class="footer__group_main">
+            <div class="footer__group_row">
+              <div   href="{% url 'services' %}">Сервіс</div>
+            </div>
+            <div class="footer__group_row">
+              <div   href="{% url 'services' %}">Гарантія</div>
+            </div>
+            <div class="footer__group_row">
+              <div   href="{% url 'services' %}">Доставка</div>
+            </div>
+            <div class="footer__group_row">
+              <div   href="{% url 'services' %}">Кредит</div>
+              <!-- class="link" -->
+            </div>
+          </div>
+
+        </div>
+        <div class="footer__group footer__group_5">
+          <div class="footer__group_header">
+            Соцмережі
+          </div>
+          <div class="footer__group_main">
+            <div class="footer__group_row footer__group_row-social">
+              <a class="footer__group_item link" href="">
+                <svg xmlns="http://www.w3.org/2000/svg" width="8" height="16" viewBox="0 0 8 16">
+                  <path fill="#FFF" fill-rule="evenodd"
+                    d="M7.555 2.83a5.167 5.167 0 0 0-1.398-.213c-.567 0-1.79.362-1.79 1.064v1.68H7.27v2.83H4.367V16H1.44V8.191H0v-2.83h1.441V3.937C1.441 1.787 2.445 0 4.869 0c.83 0 2.314.043 3.122.32l-.436 2.51z" />
+                </svg>
+              </a>
+              <a class="footer__group_item link" href="">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="13" viewBox="0 0 18 13">
+                  <path fill="#FFF" fill-rule="evenodd"
+                    d="M15.526 6.238c-.33 1.23-.951 2.38-1.742 3.381-2.322 2.89-5.844 4.017-9.414 3.06A9.156 9.156 0 0 1 0 10.024c.229.082.477.17.711.232a6.424 6.424 0 0 0 4.2-.296c-1.303-.37-2.238-1.562-2.313-2.92a3.075 3.075 0 0 0 1.42.318C2.653 6.678 1.92 5.123 2.351 3.67l.01-.04c.367.35.798.612 1.3.767a3.185 3.185 0 0 1-.695-2.946A3.22 3.22 0 0 1 3.794 0a9.192 9.192 0 0 0 5.512 4.948c.004-.25.047-.49.11-.723a3.207 3.207 0 0 1 3.933-2.271 3.197 3.197 0 0 1 1.983 1.577 6.548 6.548 0 0 0 2.169-.214 3.21 3.21 0 0 1-1.82 1.332c.64.108 1.272.09 1.905-.012-.577.514-1.25.92-1.97 1.186-.017.142-.053.279-.09.415z" />
+                </svg>
+              </a>
+              <a class="footer__group_item link" href="">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                  <path fill="#FFF" fill-rule="evenodd"
+                    d="M14.592 0H1.408A1.42 1.42 0 0 0 0 1.408v3.92h5.328c.8-.576 1.648-1.072 2.672-1.072.992 0 1.888.496 2.672 1.072H16v-3.92A1.42 1.42 0 0 0 14.592 0zm.336 3.712c0 .304-.24.56-.544.56h-2.096a.567.567 0 0 1-.56-.56V1.616c0-.304.256-.544.56-.544h2.096a.54.54 0 0 1 .544.544v2.096zm-4.256 4.816c0-1.472-1.2-2.656-2.672-2.656a2.663 2.663 0 0 0-2.672 2.656C5.328 10 6.528 11.2 8 11.2c1.472 0 2.672-1.2 2.672-2.672zm1.408-1.056c.096.32.128.656.128.992A4.217 4.217 0 0 1 8 12.688a4.217 4.217 0 0 1-4.208-4.224c0-.336.032-.672.128-.992H0v7.12C0 15.36.64 16 1.408 16h13.184A1.42 1.42 0 0 0 16 14.592v-7.12h-3.92z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="footer__group footer__group_6">
+          <div class="footer__group_header">
+            Розробка
+          </div>
+          <div class="footer__group_main">
+            <div class="footer__group_row">
+              <div class="footer__info_logo">
+                <a href="https://starwayua.com/"><img src="/static/img/svg/logo_starway.svg" alt=""></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section__footer">
+    <div class="wrapper">
+      <div class="footer__info">
+        <div class="footer__info_text">© 2019 MOTOЕКШЕН Terms & Conditions Privacy</div>
+        <div class="footer__info_logo">
+          <a href=""><img src="/static/img/svg/logo_starway.svg" alt=""></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>

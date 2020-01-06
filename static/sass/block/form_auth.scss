@@ -1,0 +1,117 @@
+// main: ../style.sass
+
+.form__auth{
+    margin: 50px 80px;
+    -webkit-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.88);
+    -moz-box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.88);
+    box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.88);
+
+display: none;
+  &_wrap{
+      display: block;
+      padding:  50px 80px;
+      width: 27%;
+      min-width: 550px;
+  }
+  &_header{
+    &-title{
+      font-size: 20px;
+      font-weight: 600;
+      text-align: center;
+      color: #1e1e1e;
+    }
+    &-subtitle{
+      font-size: 16px;
+      color: #1e1e1e;
+      text-align: center;
+    }
+  }
+  &_main{
+    & .group_box{
+      & label{
+        font-size: 16px;
+        font-weight: 500;
+        color: #757575;
+        line-height:1;
+        letter-spacing: normal;
+        text-transform: unset;
+        margin-bottom: 8px;
+        & span{
+          color: #e04d27;
+          font-size: 14px;
+
+        }
+
+      }
+      & input{
+        border-radius: 3px;
+        border: solid 1px #cccccc;
+        background-color: #fefefe;
+        padding: 15px 10px;
+      }
+      width: 100%;
+      margin: 20px auto;
+    }
+  }
+  &__control{
+    &_btn{
+
+      padding: 15px 0;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      letter-spacing: 0.88px;
+      text-align: center;
+
+    }
+    &__info{
+      font-size: 14px;
+      text-align: center;
+      color: #8d8d8d;
+      font-size: 16px;
+      margin: 15px 0;
+      & a{
+        color: #e04d27;
+        margin: 0 10px;
+      }
+    }
+  }
+}
+.form-order-credit{
+  display: none !important;
+}
+@media (max-width: 650px) {
+  .fancybox-content{
+    max-width: 100%;
+  }
+.form__auth_wrap{
+
+  display: block;
+  padding: 22px 40px;
+  width: 95%;
+  min-width: 300px;
+
+}
+}
+@media (max-width: 650px) {
+  .form__auth_main .group_box {
+        max-width: 520px;
+      width: 100%;
+      margin: 20px auto;
+  }
+}
+@media (max-width: 400px) {
+  .form__auth_wrap{
+
+    display: block;
+    padding: 12px 20px;
+    width: 95%;
+    min-width: 300px;
+
+  }
+  .form__auth_main .group_box {
+      max-width: 520px;
+      width: 100%;
+      margin: 20px auto;
+  }
+}

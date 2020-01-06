@@ -1,0 +1,23 @@
+title,slug,parent
+Сільськогосподарська техніка,silgosp,
+Мототрактори,silgosp_mototractors,silgosp
+Трактори,silgosp_tractors,silgosp
+Мотоблоки,silgosp_motoblocks,silgosp
+Запчастини до сільгосп техніки,silgosp _spare,silgosp
+Двигуни,silgosp_engines,silgosp
+Мототехніка,mototech,
+Мотоцикли,mototech_motocycles,mototech
+Скутера,mototech_scuters,mototech
+Електроскутера,mototech_electroscuters,mototech
+Квадроцикли,mototech_quadrocycles,mototech
+Запчастини до мототехніки,mototech_spares,mototech
+Аксесуари,mototech_accessoires,mototech
+Велосипеди,velo,
+Додаткове обладнання,additional,
+Навісне та причіпне обладнання,additional_attachments,additional
+Запчастини(додаткове обладнання),additional_spare,additional
+Запчастини до мотоблоків,additional_motoblocks,additional
+Запчастини до мототехніки,additional_mototech,additional
+Запчастини до тракторів,additional_tractors,additional
+Запчастини до мототракторів,additional_mototractors,additional
+Запчастини до двигунів,additional_engines,additional

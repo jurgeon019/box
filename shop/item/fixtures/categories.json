@@ -1,0 +1,216 @@
+[
+    {"model": "item.ItemCategory", "pk":1,  "fields":{
+        "meta_title":"Сільськогосподарська техніка",
+        "meta_descr":"Сільськогосподарська техніка",
+        "title":"Сільськогосподарська техніка",
+        "code":"silgosp",
+        "slug":"silgosp"
+    }},
+        
+
+    {"model": "item.ItemCategory", "pk":5,  "fields":{
+        "meta_title":"Мототрактори",
+        "meta_descr":"Мототрактори",
+        "title":"Мототрактори",
+        "code":"mototractors",
+        "slug":"mototractors",
+        "parent":1
+    }},
+    {"model": "item.ItemCategory", "pk":6,  "fields":{
+        "meta_title":"Трактори",
+        "meta_descr":"Трактори",
+        "title":"Трактори",
+        "code":"tractors",
+        "slug":"tractors",
+        "parent":1
+    }},
+    {"model": "item.ItemCategory", "pk":7,  "fields":{
+        "meta_title":"Мотоблоки",
+        "meta_descr":"Мотоблоки",
+        "title":"Мотоблоки",
+        "code":"motoblocks",
+        "slug":"motoblocks",
+        "parent":1
+    }},
+    {"model": "item.ItemCategory", "pk":8,  "fields":{
+        "meta_title":"Запчастини до сільгосп техніки",
+        "meta_descr":"Запчастини до сільгосп техніки",
+        "title":"Запчастини до сільгосп техніки",
+        "code":"silhosp_spare",
+        "slug":"silhosp_spare",
+        "parent":1
+    }},
+    {"model": "item.ItemCategory", "pk":9,  "fields":{
+        "meta_title":"Двигуни",
+        "meta_descr":"Двигуни",
+        "title":"Двигуни",
+        "code":"engines",
+        "slug":"engines",
+        "parent":1
+    }},
+
+
+    
+
+
+    
+
+    
+    
+    
+    {"model": "item.ItemCategory", "pk":2,  "fields":{
+        "meta_title":"Мототехніка",
+        "meta_descr":"Мототехніка",
+        "title":"Мототехніка",
+        "code":"mototech",
+        "slug":"mototech"
+    }},
+    
+
+    {"model": "item.ItemCategory", "pk":10,  "fields":{
+        "meta_title":"Мотоцикли",
+        "meta_descr":"Мотоцикли",
+        "title":"Мотоцикли",
+        "code":"motocycles",
+        "slug":"motocycles",
+        "parent":2
+    }},
+    {"model": "item.ItemCategory", "pk":11,  "fields":{
+        "meta_title":"Скутера",
+        "meta_descr":"Скутера",
+        "title":"Скутера",
+        "code":"scuters",
+        "slug":"scuters",
+        "parent":2
+    }},
+    {"model": "item.ItemCategory", "pk":12,  "fields":{
+        "meta_title":"Електроскутера",
+        "meta_descr":"Електроскутера",
+        "title":"Електроскутера",
+        "code":"electroscuters",
+        "slug":"electroscuters",
+        "parent":2
+    }},
+    {"model": "item.ItemCategory", "pk":13,  "fields":{
+        "meta_title":"Квадроцикли",
+        "meta_descr":"Квадроцикли",
+        "title":"Квадроцикли",
+        "code":"quadrocycles",
+        "slug":"quadrocycles",
+        "parent":2
+    }},
+
+
+    {"model": "item.ItemCategory", "pk":14,  "fields":{
+        "meta_title":"Запчастини до мототехніки",
+        "meta_descr":"Запчастини до мототехніки",
+        "title":"Запчастини до мототехніки",
+        "code":"mototech_spares",
+        "slug":"mototech_spares",
+        "parent":2
+    }},
+
+    {"model": "item.ItemCategory", "pk":15,  "fields":{
+        "meta_title":"Аксесуари",
+        "meta_descr":"Аксесуари",
+        "title":"Аксесуари",
+        "code":"accessoires",
+        "slug":"accessoires",
+        "parent":2
+    }},
+
+
+
+
+
+
+
+
+
+
+
+
+    {"model": "item.ItemCategory", "pk":4,  "fields":{
+        "meta_title":"Додаткове обладнання",
+        "meta_descr":"Додаткове обладнання",
+        "title":"Додаткове обладнання",
+        "code":"additional",
+        "slug":"additional"
+    }},
+
+
+
+    {"model": "item.ItemCategory", "pk":15,  "fields":{
+        "meta_title":"Навісне та причіпне обладнання",
+        "meta_descr":"Навісне та причіпне обладнання",
+        "title":"Навісне та причіпне обладнання",
+        "code":"attachments",
+        "slug":"attachments",
+        "parent":4
+    }},
+
+    {"model": "item.ItemCategory", "pk":16,  "fields":{
+        "meta_title":"Запчастини(додаткове обладнання)",
+        "meta_descr":"Запчастини(додаткове обладнання)",
+        "title":"Запчастини(додаткове обладнання)",
+        "code":"additional_spare",
+        "slug":"additional_spare",
+        "parent":4
+    }},
+
+    {"model": "item.ItemCategory", "pk":17,  "fields":{
+        "meta_title":"Запчастини до мотоблоків",
+        "meta_descr":"Запчастини до мотоблоків",
+        "title":"Запчастини до мотоблоків",
+        "code":"additional_motoblocks",
+        "slug":"additional_motoblocks",
+        "parent":4
+    }},
+
+    {"model": "item.ItemCategory", "pk":18,  "fields":{
+        "meta_title":"Запчастини до мототехніки",
+        "meta_descr":"Запчастини до мототехніки",
+        "title":"Запчастини до мототехніки",
+        "code":"additional_mototech",
+        "slug":"additional_mototech",
+        "parent":4
+    }},
+
+    {"model": "item.ItemCategory", "pk":19,  "fields":{
+        "meta_title":"Запчастини до тракторів",
+        "meta_descr":"Запчастини до тракторів",
+        "title":"Запчастини до тракторів",
+        "code":"additional_tractors",
+        "slug":"additional_tractors",
+        "parent":4
+    }},
+
+    {"model": "item.ItemCategory", "pk":20,  "fields":{
+        "meta_title":"Запчастини до мототракторів",
+        "meta_descr":"Запчастини до мототракторів",
+        "title":"Запчастини до мототракторів",
+        "code":"additional_mototractors",
+        "slug":"additional_mototractors",
+        "parent":4
+    }},
+
+    {"model": "item.ItemCategory", "pk":21,  "fields":{
+        "meta_title":"Запчастини до двигунів",
+        "meta_descr":"Запчастини до двигунів",
+        "title":"Запчастини до двигунів",
+        "code":"additional_engines",
+        "slug":"additional_engines",
+        "parent":4
+    }},
+
+
+
+
+    {"model": "item.ItemCategory", "pk":3,  "fields":{
+        "meta_title":"Велосипеди",
+        "meta_descr":"Велосипеди",
+        "title":"Велосипеди",
+        "code":"velo",
+        "slug":"velo"
+    }}
+]

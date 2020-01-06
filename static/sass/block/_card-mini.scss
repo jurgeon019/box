@@ -1,0 +1,134 @@
+// main: ../style.sass
+
+
+.card-list{
+
+  &__main{
+      display: flex;
+    justify-content: space-between;
+    align-items:center;
+
+    & .card{
+
+      margin-right: 30px;
+      &:last-child{
+          margin-right: 0px;
+      }
+    }
+  }
+&__related {
+  align-items: flex-start;
+min-height: 420px;
+margin: 30px 0;
+}
+  &__footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &_text{
+        font-size: 16px;
+        color: #e04d27;
+        margin: 30px auto;
+        &:hover{
+          cursor: pointer;
+        }
+      }
+  }
+}
+
+.card{
+  max-width: 400px;
+  border-radius: 3px;
+  border: solid 1px #e0e0e0;
+  min-width: 300px;
+  transition: .3s;
+  &:hover{
+    transform: scale(1.1);
+    transition: .3s;
+  }
+  &__img{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    min-height: 300px;
+    & img{
+      height: auto;
+      width: 85%
+    }
+
+  }
+  &_main{
+    width: 80%;
+    margin: 0 auto;
+    &__text{
+      min-height: 100px;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      justify-content: center;
+
+    }
+    & .subtitle{
+      color: #757575;
+      font-size: 14px;
+    }
+    & .title{
+      font-size: 16px;
+      font-weight: 600;
+      color: #1e1e1e;
+      transition: .3s;
+      &:hover{
+        transition: .3s;
+        color: #e04d27;
+      }
+      & a{
+          color: #1e1e1e;
+      }
+    }
+    & .price{
+      font-size: 19px;
+      color: #2a3860;
+    }
+    &__control{
+      &-btn{
+        display: inline-block;
+        margin: 15px 0;
+      }
+    }
+
+  }
+  &__related{
+    border:none;
+
+    &_main{
+      &__text{
+        min-height: 75px ;
+        justify-content: space-around;
+        & .price{
+          font-size: 19px;
+           color: #e04d27;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 992px) {
+  .card-list__main {
+    flex-wrap:wrap;
+    justify-content: space-around;
+ .card {
+
+    margin: 30px 10px;
+    &:last-child{
+      margin: 30px 10px;
+    }
+}
+  }
+}
+@media (max-width: 560px) {
+  .card{
+
+      min-width: 210px;
+}
+}

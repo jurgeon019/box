@@ -1,0 +1,9 @@
+// main: style.sass
+
+@mixin box-shadow($top...) {
+
+    -webkit-box-shadow: $top;
+    -moz-box-shadow: $top;
+    box-shadow: $top;
+   
+}

@@ -1,0 +1,60 @@
+[
+    {"model":"pages.Page", "pk":2, "fields":{
+        "code":"about",
+        "meta_title":"Про Нас",
+        "meta_descr":"Про Нас опис",
+        "meta_key":"keyword1, keyword2"
+    }},
+
+
+    {"model":"pages.Team", "pk":1, "fields":{
+        "page":2,
+        "name":"Іван Іванов 1",
+        "position":"Директор 1",
+        "alt":"Title1",
+        "image":"about/member.jpg"
+    }},
+    {"model":"pages.Team", "pk":2, "fields":{
+        "page":2,
+        "name":"Іван Іванов 2",
+        "position":"Директор 2",
+        "alt":"Title2",
+        "image":"about/member.jpg"
+    }},
+    {"model":"pages.Team", "pk":3, "fields":{
+        "page":2,
+        "name":"Іван Іванов 3",
+        "position":"Директор 3",
+        "alt":"Title3",
+        "image":"about/member.jpg"
+    }},
+    {"model":"pages.Team", "pk":4, "fields":{
+        "page":2,
+        "name":"Іван Іванов 4",
+        "position":"Директор 4",
+        "alt":"Title4",
+        "image":"about/member.jpg"
+    }},
+
+
+    {"model":"pages.PageFeature", "pk":5, "fields":{
+        "page":2,
+        "code":"content",
+        "name":"Контент",
+        "value":"Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis pellentesque, lacinia dui sed, ultricies sapien. Pellentesque orci lectus, consectetur vel posuere posuere, rutrum eu ipsum. Aliquam eget odio sed ligula iaculis consequat at eget orci. Mauris molestie sit amet metus mattis varius. Donec sit amet ligula eget nisi sodales egestas. Mauris non tempor quam, et lacinia sapien. Mauris accumsan eros eget libero posuere vulputate. Etiam elit elit, elementum sed varius at, adipiscing vitae est. Sed nec felis pellentesque, lacinia dui sed, ultricies sapien. "
+    }},
+
+
+    {"model":"pages.PageImage", "pk":1, "fields":{
+        "page":2,
+        "code":"main_img",
+        "name":"Головна картинка",
+        "value":"pages/about_img.jpg"
+    }},
+    {"model":"pages.PageImage", "pk":2, "fields":{
+        "page":2,
+        "code":"side_img",
+        "name":"Бокова картинка",
+        "value":"pages/img1.jpg"
+    }}
+]

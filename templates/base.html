@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+  <title>{{page.meta_title}}</title>
+  <meta name="description" content="{{page.meta_descr}}"/>
+  <meta name="keywords" content="{{page.meta_key}}" />
+  <link rel="shortcut icon" type="image/png" href="/static/favicon.ico">
+  <!-- <meta name=“robots” content=“noindex,nofollow”> -->
+  {% block styles%}
+    {% include 'includes/styles.html' %}
+  {% endblock styles%}
+</head>
+<body>
+  {% include 'includes/header.html' %}
+  {% include 'includes/navbar.html' %}
+  {% block content %}
+  {% endblock content %}
+  {% include 'includes/footer.html' %}
+  {% include 'includes/auth.html' %}
+  {% include 'includes/loader.html' %}
+  <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
+  {% block scripts%}
+  {% include 'includes/scripts.html' %}
+  {% endblock scripts%}
+</body>
+</html>

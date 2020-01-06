@@ -1,0 +1,112 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-11-21 18:22+0000\n"
+"PO-Revision-Date: 2019-11-21 18:29+0000\n"
+"Last-Translator: b'  <>'\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
+"X-Translated-Using: django-rosetta 0.9.3\n"
+
+#: static/global.js:21
+msgid "Код товару"
+msgstr "Код товара"
+
+#: static/global.js:22 static/global.js:166
+msgid "грн"
+msgstr "грн"
+
+#: static/global.js:168
+msgid "Додати до кошика"
+msgstr "Добавить в корзину"
+
+#: static/global.js:299
+msgid "До кошика"
+msgstr "В корзину"
+
+#: static/js/constructor.js:19
+msgid "Колір серветок"
+msgstr "Цвет салфеток"
+
+#: static/js/constructor.js:23
+msgid "Білий"
+msgstr "Белый"
+
+#: static/js/constructor.js:29
+msgid "Жовтий"
+msgstr "Желтый"
+
+#: static/js/constructor.js:35
+msgid "Бірюза"
+msgstr "Бирюза"
+
+#: static/js/constructor.js:40
+msgid "Червоний"
+msgstr "Красный"
+
+#: static/js/constructor.js:45
+msgid "Синій"
+msgstr "Синий"
+
+#: static/js/constructor.js:50
+msgid "Зелений"
+msgstr "Зелёный"
+
+#: static/js/constructor.js:55
+msgid "Бордовий"
+msgstr "Бордовый"
+
+#: static/js/constructor.js:60
+msgid "Чорний"
+msgstr "Чёрный"
+
+#: static/js/constructor.js:66
+msgid "Форм фактор"
+msgstr "Форм-фактор"
+
+#: static/js/constructor.js:79
+msgid "Тиснення"
+msgstr "Тиснение"
+
+#: static/js/constructor.js:82
+msgid "Квадрат"
+msgstr "Квадрат"
+
+#: static/js/constructor.js:96
+msgid "Розворот серветки"
+msgstr "Разворот салфетки"
+
+#: static/js/constructor.js:104
+msgid "Трикутник"
+msgstr "Треугольник"
+
+#: static/js/constructor.js:397
+msgid "Формат логотипу не підходить, потрібен '.png'"
+msgstr "Формат логотипа не подходит, нужен '.png'"
+
+#: static/js/constructor.js:516
+msgid "Назад"
+msgstr "Назад"
+
+#: static/js/constructor.js:528
+msgid "Продовжити"
+msgstr "Продолжить"
+
+#: static/js/constructor.js:544
+msgid "Замовити серветку"
+msgstr "Заказать салфетку"
+
+#: static/js/constructor.js:99
+msgid "Прямокутник)"
+msgstr "Прямоугольник"

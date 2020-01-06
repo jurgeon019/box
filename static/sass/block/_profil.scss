@@ -1,0 +1,236 @@
+// main: ../style.sass
+
+.profil{
+  display: flex;
+  max-width: 90%;
+    margin: 0 auto ;
+  &__block{
+    font-size: 16px;
+    width: 29%;
+    padding: 30px 35px;
+    box-sizing: border-box;
+    margin-bottom: 40px;
+    border: 1px solid #ccc;
+    height: 450px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+  &__avatar{
+    text-align: center;
+    &_img{
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: inline-block;
+      text-align: center;
+      box-shadow: 0 10px 40px -2px rgba(214,214,214,.7);
+    }
+  }
+  &__navigation{
+    &_link, &_link-a{
+      padding: 6px 0 10px 0;
+      border-bottom: 1px solid #f5f5f5;
+      display: flex;
+      cursor: pointer;
+      color: #000;
+      &-active{
+        font-weight: 600;
+        color: #EC3A34;
+        & span{
+          & svg{
+            & path{
+              fill:#EC3A34;
+            }
+          }
+        }
+      }
+      &:hover{
+        color: #EC3A34;
+        & span{
+          & svg{
+            & path{
+              fill:#EC3A34;
+            }
+          }
+        }
+      }
+      & span{
+        width: 15px !important;
+        height: auto;
+        margin-right: 15px;
+        display: inline-block;
+        & svg{
+          width: 100% !important;
+          height: auto;
+        }
+      }
+
+    }
+  }
+  &__order{
+    &_item{
+      margin: 25px 0;
+      &-title{
+        text-transform: uppercase;
+        padding: 5px 0px;
+        text-align: center;
+      }
+      & h4{
+        margin: 0;
+        padding-bottom: 10px;
+      }
+      & table{
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        // border: 1px solid #fff;
+      }
+
+    }
+  }
+  &__info{
+    width: 70%;
+    // margin-bottom: 40px;
+    padding: 40px;
+    box-sizing: border-box;
+  }
+  &__content{
+    display: none;
+    &_order{
+      &-not{
+        display: flex;
+        align-items: center;
+        & span{
+          margin-right: 10px;
+        }
+      }
+      &-yes{
+        max-width: 900px;
+        margin: 0 auto 50px;
+
+        padding: 20px;
+      }
+
+
+    }
+    &_title{
+      margin: 0;
+      text-align: center;
+      letter-spacing: 3px;
+    }
+
+    &-active{
+      display: block;
+    }
+    &_link{
+      color: #EC3A34;
+      &:hover{
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.profile{
+  .form-group{
+    width: 47%;
+    display: flex;
+    flex-direction: column;
+    & span{
+      margin:  5px 0;
+      font-size: 14px;
+    }
+  }
+  .input-group{
+    margin: 10px 0;
+  }
+}
+.form-row{
+  display: flex;
+    justify-content: space-between;
+
+}
+.profil__nav3{
+  .ordering{
+    margin: 0 auto;
+  }
+}
+
+.table{
+  & thead{
+    & tr{
+      & th{
+        padding: 5px;
+        background: #c6ced76e;
+      }
+    }
+  }
+  & tbody{
+    & tr{
+      & td{
+        &:first-child{
+          padding: 5px;
+          background: #c6ced76e;
+        }
+        border: solid 1px #e5e5e5;
+      }
+    }
+  }
+}
+.td_status{
+      width: 120px;
+      padding: 5px;
+}
+@media only screen and (max-width : 960px){
+  .profil{
+    flex-direction: column;
+    align-items: center;
+    // height: 350px;
+    &__block {
+      height: 350px;
+      width: 60%;
+      padding: 30px 20px;
+    }
+  &__info {
+    width: 90%;
+
+    }
+  }
+}
+@media only screen and (max-width : 768px){
+  .profil{
+    &__order_item{
+      overflow: auto;
+      & table{
+        min-width: 500px;
+        padding: 0 0 10px 0;
+      }
+    }
+    &__info {
+      width: 100%;
+    }
+  }
+
+  .form-row{
+    flex-direction: column;
+    &  .form-group{
+      width: 100%;
+    }
+  }
+  }
+
+  @media only screen and (max-width : 520px){
+    .profil{
+&__order_item{
+  & h4 {
+     font-size: 14px;
+ }
+}
+      &__info {
+        width: 100%;
+        padding: 20px;
+      }
+    }
+
+    }

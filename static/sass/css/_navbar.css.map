@@ -1,0 +1,9 @@
+{
+	"version": 3,
+	"file": "_navbar.css",
+	"sources": [
+		"../block/_navbar.sass"
+	],
+	"names": [],
+	"mappings": ""
+}
