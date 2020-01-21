@@ -1,0 +1,21 @@
+[
+    {"model":"blog.PostCategory", "pk":1, "fields":{
+        "title":"Фермеру",
+        "description":"Короткий опис категорії",
+        "slug":"to_farmer",
+        "image":"blog/categories/test1.jpg"
+    }},
+    {"model":"blog.PostCategory", "pk":2, "fields":{
+        "title":"Обслуговування",
+        "description":"Короткий опис категорії",
+        "slug":"service",
+        "image":"blog/categories/test1.jpg"
+    }},
+    {"model":"blog.PostCategory", "pk":3, "fields":{
+        "title":"Часті питання",
+        "description":"Короткий опис категорії",
+        "slug":"often_questions",
+        "image":"blog/categories/test1.jpg"
+    }}
+]
+

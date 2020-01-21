@@ -1,0 +1,1 @@
+default_app_config = 'box.pages.apps.PageConfig'

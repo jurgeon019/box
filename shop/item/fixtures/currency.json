@@ -1,0 +1,18 @@
+[
+    {"model":"item.Currency", "pk":1, "fields":{
+        "name":"UAH",
+        "is_main":true
+    }},
+    {"model":"item.Currency", "pk":2, "fields":{
+        "name":"USD"
+    }},
+
+
+    {"model":"item.CurrencyRatio", "pk":1, "fields":{
+        "main":2,
+        "compared":1,
+        "ratio":25
+    }}
+
+
+]

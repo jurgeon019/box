@@ -1,0 +1,63 @@
+<hr>
+<h3>
+    {% if request.user.is_authenticated %}
+    <form method='POST' action="/custom_logout/" class="logout_form">
+        {% csrf_token %}
+        <input type="submit" name='Logout' value="logout">
+    </form>
+    {% else %}
+    <form method='POST' action="/custom_login/" class="login_form">
+        {% csrf_token %}
+        <input type="text"  name="username" value="">
+        <input type="password"  name="password" value="">
+        <input type="submit" value='Login'>
+    </form>
+    <form method='POST' action="/custom_register/" class="register_form">
+        {% csrf_token %}
+        <input type="text" name="username" value="">
+        <input type="password" name="password" value="">
+        <input type="password" name="password2" value="">
+        <input type="submit" value='Register'>
+    </form>
+    {% endif%}
+</h3>
+<hr>
+<h3>
+    <a href="{% url  'test_order' %}">
+        Оформити замовлення
+    </a>
+</h3>
+<hr>
+<h1>КАТЕГОРІЇ</h1>
+{% for main_category in main_categories %}
+<div>
+    Батьківська категорія: <a href="{% url 'test_category' slug=main_category.slug %}">{{main_category.title}}</a>
+    <br>
+    Дочірні категорії: 
+    {% for subcategory in main_category.subcategories.all %}
+        <a href="{% url 'test_category' subcategory.slug %}">{{subcategory.title}}</a>
+    {% endfor %}
+</div>
+<br><br>
+{% endfor %}
+{{main_cate}}
+<input class="category_slug" type="hidden" name="category_slug" value="{{current_category.slug}}"/>
+
+<hr>
+
+<h1>КОРЗИНА</h1>
+Сумарна вартість корзини: 
+<span class="cart_total_price"></span><br>
+Кількість товарів(одиночних) в корзині:
+<span class="cart_items_count"></span><br>
+Кількість товарів в корзині: 
+<span class="cart_items_quantity"></span><br>
+
+<div class="cart">
+    <div class="cart_items_amount">
+    </div>
+    <div class="cart_items_list">
+    </div>
+</div>
+
+<hr>
