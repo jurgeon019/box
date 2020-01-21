@@ -1,0 +1,12 @@
+{% extends 'starway/base.html' %}
+{% block content %}
+<form action="/api/become_member/" method='POST'>
+    {% csrf_token %}
+    <input type="text" name="full_name">
+    <input type="text" name="email">
+    <input type="text" name="phone">
+    <input type="text" name="message">
+    <input type="submit" value='submit'>
+</form>
+{% endblock content %}
+

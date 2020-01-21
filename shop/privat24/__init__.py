@@ -1,0 +1,1 @@
+default_app_config = 'shop.privat24.apps.Privat24Config'

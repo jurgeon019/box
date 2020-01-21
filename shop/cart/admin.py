@@ -1,5 +1,5 @@
 from django.contrib import admin 
-from project.admin import custom_admin
+from core.admin import custom_admin
 from shop.cart.models import Cart, CartItem, FavourItem
 from django.utils.html import format_html, mark_safe
 from django.urls import reverse

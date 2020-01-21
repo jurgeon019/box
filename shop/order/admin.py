@@ -1,6 +1,6 @@
 from django.contrib import admin 
 from shop.order.models import * 
-from project.admin import custom_admin
+from core.admin import custom_admin
 from shop.liqpay.admin import PaymentAdmin, PaymentInline
 from shop.cart.admin import CartItemInline
 

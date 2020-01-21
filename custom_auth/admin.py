@@ -1,4 +1,4 @@
-from project.admin import custom_admin
+from core.admin import custom_admin
 from django.contrib import admin 
 from django import forms 
 from django.contrib.auth.forms import (

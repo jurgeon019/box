@@ -1,6 +1,6 @@
 
 from django.http import HttpResponse, JsonResponse
-from project.utils import get_sk, get_user
+from core.utils import get_sk, get_user
 from django.views.decorators.csrf import csrf_exempt
 from shop.item.models import *
 from .serializers import *

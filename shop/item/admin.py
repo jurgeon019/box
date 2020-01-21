@@ -14,7 +14,7 @@ from django.conf import settings
 from django.shortcuts import reverse 
 from shop.item.models import * 
 from shop.cart.models import * 
-from project.admin import custom_admin
+from core.admin import custom_admin
 from django.forms import TextInput, Textarea, NumberInput
 
 

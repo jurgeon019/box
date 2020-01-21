@@ -11,11 +11,6 @@ from shop.order.models import Order
 
 
 def order_items(request):
-  print(request.POST)
-  # form        = OrderForm(request.POST)
-  # payment_opt = form.cleaned_data['payment_opt']
-  # order       = form.save()#commit=False)
-  
   name         = request.POST.get('name')
   email        = request.POST.get('email')
   phone        = request.POST.get('phone')
@@ -38,7 +33,8 @@ def order_items(request):
   if payment_opt == 'liqpay':
     print(reverse(payment))
     url = reverse('payment')
-    return JsonResponse({"url":url})
+    if request.is_ajax():
+      return JsonResponse({"url":url})
     return redirect("payment")
   # elif payment_opt == 'manager':
   else:
@@ -46,4 +42,4 @@ def order_items(request):
     print(reverse('thank_you'))
     url = reverse('thank_you')
     return JsonResponse({"url":url})
-    return redirect('thank_you')
+    # return redirect('thank_you')

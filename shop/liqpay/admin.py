@@ -1,5 +1,5 @@
 from django.contrib import admin 
-from project.admin import custom_admin
+from core.admin import custom_admin
 from .models import Payment
 
 

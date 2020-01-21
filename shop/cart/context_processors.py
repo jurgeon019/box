@@ -1,5 +1,5 @@
 from shop.cart.models import *
-from project.utils import get_sk, get_user
+from core.utils import get_sk, get_user
 from shop.cart.utils import get_cart
 
 

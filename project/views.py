@@ -1,24 +1,26 @@
-from django.shortcuts import render
-from django.http import JsonResponse 
-from shop.help import help as shop_help 
-from blog.help import help as blog_help 
+from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.contrib.auth.decorators import login_required
+from django.urls import path
+from django.db.models import Q
+
+from core.models import Page
 
 
-
-def handler_404(request, exception):
-  return render(request,'404.html', locals())
-
-
-def handler_500(request):
-  return render(request,'500.html', locals())
+def index(request):
+  # page = Page.objects.get(code='index')
+  page, _ = Page.objects.get_or_create(code='index')
+  return render(request, 'index.html', locals())
 
 
-def robots(request):
-  return render(request, 'robots.txt', locals())
+def about(request):
+  # page = Page.objects.get(code='about')
+  page, _ = Page.objects.get_or_create(code='about')
+  return render(request, 'about.html', locals())
 
 
-def help(request):
-  response = {}
-  response.update(shop_help) 
-  response.update(blog_help) 
-  return JsonResponse(response)
+def contacts(request):
+  # page = Page.objects.get(code='contacts')
+  page, _ = Page.objects.get_or_create(code='contacts')
+  return render(request, 'contacts.html', locals())
+
+
