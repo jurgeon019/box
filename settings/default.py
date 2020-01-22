@@ -39,12 +39,12 @@ AUTHENTICATION_BACKENDS = (
 # LIQPAY_PRIVATE_KEY = "sandbox_RBR5FM04gXXt25MLzVmP7eyarKDWIKXw86MEMkvm"
 # LIQPAY_PUBLIC_KEY = "i3466565002"
 # LIQPAY_PRIVATE_KEY="85pd0UjyxXThv8RQpmPld4Z406wGZF4huAfqDHaB"
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}
-]
+# AUTH_PASSWORD_VALIDATORS = [
+#     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+#     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+#     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+#     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}
+# ]
 
 
 

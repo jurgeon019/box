@@ -1,59 +1,6 @@
-
-from .liqpay import LiqPay
-from django.conf import settings 
-from box.shop.order.models import Order
 from django.views.decorators.csrf import csrf_exempt
-from box.shop.cart.utils import get_cart
-from django.shortcuts import redirect, render
-from box.shop.cart.models import CartItem
-from django.conf import settings 
-
-
-def payment(request):
-  cart   = get_cart(request)
-  order  = Order.objects.filter(
-    cart=cart,
-    ordered=False,
-  )
-  cart_items = cart.items.all()
-  if not cart_items.exists():
-    return redirect('/')
-
-  if not order.exists():
-    return redirect('/')
-
-  
-  order = order.first()
-  total_price = 0
-  for cart_item in CartItem.objects.filter(ordered=False, cart=cart):
-    total_price += cart_item.total_price
-
-  params = {
-      'action': 'pay',
-      'amount': float(total_price),
-      'currency': 'UAH',
-      'description': str(order.comments),
-      'order_id': str(order.id+1000),
-      'version': '3',
-      'sandbox': 1, # sandbox mode, set to 1 to enable it
-      'server_url': f'{settings.CURRENT_DOMEN}pay_callback/', # url to callback view
-  }
-  liqpay    = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
-  signature = liqpay.cnb_signature(params)
-  data      = liqpay.cnb_data(params)
-  return render(request, 'payment.html', {'signature': signature, 'data': data})
-
-
-def get_response(request):
-  liqpay    = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
-  data      = request.POST.get('data')
-  signature = request.POST.get('signature')
-  sign      = liqpay.str_to_sign(settings.LIQPAY_PRIVATE_KEY + data + settings.LIQPAY_PRIVATE_KEY)
-  response  = liqpay.decode_data_from_str(data)
-  print(response)
-  if sign == signature: 
-    print('callback is valid')
-  return response
+from django.shortcuts import redirect 
+from box.shop.liqpay.utils import get_response, create_payment
 
 
 @csrf_exempt
@@ -64,18 +11,6 @@ def pay_callback(request):
   return redirect('thank_you')
 
 
-def create_payment(response):
-  status   = response.get('status', '')
-  order_id = response.get('order_id', '')
-  print(status, order_id)
-  order   = Order.objects.get(id=order_id)
-  if status == 'failure':
-    return redirect('/')
-  form    = PaymentForm(response)
-  payment = form.save(commit=False)
-  payment.order = Order.objects.get(pk=order_id)
-  payment.save()
-  order.make_order(request)
 
 
 

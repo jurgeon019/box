@@ -15,7 +15,7 @@ from django.contrib.auth.admin import (UserAdmin, GroupAdmin,)
 from box.shop.profile.models import (Profile,)
 from box.shop.order.admin import (OrderInline,)
 
-from box.custom_auth.models import * 
+from box.custom_auth.models import User 
 
 from box.admin import custom_admin
 
@@ -52,8 +52,9 @@ class CustomUserChangeForm(UserChangeForm):
         fields = ('username', 'email')
 
 
-        
-@admin.register(User, site=custom_admin)
+
+
+# @admin.register(User, site=custom_admin)
 class CustomUserAdmin(UserAdmin):
     # inlines = [
     #     ProfileInline,
@@ -91,6 +92,10 @@ class CustomUserAdmin(UserAdmin):
         'phone_number',
     ]
 
+
+
+custom_admin.register(User, CustomUserAdmin)
+# custom_admin.register(User, UserAdmin)
 
 # @admin.register(Group, site=custom_admin)
 class CustomGroup(GroupAdmin):

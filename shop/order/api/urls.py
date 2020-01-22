@@ -1,5 +1,5 @@
 from django.urls import path 
-from box.shop.order.api.views  import *
+from .views  import *
 
 
 urlpatterns = [

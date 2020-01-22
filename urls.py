@@ -40,9 +40,13 @@ urlpatterns = [
   path('jsi18n/',          js_cat.as_view(), name='javascript-catalog'),
   path('help/',            help, name='help'),
 
-  path('',  include('box.shop.item.api.urls')),
+  path('test/', include('box.shop.test_shop.urls')),
+  
+  path('',  include('box.shop.profile.api.urls')),
   path('',  include('box.shop.cart.api.urls')),
-  path('',  include('box.shop.profile.urls')),
+  path('',  include('box.shop.item.api.urls')),
+  path('',  include('box.shop.liqpay.api.urls')),
+  path('',  include('box.shop.order.api.urls')),
   path('',  include('box.blog.api.urls')),
   path('',  include('box.custom_auth.api.urls')),
 ]

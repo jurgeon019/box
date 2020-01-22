@@ -7,7 +7,7 @@ class Page(models.Model):
   meta_title = models.TextField(verbose_name=(""), blank=True, null=True)
   meta_descr = models.TextField(verbose_name=(""), blank=True, null=True)
   meta_key   = models.TextField(verbose_name=(""), blank=True, null=True)
-  # url        = models.URLField(verbose_name="Урл", max_length=20, blank=True, null=True)
+  url        = models.URLField(verbose_name="Урл", max_length=20, blank=True, null=True)
 
   class Meta:
     app_label = 'pages'
@@ -15,7 +15,7 @@ class Page(models.Model):
     verbose_name_plural="Мета інформація до сторінок"
 
   def __str__(self):
-    return f'{self.meta_title}'
+    return f'{self.code}, {self.meta_title}'
 
 
 class PageFeature(models.Model):
