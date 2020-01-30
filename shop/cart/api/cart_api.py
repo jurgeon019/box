@@ -52,6 +52,7 @@ def change_cart_item_amount(request):
 
 @csrf_exempt
 def change_item_amount(request):
+  cart = get_cart(request)
   item_id   = request.POST['item_id']
   quantity  = request.POST['quantity']
   cart_item = cart.change_item_amount(item_id, quantity)

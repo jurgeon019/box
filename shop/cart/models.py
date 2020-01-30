@@ -114,7 +114,7 @@ class CartItem(models.Model):
     try:
       return self.item.price * self.quantity
     except:
-      print('Блядь поправ це гімно, відвалюється при покупці в 1 клів')
+      print('Блядь поправ це гімно, відвалюється при покупці в 1 клік')
       return 1
   
   @property
@@ -130,7 +130,7 @@ class CartItem(models.Model):
 
   class Meta: 
     verbose_name = ('Товар в корзині')
-    verbose_name_plural = ('Товари в корзинах')
+    verbose_name_plural = ('Товари в корзині')
 
 
 class FavourItem(models.Model):
@@ -143,3 +143,5 @@ class FavourItem(models.Model):
   class Meta:
     verbose_name=("Улюблений товар")
     verbose_name_plural=("Улюблені товари")
+
+

@@ -1,4 +1,3 @@
-from .channels import * 
 from .default import * 
 from .email import * 
 from .installed_apps import * 

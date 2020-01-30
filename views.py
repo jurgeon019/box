@@ -23,3 +23,6 @@ def help(request):
   response.update(blog_help) 
   return JsonResponse(response)
 
+
+
+ 

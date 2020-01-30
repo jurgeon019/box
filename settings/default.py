@@ -31,6 +31,7 @@ CKEDITOR_UPLOAD_PATH = ''
 LOGIN_REDIRECT_URL = 'profile'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID=1
+ACCOUNT_LOGOUT_ON_GET = True
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'

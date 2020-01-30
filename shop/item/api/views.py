@@ -7,7 +7,7 @@ from django.views.decorators.cache import cache_page
 from box.shop.item.models import Item, ItemCategory, ItemReview
 from box.shop.item.api.serializers import ItemSerializer, ItemReviewSerializer
 from box.shop.cart.utils import get_cart
-
+from box.utils import get_line
 
 
 def get_items_in_favours(request, items):
@@ -56,6 +56,7 @@ def filter_category(items, query):
 def paginate(items, query):
   page_number  = query.get('page', 1)
   per_page     = query.get('per_page', 4)
+  ordering = query.get('sort', '-created')
   page         = Paginator(items, per_page=per_page).get_page(page_number)
   page_items   = ItemSerializer(page, many=True, read_only=True).data
   is_paginated = page.has_other_pages()
@@ -86,21 +87,13 @@ def paginate(items, query):
 
 
 def make_ordering(items, query):
-  ordering = query.get('order_by', '-created')
+  ordering = query.get('sort', '-created')
   if ordering:
-    print(
-      items.order_by('created').first(),
-      '\n', \
-      items.order_by('-created').first()
-    )
-
-    items.order_by(ordering)
+    items = items.order_by(ordering)
   return items
 
-# @cache_page(60 * 15)
 @csrf_exempt
 def get_items(request):
-  # query = request.GET
   query = request.POST
   items = Item.objects.all()
 

@@ -7,8 +7,24 @@ from box.shop.liqpay.utils import get_response, create_payment
 def pay_callback(request):
   print('pay callback')
   response = get_response(request)
-  create_payment(response)
+  create_payment(response, request)
   return redirect('thank_you')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

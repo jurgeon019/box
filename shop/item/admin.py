@@ -258,11 +258,6 @@ class ItemFeatureInline(admin.StackedInline):
 
 
 @admin.register(Item, site=custom_admin)
-# class ItemAdmin(TranslationAdmin, ImportExportModelAdmin):
-# class ItemAdmin(TranslationAdmin):
-# class ItemAdmin(TabbedExternalJqueryTranslationAdmin):
-# class ItemAdmin(TabbedDjangoJqueryTranslationAdmin):
-# class ItemAdmin(TabbedTranslationAdmin):
 class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     # class Media:
     #     js = (
@@ -382,6 +377,18 @@ class ItemCategoryAdmin(admin.ModelAdmin):
         ItemInline,
         ItemCategoryInline,
     ]
+    list_display = [
+        'id',
+        'tree_title',
+        'currency',
+    ]
+    list_display_links = [
+        'id',
+        'tree_title',
+    ]
+    list_editable= [
+        'currency',
+    ]
     fieldsets = (
         ('ОСНОВНА ІНФОРМАЦІЯ', {
             "fields":(
@@ -472,13 +479,13 @@ class ItemImageAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(ItemReview, site=custom_admin)
+# @admin.register(ItemReview, site=custom_admin)
 class ItemReviewAadmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Currency, site=custom_admin)
-class Currency(admin.ModelAdmin):
+# @admin.register(Currency, site=custom_admin)
+class CurrencyAdmin(admin.ModelAdmin):
     list_display_links = [
         'id',
         'name',
@@ -490,9 +497,9 @@ class Currency(admin.ModelAdmin):
     ]
 
 
-
+       
 @admin.register(CurrencyRatio, site=custom_admin)
-class CurrencyRatio(admin.ModelAdmin):
+class CurrencyRatioAdmin(admin.ModelAdmin):
     list_display_links = [
         'id',
         'main',

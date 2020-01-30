@@ -35,7 +35,7 @@ class Order(models.Model):
   comments    = models.TextField(verbose_name=('Коментарии'),          blank=True, null=True, default=None)
   payment_opt = models.CharField(verbose_name=("Спосіб оплати"),       blank=True, null=True, max_length=255, help_text=' ')
   delivery_opt= models.CharField(verbose_name=("Спосіб доставки"),     blank=True, null=True, max_length=255)
-  ordered     = models.BooleanField(verbose_name=('Заказ завершений'), default=False)
+  ordered     = models.BooleanField(verbose_name=('Завершений'), default=False)
   status      = models.ForeignKey(verbose_name=('Статус'),  on_delete=models.CASCADE, to="Status", blank=True, null=True, related_name='orders', default=1) 
   is_active   = models.BooleanField(default=True)
   
@@ -47,7 +47,7 @@ class Order(models.Model):
   class Meta: 
     verbose_name = ('Замовлення товарів')
     verbose_name_plural = ('Замовлення товарів')
-  
+
   def __str__(self):
     return f'{self.phone}|{self.name}|{self.email}|{self.address}' 
   
@@ -81,7 +81,7 @@ class Order(models.Model):
       order.save()
       cart.save()
     self.make_order_total_price()
-    # send_order_mail()
+    send_order_mail()
 
 
 class OrderRequest(models.Model):

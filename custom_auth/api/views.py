@@ -105,21 +105,23 @@ def custom_logout(request):
 
 @csrf_exempt 
 def custom_register(request):
-    print(request.POST)
+    query = request.POST
+    if not query:
+        query = request.GET
     response   = redirect(request.META['HTTP_REFERER'])
 
-    username   = request.POST['username']
+    username   = query['username']
 
-    password   = request.POST['password']
-    password2  = request.POST['password2']
+    password   = query['password']
+    password2  = query['password2']
 
-    email      = request.POST.get('email','')
-    email2     = request.POST.get('email2','')
+    email      = query.get('email','')
+    email2     = query.get('email2','')
 
-    first_name = request.POST.get('first_name','')
-    last_name  = request.POST.get('last_name','')
+    first_name = query.get('first_name','')
+    last_name  = query.get('last_name','')
 
-    phone      = request.POST.get('phone', '')
+    phone      = query.get('phone', '')
   
     if email and email2 and email != email2:
         message = 'Email must match'

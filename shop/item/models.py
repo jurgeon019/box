@@ -204,7 +204,7 @@ class ItemCategory(models.Model):
   alt        = models.CharField(verbose_name=("Альт до картинки"),   blank=True, null=True, max_length=255)
 
   title      = models.CharField(verbose_name=("Назва"),  max_length=255,   blank=True, null=True)
-  thumbnail  = models.ImageField(verbose_name=("Картинка"), blank=True, null=True)
+  thumbnail  = models.ImageField(verbose_name=("Картинка"), blank=True, null=True, upload_to='shop/categories')
 
   parent     = models.ForeignKey(verbose_name=("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.CASCADE, related_name='subcategories')
   currency   = models.ForeignKey(verbose_name=("Валюта"), to="item.Currency", blank=True, null=True, related_name="categories", default=1, on_delete=models.CASCADE)
@@ -217,15 +217,14 @@ class ItemCategory(models.Model):
   # objects    = ItemCategoryManager()
   # TODO: визначити якого хуя з включеним ItemCategoryManager дочірні категорії  виводяться не ті шо треба, а всі підряд
 
-
   def save(self, *args, **kwargs): 
     if self.currency:
       self.items.all().update(currency=self.currency)
     super().save(*args, **kwargs)
 
   class Meta: 
-    verbose_name = ('Категорія товару'); 
-    verbose_name_plural = ('Категорії товару'); 
+    verbose_name = ('Категорія'); 
+    verbose_name_plural = ('Категорії'); 
     
   def get_absolute_url(self):
     return reverse("item_category", kwargs={"slug": self.slug})
@@ -295,12 +294,12 @@ class ItemFeatureCategory(models.Model):
 
 
 class ItemReview(models.Model):
-  item    = models.ForeignKey(verbose_name=("Батьківська категорія"), to='item.Item', blank=True, null=True, on_delete=models.CASCADE, related_name="reviews",)
+  item    = models.ForeignKey(verbose_name=("Товар"), to='item.Item', blank=True, null=True, on_delete=models.CASCADE, related_name="reviews",)
   user    = models.ForeignKey(verbose_name=("Автор"), to=User, blank=True, null=True, on_delete=models.SET_NULL, related_name="reviews",)
   text    = models.CharField(verbose_name=("Відгук"),  max_length=255, blank=True, null=True)
   phone   = models.CharField(verbose_name=("Телефон"), max_length=255, blank=True, null=True)
   name    = models.CharField(verbose_name=("Ім'я"),    max_length=255, blank=True, null=True)
-  rating  = models.CharField(verbose_name=("Рейтинг"), max_length=255, blank=True, null=True)
+  rating  = models.CharField(verbose_name=("Оцінка"), max_length=255, blank=True, null=True)
   created = models.DateTimeField(default = timezone.now)
 
   def __str__(self):

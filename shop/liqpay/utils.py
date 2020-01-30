@@ -4,7 +4,7 @@ from box.shop.cart.utils import get_cart
 from django.shortcuts import redirect
 from box.shop.cart.models import CartItem
 from django.conf import settings 
-
+from .forms import PaymentForm
 
 
 def get_liqpay_context(request):
@@ -17,13 +17,13 @@ def get_liqpay_context(request):
   total_price = 0
   for cart_item in CartItem.objects.filter(ordered=False, cart=cart):
     total_price += cart_item.total_price
-
+  
   params = {
       'action': 'pay',
       'amount': float(total_price),
       'currency': 'UAH',
       'description': str(order.comments),
-      'order_id': str(order.id+1000),
+      'order_id': str(order.id),
       'version': '3',
       'sandbox': 1, # sandbox mode, set to 1 to enable it
       'server_url': f'{settings.CURRENT_DOMEN}pay_callback/', # url to callback view
@@ -47,7 +47,7 @@ def get_response(request):
 
 
 
-def create_payment(response):
+def create_payment(response, request):
   status   = response.get('status', '')
   order_id = response.get('order_id', '')
   print(status, order_id)

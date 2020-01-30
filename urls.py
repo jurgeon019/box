@@ -13,6 +13,10 @@ from box.blog.sitemaps import *
 from project.sitemaps import *
 
 
+admin.site.site_header = "STARWAY CMS"
+admin.site.site_title = "STARWAY CMS"
+admin.site.index_title = "STARWAY CMS"
+
 
 sitemaps = {
   'items': ItemSitemap,
@@ -27,13 +31,15 @@ handler500 = 'box.views.handler_500'
 
 
 urlpatterns = [
-  path('ckeditor/',        include('ckeditor_uploader.urls')),
-  path('tinymce/',         include('tinymce.urls')),
+  
   path('i18n/',            include('django.conf.urls.i18n')),
   path('rosetta/',         include('rosetta.urls')),
-  path('admin+/',          admin_plus.urls),
-  path('admin/',           custom_admin.urls),
+  # path('admin+/',          admin_plus.urls),
+  # path('admin/',           custom_admin.urls),
+  path('admin/',           admin.site.urls),
+  path('tinymce/',         include('tinymce.urls')),
   path('filebrowser/',     site.urls),
+  path('ckeditor/',        include('ckeditor_uploader.urls')),
   path('sitemap.xml/',     sitemap, {'sitemaps':sitemaps}),
   path('robots.txt/',      robots, name='robots'),
   path('set_lang/<lang>/', set_lang,         name="set_lang"),
@@ -57,5 +63,9 @@ if settings.DEBUG == True:
   from django.conf.urls.static import static
   urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+
 
 

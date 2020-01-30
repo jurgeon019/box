@@ -8,7 +8,7 @@ from django.contrib.auth.models import User
 # class UserAdmin(admin.ModelAdmin):
 #     pass
 
-@admin.register(Profile, site=custom_admin)
+# @admin.register(Profile, site=custom_admin)
 class ProfileAdmin(admin.ModelAdmin):
     pass
 

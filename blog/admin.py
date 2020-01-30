@@ -20,7 +20,7 @@ class PostInline(admin.StackedInline):
 @admin.register(PostCategory, site=custom_admin)
 class PostCategoryAdmin(admin.ModelAdmin):
     fieldsets = (
-        (('ПУБЛІКАЦІЯ'), {
+        (('ОСНОВНА ІНФОРМАЦІЯ'), {
             'fields':(
                 'title',
                 'image',
@@ -33,7 +33,6 @@ class PostCategoryAdmin(admin.ModelAdmin):
                 'extrapretty',
 
             ),
-            # 'description':'123123123',
         }),
         (('SEO'), {
             'fields':(
@@ -50,8 +49,6 @@ class PostCategoryAdmin(admin.ModelAdmin):
                 'wide', 
                 'extrapretty',
             ),
-            # 'description':'321321321',
-
         }),
     )
     readonly_fields = [
@@ -84,7 +81,7 @@ class PostCategoryAdmin(admin.ModelAdmin):
 
 
 
-@admin.register(Post, site=custom_admin)
+# @admin.register(Post, site=custom_admin)
 class PostAdmin(admin.ModelAdmin):
     def show_category(self, obj):
       option = "change" # "delete | history | change"
@@ -101,26 +98,17 @@ class PostAdmin(admin.ModelAdmin):
       return link
     show_category.short_description = ("Категорія")
     inlines = [
-        CommentInline,
+        # CommentInline,
     ]
     fieldsets = (
-        (('ПУБЛІКАЦІЯ'), {
+        (('ОСНОВНА ІНФОРМАЦІЯ'), {
             'fields':(
                 'title',
                 'content',
                 'category',
                 # 'author',
                 'image',
-                'created',
-                'updated',
             ),
-            'classes':(
-                'collapse',
-                'wide', 
-                'extrapretty',
-
-            ),
-            # 'description':'123123123',
         }),
         (('SEO'), {
             'fields':(
@@ -157,11 +145,11 @@ class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         "slug": ("title",),
     }
-    formfield_overrides = {
-        models.CharField: {'widget': NumberInput(attrs={'size':'20'})},
-        models.CharField: {'widget': TextInput(attrs={'size':'20'})},
-        models.TextField: {'widget': Textarea(attrs={'rows':6, 'cols':20})},
-    }
+    # formfield_overrides = {
+    #     models.CharField: {'widget': NumberInput(attrs={'size':'20'})},
+    #     models.CharField: {'widget': TextInput(attrs={'size':'20'})},
+    #     models.TextField: {'widget': Textarea(attrs={'rows':6, 'cols':20})},
+    # }
     save_on_top = True 
     search_fields = [
         'title',

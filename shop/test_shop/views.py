@@ -1,5 +1,7 @@
 from django.shortcuts import render 
 from django import forms 
+from django.http import HttpResponse 
+
 
 from box.shop.item.models import *
 from box.shop.order.models import * 
@@ -44,3 +46,8 @@ def order(request):
     form = OrderForm(request.POST or None)
     return render(request, 'test_shop/order.html', locals())
 
+
+
+def mail(request):
+    send_order_mail()
+    return HttpResponse('sdfsdf')

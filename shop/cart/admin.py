@@ -13,8 +13,6 @@ class CartItemInline(admin.TabularInline):
       app   = obj._meta.app_label
       model = obj._meta.model_name
       url   = f'admin:{app}_{model}_{option}'
-      print(url)
-      # return ''
       href  = reverse(url, args=(obj.pk,))
       name  = f'{obj.title}'
       link  = mark_safe(f"<a href={href}>{name}</a>")
@@ -27,14 +25,15 @@ class CartItemInline(admin.TabularInline):
         return False 
     def has_delete_permission(self, request, obj=None):
         return False 
-    def has_change_permission(self, request, obj=None):
-        return False 
+    # КОЛИ ЦЯ ШТУКА ВКЛЮЧЕНА - ТОВАРИ НЕ ВІДОБРАЖАЮТЬСЯ ПІД ЗАКАЗОМ
+    # def has_change_permission(self, request, obj=None):
+    #     return False 
     def currency(self, obj):
       return obj.currency
     currency.short_description = ("Валюта")
-    show_item.short_description      = "Товар"
-    price_per_item.short_description = "Ціна за одиницю товару"
-    total_price.short_description    = "Суммарна вартість товару"
+    show_item.short_description      = ("Товар")
+    price_per_item.short_description = ("Ціна за одиницю товару")
+    total_price.short_description    = ("Суммарна вартість товару")
     fields = [
       'show_item',
       'currency',
@@ -52,7 +51,7 @@ class CartItemInline(admin.TabularInline):
     extra = 0
 
 
-@admin.register(Cart, site=custom_admin)
+# @admin.register(Cart, site=custom_admin)
 class CartAdmin(admin.ModelAdmin):
     # def has_delete_permission(self, request, obj=None):
     #     return False 
@@ -106,7 +105,7 @@ class CartAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(CartItem, site=custom_admin)
+# @admin.register(CartItem, site=custom_admin)
 class CartItemAdmin(admin.ModelAdmin):
     list_display = [field.name for field in CartItem._meta.fields]
 

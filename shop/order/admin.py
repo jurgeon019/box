@@ -32,7 +32,7 @@ class StatusAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(Order, site=custom_admin)
+# @admin.register(Order, site=custom_admin)
 class OrderAdmin(admin.ModelAdmin):
     def total(self, obj=None):
         return f'{obj.total_price} {obj.currency}'
@@ -48,9 +48,9 @@ class OrderAdmin(admin.ModelAdmin):
         'email',
         'phone',
         'address',
-        'payment_opt',
-        'ordered',
         'status',
+        'ordered',
+        'payment_opt',
     ]
     list_display_links = [
         'name',
@@ -67,7 +67,7 @@ class OrderAdmin(admin.ModelAdmin):
         'user',
         'comments',
         'delivery_opt',
-        
+
     ]
     search_fields = [
         'user__username',

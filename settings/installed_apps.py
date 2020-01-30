@@ -1,4 +1,5 @@
 INSTALLED_APPS = [
+
     'filebrowser',
     'modeltranslation',
     'django.contrib.admin',
@@ -6,12 +7,25 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.staticfiles',
     'django.contrib.redirects',
     'django.contrib.flatpages',
     'django.contrib.sitemaps',
-    # custom
+
+    "crispy_forms",
+    "tinymce",
+    'ckeditor',
+    'ckeditor_uploader',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'import_export',
+    'rosetta',
+    'django_celery_beat',
+
+
+    'box',
     'box.custom_auth',
     'box.pages',
     'box.blog',
@@ -23,15 +37,7 @@ INSTALLED_APPS = [
     'box.shop.liqpay',
     'box.shop.privat24',
     'box.shop.profile',
-    # third-party
-    "crispy_forms",
-    "tinymce",
-    'ckeditor',
-    'ckeditor_uploader',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'import_export',
-    'rosetta',
-    'django_celery_beat',
+
+
 ]
+

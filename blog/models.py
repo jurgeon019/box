@@ -1,6 +1,13 @@
 from django.db import models 
+# try:
+#   from tinymce.models import HTMLField
+# except:
+#   from tinymce import HTMLField
+
 from tinymce.models import HTMLField
-from ckeditor.fields import RichTextField
+# from tinymce import HTMLField
+
+# from ckeditor.fields import RichTextField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -15,7 +22,8 @@ class Post(models.Model):
   slug       = models.SlugField(verbose_name="Посилання на публікацію", blank=False, null=False, max_length=255, unique=True)
   title      = models.CharField(verbose_name=("Заголовок публікації"),blank=True, null=True, max_length=120,)
   # content    = RichTextField(verbose_name=("Контент"), blank=True, null=True)  
-  content    = RichTextUploadingField(verbose_name=("Контент"), blank=True, null=True)  
+  # content    = RichTextUploadingField(verbose_name=("Контент"), blank=True, null=True)  
+  content    = HTMLField(verbose_name="Контент", blank=True, null=True)
   category   = models.ForeignKey(verbose_name=("Категорія"), to="blog.PostCategory", blank=True, null=True, on_delete=models.CASCADE)
   author     = models.ForeignKey(to=User, on_delete=models.CASCADE, blank=True, null=True)
   image      = models.ImageField(verbose_name="Картинка", blank=True, null=True, default='blog/test_blog.png')

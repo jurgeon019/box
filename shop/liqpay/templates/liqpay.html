@@ -1,6 +1,9 @@
 <div id="liqpay_checkout"></div>
 <script src="/static/js/jquery-3.4.1.min.js" type="text/javascript"></script>
 <script>
+  console.log("{{signature}}")
+  console.log("{{data}}")
+  
   window.LiqPayCheckoutCallback = function() {
     LiqPayCheckout.init({
       data: "{{ data }}",
@@ -11,7 +14,7 @@
       console.log('callback data.status:', data.status);
       console.log('callback data:', data);
       $.ajax({
-        url:SITE_NAME+'pay_callback/',
+        url:'/pay_callback/',
         data:data,
         method:'POST',
         type:'POST',
@@ -31,3 +34,4 @@
   };
 </script>
 <script src="https://static.liqpay.ua/libjs/checkout.js" async></script>
+

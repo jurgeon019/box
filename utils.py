@@ -22,3 +22,11 @@ def get_user(request):
   if request.user.is_anonymous:
     return None
   return request.user
+
+
+def get_line():
+  import inspect 
+  caller = inspect.getframeinfo(inspect.stack()[1][0])
+  print(caller)
+  # print('filename:', inspect.getframeinfo(inspect.currentframe()).filename)
+  # print('line:', inspect.getframeinfo(inspect.currentframe()).lineno)

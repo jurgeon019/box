@@ -12,16 +12,17 @@ from django.http import JsonResponse
 
 
 def order_items(request):
-  name         = request.POST.get('name')
-  email        = request.POST.get('email')
-  phone        = request.POST.get('phone')
-  address      = request.POST.get('address')
+  name         = request.POST.get('name', "")
+  email        = request.POST.get('email', "")
+  phone        = request.POST.get('phone', "")
+  address      = request.POST.get('address', "")
 
-  payment_opt  = request.POST.get('payment')
-  delivery_opt = request.POST.get('delivery_opt')
+  payment_opt  = request.POST.get('payment', "")
+  delivery_opt = request.POST.get('delivery_opt', "")
   comments     = request.POST.get('comments', "")
 
   order        = Order.objects.create(
+
     name         = name,
     email        = email,
     phone        = phone,
@@ -31,23 +32,19 @@ def order_items(request):
     delivery_opt = delivery_opt,
   )
   cart        = get_cart(request)
-  order.cart  = cart
-  order.save()
-  print('1')
+  cart.order  = order
+  cart.save()
+  print('CART 2', cart.id)
+  print('ORDER 2', order.id)
+
+
   if payment_opt == 'liqpay':
-    print(reverse(payment))
     url = reverse('payment')
     return JsonResponse({"url":url})
-    return redirect("payment")
-  # elif payment_opt == 'manager':
   else:
-    print('2')
     order.make_order(request)
-    print('3')
-    print(reverse('thank_you'))
     url = reverse('thank_you')
     return JsonResponse({"url":url})
-    return redirect('thank_you')
 
 
 
