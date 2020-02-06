@@ -1,5 +1,4 @@
 INSTALLED_APPS = [
-
     'filebrowser',
     'modeltranslation',
     'django.contrib.admin',

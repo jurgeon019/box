@@ -3,6 +3,8 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import cache_page
+from django.conf import settings 
+
 
 from box.shop.item.models import Item, ItemCategory, ItemReview
 from box.shop.item.api.serializers import ItemSerializer, ItemReviewSerializer
@@ -44,11 +46,22 @@ def filter_search(items, query):
 def filter_category(items, query):
   category = query.get('category')
   if category:
-    items = items.filter(
-      Q(category__slug=category) |
-      Q(category__parent__slug=category) |
-      Q(category__parent__parent__slug=category)
-    ).distinct()
+    if settings.MULTIPLE_CATEGORY:
+
+      cat1 = ItemCategory.objects.all().get(slug=category)
+      cat2 = ItemCategory.objects.all().filter(parent__slug=category)
+      categories = [
+        cat1,
+      ]
+      for cat in cat2:
+        categories.append(cat)
+      items = Item.objects.all().filter(categories__in=categories)
+    else:
+      items = items.filter(
+        Q(category__slug=category) |
+        Q(category__parent__slug=category) |
+        Q(category__parent__parent__slug=category)
+      ).distinct()
   return items
 
 
@@ -138,3 +151,17 @@ def create_review(request):
       "stars":item.stars
     }
     return JsonResponse(response)
+
+
+@csrf_exempt
+def get_item(request):
+  query = request.POST
+  query = request.GET
+  item_id = query.get('item_id', 1)
+  # item = Item.default_objects.get(id=item_id)
+  item = Item.objects.get(id=item_id)
+  item = ItemSerializer(item).data
+  response = item
+  return JsonResponse(response)
+
+

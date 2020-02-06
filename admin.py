@@ -36,9 +36,10 @@ from box.shop.order.admin import *
 from box.shop.liqpay.admin import * 
 
 from box.pages.admin import * 
-from box.custom_auth.admin import * 
+from box.custom_auth.admin import *
 from box.custom_admin.admin import * 
 
+from box.custom_auth.models import User as CustomUser
 
 admin.site.register(Post, PostAdmin)
 admin.site.register(PostCategory, PostCategoryAdmin)
@@ -48,7 +49,7 @@ admin.site.register(CurrencyRatio, CurrencyRatioAdmin)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Status, StatusAdmin)
-admin.site.register(User, UserAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Page, PageAdmin)
 
 # admin.site.register(Cart, CartAdmin)

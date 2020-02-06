@@ -132,11 +132,20 @@ def create_items(dict_file, list_file):
     items[i]["features"] = items_features[i]
   
   for item in items:
+      # new_item.in_stock    = item["В_Наличии"]
+      # new_item.is_new      = item["Новое"]
+      # new_item.is_active   = item["Активен"]
       category_slug = item["Категория"].lower()
       item_slug     = item["Ссылка"]
       new_item, _          = Item.objects.get_or_create(
         slug = item_slug,
       )
+      slugs = ItemCategory.objects.all().values_list('slug')
+      if settings.MULTIPLE_CATEGORY:
+        new_item.categories.add(ItemCategory.objects.get(slug__iexact = category_slug))
+      else:
+        new_item.category = ItemCategory.objects.get(slug__iexact=category_slug)
+
       new_item.meta_descr  = item["Мета_Описание"]
       new_item.meta_title  = item["Мета_Заголовок"]
       new_item.meta_key    = item["Мета_Ключевые_Слова"]
@@ -145,53 +154,50 @@ def create_items(dict_file, list_file):
       new_item.code        = item["Артикул"]
       new_item.old_price   = item["Старая_Цена"]
       new_item.new_price   = item["Новая_Цена"]
-      # new_item.currency    = item["Валюта"]
-      # new_item.in_stock    = item["В_Наличии"]
-      # new_item.is_new      = item["Новое"]
-      # new_item.is_active   = item["Активен"]
-      new_item.category = ItemCategory.objects.get(slug__iexact=category_slug)
-
-      for image in item["Изображения"].split(","):
-        print(image)
-        image = ItemImage.objects.create(
-          image = f"shop/items/{image.strip()}",
-          item  =  new_item, 
-        )
-      new_item.save()
-      new_item.create_thumbnail_from_images()
+      currency             = item['Валюта']
+      new_item.currency, _ = Currency.objects.get_or_create(name=currency)
       
+      images = item["Изображения"]
+      if images:
+        images = images.split(",")
+        for image in images:
+          # print(image)
+          image = ItemImage.objects.create(
+            image = f"shop/items/{image.strip()}",
+            item  =  new_item, 
+          )
+        new_item.save()
+        new_item.create_thumbnail_from_images()
+        
       for k, v in item["features"].items():
         new_feature, _ = ItemFeature.objects.get_or_create(
           item = new_item, 
           name =k,
           value=v,
         )
-        print(new_feature.id, new_feature.name)
+        # print(new_feature.id, new_feature.name)
       new_item.save()
-      print(new_item.id ,new_item.title)
+      # print(new_item.id ,new_item.title)
 
 
 def create_categories(dict_file, list_file):
   for item in dict_file:
-    try:
-      title       = item["title"]
-      slug        = item["slug"]
-      parent_slug = item["parent"]
-      image       = item['image']
-      image_name  = image.split('/')[-1]
+    title       = item["title"]
+    slug        = item["slug"]
+    parent_slug = item["parent"]
+    image       = item['image']
+    image_name  = image.split('/')[-1]
 
-      with transaction.atomic():
-        new_category, _ = ItemCategory.objects.get_or_create(
-          slug = slug,
-        )
-        new_category.title  = title
-        parent      = ItemCategory.objects.filter(slug=parent_slug).first()
-        new_category.parent = parent
-        new_category.thumbnail = 'shop/categories/' + image
-        new_category.save()
-        print(new_category)
-    except Exception as e:
-      print("[ERROR]: ", e)
+    with transaction.atomic():
+      new_category, _ = ItemCategory.objects.get_or_create(
+        slug = slug,
+      )
+      new_category.title  = title
+      parent      = ItemCategory.objects.filter(slug=parent_slug).first()
+      new_category.parent = parent
+      new_category.thumbnail = 'shop/categories/' + image
+      new_category.save()
+      print(new_category)
   return True 
 
 
@@ -213,3 +219,4 @@ def create_categories(dict_file, list_file):
 
 
 
+ 

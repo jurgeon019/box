@@ -15,6 +15,7 @@ DATABASES = {
 #       'PORT' : '5432',
 #   }
 }
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'custom_auth.User'
 CURRENT_DOMEN = config('CURRENT_DOMEN', 'margoltd.com') 
@@ -46,7 +47,6 @@ AUTHENTICATION_BACKENDS = (
 #     {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
 #     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'}
 # ]
-
-
+MULTIPLE_CATEGORY = False 
 
 

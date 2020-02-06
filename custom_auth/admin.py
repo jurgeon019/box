@@ -5,7 +5,7 @@ from django.contrib.auth.forms import (
     PasswordResetForm, SetPasswordForm,
     AdminPasswordChangeForm,
 )
-
+from django.utils.translation import gettext, gettext_lazy as _
 from django import forms 
 from django.contrib import admin 
 from django.contrib import admin 
@@ -23,51 +23,74 @@ from box.admin import custom_admin
 class ProfileInline(admin.StackedInline):
     model = Profile
     extra = 1
+    # def has_add_permission(self, request, obj=None):
+    #     return True 
 
 
-# @admin.register(Profile, site=custom_admin)
-class ProfileAdmin(admin.ModelAdmin):
-    exclude = []
-
-
-class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField()
-    class Meta:
-        model = User
-        # fields = ('email', 'password',  'is_active')
-        exclude = []
-    def clean_password(self):
-        return self.initial["password"]
-
-
-class CustomUserCreationForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = ('username', 'email')
-
-
-class CustomUserChangeForm(UserChangeForm):
-    class Meta:
-        model = User
-        fields = ('username', 'email')
-
-
-
-
-# @admin.register(User, site=custom_admin)
 class CustomUserAdmin(UserAdmin):
-    # inlines = [
-    #     ProfileInline,
-    #     OrderInline,
-    # ]
-    def add_view(self, *args, **kwargs):
-      self.inlines = []
-      return super(UserAdmin, self).add_view(*args, **kwargs)
+    inlines = [
+        # ProfileInline,
+        # OrderInline,
+    ]
 
-    def change_view(self, *args, **kwargs):
-      self.inlines = [ProfileInline]
-      return super(UserAdmin, self).change_view(*args, **kwargs)
-    list_per_page = 10
+    fieldsets = (
+        (_('Personal info'), {
+            'fields': (
+                'first_name', 
+                'last_name', 
+                'email',
+                'phone_number',
+            )
+        }),
+        (None, {
+            'fields': (
+                'username', 
+                'password'
+            )
+        }),
+        # (_('Permissions'), {
+        #     'fields': (
+        #         'is_active', 
+        #         'is_staff', 
+        #         'is_superuser', 
+        #         'groups', 
+        #         'user_permissions'
+        #     ),
+        # }),
+        (_('Important dates'), {
+            'fields': (
+                'last_login', 
+                'date_joined',
+            ),
+        }),
+    )
+    readonly_fields = [
+        # 'username',
+        # 'first_name',
+        # 'last_name',
+        # 'email',
+        # 'phone_number',
+        # 'last_login',
+        # 'date_joined',
+    ]
+    add_fieldsets = (
+        (None, {
+            'classes': (
+                'wide',
+            ),
+            'fields': (
+                'username', 
+                'password1', 
+                'password2'
+            ),
+        }),
+    )
+
+
+    list_per_page = 100
+    save_as_continue = False 
+    save_on_top = True 
+
     list_display = (
         'id', 
         'username',
@@ -94,9 +117,5 @@ class CustomUserAdmin(UserAdmin):
 
 
 
-custom_admin.register(User, CustomUserAdmin)
-# custom_admin.register(User, UserAdmin)
-
-# @admin.register(Group, site=custom_admin)
 class CustomGroup(GroupAdmin):
     exclude = []

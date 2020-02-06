@@ -169,10 +169,7 @@ class AdminImageWidget(AdminFileWidget):
     return mark_safe(u''.join(output))
 
 
-class CollectionImageInline(admin.TabularInline):
-    formfield_overrides = {models.ImageField: {'widget': AdminImageWidget}}
-
-class ItemImageInline(admin.TabularInline):
+class ItemImageInline(admin.StackedInline):
     
     model = ItemImage
     extra = 0
@@ -181,6 +178,7 @@ class ItemImageInline(admin.TabularInline):
         'id',
         'image',
         'alt',
+        'order',
     ]
     formfield_overrides = {models.ImageField: {'widget': AdminImageWidget}}
 
@@ -221,7 +219,16 @@ class ItemInline(admin.TabularInline):
         'currency',
     ]
     classes = ['collapse']
-    # filter_horizontal = ['category',]
+    if settings.MULTIPLE_CATEGORY:
+        filter_horizontal = [
+            'categories',
+        ]
+    else:
+        filter_horizontal = [
+            'category',
+        ]
+
+
 
 
 class ItemCategoryInline(admin.TabularInline):
@@ -251,10 +258,97 @@ class ItemFeatureInline(admin.StackedInline):
     classes = ['collapse']
     exclude = [
         'code',
-        'category',
+        # 'category',
+        'categories',
     ]
 
 
+
+def get_fieldsets():
+    if settings.MULTIPLE_CATEGORY:
+        fieldsets = (
+            ('ТОВАР', {
+                'fields':(
+                    (
+                    'in_stock',
+                    # 'is_new',
+                    'is_active',
+                    ),
+                    (
+                    'title',
+                    'code',
+                    ),
+                    (
+                    'old_price',
+                    'new_price',
+                    'currency',
+                    ),
+                    'description',
+                    'thumbnail',
+                    'categories',
+                    'created',
+                    'updated',
+                ),
+            }),
+            ('SEO', {
+                'fields':(
+                    'slug',
+                    (
+                    'meta_title',
+                    'meta_descr',
+                    'meta_key',
+                    ),
+                ),
+                'classes':(
+                    'collapse', 
+                    'wide',
+                    'extrapretty',
+                ),
+            }),
+        )
+    else:
+        fieldsets = (
+            ('ТОВАР', {
+                'fields':(
+                    (
+                    'in_stock',
+                    # 'is_new',
+                    'is_active',
+                    ),
+                    (
+                    'title',
+                    'code',
+                    ),
+                    (
+                    'old_price',
+                    'new_price',
+                    'currency',
+                    ),
+                    'description',
+                    'thumbnail',
+                    'category',
+                    'created',
+                    'updated',
+                ),
+            }),
+            ('SEO', {
+                'fields':(
+                    'slug',
+                    (
+                    'meta_title',
+                    'meta_descr',
+                    'meta_key',
+                    ),
+                ),
+                'classes':(
+                    'collapse', 
+                    'wide',
+                    'extrapretty',
+                ),
+            }),
+        )
+    
+    return fieldsets
 
 
 @admin.register(Item, site=custom_admin)
@@ -273,55 +367,9 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
         'write_items_to_xlsx'
     ]
     change_list_template = 'items_change_list.html'
-    fieldsets = (
-        ('ТОВАР', {
-            'fields':(
-                (
-                'in_stock',
-                # 'is_new',
-                'is_active',
-                ),
-                (
-                'title',
-                'code',
-                ),
-                (
-                'old_price',
-                'new_price',
-                'currency',
-                ),
-                'description',
-                'thumbnail',
-                'category',
-                'created',
-                'updated',
-            ),
-            'classes':(
-                # 'collapse',
-                'wide', 
-                'extrapretty',
+    # TODO: static method 
+    fieldsets = get_fieldsets()
 
-            ),
-            # 'description':'123123123',
-        }),
-        ('SEO', {
-            'fields':(
-                'slug',
-                (
-                'meta_title',
-                'meta_descr',
-                'meta_key',
-                ),
-            ),
-            'classes':(
-                'collapse', 
-                'wide', 
-                'extrapretty',
-            ),
-            # 'description':'321321321',
-
-        }),
-    )
     formfield_overrides = {
         models.CharField: {'widget': NumberInput(attrs={'size':'20'})},
         models.CharField: {'widget': TextInput(attrs={'size':'20'})},
@@ -348,16 +396,20 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
         "in_stock",
         "is_new", 
         "is_active", 
-        "category",
+        # "category",
     ]
     list_display = [
         'id',
         'title',
+        'category',
         'price',
         'old_price',
         'in_stock',
         # 'is_new',
         'is_active',
+    ]
+    list_editable = [
+        'category',
     ]
     list_display_links = [
         'id', 
@@ -374,12 +426,13 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
 @admin.register(ItemCategory, site=custom_admin)
 class ItemCategoryAdmin(admin.ModelAdmin):
     inlines = [
-        ItemInline,
+        # ItemInline,
         ItemCategoryInline,
     ]
     list_display = [
         'id',
         'tree_title',
+        'slug',
         'currency',
     ]
     list_display_links = [
@@ -388,6 +441,7 @@ class ItemCategoryAdmin(admin.ModelAdmin):
     ]
     list_editable= [
         'currency',
+        'slug'
     ]
     fieldsets = (
         ('ОСНОВНА ІНФОРМАЦІЯ', {

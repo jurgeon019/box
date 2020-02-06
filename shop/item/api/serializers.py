@@ -5,6 +5,8 @@ from box.shop.item.models import (
   Currency
 )
 
+from django.conf import settings 
+
 
 class CurrencySerializer(serializers.ModelSerializer):
   class Meta:
@@ -63,7 +65,12 @@ class ItemCategorySerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
   images   = ItemImageSerializer(many=True, read_only=True)
   features = ItemFeatureSerializer(many=True)
-  category = ItemCategorySerializer()
+
+  if settings.MULTIPLE_CATEGORY:
+    categories = ItemCategorySerializer(many=True)
+  else:
+    category = ItemCategorySerializer()
+
   price    = serializers.ReadOnlyField()
   reviews  = ItemReviewSerializer(many=True)
   currency = CurrencySerializer()
