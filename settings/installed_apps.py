@@ -21,7 +21,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'import_export',
     'rosetta',
-    'django_celery_beat',
+    # 'django_celery_beat',
 
 
     'box',

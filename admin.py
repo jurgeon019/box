@@ -71,26 +71,52 @@ from django.contrib.auth.models import (User, Group,)
 admin.site.unregister(Group)
 
 
-from django_celery_beat.models import *
-admin.site.unregister(IntervalSchedule)
-admin.site.unregister(CrontabSchedule)
-admin.site.unregister(SolarSchedule)
-admin.site.unregister(ClockedSchedule)
-admin.site.unregister(PeriodicTask)
+try:
+    from django_celery_beat.models import *
+    admin.site.unregister(IntervalSchedule)
+    admin.site.unregister(CrontabSchedule)
+    admin.site.unregister(SolarSchedule)
+    admin.site.unregister(ClockedSchedule)
+    admin.site.unregister(PeriodicTask)
+except: 
+    pass 
 
-from filebrowser.models import * 
-admin.site.unregister(FileBrowser)
 
-from allauth.account.models import * 
-# admin.site.unregister(EmailConfirmation)
-admin.site.unregister(EmailAddress)
 
-from django.contrib.flatpages.models import *
-admin.site.unregister(FlatPage)
 
-from allauth.socialaccount.models import * 
-admin.site.unregister(SocialApp)
-admin.site.unregister(SocialToken)
-admin.site.unregister(SocialAccount)
+try:
+    from filebrowser.models import * 
+    admin.site.unregister(FileBrowser)
+except: 
+    pass
+
+
+
+try:
+    from allauth.account.models import * 
+    # admin.site.unregister(EmailConfirmation)
+    admin.site.unregister(EmailAddress)
+except: 
+    pass 
+
+
+
+try:
+    from django.contrib.flatpages.models import *
+    admin.site.unregister(FlatPage)
+except: 
+    pass 
+
+
+
+
+try:
+    from allauth.socialaccount.models import * 
+    admin.site.unregister(SocialApp)
+    admin.site.unregister(SocialToken)
+    admin.site.unregister(SocialAccount)
+except: 
+    pass
+
 
 
