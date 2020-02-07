@@ -1,4 +1,7 @@
 from django.utils import translation
+from django.shortcuts import redirect
+
+
 
 def set_lang(request, lang=None):
   # lang = request.POST['lang']
@@ -8,6 +11,7 @@ def set_lang(request, lang=None):
   url = request.META['HTTP_REFERER'].split('/')
   url[3] = lang
   url = '/'.join(url)
+  print(lang)
   return redirect(url)
 
 

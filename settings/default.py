@@ -15,6 +15,7 @@ DATABASES = {
 #       'PORT' : '5432',
 #   }
 }
+
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'custom_auth.User'

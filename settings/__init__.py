@@ -12,6 +12,8 @@ INSTALLED_APPS.extend([
     'box',
     'project',
 ])
+
+
 TEMPLATES[0]['OPTIONS']['context_processors'].extend([
 
 ])
