@@ -57,12 +57,12 @@ class CustomUserAdmin(UserAdmin):
         #         'user_permissions'
         #     ),
         # }),
-        (_('Important dates'), {
-            'fields': (
-                'last_login', 
-                'date_joined',
-            ),
-        }),
+        # (_('Important dates'), {
+        #     'fields': (
+        #         'last_login', 
+        #         'date_joined',
+        #     ),
+        # }),
     )
     readonly_fields = [
         # 'username',

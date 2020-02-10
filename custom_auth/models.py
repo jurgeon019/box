@@ -13,4 +13,3 @@ class User(AbstractUser):
     verbose_name = ('Користувач')
     verbose_name_plural = ('Користувачі')
 
- 

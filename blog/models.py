@@ -33,7 +33,10 @@ class Post(models.Model):
   
   @property
   def views_count(self):
-    return self.views.all().count()
+    views = self.views.all().count()
+    # print(views)
+    return views
+    return '123'
 
   def __str__(self):
     return f'{self.title}'
@@ -87,8 +90,8 @@ class PostComment(models.Model):
 
 
 class PostView(models.Model):
-  sk = models.CharField(max_length=120, blank=True, null=True)
-  post = models.ForeignKey(to="blog.Post", on_delete=models.CASCADE)
+  sk   = models.CharField(max_length=120, blank=True, null=True)
+  post = models.ForeignKey(to="blog.Post", on_delete=models.CASCADE, related_name='views')
   def __str__(self):
     return f"{self.title}"
 
