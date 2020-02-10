@@ -11,7 +11,7 @@ from tinymce.models import HTMLField
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth import get_user_model
 from django.urls import reverse
-
+from django.utils import timezone 
 User = get_user_model() 
 
 
@@ -29,7 +29,7 @@ class Post(models.Model):
   image      = models.ImageField(verbose_name="Картинка", blank=True, null=True, default='blog/test_blog.png')
   alt        = models.CharField(verbose_name=("Альт до картинки"), max_length=255, blank=True, null=True)
   updated    = models.DateTimeField(verbose_name="Оновлено", auto_now_add=False, auto_now=True, blank=True, null=True)
-  created    = models.DateTimeField(verbose_name="Створено", auto_now_add=True,  auto_now=False, blank=True, null=True)
+  created    = models.DateTimeField(verbose_name="Створено", default=timezone.now)
   
   @property
   def views_count(self):
