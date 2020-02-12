@@ -55,6 +55,7 @@ urlpatterns = [
   path('',  include('box.shop.order.api.urls')),
   path('',  include('box.blog.api.urls')),
   path('',  include('box.custom_auth.api.urls')),
+  path('',  include('box.custom_admin.api.urls')),
 ]
 
 from django.conf import settings

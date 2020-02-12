@@ -13,6 +13,6 @@ LANGUAGES = (
 LANGUAGE_CODE = 'uk' # не розкоментовуй, бо буде помилка 
 LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'),)
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'uk'
-ROSETTA_MESSAGES_PER_PAGE = 100
+ROSETTA_MESSAGES_PER_PAGE = 300
 
 

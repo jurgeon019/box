@@ -115,6 +115,7 @@ class CartItem(models.Model):
       return self.item.price * self.quantity
     except:
       print('Блядь поправ це гімно, відвалюється при покупці в 1 клік')
+      
       return 1
   
   @property
