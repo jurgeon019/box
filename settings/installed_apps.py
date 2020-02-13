@@ -2,7 +2,7 @@ INSTALLED_APPS = [
 
 
     'box.custom_admin',
-    'wpadmin',
+    # 'wpadmin',
 
 
     'filebrowser',
