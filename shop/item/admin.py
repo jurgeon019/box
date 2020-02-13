@@ -14,145 +14,15 @@ from django.contrib import admin
 from django.shortcuts import reverse 
 from django.utils.safestring import mark_safe
 from django.contrib.admin.widgets import AdminFileWidget
-from django.http import HttpResponse
 
-from import_export.admin import ImportExportModelAdmin
 
 from box.shop.item.models import * 
 from box.shop.cart.models import * 
-
+from .utils import ExportCsvMixin
 from box.admin import custom_admin
-
-from datetime import timedelta, datetime
-from openpyxl import Workbook
 
 
 CURRENT_DOMEN = settings.CURRENT_DOMEN
-
-
-class ExportCsvMixin:
-
-    def write_items_to_xlsx(self, request, queryset):
-        items = Item.objects.all()
-        categories = ItemCategory.objects.all()
-        response = HttpResponse(
-            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        )
-        response['Content-Disposition'] = 'attachment; filename={date}-movies.xlsx'.format(
-            date=datetime.now().strftime('%Y-%m-%d'),
-        )
-        workbook = Workbook()
-        workbook.remove(workbook.active)
-
-
-
-
-
-        worksheet1 = workbook.create_sheet(
-            title='Товары',
-            index=1,
-        )
-        columns = [
-            "Мета_Заголовок",
-            "Мета_Описание",
-            "Мета_Ключевые_Слова",
-            "Заголовок",
-            "Описание",
-            "Артикул",
-            "Категория",
-            "Ссылка",
-            "Старая_Цена",
-            "Новая_Цена",
-            "Изображения",
-        ]
-        biggest_item = items.first()
-        for item in items:
-            if item.features.all().count() > biggest_item.features.all().count():
-                biggest_item = item 
-        for i in range(int(biggest_item.features.all().count())):
-            columns.append("Название_Характеристики")
-            columns.append("Значение_Характеристики")
-        row_num = 1
-        for col_num, column_title in enumerate(columns, 1):
-            cell = worksheet1.cell(row=row_num, column=col_num)
-            cell.value = column_title
-        for item in items:
-            row_num += 1
-            row = [
-                item.meta_title,
-                item.meta_descr,
-                item.meta_key,
-                item.title,
-                item.description,
-                item.code,
-                item.category.slug,
-                item.slug,
-                item.old_price,
-                item.new_price,
-                ','.join([image.image.url for image in item.images.all()]),
-            ]
-            features = []
-            for feature in item.features.all():
-                features.append(feature.name)
-                features.append(feature.value)
-            row.extend(features)
-            for col_num, cell_value in enumerate(row, 1):
-                cell = worksheet1.cell(row=row_num, column=col_num)
-                cell.value = cell_value
-
-
-
-
-
-        worksheet2 = workbook.create_sheet(
-            title='Категории',
-            index=2,
-        )
-        columns = [
-            "title",
-            "slug",
-            "parent",
-        ]
-        row_num = 1
-        for col_num, column_title in enumerate(columns, 1):
-            cell = worksheet2.cell(row=row_num, column=col_num)
-            cell.value = column_title
-        for category in categories:
-            row_num += 1
-            parent_slug = ''
-            if category.parent:
-                parent_slug = category.parent.slug
-            row = [
-                category.title,
-                category.slug,
-                parent_slug,
-            ]
-            for col_num, cell_value in enumerate(row, 1):
-                cell = worksheet2.cell(row=row_num, column=col_num)
-                cell.value = cell_value
-
-
-
-
-
-
-
-        workbook.save(response)
-        return response
-        
-    def export_items(self, request, queryset):
-        meta = self.model._meta
-        field_names = ['Места'] + [field.name for field in meta.fields]
-        response = HttpResponse(content_type="text/csv")
-        response['Content-Disposition'] = f'attachement; filename={meta}.csv'
-        writer = csv.writer(response)
-        writer.writerow(field_names)
-        for obj in queryset:
-            seats = ','.join([seat_in_order.seat.number for seat_in_order in SeatInOrder.objects.filter(order=obj)])
-            # row = writer.writerow([getattr(obj, field) for field in field_names[1:]])
-            writer.writerow([seats] + [getattr(obj, field) for field in field_names[1:]])
-        return response
-        export_items.short_description = "Експортувати вибрані товари"
 
 
 class AdminImageWidget(AdminFileWidget):
@@ -366,7 +236,11 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
         'export_items',
         'write_items_to_xlsx'
     ]
-    change_list_template = 'items_change_list.html'
+    change_list_template = 'item_change_list.html'
+    change_form_template = 'item_change_form.html'
+
+    
+
     # TODO: static method 
     fieldsets = get_fieldsets()
 
