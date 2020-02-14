@@ -16,6 +16,8 @@ DATABASES = {
 #   }
 }
 
+ROOT_URLCONF     = 'core.urls'
+WSGI_APPLICATION = 'core.wsgi.application'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'custom_auth.User'
