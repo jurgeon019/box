@@ -8,8 +8,8 @@ from datetime import timedelta, datetime
 import csv
 
 
-
 count = 0
+
 
 def export_items_to_xml():
   # https://github.com/vinitkumar/json2xml
@@ -93,17 +93,16 @@ def form_item(item):
 
 
 
-class ExportCsvMixin:
+class ExportMixin:
 
-    def write_items_to_xlsx(self, request, queryset):
+    def export_items_to_xlsx(self, request, queryset):
+        from box.shop.item.models import Item, ItemCategory
         items = Item.objects.all()
         categories = ItemCategory.objects.all()
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         )
-        response['Content-Disposition'] = 'attachment; filename={date}-movies.xlsx'.format(
-            date=datetime.now().strftime('%Y-%m-%d'),
-        )
+        response['Content-Disposition'] = f"attachment; filename={datetime.now().strftime('%Y-%m-%d')}.xlsx"
 
 
         
@@ -212,10 +211,52 @@ class ExportCsvMixin:
         writer = csv.writer(response)
         writer.writerow(field_names)
         for obj in queryset:
-            seats = ','.join([seat_in_order.seat.number for seat_in_order in SeatInOrder.objects.filter(order=obj)])
-            # row = writer.writerow([getattr(obj, field) for field in field_names[1:]])
-            writer.writerow([seats] + [getattr(obj, field) for field in field_names[1:]])
+            # seats = ','.join([seat_in_order.seat.number for seat_in_order in SeatInOrder.objects.filter(order=obj)])
+            row = writer.writerow([getattr(obj, field) for field in field_names[1:]])
+            # writer.writerow([seats] + [getattr(obj, field) for field in field_names[1:]])
+            pass 
         return response
-        export_items.short_description = "Експортувати вибрані товари"
+    
+    def export_items_photoes(self, request, queryset):
+      # https://thispointer.com/python-how-to-create-a-zip-archive-from-multiple-files-or-directory/
+      import os 
+      from zipfile import ZipFile, ZIP_DEFLATED
+      from wsgiref.util import FileWrapper
+      from django.conf import settings 
+
+      images = []
+      for item in queryset:
+        images.extend(item.images.all() )
+      print(len(images))
+
+      with ZipFile('export.zip', 'w', ZIP_DEFLATED) as export_zip:
+        for image in images:
+          try:
+            filename = settings.MEDIA_ROOT + image.image.url[6:]
+            arcname = os.path.join('shop', 'item', image.item.slug, filename.split('/')[-1])
+            export_zip.write(filename, arcname)
+          except FileNotFoundError as e:
+            print(e)
+      response = HttpResponse(FileWrapper(open('export.zip', 'rb')), content_type='application/zip')
+      response['Content-Disposition'] = 'attachment; filename=export.zip'
+      return response 
+      # for root, dirs, files in os.walk(settings.MEDIA_ROOT):
+      #   for f in files:
+      #     # export_zip.write(os.path.join(root, f))
+
+    def delete_items_photoes(self, request, queryset):
+      for item in queryset:
+        item.images.all().delete()
+
+    def delete_items_features(self, request, queryset):
+      for item in queryset:
+        item.features.all().delete()
+
+    export_items.short_description          = "Простий експорт обраних товарів"
+    export_items_to_xlsx.short_description  = "Експорт обраних товарів в ексель"
+    export_items_photoes.short_description  = "Експорт у обраних товарів всіх фотографій"
+    delete_items_photoes.short_description  = "Видалити у обраних товарів всі фотографій"
+    delete_items_features.short_description = 'Видалити у обраних товарів всі характеристики'
+
 
 

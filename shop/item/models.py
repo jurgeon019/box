@@ -104,22 +104,22 @@ class Item(models.Model):
 	default_objects = models.Manager()
 
 	class Meta: 
-		verbose_name = ('Товар'); 
-		verbose_name_plural = ('Товари')
+		verbose_name = ('товар'); 
+		verbose_name_plural = ('товари')
 		# ordering = ['-id']
 
 	def __str__(self):
 		return f"{self.slug}"
 	
-	
 	def save(self, *args, **kwargs):
-		super().save(*args, **kwargs)
 		self.create_currency()
+		super().save(*args, **kwargs)
 		if self.thumbnail:
 			self.resize_thumbnail(self.thumbnail)
 		
 	def create_currency(self):
 		if self.currency is None:
+			print('sdf')
 			if settings.MULTIPLE_CATEGORY:
 				if self.categories.all():
 					self.currency = self.categories.all().first().currency
@@ -130,8 +130,6 @@ class Item(models.Model):
 					self.currency = self.category.currency
 				else:
 					self.currency = Currency.objects.get(is_main=True)
-
-
 	
 	def resize_thumbnail(self, thumbnail):
 		width  = 400
@@ -164,12 +162,10 @@ class Item(models.Model):
 
 	@property
 	def similars(self):
-		
 		if settings.MULTIPLE_CATEGORY:
 			similars = Item.objects.filter(categories__id__in=[self.categories.all().values_list('id', flat=True)]).exclude(id=self.id)[0:50]
 		else:
 			similars = Item.objects.filter(category=self.category).exclude(id=self.id)[0:50]
-
 		return similars
 
 	@property
@@ -280,8 +276,8 @@ class ItemCategory(models.Model):
 		super().save(*args, **kwargs)
 
 	class Meta: 
-		verbose_name = ('Категорія'); 
-		verbose_name_plural = ('Категорії'); 
+		verbose_name = ('категорія'); 
+		verbose_name_plural = ('категорії'); 
 		
 	def get_absolute_url(self):
 		return reverse("item_category", kwargs={"slug": self.slug})
@@ -352,18 +348,30 @@ class ItemImage(models.Model):
 		verbose_name_plural = ('Зображення товару'); 
 
 
+class ItemFeatureName(models.Model):
+	name = models.CharField(verbose_name=("Назва характеристики"), max_length=255)
+
+	def __str__(self):
+		return f"{self.name}"
+	
+	class Meta:
+		verbose_name = 'назва характеристики'
+		verbose_name_plural = 'назви характеристики'
+
+
 class ItemFeature(models.Model):
 	item     = models.ForeignKey(verbose_name="Товар", to="item.Item", related_name="features", on_delete=models.CASCADE, blank=True, null=True)
-	# items    = models.ManyToManyField(verbose_name=("Товар"),to='item.Item', blank=True, null=True, related_name="features")
 	name     = models.CharField(verbose_name="Назва характеристики", max_length=255, blank=True, null=True)
-	# name     = models.ForeignKey(to="shop.FeatureName",verbose_name="Назва характеристики", blank=True, null=True, on_delete=models.CASCADE)
+
+	# items    = models.ManyToManyField(verbose_name=("Товар"),to='item.Item', blank=True, null=True, related_name="features")
+	# name     = models.ForeignKey(to="item.ItemFeatureName",verbose_name="Назва характеристики", blank=True, null=True, related_name='features', on_delete=models.CASCADE)
+
 	code     = models.CharField(blank=True, null=True, max_length=255, verbose_name=("Код"))
 	value    = models.TextField(verbose_name="Значення характеристики", blank=True, null=True)
 	category = models.ForeignKey(verbose_name="Категорія характеристики", to="item.ItemFeatureCategory", related_name="items", on_delete=models.CASCADE, blank=True, null=True)
 
 	def __str__(self):
-		return f"{self.item}, {self.code}, {self.name}"
-		# return f"{self.items.all()}, {self.code}, {self.name}"
+		return f'{self.name}'
 
 	class Meta:
 		verbose_name = 'Характеристика товару'
@@ -374,7 +382,7 @@ class ItemFeature(models.Model):
 class ItemFeatureCategory(models.Model):
 	parent = models.ForeignKey(verbose_name=("Батьківська категорія"), to='self',related_name='subcategories', blank=True, null=True, on_delete=models.CASCADE)
 	name   = models.CharField(verbose_name=("Назва категорії"), max_length=255, unique=True, blank=True, null=True)
-	
+
 	def __str__(self):
 		return f"{self.name}"
 

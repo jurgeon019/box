@@ -9,7 +9,7 @@ class Page(models.Model):
   meta_key   = models.TextField(verbose_name=("Ключові слова"), blank=True, null=True)
   # url        = models.URLField(verbose_name="Урл", max_length=20, blank=True, null=True)
   url        = models.CharField(verbose_name="Урл", max_length=255, blank=True, null=True)
-
+  
   class Meta:
     app_label = 'pages'
     verbose_name="Сторінка"

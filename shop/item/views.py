@@ -6,12 +6,8 @@ from django.http import HttpResponse
 from django.shortcuts import redirect 
 from django.conf import settings 
 
-from zipfile import ZipFile, ZIP_DEFLATED
-from wsgiref.util import FileWrapper
-import os 
-
 from box.shop.item.utils import read_items_from_xlsx
-from box.shop.item.models import Item
+from box.shop.item.models import Item, ItemImage
 
 
 @staff_member_required
@@ -22,49 +18,51 @@ def feed_items(request):
     if status:
       messages.success(request, 'Товари були успішно завантажені')
     else:
-      messages.danger(reqeust, 'Сталась помилка')
+      messages.warning(reqeust, 'Сталась помилка')
   return render(request, 'feed_items.html', locals())
 
 
-def export_item(request, slug=None):
+@staff_member_required
+def delete_item_photoes(request, slug):
+  Item.objects.get(slug=slug).images.all().delete()
+  return redirect(request.META.get('HTTP_REFERER', '/admin/'))
+
+
+@staff_member_required
+def delete_item_features(request, slug):
+  Item.objects.get(slug=slug).features.all().delete()
+  return redirect(request.META.get('HTTP_REFERER', '/admin/'))
+
+
+@staff_member_required
+def import_item_photoes(request, slug=None):
+  from box.shop.item.models import Item, ItemImage
+  from django.core.files.base import ContentFile
+  from PIL import Image 
+  from django.utils import timezone 
+
   item = Item.objects.get(slug=slug)
-  print()
-  response = HttpResponse(FileWrapper(open('export.zip', 'rb')), content_type='application/zip')
-  response['Content-Disposition'] = 'attachment; filename=items.csv'
-  return response
+  files = request.FILES.getlist('files', [])
+
+  for f in files:
+    img = ItemImage.objects.create(item=item)
+    img.image.save(
+      f'{timezone.now()}.png',
+      ContentFile(f.read()),
+    )
+    img.save()
+  return redirect(request.META.get('HTTP_REFERER', '/admin/'))
 
 
+@staff_member_required
 def export_item_photoes(request, slug=None):
-  # https://thispointer.com/python-how-to-create-a-zip-archive-from-multiple-files-or-directory/
-  item   = Item.objects.get(slug=slug)
-  images = item.images.all()
-  # with ZipFile('export.zip', 'w') as export_zip:
-  with ZipFile('export.zip', 'w', ZIP_DEFLATED) as export_zip:
-    # image = images.first()
-    # image_path = settings.MEDIA_ROOT+ image.image.url[6:]
-    # image_name = image_path.split('/')[-1]
-    # export_zip.write(image_path, image_name)
-    # or 
-    try:
-      for image in images:
-        filename = settings.MEDIA_ROOT + image.image.url[6:]
-        arcname = os.path.join('shop', 'item', image.item.slug, filename.split('/')[-1])
-        export_zip.write(
-          filename=filename, 
-          arcname=arcname,
-        )
-        # export_zip.write(filename, arcname)
-    except: 
-      pass
-    # for root, dirs, files in os.walk(settings.MEDIA_ROOT):
-    #   # print(root)
-    #   # print(dirs)
-    #   print()
-    #   for f in files:
-    #     # print("f: ", f)
-    #     print()
-    #     # export_zip.write(os.path.join(root, f))
-  response = HttpResponse(FileWrapper(open('export.zip', 'rb')), content_type='application/zip')
-  response['Content-Disposition'] = 'attachment; filename=export.zip'
+  from box.shop.item.utils import ExportMixin
+  export   = ExportMixin()
+  queryset = Item.objects.filter(slug=slug)
+  response = export.export_items_photoes(request, queryset)
   return response
+
+
+
+
 

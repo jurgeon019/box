@@ -18,7 +18,7 @@ from django.contrib.admin.widgets import AdminFileWidget
 
 from box.shop.item.models import * 
 from box.shop.cart.models import * 
-from .utils import ExportCsvMixin
+from .utils import ExportMixin
 from box.admin import custom_admin
 
 
@@ -39,16 +39,14 @@ class AdminImageWidget(AdminFileWidget):
     return mark_safe(u''.join(output))
 
 
-class ItemImageInline(admin.StackedInline):
-    
+class ItemImageInline(admin.TabularInline):
     model = ItemImage
     extra = 0
     classes = ['collapse']
     fields = [
-        'id',
         'image',
-        'alt',
         'order',
+        'alt',
     ]
     formfield_overrides = {models.ImageField: {'widget': AdminImageWidget}}
 
@@ -99,8 +97,6 @@ class ItemInline(admin.TabularInline):
         ]
 
 
-
-
 class ItemCategoryInline(admin.TabularInline):
     model = ItemCategory 
     extra = 0
@@ -121,23 +117,33 @@ class ItemCategoryInline(admin.TabularInline):
     }
 
 
-class ItemFeatureInline(admin.StackedInline):
+class ItemFeatureInline(admin.TabularInline):
+    def save_model(self, request, obj, form, change):
+        # obj.type=2
+        # obj.save()
+        print(obj)
+        print(form)
+        print(change)
     model = ItemFeature
     # model = ItemFeature.items.through
     extra = 0
     classes = ['collapse']
     exclude = [
         'code',
-        # 'category',
+        'category',
         'categories',
     ]
-
+    formfield_overrides = {
+        # models.CharField: {'widget': NumberInput(attrs={'size':'20'})},
+        models.CharField: {'widget': TextInput(attrs={'size':'50'})},
+        models.TextField: {'widget': Textarea(attrs={'rows':2, 'cols':70, 'style':'resize:vertical'})},
+    }
 
 
 def get_fieldsets():
     if settings.MULTIPLE_CATEGORY:
         fieldsets = (
-            ('ТОВАР', {
+            ('ОСНОВНА ІНФОРМАЦІЯ', {
                 'fields':(
                     (
                     'in_stock',
@@ -177,9 +183,9 @@ def get_fieldsets():
             }),
         )
     else:
-        fieldsets = (
-            ('ТОВАР', {
-                'fields':(
+        fieldsets = [
+            ('ОСНОВНА ІНФОРМАЦІЯ', {
+                'fields':[
                     (
                     'in_stock',
                     # 'is_new',
@@ -199,7 +205,7 @@ def get_fieldsets():
                     'category',
                     'created',
                     'updated',
-                ),
+                ],
             }),
             ('SEO', {
                 'fields':(
@@ -216,34 +222,23 @@ def get_fieldsets():
                     'extrapretty',
                 ),
             }),
-        )
+        ]
     
     return fieldsets
 
 
-@admin.register(Item, site=custom_admin)
-class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
-    # class Media:
-    #     js = (
-    #         'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-    #         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-    #         'modeltranslation/js/tabbed_translation_fields.js',
-    #     )
-    #     css = {
-    #         'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
-    #     }
+class ItemAdmin(admin.ModelAdmin, ExportMixin):
     actions = [
-        'export_items',
-        'write_items_to_xlsx'
+        # 'export_items',
+        'export_items_to_xlsx',
+        "export_items_photoes",
+        "delete_items_photoes",
+        "delete_items_features",
     ]
     change_list_template = 'item_change_list.html'
     change_form_template = 'item_change_form.html'
-
-    
-
     # TODO: static method 
     fieldsets = get_fieldsets()
-
     formfield_overrides = {
         models.CharField: {'widget': NumberInput(attrs={'size':'20'})},
         models.CharField: {'widget': TextInput(attrs={'size':'20'})},
@@ -297,7 +292,6 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_per_page = 20
 
 
-@admin.register(ItemCategory, site=custom_admin)
 class ItemCategoryAdmin(admin.ModelAdmin):
     inlines = [
         # ItemInline,
@@ -361,7 +355,6 @@ class ItemCategoryAdmin(admin.ModelAdmin):
     }
 
 
-# @admin.register(ItemImage, site=custom_admin)
 class ItemImageAdmin(admin.ModelAdmin):
     save_on_top = True 
     save_on_bottom = True 
@@ -407,12 +400,10 @@ class ItemImageAdmin(admin.ModelAdmin):
     ]
 
 
-# @admin.register(ItemReview, site=custom_admin)
 class ItemReviewAadmin(admin.ModelAdmin):
     pass
 
 
-# @admin.register(Currency, site=custom_admin)
 class CurrencyAdmin(admin.ModelAdmin):
     list_display_links = [
         'id',
@@ -425,8 +416,6 @@ class CurrencyAdmin(admin.ModelAdmin):
     ]
 
 
-       
-@admin.register(CurrencyRatio, site=custom_admin)
 class CurrencyRatioAdmin(admin.ModelAdmin):
     list_display_links = [
         'id',

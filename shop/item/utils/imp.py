@@ -133,7 +133,7 @@ def create_categories(dict_file, list_file):
     parent_slug = item["parent"]
     image       = item['image']
     image_name  = image.split('/')[-1]
-
+    
     with transaction.atomic():
       new_category, _ = ItemCategory.objects.get_or_create(
         slug = slug,
@@ -181,8 +181,7 @@ class XMLItem(object):
   created     = None
   updated     = None
   order       = None
-  fields = {}
-
+  fields      = {}
 
   def __str__(self):
     return f'{self.fields}'
