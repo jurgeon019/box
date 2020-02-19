@@ -16,6 +16,8 @@ DATABASES = {
 #   }
 }
 
+ROOT_URLCONF     = 'core.urls'
+WSGI_APPLICATION = 'core.wsgi.application'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'custom_auth.User'
@@ -56,19 +58,42 @@ MULTIPLE_CATEGORY = False
 
 
 
-WPADMIN = {
-    'admin': {
-        # 'admin_site': 'test_project.admin.admin',
-        # 'admin_site': 'django.contrib.admin.sites.site',
+# WPADMIN = {
+#     'admin': {
+#         # 'admin_site': 'test_project.admin.admin',
+#         # 'admin_site': 'django.contrib.admin.sites.site',
 
-        'title': 'Django admin panel',
-        'menu': {
-            # 'top': 'wpadmin.menu.menus.BasicTopMenu',
-            'left': 'wpadmin.menu.menus.BasicLeftMenu',
-        },
-        'dashboard': {
-            'breadcrumbs': True,
-        },
-        # 'custom_style': STATIC_URL + 'wpadmin/css/themes/sunrise.css',
-    }
-}
+#         'title': 'Django admin panel',
+#         'menu': {
+#             # 'top': 'box.wpadmin.menu.menus.BasicTopMenu',
+#             'left': 'box.wpadmin.menu.menus.BasicLeftMenu',
+#         },
+#         'dashboard': {
+#             'breadcrumbs': True,
+#         },
+#         # 'custom_style': STATIC_URL + 'wpadmin/css/themes/sunrise.css',
+#     }
+# }
+
+
+
+# from box.wpadmin.menu.menus import BasicLeftMenu
+
+
+# WPADMIN = {
+#     'admin': {
+#         # 'admin_site': 'test_project.admin.admin',
+#         # 'admin_site': 'django.contrib.admin.sites.site',
+
+#         'title': 'Django admin panel',
+#         'menu': {
+#             'top': 'box.wpadmin.menu.menus.BasicTopMenu',
+#             'left': 'box.wpadmin.menu.menus.BasicLeftMenu',
+#         },
+#         'dashboard': {
+#             'breadcrumbs': True,
+#         },
+#         # 'custom_style': STATIC_URL + 'wpadmin/css/themes/sunrise.css',
+#     }
+# }
+

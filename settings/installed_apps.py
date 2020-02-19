@@ -1,10 +1,6 @@
 INSTALLED_APPS = [
-
-
+    'box.wpadmin',
     'box.custom_admin',
-    'wpadmin',
-
-
     'filebrowser',
     'modeltranslation',
     'django.contrib.admin',
@@ -29,7 +25,6 @@ INSTALLED_APPS = [
     'rosetta',
     # 'django_celery_beat',
 
-
     'box',
     'box.custom_auth',
     'box.pages',
@@ -42,7 +37,6 @@ INSTALLED_APPS = [
     'box.shop.liqpay',
     'box.shop.privat24',
     'box.shop.profile',
-
 
 ]
 

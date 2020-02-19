@@ -40,6 +40,10 @@ class AdminImageWidget(AdminFileWidget):
 
 
 class ItemImageInline(admin.TabularInline):
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
     model = ItemImage
     extra = 0
     classes = ['collapse']
@@ -124,6 +128,10 @@ class ItemFeatureInline(admin.TabularInline):
         print(obj)
         print(form)
         print(change)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
     model = ItemFeature
     # model = ItemFeature.items.through
     extra = 0
@@ -138,10 +146,31 @@ class ItemFeatureInline(admin.TabularInline):
         models.CharField: {'widget': TextInput(attrs={'size':'50'})},
         models.TextField: {'widget': Textarea(attrs={'rows':2, 'cols':70, 'style':'resize:vertical'})},
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
 
 
 def get_fieldsets():
+    seo_fields = (
+        'slug',
+        (
+        'meta_title',
+        'meta_descr',
+        'meta_key',
+        ),
+    )
+    seo_classes = (
+        'collapse', 
+        'wide',
+        'extrapretty',
+    )
+    item_fields = ()
+    item_classes = ()
+
     if settings.MULTIPLE_CATEGORY:
+<<<<<<< HEAD
         fieldsets = (
             ('ОСНОВНА ІНФОРМАЦІЯ', {
                 'fields':(
@@ -228,6 +257,76 @@ def get_fieldsets():
 
 
 class ItemAdmin(admin.ModelAdmin, ExportMixin):
+=======
+        item_fields = (
+            (
+            'in_stock',
+            'is_active',
+            ),
+            (
+            'title',
+            'code',
+            ),
+            (
+            'old_price',
+            'new_price',
+            'currency',
+            ),
+            'description',
+            'thumbnail',
+            'categories',
+            'created',
+            'updated',
+        )
+    else:
+        item_fields = (
+            (
+            'in_stock',
+            'is_active',
+            ),
+            (
+            'title',
+            'code',
+            ),
+            (
+            'old_price',
+            'new_price',
+            'currency',
+            ),
+            'description',
+            'thumbnail',
+            'category',
+            'created',
+            'updated',
+        )
+    fieldsets = (
+        ('ОСНОВНА ІНФОРМАЦІЯ', {
+            'fields':item_fields,
+            'classes':item_classes,
+        }),
+        ('SEO', {
+            'fields':seo_fields,
+            'classes':seo_classes,
+        }),
+    )
+    return fieldsets
+
+
+class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
+    pass 
+    exclude = [
+        'category',
+    ]
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
+>>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
     actions = [
         # 'export_items',
         'export_items_to_xlsx',
@@ -237,6 +336,10 @@ class ItemAdmin(admin.ModelAdmin, ExportMixin):
     ]
     change_list_template = 'item_change_list.html'
     change_form_template = 'item_change_form.html'
+<<<<<<< HEAD
+=======
+
+>>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
     # TODO: static method 
     fieldsets = get_fieldsets()
     formfield_overrides = {
@@ -263,9 +366,8 @@ class ItemAdmin(admin.ModelAdmin, ExportMixin):
     ]
     list_filter = [
         "in_stock",
-        "is_new", 
         "is_active", 
-        # "category",
+        "category",
     ]
     list_display = [
         'id',
@@ -274,7 +376,6 @@ class ItemAdmin(admin.ModelAdmin, ExportMixin):
         'price',
         'old_price',
         'in_stock',
-        # 'is_new',
         'is_active',
     ]
     list_editable = [
@@ -299,18 +400,18 @@ class ItemCategoryAdmin(admin.ModelAdmin):
     ]
     list_display = [
         'id',
-        'tree_title',
+        # 'tree_title',
         'slug',
         'currency',
     ]
     list_display_links = [
         'id',
-        'tree_title',
+        # 'tree_title',
     ]
-    list_editable= [
-        'currency',
-        'slug'
-    ]
+    # list_editable= [
+    #     'currency',
+    #     'slug'
+    # ]
     fieldsets = (
         ('ОСНОВНА ІНФОРМАЦІЯ', {
             "fields":(
@@ -353,6 +454,9 @@ class ItemCategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         "slug": ("title",),
     }
+
+class ItemCatesgoryAdmin(admin.ModelAdmin):
+    pass 
 
 
 class ItemImageAdmin(admin.ModelAdmin):

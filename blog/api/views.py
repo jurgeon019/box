@@ -11,6 +11,8 @@ def filter_search(posts, query):
     search = query.get('q')
     if search:
         search = search.lower()
+        print(search)
+        print(posts.filter(title__icontains=search))
         posts = posts.filter(
             Q(title__icontains=search) | 
             Q(content__icontains=search)
@@ -23,7 +25,6 @@ def filter_category(posts, query):
     if category:
         posts = posts.filter(category__slug=category)
     return posts 
-
 
 
 def paginate(posts, query):
@@ -55,8 +56,7 @@ def paginate(posts, query):
 
 @csrf_exempt
 def get_posts(request):
-    # quest        = request.GET
-    query        = request.POST
+    query        = request.POST or request.GET
     posts        = Post.objects.all()
     posts        = filter_search(posts, query)
     posts        = filter_category(posts, query)
@@ -71,7 +71,7 @@ def get_posts(request):
 @csrf_exempt
 def search_posts(request):
     query = request.POST
-    # query = request.GET
+    query = request.GET
     posts = Post.objects.all()
     posts = filter_search(posts, query)
     posts = filter_category(posts, query)

@@ -3,7 +3,7 @@ from django.conf import settings
 from django.shortcuts import render 
 
 from django.conf import settings 
-CMS_TEMPLATES = settings.CMS_TEMPLATES 
+# CMS_TEMPLATES = settings.CMS_TEMPLATES 
 
 from functools import partial
 
