@@ -39,7 +39,7 @@ class AdminImageWidget(AdminFileWidget):
     return mark_safe(u''.join(output))
 
 
-class ItemImageInline(admin.StackedInline):
+class ItemImageInline(admin.TabularInline):
     
     model = ItemImage
     extra = 0
@@ -121,125 +121,123 @@ class ItemCategoryInline(admin.TabularInline):
     }
 
 
-class ItemFeatureInline(admin.StackedInline):
+class ItemFeatureInline(admin.TabularInline):
+    def save_model(self, request, obj, form, change):
+        # obj.type=2
+        # obj.save()
+        print(obj)
+        print(form)
+        print(change)
+
     model = ItemFeature
     # model = ItemFeature.items.through
     extra = 0
     classes = ['collapse']
     exclude = [
         'code',
-        # 'category',
+        'category',
         'categories',
     ]
+    formfield_overrides = {
+        # models.CharField: {'widget': NumberInput(attrs={'size':'20'})},
+        models.CharField: {'widget': TextInput(attrs={'size':'50'})},
+        models.TextField: {'widget': Textarea(attrs={'rows':2, 'cols':70, 'style':'resize:vertical'})},
+    }
 
 
 
 def get_fieldsets():
+    seo_fields = (
+        'slug',
+        (
+        'meta_title',
+        'meta_descr',
+        'meta_key',
+        ),
+    )
+    seo_classes = (
+        'collapse', 
+        'wide',
+        'extrapretty',
+    )
+    item_fields = ()
+    item_classes = ()
+
     if settings.MULTIPLE_CATEGORY:
-        fieldsets = (
-            ('ТОВАР', {
-                'fields':(
-                    (
-                    'in_stock',
-                    # 'is_new',
-                    'is_active',
-                    ),
-                    (
-                    'title',
-                    'code',
-                    ),
-                    (
-                    'old_price',
-                    'new_price',
-                    'currency',
-                    ),
-                    'description',
-                    'thumbnail',
-                    'categories',
-                    'created',
-                    'updated',
-                ),
-            }),
-            ('SEO', {
-                'fields':(
-                    'slug',
-                    (
-                    'meta_title',
-                    'meta_descr',
-                    'meta_key',
-                    ),
-                ),
-                'classes':(
-                    'collapse', 
-                    'wide',
-                    'extrapretty',
-                ),
-            }),
+        item_fields = (
+            (
+            'in_stock',
+            'is_active',
+            ),
+            (
+            'title',
+            'code',
+            ),
+            (
+            'old_price',
+            'new_price',
+            'currency',
+            ),
+            'description',
+            'thumbnail',
+            'categories',
+            'created',
+            'updated',
         )
     else:
-        fieldsets = (
-            ('ТОВАР', {
-                'fields':(
-                    (
-                    'in_stock',
-                    # 'is_new',
-                    'is_active',
-                    ),
-                    (
-                    'title',
-                    'code',
-                    ),
-                    (
-                    'old_price',
-                    'new_price',
-                    'currency',
-                    ),
-                    'description',
-                    'thumbnail',
-                    'category',
-                    'created',
-                    'updated',
-                ),
-            }),
-            ('SEO', {
-                'fields':(
-                    'slug',
-                    (
-                    'meta_title',
-                    'meta_descr',
-                    'meta_key',
-                    ),
-                ),
-                'classes':(
-                    'collapse', 
-                    'wide',
-                    'extrapretty',
-                ),
-            }),
+        item_fields = (
+            (
+            'in_stock',
+            'is_active',
+            ),
+            (
+            'title',
+            'code',
+            ),
+            (
+            'old_price',
+            'new_price',
+            'currency',
+            ),
+            'description',
+            'thumbnail',
+            'category',
+            'created',
+            'updated',
         )
-    
+    fieldsets = (
+        ('ОСНОВНА ІНФОРМАЦІЯ', {
+            'fields':item_fields,
+            'classes':item_classes,
+        }),
+        ('SEO', {
+            'fields':seo_fields,
+            'classes':seo_classes,
+        }),
+    )
     return fieldsets
 
 
-@admin.register(Item, site=custom_admin)
 class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
-    # class Media:
-    #     js = (
-    #         'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
-    #         'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
-    #         'modeltranslation/js/tabbed_translation_fields.js',
-    #     )
-    #     css = {
-    #         'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
-    #     }
+    pass 
+    exclude = [
+        'category',
+    ]
+    class Media:
+        js = (
+            'http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+            'http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js',
+            'modeltranslation/js/tabbed_translation_fields.js',
+        )
+        css = {
+            'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
+        }
     actions = [
         'export_items',
         'write_items_to_xlsx'
     ]
     change_list_template = 'item_change_list.html'
     change_form_template = 'item_change_form.html'
-
-    
 
     # TODO: static method 
     fieldsets = get_fieldsets()
@@ -268,9 +266,8 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     ]
     list_filter = [
         "in_stock",
-        "is_new", 
         "is_active", 
-        # "category",
+        "category",
     ]
     list_display = [
         'id',
@@ -279,7 +276,6 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
         'price',
         'old_price',
         'in_stock',
-        # 'is_new',
         'is_active',
     ]
     list_editable = [
@@ -297,7 +293,6 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     list_per_page = 20
 
 
-@admin.register(ItemCategory, site=custom_admin)
 class ItemCategoryAdmin(admin.ModelAdmin):
     inlines = [
         # ItemInline,
@@ -305,18 +300,18 @@ class ItemCategoryAdmin(admin.ModelAdmin):
     ]
     list_display = [
         'id',
-        'tree_title',
+        # 'tree_title',
         'slug',
         'currency',
     ]
     list_display_links = [
         'id',
-        'tree_title',
+        # 'tree_title',
     ]
-    list_editable= [
-        'currency',
-        'slug'
-    ]
+    # list_editable= [
+    #     'currency',
+    #     'slug'
+    # ]
     fieldsets = (
         ('ОСНОВНА ІНФОРМАЦІЯ', {
             "fields":(
@@ -359,6 +354,9 @@ class ItemCategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         "slug": ("title",),
     }
+
+class ItemCatesgoryAdmin(admin.ModelAdmin):
+    pass 
 
 
 # @admin.register(ItemImage, site=custom_admin)
