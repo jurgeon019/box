@@ -40,10 +40,7 @@ class AdminImageWidget(AdminFileWidget):
 
 
 class ItemImageInline(admin.TabularInline):
-<<<<<<< HEAD
-=======
     
->>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
     model = ItemImage
     extra = 0
     classes = ['collapse']
@@ -128,10 +125,6 @@ class ItemFeatureInline(admin.TabularInline):
         print(obj)
         print(form)
         print(change)
-<<<<<<< HEAD
-=======
-
->>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
     model = ItemFeature
     # model = ItemFeature.items.through
     extra = 0
@@ -145,174 +138,64 @@ class ItemFeatureInline(admin.TabularInline):
         # models.CharField: {'widget': NumberInput(attrs={'size':'20'})},
         models.CharField: {'widget': TextInput(attrs={'size':'50'})},
         models.TextField: {'widget': Textarea(attrs={'rows':2, 'cols':70, 'style':'resize:vertical'})},
-    }
-<<<<<<< HEAD
-=======
 
->>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
+    }
 
 
 def get_fieldsets():
-    seo_fields = (
+    seo_fields = [
         'slug',
         (
         'meta_title',
         'meta_descr',
         'meta_key',
         ),
-    )
-    seo_classes = (
+    ]
+    seo_classes = [
         'collapse', 
         'wide',
         'extrapretty',
-    )
-    item_fields = ()
-    item_classes = ()
-
+    ]
+    item_fields = []
+    item_classes = []
+    item_fields = [
+        (
+        'in_stock',
+        'is_active',
+        ),
+        (
+        'title',
+        'code',
+        ),
+        (
+        'old_price',
+        'new_price',
+        'currency',
+        ),
+        'description',
+        'thumbnail',
+        # 'categories',
+        'created',
+        'updated',
+    ]
     if settings.MULTIPLE_CATEGORY:
-<<<<<<< HEAD
-        fieldsets = (
-            ('ОСНОВНА ІНФОРМАЦІЯ', {
-                'fields':(
-                    (
-                    'in_stock',
-                    # 'is_new',
-                    'is_active',
-                    ),
-                    (
-                    'title',
-                    'code',
-                    ),
-                    (
-                    'old_price',
-                    'new_price',
-                    'currency',
-                    ),
-                    'description',
-                    'thumbnail',
-                    'categories',
-                    'created',
-                    'updated',
-                ),
-            }),
-            ('SEO', {
-                'fields':(
-                    'slug',
-                    (
-                    'meta_title',
-                    'meta_descr',
-                    'meta_key',
-                    ),
-                ),
-                'classes':(
-                    'collapse', 
-                    'wide',
-                    'extrapretty',
-                ),
-            }),
-        )
+        item_fields.insert(-2 ,'categories')
     else:
-        fieldsets = [
-            ('ОСНОВНА ІНФОРМАЦІЯ', {
-                'fields':[
-                    (
-                    'in_stock',
-                    # 'is_new',
-                    'is_active',
-                    ),
-                    (
-                    'title',
-                    'code',
-                    ),
-                    (
-                    'old_price',
-                    'new_price',
-                    'currency',
-                    ),
-                    'description',
-                    'thumbnail',
-                    'category',
-                    'created',
-                    'updated',
-                ],
-            }),
-            ('SEO', {
-                'fields':(
-                    'slug',
-                    (
-                    'meta_title',
-                    'meta_descr',
-                    'meta_key',
-                    ),
-                ),
-                'classes':(
-                    'collapse', 
-                    'wide',
-                    'extrapretty',
-                ),
-            }),
-        ]
-    
+        item_fields.insert(-2 ,'category')
+    fieldsets = [
+        ['ОСНОВНА ІНФОРМАЦІЯ', {
+            'fields':item_fields,
+            'classes':item_classes,
+        }],
+        ['SEO', {
+            'fields':seo_fields,
+            'classes':seo_classes,
+        }],
+    ]
     return fieldsets
 
 
 class ItemAdmin(admin.ModelAdmin, ExportMixin):
-=======
-        item_fields = (
-            (
-            'in_stock',
-            'is_active',
-            ),
-            (
-            'title',
-            'code',
-            ),
-            (
-            'old_price',
-            'new_price',
-            'currency',
-            ),
-            'description',
-            'thumbnail',
-            'categories',
-            'created',
-            'updated',
-        )
-    else:
-        item_fields = (
-            (
-            'in_stock',
-            'is_active',
-            ),
-            (
-            'title',
-            'code',
-            ),
-            (
-            'old_price',
-            'new_price',
-            'currency',
-            ),
-            'description',
-            'thumbnail',
-            'category',
-            'created',
-            'updated',
-        )
-    fieldsets = (
-        ('ОСНОВНА ІНФОРМАЦІЯ', {
-            'fields':item_fields,
-            'classes':item_classes,
-        }),
-        ('SEO', {
-            'fields':seo_fields,
-            'classes':seo_classes,
-        }),
-    )
-    return fieldsets
-
-
-class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     pass 
     exclude = [
         'category',
@@ -326,7 +209,6 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
         css = {
             'screen': ('modeltranslation/css/tabbed_translation_fields.css',),
         }
->>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
     actions = [
         # 'export_items',
         'export_items_to_xlsx',
@@ -336,16 +218,12 @@ class ItemAdmin(admin.ModelAdmin, ExportCsvMixin):
     ]
     change_list_template = 'item_change_list.html'
     change_form_template = 'item_change_form.html'
-<<<<<<< HEAD
-=======
-
->>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
     # TODO: static method 
     fieldsets = get_fieldsets()
     formfield_overrides = {
         models.CharField: {'widget': NumberInput(attrs={'size':'20'})},
         models.CharField: {'widget': TextInput(attrs={'size':'20'})},
-        models.TextField: {'widget': Textarea(attrs={'rows':6, 'cols':20})},
+        models.TextField: {'widget': Textarea(attrs={'rows':5, 'cols':120})},
     }
     prepopulated_fields = {
         "slug": ("title",),

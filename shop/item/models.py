@@ -160,16 +160,6 @@ class Item(models.Model):
 	default_objects = models.Manager()
 
 	class Meta: 
-<<<<<<< HEAD
-		verbose_name = ('товар'); 
-		verbose_name_plural = ('товари')
-		# ordering = ['-id']
-
-	def __str__(self):
-		return f"{self.slug}"
-	
-	def save(self, *args, **kwargs):
-=======
 		verbose_name = ('Товар'); 
 		verbose_name_plural = ('Товари')
 
@@ -183,8 +173,6 @@ class Item(models.Model):
 				slug = f"{slugify(self.title)}_{self.id}"
 				print(slug)
 				self.slug = slug 
-		super().save(*args, **kwargs)
->>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
 		self.create_currency()
 		super().save(*args, **kwargs)
 		if self.thumbnail:
@@ -202,16 +190,11 @@ class Item(models.Model):
 				if self.category:
 					self.currency = self.category.currency
 				else:
-<<<<<<< HEAD
-					self.currency = Currency.objects.get(is_main=True)
-	
-=======
 					try:
 						self.currency = Currency.objects.get(is_main=True)
 					except:
 						self.currency = Currency.objects.all().first()
 
->>>>>>> 94ec5026fb4e0c45286d293f0b3112997814bad0
 	def resize_thumbnail(self, thumbnail):
 		width  = 400
 		img    = Image.open(thumbnail.path)

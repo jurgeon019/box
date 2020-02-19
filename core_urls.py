@@ -1,10 +1,10 @@
+from box.urls import * 
+
 from django.urls import path, include
-
-
-
 
 urlpatterns = [
   path('', include('box.urls')),
+  path('', include('project.api.urls')),
 ]
 
 multilingual_urls = [
@@ -15,14 +15,12 @@ multilingual_urls = [
 from django.conf import settings 
 from django.conf.urls.i18n import i18n_patterns
 
-if not settings.USE_I18N:
-  urlpatterns += [
-    path('', include(multilingual_urls)),
-  ]
-else:
-  urlpatterns += i18n_patterns(
-    path('', include(multilingual_urls)),
-    prefix_default_language=False,
-  )
+
+urlpatterns += i18n_patterns(
+  path('', include(multilingual_urls)),
+  prefix_default_language=settings.USE_I18N,
+)
+
+
 
 

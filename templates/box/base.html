@@ -2,29 +2,38 @@
 <html>
 <head>
   <!-- head -->
-  {% block head%}
+  {% block head %}
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta charset="utf-8">
   <title>{{page.meta_title}}</title>
   <meta name="description" content="{{page.meta_descr}}"/>
   <meta name="keywords" content="{{page.meta_key}}" />
+  {% block ogimage %}
+  <meta property="og:image" content="/static/ogimage_square.png">
+  <meta property="og:image" content="/static/ogimage.png">
+  <meta property="og:image" content="/static/ogimage_square.png">
+  {% endblock ogimage %}
+  {% block favicon %}
   <link rel="shortcut icon" type="image/png" href="/static/favicon.ico">
-  {% include 'core/includes/hreflang.html' %}
-  <!-- <meta name=“robots” content=“noindex,nofollow”> -->
+  {% endblock favicon %}
+  {% block hreflang %}
+  {% include 'box/includes/hreflang.html' %}
+  {% endblock hreflang %}
+  
+  {% block robots %}
+  <meta name="robots" content="noindex,nofollow">
+  {% endblock robots %}
   <!-- css, fonts -->
-  {% block styles%}{% endblock styles%}
+  {% block styles %}{% endblock styles%}
   {% endblock head %}
 </head>
 <body>
-  <!-- header, navbar -->
   {% block header %}{% endblock header %} 
-  <!-- main content -->
   {% block content %}{% endblock content %}
-  <!-- footer, modaal, loader --> 
   {% block extra_content %}{% endblock extra_content %}
   <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
-  <!-- scripts -->
-  {% block scripts%}{% endblock scripts%}
+  {% block scripts %}{% endblock scripts%}
+  {% block extra_scripts %}{% endblock extra_scripts%}
 </body>
 </html>
 
