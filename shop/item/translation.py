@@ -17,10 +17,11 @@ class ItemTranslationOptions(TranslationOptions):
         'description',
         'slug',
     )
+translator.register(Item, ItemTranslationOptions)
 
 
-# @register(Category)
-class CategoryTranslationOptions(TranslationOptions):
+# @register(ItemCategory)
+class ItemCategoryTranslationOptions(TranslationOptions):
     fields = (
         'meta_title',
         'meta_descr',
@@ -28,6 +29,8 @@ class CategoryTranslationOptions(TranslationOptions):
         'title',
         'slug',
     )
+
+translator.register(ItemCategory, ItemCategoryTranslationOptions)
 
 # @register(Feature)
 class FeatureTranslationOptions(TranslationOptions):

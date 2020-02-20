@@ -8,6 +8,8 @@ from modeltranslation.admin import (
     TranslationGenericTabularInline,
     TranslationGenericStackedInline,
 )
+from modeltranslation.admin import TabbedTranslationAdmin
+
 from django.conf import settings
 from django.forms import TextInput, Textarea, NumberInput
 from django.contrib import admin 
@@ -195,7 +197,8 @@ def get_fieldsets():
     return fieldsets
 
 
-class ItemAdmin(admin.ModelAdmin, ExportMixin):
+
+class ItemAdmin(TabbedTranslationAdmin, ExportMixin):
     pass 
     exclude = [
         'category',
@@ -279,21 +282,27 @@ class ItemCategoryAdmin(admin.ModelAdmin):
     list_display = [
         'id',
         # 'tree_title',
+        'title',
         'slug',
+        'code',
         'currency',
     ]
     list_display_links = [
         'id',
         # 'tree_title',
+        'title',
+        'slug',
     ]
-    # list_editable= [
-    #     'currency',
+    list_editable= [
+        'currency',
     #     'slug'
-    # ]
+    ]
+
     fieldsets = (
         ('ОСНОВНА ІНФОРМАЦІЯ', {
             "fields":(
                 "title",
+                'code',
                 "thumbnail",
                 "is_active",
                 "created",
@@ -333,8 +342,6 @@ class ItemCategoryAdmin(admin.ModelAdmin):
         "slug": ("title",),
     }
 
-class ItemCatesgoryAdmin(admin.ModelAdmin):
-    pass 
 
 
 class ItemImageAdmin(admin.ModelAdmin):

@@ -15,3 +15,9 @@ def translate_url(context: Dict[str, Any], language: Optional[str]) -> str:
     url = context['request'].build_absolute_uri()
     return urls.translate_url(url, language)
 
+
+
+@register.simple_tag
+def define(val=None):
+    return val
+

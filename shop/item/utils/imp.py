@@ -130,18 +130,18 @@ def create_categories(dict_file, list_file):
   for item in dict_file:
     title       = item["title"]
     slug        = item["slug"]
+    code        = item["code"]
     parent_slug = item["parent"]
     image       = item['image']
     image_name  = image.split('/')[-1]
-    
     with transaction.atomic():
       new_category, _ = ItemCategory.objects.get_or_create(
         slug = slug,
       )
+      new_category.code   = code
       new_category.title  = title
-      parent      = ItemCategory.objects.filter(slug=parent_slug).first()
-      new_category.parent = parent
-      new_category.thumbnail = 'shop/categories/' + image
+      new_category.parent = ItemCategory.objects.filter(slug=parent_slug).first()
+      new_category.thumbnail = 'shop/category/' + image
       new_category.save()
       print(new_category)
   return True 

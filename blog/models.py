@@ -12,6 +12,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils import timezone 
+from django.utils.text import slugify
 User = get_user_model() 
 
 
@@ -30,7 +31,16 @@ class Post(models.Model):
   alt        = models.CharField(verbose_name=("Альт до картинки"), max_length=255, blank=True, null=True)
   updated    = models.DateTimeField(verbose_name="Оновлено", auto_now_add=False, auto_now=True, blank=True, null=True)
   created    = models.DateTimeField(verbose_name="Створено", default=timezone.now)
-  
+
+  def save(self, *args, **kwargs):
+    if not self.slug:
+      if self.title:
+        title = slugify(self.title)
+        self.slug = f"{title}"
+    super().save(*args, **kwargs)
+    # self.slug += str(self.id)
+    # super().save(*args, **kwargs)
+
   @property
   def views_count(self):
     views = self.views.all().count()

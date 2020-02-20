@@ -5,12 +5,12 @@
 
 {% for language in languages %}
     {% if language.code == LANGUAGE_CODE %} 
-        <a class="lang__item lang__item-active">{{ language.code }}</a>
+        <a class="lang__item lang__item-active">{{ language.name_translated }}</a>
     {% endif %}
 {% endfor %}
 
 {% for language in languages %}
     {% if language.code != LANGUAGE_CODE %}
-        <a class="lang__item" href="{% url 'set_lang' language.code %}">{{ language.code }}</a>
+        <a class="lang__item" href="{% url 'set_lang' language.code %}">{{ language.name_translated }}</a>
     {% endif%}
 {% endfor%}

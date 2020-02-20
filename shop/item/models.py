@@ -323,9 +323,9 @@ class ItemCategory(models.Model):
 	meta_descr = models.TextField(verbose_name=("Мета опис"),          blank=True, null=True)
 	meta_key   = models.TextField(verbose_name=("Мета ключові слова"), blank=True, null=True)
 	slug       = models.SlugField(verbose_name=("Посилання"),          unique=True, max_length=255)
-
+	code       = models.CharField(verbose_name=("Код"), blank=True, null=True, max_length=255, help_text=("Код для прогера"))
 	title      = models.CharField(verbose_name=("Назва"),  max_length=255,   blank=True, null=True)
-	thumbnail  = models.ImageField(verbose_name=("Картинка"), blank=True, null=True, upload_to='shop/categories')
+	thumbnail  = models.ImageField(verbose_name=("Картинка"), blank=True, null=True, upload_to='shop/category')
 	alt        = models.CharField(verbose_name=("Альт до картинки"),   blank=True, null=True, max_length=255)
 
 	parent     = models.ForeignKey(verbose_name=("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.CASCADE, related_name='subcategories')
@@ -401,9 +401,6 @@ def item_image_folder(instance, filename):
 
 	return path 
 
-
-class TestModel(models.Model):
-	img = models.ImageField(upload_to=item_image_folder)
 
 
 class ItemImage(models.Model):
