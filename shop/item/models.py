@@ -50,18 +50,6 @@ class CurrencyRatio(models.Model):
 		return f"{self.main}, {self.compared}"
 
 
-class ItemManager(models.Manager):
-
-	def all(self):
-		return super().get_queryset().filter(is_active=True).order_by('-order')
-
-	# def get(self):
-	#   return super().get_queryset().filter(is_active=True)
-
-	# def get_queryset(self):
-	#   return super().get_queryset().filter(is_active=True)
-
-
 class ItemCategoryManager(models.Manager):
 	def all(self):
 		return super(ItemCategoryManager, self).get_queryset().filter(is_active=True)
@@ -122,7 +110,26 @@ class ItemManufacturer(models.Model):
 		verbose_name_plural = ('Виробники')
 
 
+class ItemManager(models.Manager):
+
+	# def get_queryset(self):
+	# 	return super().get_queryset().filter(is_active=True).order_by('-order')
+
+	def all(self):
+		return super().get_queryset().filter(is_active=True).order_by('-order')
+
+	# def get(self):
+	#   return super().get_queryset().filter(is_active=True)
+
+	# def get_queryset(self):
+	#   return super().get_queryset().filter(is_active=True)
+
+
+
 class Item(models.Model):
+	objects      = ItemManager()
+	# default_objects = models.Manager()
+
 	meta_title   = models.TextField(verbose_name=("Мета заголовок"),          blank=True, null=True)
 	meta_descr   = models.TextField(verbose_name=("Мета опис"),               blank=True, null=True)
 	meta_key     = models.TextField(verbose_name=("Мета ключові слова"),      blank=True, null=True)
@@ -156,12 +163,11 @@ class Item(models.Model):
 	updated      = models.DateTimeField(verbose_name=("Оновлений"), auto_now_add=False, auto_now=True,  blank=True, null=True)
 
 	order        = models.IntegerField(verbose_name=("Порядок"), default=10)
-	objects      = ItemManager()
-	default_objects = models.Manager()
 
 	class Meta: 
 		verbose_name = ('Товар'); 
 		verbose_name_plural = ('Товари')
+		base_manager_name = 'objects'
 
 	def __str__(self):
 		return f"{self.slug}"
