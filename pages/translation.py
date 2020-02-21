@@ -13,13 +13,17 @@ class PageTranslationOptions(TranslationOptions):
     )
 
 
-# @register(Feature)
-class FeatureTranslationOptions(TranslationOptions):
+
+# @register(PageFeature)
+class PageFeatureTranslationOptions(TranslationOptions):
     fields = (
         'value',
     )
 
 
+
+translator.register(PageFeature, PageFeatureTranslationOptions)
+translator.register(Page, PageTranslationOptions)
 
 
 

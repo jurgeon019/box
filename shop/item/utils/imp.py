@@ -140,6 +140,9 @@ def create_categories(dict_file, list_file):
       )
       new_category.code   = code
       new_category.title  = title
+      new_category.meta_title = title
+      new_category.meta_descr = title
+      new_category.meta_key   = title
       new_category.parent = ItemCategory.objects.filter(slug=parent_slug).first()
       new_category.thumbnail = 'shop/category/' + image
       new_category.save()
