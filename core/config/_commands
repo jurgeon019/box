@@ -14,16 +14,9 @@ sudo systemctl restart project_name
 
 sudo systemctl daemon-reload
 
-
-
 sudo certbot --nginx -d project_domain.com
 
 sudo certbot renew --dry-run
-
-
-
-
-
 
 # https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands
 # https://stackoverflow.com/questions/43537851/difference-between-systemctl-and-service-command
