@@ -1,6 +1,9 @@
 from django.contrib import admin 
-from box.admin import custom_admin
-from box.blog.models import Post, PostCategory, PostComment
+from box.blog.models import (
+     Post,
+     PostCategory, 
+     PostComment
+)
 from django.urls import reverse 
 from django.utils.html import mark_safe
 from django.db import models 
@@ -17,7 +20,6 @@ class PostInline(admin.StackedInline):
     extra = 0
 
 
-@admin.register(PostCategory, site=custom_admin)
 class PostCategoryAdmin(admin.ModelAdmin):
     fieldsets = (
         (('ОСНОВНА ІНФОРМАЦІЯ'), {
@@ -80,8 +82,6 @@ class PostCategoryAdmin(admin.ModelAdmin):
     save_on_top = True 
 
 
-
-# @admin.register(Post, site=custom_admin)
 class PostAdmin(admin.ModelAdmin):
     def show_category(self, obj):
       option = "change" # "delete | history | change"
@@ -162,7 +162,6 @@ class PostAdmin(admin.ModelAdmin):
     ]
 
 
-# @admin.register(PostComment, site=custom_admin)
 class CommentAdmin(admin.ModelAdmin):
     inlines = [
         CommentInline,

@@ -1,0 +1,12 @@
+apt-get install package-name(s)    #  Installs the package(s) specified, along with any dependencies.
+apt-get remove package-name(s)     #  Removes the package(s) specified, but does not remove dependencies.
+apt-get autoremove                 #  Removes any orphaned dependencies, meaning those that remain installed but are no longer required.
+apt-get clean                      #  Removes downloaded package files (.deb) for software that is already installed.
+apt-get purge package-name(s)      #  Combines the functions of remove and clean for a specific package, as well as configuration files.
+apt-get update                     #  Reads the /etc/apt/sources.list file and updates the system’s database of packages available for installation. Run this after changing sources.list.
+apt-get upgrade                    #  Upgrades all packages if there are updates available. Run this after running apt-get update.
+apt-cache search package-name(s)   #  If you know the name of a piece of software but apt-get install fails or points to the wrong software, this looks for other possible names.
+apt-cache show package-name(s)     #  Shows dependency information, version numbers and a basic description of the package.
+apt-cache depends package-name(s)  #  Lists the packages that the specified packages depends upon in a tree. These are the packages that will be installed with the apt-get install command.
+apt-cache rdepends package-name(s) #  Outputs a list of packages that depend upon the specified package. This list can often be rather long, so it is best to pipe its output through a command, like less.
+apt-cache pkgnames                 #  Generates a list of the currently installed packages on your system. This list is often rather long, so it is best to pipe its output through a program, like less, or direct the output to a text file.

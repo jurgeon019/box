@@ -1,6 +1,5 @@
 from django.contrib import admin
-
-from box.admin import custom_admin
+from modeltranslation.admin import TabbedTranslationAdmin
 from box.pages.models import *
 
 
@@ -21,7 +20,7 @@ class PageFeatureInline(admin.TabularInline):
 # MODELS 
 
 
-class PageAdmin(admin.ModelAdmin):
+class PageAdmin(TabbedTranslationAdmin):
     inlines = [
         PageFeatureInline, 
 
@@ -36,8 +35,8 @@ class PageAdmin(admin.ModelAdmin):
         'meta_title',
         'code',
     ]
-    fieldsets = (
-        (('SEO'), {
+    fieldsets = [
+        [('SEO'), {
             'fields':(
                 'meta_title',
                 'meta_descr',
@@ -47,11 +46,11 @@ class PageAdmin(admin.ModelAdmin):
                 'wide', 
                 'extrapretty',
             ),
-        }),
-    )
+        }],
+    ]
 
 
-class PageFeatureAdmin(admin.ModelAdmin):
+class PageFeatureAdmin(TabbedTranslationAdmin):
     list_display_links = [
         "id",
         'code',
@@ -72,7 +71,7 @@ class PageFeatureAdmin(admin.ModelAdmin):
     ]
 
 
-class PageImageAdmin(admin.ModelAdmin):
+class PageImageAdmin(TabbedTranslationAdmin):
     list_display_links = [
         "id",
         'code',

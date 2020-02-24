@@ -24,25 +24,28 @@
 {% block object-tools %}
 
 {{block.super}}
-
+  {% if original.slug %}
   <form method="POST" action="{% url 'import_item_photoes' original.slug %}"  enctype="multipart/form-data">
     {% csrf_token %}
     <input class="historylink" type="submit" value="{% trans "Загрузити кілька фото" %}">
     <input type="file" id="files" name="files" multiple>
   </form>
   <hr><br>
-
+  {% endif %}
+  {% if original.slug %}
   <form method="POST" action="{% url 'delete_item_photoes' original.slug  %}">
     {% csrf_token %}
     <input type="submit"  value="Видалити всі фото"/>
   </form>
   <hr><br>
-
+  {% endif %}
+  {% if original.slug %}
   <form method="POST" action="{% url 'delete_item_features' original.slug  %}">
     {% csrf_token %}
     <input type="submit"  value="Видалити всі характеристики"/>
   </form>
   <hr><br>
+  {% endif %}
 
 
 {% endblock object-tools %}

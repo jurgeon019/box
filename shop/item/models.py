@@ -186,7 +186,7 @@ class Item(models.Model):
 
 	def create_currency(self):
 		if self.currency is None:
-			print('sdf')
+			print('box.shop.item.models.ItemCategory.create_currency')
 			if settings.MULTIPLE_CATEGORY:
 				if self.categories.all():
 					self.currency = self.categories.all().first().currency
@@ -324,13 +324,16 @@ class Item(models.Model):
 		self.save()
 
 
+from django.db.models.signals import post_save, pre_save
+
+ 
 class ItemCategory(models.Model):
 	meta_title = models.TextField(verbose_name=("Мета заголовок"),     blank=True, null=True)
 	meta_descr = models.TextField(verbose_name=("Мета опис"),          blank=True, null=True)
 	meta_key   = models.TextField(verbose_name=("Мета ключові слова"), blank=True, null=True)
-	slug       = models.SlugField(verbose_name=("Посилання"),          unique=True, max_length=255)
+	slug       = models.SlugField(verbose_name=("Посилання"),          unique=True, max_length=255, null=True, blank=False)
 	code       = models.CharField(verbose_name=("Код"), blank=True, null=True, max_length=255, help_text=("Код для прогера"))
-	title      = models.CharField(verbose_name=("Назва"),  max_length=255,   blank=True, null=True)
+	title      = models.CharField(verbose_name=("Назва"),  max_length=255, blank=False, null=False)
 	thumbnail  = models.ImageField(verbose_name=("Картинка"), blank=True, null=True, upload_to='shop/category')
 	alt        = models.CharField(verbose_name=("Альт до картинки"),   blank=True, null=True, max_length=255)
 
@@ -345,17 +348,6 @@ class ItemCategory(models.Model):
 	# objects    = ItemCategoryManager()
 	# TODO: визначити якого хуя з включеним ItemCategoryManager дочірні категорії  виводяться не ті шо треба, а всі підряд
 
-	def save(self, *args, **kwargs): 
-		if self.currency:
-			try:
-				self.items.all().update(currency=self.currency)
-			except:
-				pass
-		if not self.slug:
-			if self.title:
-				self.slug = slugify(translit(self.title, reversed=True)) 
-		super().save(*args, **kwargs)
-
 	class Meta: 
 		verbose_name = ('категорія'); 
 		verbose_name_plural = ('категорії'); 
@@ -365,24 +357,54 @@ class ItemCategory(models.Model):
 	
 	@property
 	def tree_title(self):
-		try:
-			full_path = [self.title]      
-			parent = self.parent
-			while parent is not None:
-					# print(parent)
-					full_path.append(parent.title)
-					parent = parent.parent
-			result = ' -> '.join(full_path[::-1]) 
-		except Exception as e:
-			print(e)
-			result = self.title
+		result = self.title
+		# try:
+		# 	full_path = [self.title]      
+		# 	parent = self.parent
+		# 	while parent is not None:
+		# 			# print(parent)
+		# 			full_path.append(parent.title)
+		# 			parent = parent.parent
+		# 	result = ' -> '.join(full_path[::-1]) 
+		# except Exception as e:
+		# 	print(e)
+		# 	result = self.title
 		return result
 
 	def __str__(self):         
-		# result = f'{self.tree_title} ({self.currency})'
 		result = f'{self.title}'
-
+		# result = f'{self.tree_title} ({self.currency})'
 		return result
+
+
+
+def item_category_post_save(sender, instance, signal, *args, **kwargs):
+	handle_item_category_save(sender, instance, signal, *args, **kwargs)
+
+	
+def item_category_pre_save(sender, instance, signal, *args, **kwargs):
+	handle_item_category_save(sender, instance, signal, *args, **kwargs)
+
+
+def handle_item_category_save(sender, instance, signal, *args, **kwargs):
+	if instance.currency:
+		try:
+			instance.items.all().update(currency=instance.currency)
+		except:
+			pass
+	if not instance.slug:
+		try:
+			instance.slug = slugify(translit(instance.title, reversed=True))
+		except:
+			instance.slug = instance.pk
+
+
+
+
+post_save.connect(item_category_post_save, sender=ItemCategory)
+# pre_save.connect(item_category_pre_save, sender=ItemCategory)
+
+
 
 
 def item_image_folder(instance, filename):

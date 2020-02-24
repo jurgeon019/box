@@ -17,7 +17,6 @@ from box.shop.order.admin import (OrderInline,)
 
 from box.custom_auth.models import User 
 
-from box.admin import custom_admin
 
 
 class ProfileInline(admin.StackedInline):

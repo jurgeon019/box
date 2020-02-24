@@ -9,7 +9,7 @@ from django.conf import settings
 from box.shop.item.models import Item, ItemCategory, ItemReview
 from box.shop.item.api.serializers import ItemSerializer, ItemReviewSerializer
 from box.shop.cart.utils import get_cart
-from box.utils import get_line
+from box.core.utils import get_line
 
 
 def get_items_in_favours(request, items):

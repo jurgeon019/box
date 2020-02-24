@@ -1,8 +1,10 @@
 from django.contrib import admin 
-from box.shop.order.models import * 
-from box.admin import custom_admin
-from box.shop.liqpay.admin import PaymentAdmin, PaymentInline
-from box.shop.cart.admin import CartItemInline
+
+from box.shop.order.models import Order, Status
+
+# from box.shop.liqpay.admin import PaymentInline
+# from box.shop.cart.admin import CartItemInline
+
 
 
 
@@ -27,20 +29,18 @@ class OrderInline(admin.TabularInline):
         return False
 
 
-@admin.register(Status, site=custom_admin)
 class StatusAdmin(admin.ModelAdmin):
     pass
 
 
-# @admin.register(Order, site=custom_admin)
 class OrderAdmin(admin.ModelAdmin):
     def total(self, obj=None):
         return f'{obj.total_price} {obj.currency}'
 
     total.short_description = 'Сумма замовлення'
     inlines = [
-        CartItemInline,
-        PaymentInline,
+        # CartItemInline,
+        # PaymentInline,
     ]
     list_display = [
         'id',

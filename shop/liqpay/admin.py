@@ -1,5 +1,4 @@
 from django.contrib import admin 
-from box.admin import custom_admin
 from .models import Payment
 
 
@@ -38,7 +37,6 @@ class PaymentInline(admin.StackedInline):
     
 
 
-# @admin.register(Payment, site=custom_admin)
 class PaymentAdmin(admin.ModelAdmin):
     list_display = [
     'status',

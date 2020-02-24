@@ -1,5 +1,4 @@
 from django.contrib import admin 
-from box.admin import custom_admin
 from box.shop.cart.models import Cart, CartItem, FavourItem
 from django.utils.html import format_html, mark_safe
 from django.urls import reverse
@@ -51,7 +50,6 @@ class CartItemInline(admin.TabularInline):
     extra = 0
 
 
-# @admin.register(Cart, site=custom_admin)
 class CartAdmin(admin.ModelAdmin):
     # def has_delete_permission(self, request, obj=None):
     #     return False 
@@ -105,7 +103,6 @@ class CartAdmin(admin.ModelAdmin):
     ]
 
 
-# @admin.register(CartItem, site=custom_admin)
 class CartItemAdmin(admin.ModelAdmin):
     list_display = [field.name for field in CartItem._meta.fields]
 
@@ -116,7 +113,6 @@ class CartItemAdmin(admin.ModelAdmin):
 
 
 # TODO: favour items
-# @admin.register(FavourItem, site=custom_admin)
 class FavourItemAdmin(admin.ModelAdmin):
     list_display = [field.name for field in FavourItem._meta.fields]
     exclude = [

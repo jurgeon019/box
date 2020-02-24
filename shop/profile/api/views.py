@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, reverse
-from box.utils import get_user, get_sk
+from box.core.utils import get_user, get_sk
 from box.shop.order.models import Order
 from django.shortcuts import get_object_or_404
 from django.contrib import messages 
