@@ -1,0 +1,129 @@
+username = kleikoks
+project_domain = agrologistics.com.ua, visatut.in.ua, capitanauto.com 
+
+
+
+
+
+
+# 1 етап. Створення юзера, установка ПО
+
+sudo apt-get update && apt-get upgrade
+hostnamectl set-hostname project_name-server
+nano /etc/hosts
+    `
+
+127.0.0.1 localhost
+172.105.84.43 project_name-server
+
+    `
+adduser username # or usermod -aG sudo username
+adduser username sudo
+
+sudo add-apt-repository ppa:certbot/certbot
+sudo apt update
+sudo apt-get install uwsgi               \
+                     nginx               \
+                     gunicorn            \
+                     postgresql-11       \
+                     ufw                 \
+                     python3-dev         \
+                     python3-pip         \
+                     python3-venv        \
+                     python3-setuptools  \
+                     python3-wheel       \
+                     python3-cffi        \
+                     redis               \
+                     redis-server        \
+                     rabbitmq-server     \
+                     build-essential     \
+                     libcairo2           \
+                     libpango-1.0-0      \
+                     libpangocairo-1.0-0 \
+                     libgdk-pixbuf2.0-0  \
+                     libffi-dev          \
+                     shared-mime-info    \
+                     supervisor          \
+                     python-certbot-nginx
+
+
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install virtualenv virtualenvwrapper uwsgi redis celery django 
+sudo ufw app list
+sudo ufw status 
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+sudo ufw allow 'Nginx Full'
+sudo ufw allow OpenSSH
+sudo ufw allow ssh
+sudo ufw allow 8000
+sudo ufw allow http
+sudo ufw allow https
+sudo ufw enable
+#sudo ufw disable 
+
+
+
+
+
+
+
+# 2 етап. Настроюєш ssh
+
+mkdir -p ~/.ssh  
+exit
+ssh-keygen -b 4096  #(1 раз)
+scp ~/.ssh/id_rsa.pub username@172.104.227.76:~/.ssh/authorized_keys 
+scp ~/.ssh/id_rsa.pub username@project_domain.com.ua:~/.ssh/authorized_keys 
+
+# rsync --archive --chown=username:username ~/.ssh /home/username
+
+ssh username@172.104.227.76 
+ssh username@project_domain.com.ua
+sudo chmod 700 ~/.ssh/
+sudo chmod 600 ~/.ssh/*
+
+# цю срань не роби, бо вона блочить вхід на сервер по паролю
+#sudo nano /etc/ssh/sshd_config
+#    PermitRootLogin no
+#    PasswordAuthentication no
+
+sudo systemctl restart sshd
+
+
+
+
+
+
+# 3 етап. Включаєш можливість пушу на гіт по ssh, без паролю.
+
+# https://help.github.com/en/enterprise/2.16/user/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+
+ssh-keygen -t rsa -b 4096 -C "username@gmail.com"
+/home/username/.ssh/id_rsa.pub cp to  https://github.com/settings/keys
+
+
+
+
+
+# 4 етап. Структура папок.
+
+
+
+проект
+/home/username/projects/project_name/src/
+
+wsgi
+/home/username/projects/project_name/src/core/wsgi.py
+
+віртуальне оточення
+/home/username/projects/project_name/venv
+
+медіа
+/home/username/projects/project_name/src/media
+
+статіка
+/home/username/projects/project_name/src/static_root
+
+username = kleikoks
+project_name = agro, visatut, і т.д

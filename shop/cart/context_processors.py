@@ -1,5 +1,5 @@
 from box.shop.cart.models import *
-from box.utils import get_sk, get_user
+from box.core.utils import get_sk, get_user
 from box.shop.cart.utils import get_cart
 
 

@@ -4,7 +4,7 @@ from modeltranslation.translator import (
 from box.blog.models import *
 
 
-# @register(Post)
+@register(Post)
 class PostTranslationOptions(TranslationOptions):
     fields = (
         "meta_title",
@@ -18,14 +18,13 @@ class PostTranslationOptions(TranslationOptions):
 
 
 
-# @register(Post)
+@register(PostCategory)
 class PostCategoryTranslationOptions(TranslationOptions):
     fields = (
         "meta_title",
         "meta_descr",
         "meta_key",
         "title",
-        "content",
         "slug",  
         "alt",
     )

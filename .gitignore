@@ -7,6 +7,11 @@ ENV/
 env/
 # media/
 
+/media/shop/item
+**/shop/item/**
+
+
+
 migrations
 migrations/
 **/migrations/
@@ -22,4 +27,7 @@ __pycache__/
 .pyc
 static_root/
 
-
+node_modules
+package-lock.json
+package.json
+webpack.config.js

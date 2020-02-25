@@ -16,6 +16,24 @@ from PIL import Image
 
 
 
+__all__ = [
+	"Currency",
+	"CurrencyRatio",
+	"ItemCategoryManager",
+	"ImageManager",
+	"ItemStock",
+	"ItemMarker",
+	"ItemManufacturer",
+	"ItemManager",
+	"Item",
+	"ItemCategory",
+	"ItemImage",
+	"ItemFeatureName",
+	"ItemFeature",
+	"ItemFeatureCategory",
+	"ItemReview",
+]
+
 
 User = get_user_model()
 
@@ -125,7 +143,6 @@ class ItemManager(models.Manager):
 	#   return super().get_queryset().filter(is_active=True)
 
 
-
 class Item(models.Model):
 	objects      = ItemManager()
 	# default_objects = models.Manager()
@@ -137,7 +154,7 @@ class Item(models.Model):
 	title        = models.CharField(verbose_name=("Назва"), max_length=255, null=False)
 	description  = models.TextField(verbose_name=("Опис"),                    blank=True, null=True)
 	code         = models.CharField(verbose_name=("Артикул"), max_length=255,  blank=True, null=True, unique=True)   
-	slug         = models.SlugField(verbose_name=("Ссилка"),  max_length=255, unique=True, blank=True, null=False)
+	slug         = models.SlugField(verbose_name=("Ссилка"),  max_length=255, unique=True, blank=True, null=True)
 	thumbnail    = models.ImageField(verbose_name=("Маленька картинка"), blank=True, upload_to="shop/items/thumbnails")
 	markers      = models.ManyToManyField(verbose_name=("Маркери"), to='item.ItemMarker', related_name='items')
 	manufacturer = models.ForeignKey(verbose_name=("Виробник"), to="item.ItemManufacturer", blank=True, null=True, on_delete=models.SET_NULL, related_name='items')
@@ -167,26 +184,33 @@ class Item(models.Model):
 	class Meta: 
 		verbose_name = ('Товар'); 
 		verbose_name_plural = ('Товари')
-		base_manager_name = 'objects'
 
 	def __str__(self):
-		return f"{self.slug}"
+		return f"{self.title}, {self.slug}"
 
 	def save(self, *args, **kwargs):
+		self.create_currency()
+		super().save(*args, **kwargs)
+		# titles = Item.objects.all().values_list('title', flat=True)
+		# if self.title in titles:
+		# 	if self.title.endswith('(1)'):
+		# 		self.title 
+		# print(type(self.slug))
+
 		if not self.slug:
 			if self.title:
 				# slug = slugify(translit(self.title, 'en', reversed=True)) 
 				slug = f"{slugify(self.title)}_{self.id}"
-				print(slug)
-				self.slug = slug 
-		self.create_currency()
-		super().save(*args, **kwargs)
+			else:
+				slug = f'{self.id}'
+			# print(slug)
+			self.slug = slug
 		if self.thumbnail:
 			self.resize_thumbnail(self.thumbnail)
 
 	def create_currency(self):
 		if self.currency is None:
-			print('sdf')
+			print('box.shop.item.models.ItemCategory.create_currency')
 			if settings.MULTIPLE_CATEGORY:
 				if self.categories.all():
 					self.currency = self.categories.all().first().currency
@@ -214,7 +238,7 @@ class Item(models.Model):
 		# self.thumbnail = thumbnail
 		# self.save()
 		if thumbnail:
-			print(thumbnail)
+			# print(thumbnail)
 			self.thumbnail.save(
 				thumbnail.name.split("/")[-1], 
 				ContentFile(thumbnail.read()),
@@ -324,18 +348,20 @@ class Item(models.Model):
 		self.save()
 
 
+from django.db.models.signals import post_save, pre_save
+
 class ItemCategory(models.Model):
 	meta_title = models.TextField(verbose_name=("Мета заголовок"),     blank=True, null=True)
 	meta_descr = models.TextField(verbose_name=("Мета опис"),          blank=True, null=True)
 	meta_key   = models.TextField(verbose_name=("Мета ключові слова"), blank=True, null=True)
-	slug       = models.SlugField(verbose_name=("Посилання"),          unique=True, max_length=255)
+	slug       = models.SlugField(verbose_name=("Посилання"),          unique=True, max_length=255, null=True, blank=False)
 	code       = models.CharField(verbose_name=("Код"), blank=True, null=True, max_length=255, help_text=("Код для прогера"))
-	title      = models.CharField(verbose_name=("Назва"),  max_length=255,   blank=True, null=True)
+	title      = models.CharField(verbose_name=("Назва"),  max_length=255, blank=False, null=False)
 	thumbnail  = models.ImageField(verbose_name=("Картинка"), blank=True, null=True, upload_to='shop/category')
 	alt        = models.CharField(verbose_name=("Альт до картинки"),   blank=True, null=True, max_length=255)
 
 	parent     = models.ForeignKey(verbose_name=("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.CASCADE, related_name='subcategories')
-	currency   = models.ForeignKey(verbose_name=("Валюта"), to="item.Currency", blank=True, null=True, related_name="categories", default=1, on_delete=models.CASCADE)
+	currency   = models.ForeignKey(verbose_name=("Валюта"), to="item.Currency", blank=True, null=True, related_name="categories",  on_delete=models.CASCADE)
 
 	is_active  = models.BooleanField(verbose_name=("Чи активна"), default=True, help_text=("Присутність категорії на сайті"))
 
@@ -345,44 +371,58 @@ class ItemCategory(models.Model):
 	# objects    = ItemCategoryManager()
 	# TODO: визначити якого хуя з включеним ItemCategoryManager дочірні категорії  виводяться не ті шо треба, а всі підряд
 
-	def save(self, *args, **kwargs): 
-		if self.currency:
-			try:
-				self.items.all().update(currency=self.currency)
-			except:
-				pass
-		if not self.slug:
-			if self.title:
-				self.slug = slugify(translit(self.title, reversed=True)) 
-		super().save(*args, **kwargs)
-
 	class Meta: 
 		verbose_name = ('категорія'); 
 		verbose_name_plural = ('категорії'); 
 		
 	def get_absolute_url(self):
 		return reverse("item_category", kwargs={"slug": self.slug})
-	
+
 	@property
 	def tree_title(self):
-		try:
-			full_path = [self.title]      
-			parent = self.parent
-			while parent is not None:
-					# print(parent)
-					full_path.append(parent.title)
-					parent = parent.parent
-			result = ' -> '.join(full_path[::-1]) 
-		except Exception as e:
-			print(e)
-			result = self.title
+		result = self.title
+		# try:
+		# 	full_path = [self.title]      
+		# 	parent = self.parent
+		# 	while parent is not None:
+		# 			# print(parent)
+		# 			full_path.append(parent.title)
+		# 			parent = parent.parent
+		# 	result = ' -> '.join(full_path[::-1]) 
+		# except Exception as e:
+		# 	print(e)
+		# 	result = self.title
 		return result
 
 	def __str__(self):         
-		# result = f'{self.tree_title} ({self.currency})'
 		result = f'{self.title}'
-
+		# result = f'{self.tree_title} ({self.currency})'
 		return result
+	
+	def save(self, *args, **kwargs):
+		if self.currency:
+			try:
+				self.items.all().update(currency=self.currency)
+			except:
+				pass
+		elif not self.currency:
+			alls  = Currency.objects.all()
+			mains = alls.filter(is_main=True)
+			if mains.exists():
+				self.currency = mains.first()
+			elif alls.exists():
+				self.currency = alls.first()
+
+		title = self.title.lower().strip()
+		self.title = title
+		if not self.slug:
+			try:
+				self.slug = slugify(translit(title, reversed=True))
+			except:
+				self.slug = self.pk
+		super().save(*args, **kwargs)
+
+
 
 
 def item_image_folder(instance, filename):
@@ -406,7 +446,6 @@ def item_image_folder(instance, filename):
 	path = '/'.join(['shop', 'items', foldername, filename])
 
 	return path 
-
 
 
 class ItemImage(models.Model):

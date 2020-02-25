@@ -15,7 +15,7 @@ class ItemTranslationOptions(TranslationOptions):
         'meta_key',
         'title',
         'description',
-        'slug',
+        # 'slug',
     )
 translator.register(Item, ItemTranslationOptions)
 
@@ -27,27 +27,28 @@ class ItemCategoryTranslationOptions(TranslationOptions):
         'meta_descr',
         'meta_key',
         'title',
-        'slug',
+        # 'slug',
     )
 
 translator.register(ItemCategory, ItemCategoryTranslationOptions)
 
-# @register(Feature)
-class FeatureTranslationOptions(TranslationOptions):
+# @register(ItemFeature)
+class ItemFeatureTranslationOptions(TranslationOptions):
     fields = [
         'name',
         'value',
     ]
 
+translator.register(ItemFeature, ItemFeatureTranslationOptions)
 
-# @register(FeatureCategory)
-class FeatureCategoryTranslationOptions(TranslationOptions):
+@register(ItemFeatureCategory)
+class ItemFeatureCategoryTranslationOptions(TranslationOptions):
     fields = [
         'name',
     ]
 
 
-# @register(ItemImage)
+@register(ItemImage)
 class ItemImageTranslationOptions(TranslationOptions):
     fields = [
         'alt',

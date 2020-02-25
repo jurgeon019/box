@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect 
 from django.conf import settings 
 
-from box.shop.item.utils import read_items_from_xlsx
+from box.shop.item.parser.main import *
 from box.shop.item.models import Item, ItemImage
 
 
@@ -40,17 +40,18 @@ def import_item_photoes(request, slug=None):
   from django.core.files.base import ContentFile
   from PIL import Image 
   from django.utils import timezone 
+  if slug:
 
-  item = Item.objects.get(slug=slug)
-  files = request.FILES.getlist('files', [])
+    item = Item.objects.get(slug=slug)
+    files = request.FILES.getlist('files', [])
 
-  for f in files:
-    img = ItemImage.objects.create(item=item)
-    img.image.save(
-      f'{timezone.now()}.png',
-      ContentFile(f.read()),
-    )
-    img.save()
+    for f in files:
+      img = ItemImage.objects.create(item=item)
+      img.image.save(
+        f'{timezone.now()}.png',
+        ContentFile(f.read()),
+      )
+      img.save()
   return redirect(request.META.get('HTTP_REFERER', '/admin/'))
 
 

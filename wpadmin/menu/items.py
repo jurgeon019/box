@@ -134,7 +134,7 @@ class AppList(AppListElementMixin, MenuItem):
                 # Translators: This is already translated in Django
                 or _("No permission"),
             })
-            print('136:', capfirst(model._meta.verbose_name_plural))
+            # print('136:', capfirst(model._meta.verbose_name_plural))
 
         apps_sorted = list(apps.keys())
         apps_sorted.sort()

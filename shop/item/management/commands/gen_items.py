@@ -10,7 +10,6 @@ import csv
 
 
 
-
 class Command(BaseCommand):
   def handle(self, *args, **kwargs):
     amount = ItemCategory.objects.all().count()

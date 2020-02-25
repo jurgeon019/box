@@ -1,3 +1,6 @@
+
+
+
 def get_family_tree(child):
   subcategories = child.subcategories.all()
   if not subcategories:
