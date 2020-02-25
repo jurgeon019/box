@@ -394,7 +394,8 @@ class ItemCategory(models.Model):
 		# 	result = self.title
 		return result
 
-	def __str__(self):         
+	def __str__(self):     
+		import modeltranslation    
 		result = f'{self.title}'
 		# result = f'{self.tree_title} ({self.currency})'
 		return result
