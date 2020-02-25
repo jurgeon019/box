@@ -945,8 +945,8 @@ class ImportMixin(Parser):
       slug        = category["slug"]
       code        = category["code"]
       parent_slug = category["parent"]
-      image       = category['image']
-      image_name  = image.split('/')[-1]
+      image       = category.get('image', '')
+      # image_name  = image.split('/')[-1]
       with transaction.atomic():
         new_category, _ = ItemCategory.objects.get_or_create(
           slug = slug,
@@ -957,7 +957,8 @@ class ImportMixin(Parser):
         new_category.meta_descr = title
         new_category.meta_key   = title
         new_category.parent = ItemCategory.objects.filter(slug=parent_slug).first()
-        new_category.thumbnail = 'shop/category/' + image
+        if image:
+          new_category.thumbnail = 'shop/category/' + image
         new_category.save()
         print(new_category)
     return True 

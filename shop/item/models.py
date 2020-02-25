@@ -413,20 +413,13 @@ class ItemCategory(models.Model):
 			elif alls.exists():
 				self.currency = alls.first()
 
-
 		title = self.title.lower().strip()
 		self.title = title
 		if not self.slug:
 			try:
 				self.slug = slugify(translit(title, reversed=True))
 			except:
-				if not self.pk:
-					super().save(*args, **kwargs)
 				self.slug = self.pk
-		print(self.slug)
-		print('sluug')
-		if ItemCategory.objects.filter(slug=self.slug).exists:
-			self.slug=self.pk 
 		super().save(*args, **kwargs)
 
 
