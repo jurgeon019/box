@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from box.shop.item.utils.parser import Parser, ExportMixin, ImportMixin
+from box.shop.item.parser.main import Parser, ExportMixin, ImportMixin
 
 
 class Command(BaseCommand):
@@ -42,28 +42,28 @@ class Command(BaseCommand):
     file_name      = kwargs.get('file_name', "items.xlsx")
     content_type   = kwargs.get('content_type', 'item_category')
     action_type    = kwargs.get('action_type', 'import')
-    file_extension = filename.split('.')[-1]
+    file_extension = file_name.split('.')[-1]
 
 
     if file_extension == 'csv':
       if content_type == 'item_category':
 
         if action_type == 'import':
-          status = False
+          status = importer.read_items_categories_from_csv(file_name)
         elif action_type == 'export':
-          status = False
+          status = exporter.write_items_categories_to_csv(file_name)
 
       elif content_type == 'item':
 
         if action_type == 'import':
-          status = importer.read_items_from_csv(filename)
+          status = importer.read_items_from_csv(file_name)
         elif action_type == 'export':
-          status = exporter.write_items_to_csv(filename)
+          status = exporter.write_items_to_csv(file_name)
 
       elif content_type == 'category':
 
         if action_type == 'import':
-          status = importer.read_categories_from_csv(filename)
+          status = importer.read_categories_from_csv(file_name)
         elif action_type == 'export':
           status = exporter.write_categories_from_csv
 
@@ -73,23 +73,23 @@ class Command(BaseCommand):
       if content_type == 'item_category':
 
         if action_type == 'import':
-          status = importer.read_items_categories_from_xlsx(filename)
+          status = importer.read_items_categories_from_xlsx(file_name)
         elif action_type == 'export':
-          status = exporter.write_items_categories_to_xlsx(filename)
+          status = exporter.write_items_categories_to_xlsx(file_name)
 
       elif content_type == 'item':
 
         if action_type == 'import':
-          status = importer.read_items_from_xlsx(filename)
+          status = importer.read_items_from_xlsx(file_name)
         elif action_type == 'export':
-          status = exporter.write_items_to_xlsx(filename)
+          status = exporter.write_items_to_xlsx(file_name)
 
       elif content_type == 'category':
 
         if action_type == 'import':
-          status = importer.read_categories_from_xlsx(filename)
+          status = importer.read_categories_from_xlsx(file_name)
         elif action_type == 'export':
-          status = exporter.write_categories_to_xlsx(filename)
+          status = exporter.write_categories_to_xlsx(file_name)
 
 
 

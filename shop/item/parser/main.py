@@ -35,8 +35,6 @@ import re
 
 from box.shop.item.models import *
 
-from project.parsing.utils import * 
-
 count = 0
 
 __all__ = [
@@ -76,7 +74,7 @@ class Parser(object):
   ]
   # НЕИЗМЕНЯЕМОЕ(ОБЩЕЕ)
 
-  def write_csv(data, filename):
+  def write_csv(self, data, filename):
     """Записывает информацию про товар в файл"""
     with open(filename, 'a') as file:
       # order = ['name', 'price', 'desc', 'cat', 'subcat', 'link', 'img_name', 'img_link']
@@ -92,7 +90,7 @@ class Parser(object):
     with open(filename, mode) as file:
       json.dump(data, file, indent=4, ensure_ascii=False)
 
-  def get_proxies():
+  def get_proxies(self, ):
     """Возвращает список прокси-серверов"""
     html = requests.get('https://free-proxy-list.net/').text
     soup = BeautifulSoup(html, 'lxml')
@@ -107,7 +105,7 @@ class Parser(object):
       proxies.append(proxy)
     return choice(proxies)
 
-  def get_html(url, proxies=False, headers=True):
+  def get_html(self, url, proxies=False, headers=True):
     """Возвращает html-код страницы"""
     if proxies:
       p = get_proxies()
@@ -129,7 +127,7 @@ class Parser(object):
     return r.content if r.ok else print('ERROR OCCURED. STATUS CODE:',r.status_code)
 
     # Отримуємо проксі і юзерагент
-    def fake_user():
+    def fake_user(self, ):
         # proxies = open('proxies.txt').read().split('\n')
         useragents = open('user_agent.txt').read().split('\n')
         # proxie = choice(proxies)
@@ -137,7 +135,7 @@ class Parser(object):
         return ua
 
     # Задає параметри веб драйверу селеніума
-    def proxy_driver(p, ua):
+    def proxy_driver(self, p, ua):
         co = webdriver.ChromeOptions()
         co.add_argument('--no-sandbox')
         co.add_argument('--disable-dev-shm-usage')
@@ -159,7 +157,7 @@ class Parser(object):
 
         return driver
 
-    def authenticate():
+    def authenticate(self, ):
         url = 'https://www.serwis-kop.pl/ru/authentication'
 
         try:
@@ -217,7 +215,7 @@ class Parser(object):
         return driver
         # driver.quit()
 
-    def parse_products(link, driver):
+    def parse_products(self, link, driver):
       driver.get(link)
       soup         = BeautifulSoup(driver.page_source  , 'lxml')
       try:
@@ -541,12 +539,12 @@ class Parser(object):
       print(e)
     return data
 
-  def parse_categories():
+  def parse_categories(self, ):
     parser = Parser()
     url = 'http://gvardeisky.com.ua/343-poncho-nakidka-dozhdevik-olive-germaniya.html'
     parser.create_categories_json(url)
 
-  def write_categories():
+  def write_categories(self, ):
     parser = Parser()
     with open('categories_links.json', 'r') as json_file:
       cats = json.load(json_file)['categories_links']
@@ -567,20 +565,27 @@ class Parser(object):
         data['Идентификатор_родителя'] = parent_id
         parser.write_csv(data, 'categories.csv')
 
-  def parse_pages():
+  def write_category(self, category):
+    data = self.get_box_categories_sheet()
+    data['Заголовок']       = category.title
+    data['Ссылка']          = category.slug
+    data['Ссылка_родителя'] = category.parent.slug
+    self.write_csv(data, 'categories.csv')
+
+  def parse_pages(self, ):
     parser = Parser()
     with open('categories_links.json') as file:
       for category in json.load(file)['categories_links']:
         url = category['url'] + '?page=1'
         parser.create_pages_json(url)
 
-  def parse_products_links():
+  def parse_products_links(self, ):
     parser = Parser()
     with open('pages_links.json','r') as file:
       for link in json.load(file)['pages_links']:
         parser.create_products_links(link)
 
-  def write_products(turbo=False):
+  def write_products(self, turbo=False):
     parser = Parser()
     fieldnames = [k for k,v in parser.get_products_sheet().items()]
     with open('products.csv', 'w') as file:
@@ -600,7 +605,7 @@ class Parser(object):
           [product for product in products]
         )
 
-  def create_xlsx():
+  def create_xlsx(self, ):
     workbook          = xlsxwriter.Workbook('result.xlsx') 
     products_sheet    = workbook.add_worksheet('Export Products Sheet')
     categories_sheet       = workbook.add_worksheet('Export Group Sheet')
@@ -635,7 +640,7 @@ class Parser(object):
 
 class ExportMixin(Parser):
 
-  def create_worksheet_with_items(workbook, items):
+  def create_worksheet_with_items(self, workbook, items):
     worksheet1 = workbook.create_sheet(
         title='Товары',
         index=1,
@@ -689,7 +694,7 @@ class ExportMixin(Parser):
             cell.value = cell_value
     return workbook
 
-  def create_worksheet_with_items(workbook, items):
+  def create_worksheet_with_items(self, workbook, items):
     worksheet2 = workbook.create_sheet(
         title='Категории',
         index=2,
@@ -728,6 +733,16 @@ class ExportMixin(Parser):
       workbook = create_worksheet_with_categories(workbook, items)
       workbook.save(response)
       return response
+
+  def write_categories_headers(self, filename='cats.csv', *args, **kwargs):
+    with open(filename, 'w') as csv_file:
+      keys = self.get_box_categories_sheet().keys()
+      fieldnames = [k for k in keys]
+      writer = csv.DictWriter(
+        csv_file,
+        fieldnames=fieldnames
+      )
+      writer.writeheader()
 
   def export_items(self, request, queryset):
       meta = self.model._meta
@@ -794,7 +809,7 @@ class ExportMixin(Parser):
 
   # DANGER!! DANGER!! XML AREA!! 
 
-  def export_items_to_xml(filename=None, *args, **kwargs):
+  def export_items_to_xml(self, filename=None, *args, **kwargs):
     # https://github.com/vinitkumar/json2xml
     # https://github.com/quandyfactory/dicttoxml/tree/master/dist
     # !!!!
@@ -812,7 +827,7 @@ class ExportMixin(Parser):
       f.write(result)
     return True
 
-  def form_item(item):
+  def form_item(self, item):
     item = f"""
     <object>
       <field name="meta_title" descr="{item._meta.get_field('meta_title').verbose_name}">
@@ -875,8 +890,8 @@ class ExportMixin(Parser):
 
 
 class ImportMixin(Parser):
-    
-  def read_items_from_xlsx(filename, *args, **kwargs):
+
+  def read_items_from_xlsx(self, filename, *args, **kwargs):
     items      = pd.read_excel(filename, sheet_name="Товары")
     items      = items.to_csv()
     categories = pd.read_excel(filename, sheet_name="Категории")
@@ -884,19 +899,19 @@ class ImportMixin(Parser):
     create_categories(
       [dct for dct in map(dict, csv.DictReader(StringIO(categories)))],
       list(csv.reader(StringIO(categories))),
-      args,
-      kwargs,
+      *args,
+      **kwargs,
     )
     create_items(
       [dct for dct in map(dict, csv.DictReader(StringIO(items)))], 
       list(csv.reader(StringIO(items))),
-      args,
-      kwargs,
+      *args,
+      **kwargs,
     )
     return True
 
 
-  def read_items_from_csv(filename, *args, **kwargs):
+  def read_items_from_csv(self, filename, *args, **kwargs):
     create_items(
       [dct for dct in map(dict, csv.DictReader(open(filename)))], 
       list(csv.reader(open(filename))),
@@ -906,21 +921,31 @@ class ImportMixin(Parser):
     return True 
 
 
-  def read_categories_from_csv(filename, *args, **kwargs):
-    create_categories(
+  def read_items_categories_from_csv(self, filename, *args, **kwargs):
+    self.create_items(
+      [dct for dct in map(dict, csv.DictReader(open(filename)))], 
+      list(csv.reader(open(filename))),
+      *args,
+      **kwargs,
+    )
+    return True 
+
+
+  def read_categories_from_csv(self, filename, *args, **kwargs):
+    self.create_categories(
       [dct for dct in map(dict, csv.DictReader(open(filename)))],
       list(csv.reader(open(filename))),
     )
     return True 
 
 
-  def create_categories(dict_file, list_file, *args, **kwargs):
-    for item in dict_file:
-      title       = item["title"]
-      slug        = item["slug"]
-      code        = item["code"]
-      parent_slug = item["parent"]
-      image       = item['image']
+  def create_categories(self, categories, list_file, *args, **kwargs):
+    for category in categories:
+      title       = category["title"]
+      slug        = category["slug"]
+      code        = category["code"]
+      parent_slug = category["parent"]
+      image       = category['image']
       image_name  = image.split('/')[-1]
       with transaction.atomic():
         new_category, _ = ItemCategory.objects.get_or_create(
@@ -938,8 +963,8 @@ class ImportMixin(Parser):
     return True 
 
 
-  def parse_item_features(dict_file, list_file, *args, **kwargs):
-    items       = dict_file
+  def parse_item_features(self, items, list_file, *args, **kwargs):
+    items       = items
     headers_row = list_file[0]
     items_rows  = list_file[1:]
     feature_name_indexes  = [i for i, o in enumerate(headers_row) if "Название_Характеристики" in o]
@@ -972,21 +997,20 @@ class ImportMixin(Parser):
 
     for i in range(len(items_features), *args, **kwargs):
       items[i]["features"] = items_features[i]
+    
     return items 
 
 
-  def create_items(dict_file, list_file, *args, **kwargs):
-    items = parse_item_features(dict_file, list_file)
-    i = 0
-    for item in items[0:1]:
-    # for item in items:
-      # create_item(item, *args, **kwargs)
-      parse_jcb_categories(item, *args, **kwargs)
-      # parse_perkins_categories(item, *args, **kwargs)
+  def create_items(self, items, list_file, *args, **kwargs):
+    items = self.parse_item_features(items, list_file, *args, **kwargs)
+    # items = items
+    items = items[0:1]
+    for item in items:
+      self.create_item(item, *args, **kwargs)
       print(items.index(item))
 
 
-  def create_item(item, *args, **kwargs):
+  def create_item(self, item, *args, **kwargs):
     title       = item["Заголовок"]
     description = item.get("Описание", title)
     meta_title  = item.get("Мета_Заголовок", title)
@@ -999,19 +1023,19 @@ class ImportMixin(Parser):
     new_item.meta_title  = meta_title
     new_item.meta_descr  = meta_descr
     new_item.meta_key    = meta_key
-    new_item = handle_categories(item, new_item, *args, **kwargs)
-    new_item = handle_slug(item, new_item, *args, **kwargs)
-    new_item = handle_manufacturer(item, new_item, *args, **kwargs)
-    new_item = handle_features(item, new_item, *args, **kwargs)
-    new_item = handle_currency(item, new_item, *args, **kwargs)
-    new_item = handle_price(item, new_item, *args, **kwargs)
-    new_item = handle_in_stock(item, new_item, *args, **kwargs)
-    new_item = handle_images(item, new_item, *args, **kwargs)
+    new_item = self.handle_categories(item, new_item, *args, **kwargs)
+    new_item = self.handle_slug(item, new_item, *args, **kwargs)
+    new_item = self.handle_manufacturer(item, new_item, *args, **kwargs)
+    new_item = self.handle_features(item, new_item, *args, **kwargs)
+    new_item = self.handle_currency(item, new_item, *args, **kwargs)
+    new_item = self.handle_price(item, new_item, *args, **kwargs)
+    new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
+    new_item = self.handle_images(item, new_item, *args, **kwargs)
     new_item.save()
-    print_item(item, new_item)
+    # self.print_item(item, new_item)
 
 
-  def print_item(item, new_item, *args, **kwargs):
+  def print_item(self, item, new_item, *args, **kwargs):
     for field in new_item._meta.fields:
         print(field.name+':')
         print(getattr(new_item, field.name))
@@ -1024,7 +1048,7 @@ class ImportMixin(Parser):
         print()
 
 
-  def handle_slug(item, new_item, *args, **kwargs):
+  def handle_slug(self, item, new_item, *args, **kwargs):
     slug = item.get('Ссылка')
     if slug:
       if not Item.objects.filter(slug=slug).exists():
@@ -1032,22 +1056,19 @@ class ImportMixin(Parser):
     return new_item
 
 
-  def handle_manufacturer(item, new_item, *args, **kwargs):
+  def handle_manufacturer(self, item, new_item, *args, **kwargs):
     manufacturer = item.get('Производитель')
+    print(new_item)
+    return new_item
     if manufacturer:
       new_item.manufacturer, _ = ItemManufacturer.objects.get_or_create(name=manufacturer)
     return new_item
 
 
-  def handle_images(item, new_item, *args, **kwargs):
-    site = kwargs['site']
-    if site == 'jcb':
-      new_item = jcb_images(item, new_item, *args, **kwargs)
-    elif site == 'perkins':
-      new_item = perkins_images(item, new_item, *args, **kwargs)
-    else:
-      images = item.get("Изображения")
-      if images:
+  def handle_images(self, item, new_item, *args, **kwargs):
+    images = item.get("Изображения")
+    if images:
+      if not images[:2] == "['" and not images[-2:] == "']":
         images = images.split(",")
         for image in images:
           # print(image)
@@ -1057,12 +1078,9 @@ class ImportMixin(Parser):
           )
         new_item.save()
         new_item.create_thumbnail_from_images()
-    return new_item
-
-
-  def handle_images(new_item, images):
-      images = ast.literal_eval(images)
-      for image in images:
+      if images[:2] == "['" and not images[-2:] == "']":
+        images = ast.literal_eval(images)
+        for image in images:
           ext = image.split('.')[-1]
           new_image = ItemImage.objects.create(
               item=new_item,
@@ -1076,59 +1094,37 @@ class ImportMixin(Parser):
               pass
           image = Image.open(BytesIO(requests.get(image).content))
           image.save(path)
-
-
-  def handle_categories(item, new_item, *args, **kwargs):
-    site = kwargs['site']
-    if site == 'jcb':
-      new_item = jcb_categories(item, new_item)
-    elif site == 'perkins':
-      new_item = perkins_categories(item, new_item)
-    else:
-      category, _ = ItemCategory.objects.get_or_create(
-        slug__iexact=item["Категории"].lower().strip(),
-      )
-      new_item.set_category([category,])
     return new_item
 
 
-  def handle_categories(item, *args, **kwargs):
-    with open('cats.csv', 'w') as csv_file:
-      parser = Parser()
-      keys = parser.get_box_categories_sheet().keys()
-      fieldnames = [k for k in keys]
-      writer = csv.DictWriter(
-        csv_file,
-        fieldnames=fieldnames
-      )
-      writer.writeheader()
+  def handle_categories(self, item, new_item, *args, **kwargs):
+    categories = item.get("Категории", "")#.lower().strip()
+    if categories:
+      if categories[0:2] == "['" and categories[-2:] == "']":
+        categories   = ast.literal_eval(categories)
+        if len(categories) == 3:
+          if categories[0].lower() == 'запчасти для jcb':
+            for category_title in categories:
+              category_title = category_title#.lower().strip()
+              category, _ = ItemCategory.objects.get_or_create(title=category_title)
+              category_index = categories.index(category_title)
+              if category_index != 0:
+                parent_category_title = categories[category_index-1]#.lower().strip()
+              elif category_index == 0:
+                parent_category_title = "Запчастини та комплектуючі"
+              parent_category, _ = ItemCategory.objects.get_or_create(title=parent_category_title)
+              category.parent    = parent_category
+              category.save()
+      else:
+
+        category, _ = ItemCategory.objects.get_or_create(
+          slug__iexact=category,
+        )
+        new_item.set_category([category,])
+    return new_item
 
 
-    categories   = item.get('Категории')
-    categories   = ast.literal_eval(categories)
-    if len(categories) == 3:
-      if categories[0].lower() == 'запчасти для jcb':
-        for category_title in categories:
-          category, _ = ItemCategory.objects.get_or_create(title=category_title.lower().strip())
-          category_index = categories.index(category_title)
-          if category_index != 0:
-            parent_category_title = categories[category_index-1].lower().strip()
-          elif category_index == 0:
-            parent_category_title = "Запчастини та комплектуючі"
-          parent_category, _ = ItemCategory.objects.get_or_create(title=parent_category_title)
-          category.parent    = parent_category
-          category.save()
-          print(category)
-          print(category.id)
-          with open('cats.csv', 'a') as csv_file:
-            data      = parser.get_box_categories_sheet()
-            data['Заголовок']       = category.title
-            data['Ссылка']          = category.slug
-            data['Ссылка_родителя'] = parent_category.slug
-            parser.write_csv(data, 'categories.csv')
-
-
-  def handle_features(item, new_item, *args, **kwargs):
+  def handle_features(self, item, new_item, *args, **kwargs):
     for k, v in item["features"].items():
       new_feature, _ = ItemFeature.objects.get_or_create(
         item = new_item, 
@@ -1138,36 +1134,24 @@ class ImportMixin(Parser):
     return new_item
 
 
-  def handle_currency(item, new_item, *args, **kwargs):
-    site = kwargs['site']
-    if site == 'jcb':
-      new_item = jcb_currency(item, new_item, *args, **kwargs)
-    elif site == 'perkins':
-      new_item = perkins_currency(item, new_item, *args, **kwargs)
-    else:
-      currency    = item.get('Валюта','')
-      if currency:
-        new_item.currency, _ = Currency.objects.get_or_create(name=currency)
+  def handle_currency(self, item, new_item, *args, **kwargs):
+    currency    = item.get('Валюта','')
+    if currency:
+      new_item.currency, _ = Currency.objects.get_or_create(name=currency)
     return new_item 
 
 
-  def handle_price(item, new_item, *args, **kwargs):
-    site = kwargs['site']
-    if site == 'jcb':
-      new_item = jcb_price(item, new_item)
-    elif site == 'perkins':
-      new_item = perkins_price(item, new_item)
-    else:
-      old_price   = item.get("Старая_Цена")
-      new_price   = item.get("Новая_Цена")
-      if old_price:
-        new_item.old_price = old_price
-      if new_price:
-        new_item.new_price = new_price
+  def handle_price(self, item, new_item, *args, **kwargs):
+    old_price   = item.get("Старая_Цена")
+    new_price   = item.get("Новая_Цена")
+    if old_price:
+      new_item.old_price = old_price
+    if new_price:
+      new_item.new_price = new_price
     return new_item 
 
 
-  def handle_in_stock(item, new_item, *args, **kwargs):
+  def handle_in_stock(self, item, new_item, *args, **kwargs):
     in_stock    = item.get("Наличие")
     if in_stock:
       new_item.in_stock, _ = ItemStock.objects.get_or_create(text=in_stock)
@@ -1185,7 +1169,7 @@ class ImportMixin(Parser):
   # DANGER!! DANGER!! XML AREA!! 
 
 
-  def import_items_from_xml_by_xmljson(filename, *args, **kwargs):
+  def import_items_from_xml_by_xmljson(self, filename, *args, **kwargs):
     from xmljson import badgerfish as bf
     from xml.etree.ElementTree import fromstring
     import json 
@@ -1225,7 +1209,7 @@ class ImportMixin(Parser):
       return f'{self.fields}'
 
 
-  def import_items_from_xml_by_xml_etree(filename, *args, **kwargs):
+  def import_items_from_xml_by_xml_etree(self, filename, *args, **kwargs):
     import xml.etree.ElementTree as ET
     # *******
     # tree = ET.parse(filename)
@@ -1302,7 +1286,7 @@ class ImportMixin(Parser):
       # item.save()
 
 
-  def import_items_from_xml_by_xmltodict(filename, *args, **kwargs):
+  def import_items_from_xml_by_xmltodict(self, filename, *args, **kwargs):
     import xmltodict
     import json
 
@@ -1322,7 +1306,7 @@ class ImportMixin(Parser):
         import pprint; pprint.pprint(field)
 
 
-  def import_items_from_xml(filename, *args, **kwargs):
+  def import_items_from_xml(self, filename, *args, **kwargs):
     import_items_from_xml_by_xml_etree(filename)
     return True 
 

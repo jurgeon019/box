@@ -20,7 +20,7 @@ from ..inlines import *
 class ItemCategoryAdmin(admin.ModelAdmin):
     inlines = [
         # ItemInline,
-        ItemCategoryInline,
+        # ItemCategoryInline,
     ]
     list_display = [
         'id',
@@ -28,7 +28,7 @@ class ItemCategoryAdmin(admin.ModelAdmin):
         'title',
         'slug',
         # 'code',
-        'currency',
+        # 'currency',
     ]
     list_display_links = [
         'id',
@@ -37,7 +37,7 @@ class ItemCategoryAdmin(admin.ModelAdmin):
         'slug',
     ]
     list_editable= [
-        'currency',
+        # 'currency',
     #     'slug'
     ]
 
@@ -51,7 +51,7 @@ class ItemCategoryAdmin(admin.ModelAdmin):
                 "created",
                 'updated',
                 'parent',
-                "currency",
+                # "currency",
             ),
             'classes':(
                 'wide',
