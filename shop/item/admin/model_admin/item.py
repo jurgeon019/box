@@ -73,10 +73,10 @@ def get_fieldsets():
 class ItemAdmin(TabbedTranslationAdmin, ExportMixin):
     actions = [
         # 'export_items',
-        'export_items_to_xlsx',
-        "export_items_photoes",
-        "delete_items_photoes",
-        "delete_items_features",
+        'admin_export_items_to_xlsx',
+        "admin_export_items_photoes",
+        "admin_delete_items_photoes",
+        "admin_delete_items_features",
     ]
     change_list_template = 'item_change_list.html'
     change_form_template = 'item_change_form.html'

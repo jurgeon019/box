@@ -77,7 +77,6 @@ class Parser(object):
   def write_csv(self, data, filename):
     """Записывает информацию про товар в файл"""
     with open(filename, 'a') as file:
-      # order = ['name', 'price', 'desc', 'cat', 'subcat', 'link', 'img_name', 'img_link']
       writer = csv.DictWriter(file, fieldnames=list(data.keys()))
       writer.writerow(data)
 
@@ -265,68 +264,93 @@ class Parser(object):
       
       write_csv(data, 'jcb_with_price.csv')
 
-  def get_products_sheet(self):
-    """Возвращает список полей товаров, нужных для шаблона прома"""
-    fieldnames = {
-      'Код_товара':'',
-      'Название_позиции':'',
-      'Поисковые_запросы':'',
-      'Описание':'',
-      'Тип_товара':'',
-      'Цена':'',
-      'Цена от':'',
-      'Ярлык':'',
-      'HTML_заголовок':'',
-      'HTML_описание':'',
-      'HTML_ключевые_слова':'',
-      'Валюта':'',
-      'Скидка':'',
-      'Cрок действия скидки от':'',
-      'Cрок действия скидки до':'',
-      'Единица_измерения':'',
-      'Минимальный_объем_заказа':'',
-      'Оптовая_цена':'',
-      'Минимальный_заказ_опт':'',
-      'Ссылка_изображения':'',
-      'Наличие':'',
-      'Количество':'',
-      'Производитель':'',
-      'Страна_производитель':'',
-      'Номер_группы':'',
-      'Адрес_подраздела':'',
-      'Возможность_поставки':'',
-      'Срок_поставки':'',
-      'Способ_упаковки':'',
-      'Личные_заметки':'',
-      'Продукт_на_сайте':'',
-      'Идентификатор_товара':'',
-      'Уникальный_идентификатор':'',
-      'Идентификатор_подраздела':'',
-      'Идентификатор_группы':'',
-      'Подарки':'',
-      'Сопутствующие':'',
-      'ID_группы_разновидностей':'',
-      'Название_Характеристики':'',
-      'Измерение_Характеристики':'',
-      'Значение_Характеристики':'',
-      'Название_Характеристики':'',
-      'Измерение_Характеристики':'',
-      'Значение_Характеристики':'',
-    }
+  def get_products_sheet(self, site='box', *args, **kwargs):
+    if site == 'prom':
+      fieldnames = {
+        'Код_товара':'',
+        'Название_позиции':'',
+        'Поисковые_запросы':'',
+        'Описание':'',
+        'Тип_товара':'',
+        'Цена':'',
+        'Цена от':'',
+        'Ярлык':'',
+        'HTML_заголовок':'',
+        'HTML_описание':'',
+        'HTML_ключевые_слова':'',
+        'Валюта':'',
+        'Скидка':'',
+        'Cрок действия скидки от':'',
+        'Cрок действия скидки до':'',
+        'Единица_измерения':'',
+        'Минимальный_объем_заказа':'',
+        'Оптовая_цена':'',
+        'Минимальный_заказ_опт':'',
+        'Ссылка_изображения':'',
+        'Наличие':'',
+        'Количество':'',
+        'Производитель':'',
+        'Страна_производитель':'',
+        'Номер_группы':'',
+        'Адрес_подраздела':'',
+        'Возможность_поставки':'',
+        'Срок_поставки':'',
+        'Способ_упаковки':'',
+        'Личные_заметки':'',
+        'Продукт_на_сайте':'',
+        'Идентификатор_товара':'',
+        'Уникальный_идентификатор':'',
+        'Идентификатор_подраздела':'',
+        'Идентификатор_группы':'',
+        'Подарки':'',
+        'Сопутствующие':'',
+        'ID_группы_разновидностей':'',
+        'Название_Характеристики':'',
+        'Измерение_Характеристики':'',
+        'Значение_Характеристики':'',
+        'Название_Характеристики':'',
+        'Измерение_Характеристики':'',
+        'Значение_Характеристики':'',
+      }
+    if site == 'box':
+      fieldnames = {
+        "Заголовок":"",
+        "Описание":"",
+        "Мета_Заголовок":"",
+        "Мета_Описание":"",
+        "Мета_Ключевые_Слова":"",
+        "Артикул":"",
+        "Категории":"",
+        "Изображения":"",
+        "Производитель":"",
+        "Ссылка":"",
+        "Валюта":"",
+        "Старая_Цена":"",
+        "Новая_Цена":"",
+        "Наличие":"",
+      }
     return fieldnames
 
-  def get_categories_sheet(self):
-    """Возвращает список полей категорий, нужных для шаблона прома"""
-    fieldnames = {
-      'Номер_группы':'',
-      'Название_группы':'',
-      'Идентификатор_группы':'',
-      'Номер_родителя':'',
-      'Идентификатор_родителя':'',
-      'HTML_заголовок_группы':'',
-      'HTML_описание_группы':'',
-      'HTML_ключевые_слова_группы':'',
-    }
+  def get_categories_sheet(self, site='box', *args, **kwargs):
+    if site == 'prom':    
+      fieldnames = {
+        'Номер_группы':'',
+        'Название_группы':'',
+        'Идентификатор_группы':'',
+        'Номер_родителя':'',
+        'Идентификатор_родителя':'',
+        'HTML_заголовок_группы':'',
+        'HTML_описание_группы':'',
+        'HTML_ключевые_слова_группы':'',
+      }
+    if site == 'box':
+      fieldnames = {
+          "Заголовок":"",
+          "Ссылка":"",
+          "Ссылка_родителя":"",
+          "Изображения":"",
+      }
+
     return fieldnames
 
   def create_categories_json(self, url, *args, **kwargs):
@@ -414,6 +438,8 @@ class Parser(object):
       print('product: ', product)
       self.products_links.append(product)
     self.write_json({'products_links':self.products_links}, 'products_links.json', 'w')  
+  
+  # ! ПЕРЕОПРЕДЕЛИТЬ 
 
   def write_product_info(self, data):
     """Достает информацию про товар и записывает ее в файл"""
@@ -455,56 +481,25 @@ class Parser(object):
     self.write_csv(data=data, filename=self.products_filename)
   
   def get_name(self, soup):
-    name  = soup.h1.text.strip()
     return name
 
   def get_category(self, soup, category):
-    category = soup.find('span', class_='posted_in').text.split(':')[-1].strip()
-    # try:
-    #   with open('categories_links.json','r') as file:
-    #     for json_category in json.load(file)['categories_links']:
-    #       if json_category["name"].strip() == category.strip():
-    #         return json_category["id"]
-    # except Exception as e:
-    #   print(e)
     return category
     
   def get_description(self, soup):
-    try:
-      desc = soup.find('div', id="tab-description")
-    except:
-      desc = ''
     return desc
 
   def get_imgs(self, soup):
-    try:
-      imgs = []
-      thumbs = soup.find_all('a', class_='yith_magnifier_thumbnail')
-      for img in thumbs:
-        imgs.append(img.get('href'))
-    except Exception as e:
-      print('ERROR:',e)
-      img = ''
     return ', '.join(imgs)
 
   def get_articule(self, soup, *args):
-    articule = soup.find('span', class_='sku_wrapper').find('span', class_='sku').text.strip()
-    
     return articule
 
   def get_price(self, soup):
-    price = soup.find('p', class_='price').text.split(' ')[0].split('\xa0')[0].replace(',','')
-    currency = 'UAH'
     return (price, currency)
 
   def get_availability(self, soup):
-    # availability = soup.find_all('ul', class_='list-unstyled')[1].find_all('li')[-1].text.strip()
-    # if availability == 'Доступность: В наличии':
-    #   availability = '+'
-    # else:
-    #   availability = '-'
-    # return availability
-    return '+'
+    return availability
 
   def get_features(self, soup, data):
     all_tds = []
@@ -539,19 +534,19 @@ class Parser(object):
       print(e)
     return data
 
+  # ! ПЕРЕОПРЕДЕЛИТЬ 
+
   def parse_categories(self, ):
-    parser = Parser()
     url = 'http://gvardeisky.com.ua/343-poncho-nakidka-dozhdevik-olive-germaniya.html'
-    parser.create_categories_json(url)
+    self.create_categories_json(url)
 
   def write_categories(self, ):
-    parser = Parser()
     with open('categories_links.json', 'r') as json_file:
       cats = json.load(json_file)['categories_links']
     with open('categories.csv', 'w') as csv_file:
       writer = csv.DictWriter(
         csv_file, 
-        fieldnames=[k for k in parser.get_categories_sheet().keys()]
+        fieldnames=[k for k in self.get_categories_sheet().keys()]
       )
       writer.writeheader()
     with open('categories.csv', 'a') as csv_file:
@@ -559,25 +554,17 @@ class Parser(object):
         name      = cat['name']
         id        = cat['id']
         parent_id = cat.get('parent_id', '')
-        data      = parser.get_categories_sheet()
+        data      = self.get_categories_sheet()
         data['Название_группы']        = name
         data['Идентификатор_группы']   = id
         data['Идентификатор_родителя'] = parent_id
-        parser.write_csv(data, 'categories.csv')
-
-  def write_category(self, category):
-    data = self.get_box_categories_sheet()
-    data['Заголовок']       = category.title
-    data['Ссылка']          = category.slug
-    data['Ссылка_родителя'] = category.parent.slug
-    self.write_csv(data, 'categories.csv')
+        self.write_csv(data, 'categories.csv')
 
   def parse_pages(self, ):
-    parser = Parser()
     with open('categories_links.json') as file:
       for category in json.load(file)['categories_links']:
         url = category['url'] + '?page=1'
-        parser.create_pages_json(url)
+        self.create_pages_json(url)
 
   def parse_products_links(self, ):
     parser = Parser()
@@ -608,7 +595,7 @@ class Parser(object):
   def create_xlsx(self, ):
     workbook          = xlsxwriter.Workbook('result.xlsx') 
     products_sheet    = workbook.add_worksheet('Export Products Sheet')
-    categories_sheet       = workbook.add_worksheet('Export Group Sheet')
+    categories_sheet  = workbook.add_worksheet('Export Group Sheet')
     products_reader   = csv.reader(open('products.csv', 'r'), delimiter=',',quotechar='"')
     categories_reader = csv.reader(open('categories.csv', 'r'), delimiter=',',quotechar='"')
     
@@ -628,15 +615,6 @@ class Parser(object):
     
     workbook.close()
 
-  def get_box_categories_sheet(self, *args, **kwargs):
-    sheet = {
-        "Заголовок":"",
-        "Ссылка":"",
-        "Ссылка_родителя":"",
-        # "Изображение":"",
-    }
-    return sheet
-
 
 class ExportMixin(Parser):
 
@@ -645,19 +623,9 @@ class ExportMixin(Parser):
         title='Товары',
         index=1,
     )
-    columns = [
-        "Мета_Заголовок",
-        "Мета_Описание",
-        "Мета_Ключевые_Слова",
-        "Заголовок",
-        "Описание",
-        "Артикул",
-        "Категория",
-        "Ссылка",
-        "Старая_Цена",
-        "Новая_Цена",
-        "Изображения",
-    ]
+
+    columns = self.get_products_sheet(site='box').keys()
+    
     biggest_item = items.first()
     for item in items:
         if item.features.all().count() > biggest_item.features.all().count():
@@ -694,33 +662,59 @@ class ExportMixin(Parser):
             cell.value = cell_value
     return workbook
 
-  def create_worksheet_with_items(self, workbook, items):
+  def create_worksheet_with_categories(self, workbook, categories):
     worksheet2 = workbook.create_sheet(
         title='Категории',
         index=2,
     )
-    columns = self.get_box_categories_sheet()
+    columns = self.get_categories_sheet(site='box').keys()
     row_num = 1
     for col_num, column_title in enumerate(columns, 1):
         cell = worksheet2.cell(row=row_num, column=col_num)
         cell.value = column_title
     for category in categories:
         row_num += 1
-        parent_slug = ''
-        if category.parent:
-            parent_slug = category.parent.slug
         row = [
             category.title,
             category.slug,
-            parent_slug,
+            category.parent_slug,
         ]
         for col_num, cell_value in enumerate(row, 1):
             cell = worksheet2.cell(row=row_num, column=col_num)
             cell.value = cell_value
     return workbook
 
+  # terminal 
+
   def export_items_to_xlsx(self, request, queryset):
-      from box.shop.item.models import Item, ItemCategory
+    items    = Item.objects.all()
+    workbook = Workbook()
+    workbook.remove(workbook.active)
+    workbook = self.create_worksheet_with_items(workbook, items)
+    workbook.save()
+    with open(filename, 'w') as f:
+      f.write(workbook)
+    # TODO: нічо не зроблено
+
+  def export_categories_to_csv(self, file_name=None, *args, **kwargs):
+    if file_name == None:
+      file_name = f"categories_{datetime.now().strftime('%Y-%m-%d')}.csv"
+    data   = self.get_categories_sheet(site='box')
+    for category in ItemCategory.objects.all():
+      with open(file_name, 'a') as csv_file:
+        writer = csv.DictWriter(csv_file, fieldnames=[k for k in data.keys()])
+        data['Заголовок']       = category.title
+        data['Ссылка']          = category.slug
+        data['Ссылка_родителя'] = category.parent_slug
+        data['Изображения']     = category.thumbnail_path
+        writer.writerow(data)
+    return True 
+
+  # ! terminal 
+
+  # admin 
+
+  def admin_export_items_to_xlsx(self, request, queryset):
       items = Item.objects.all()
       categories = ItemCategory.objects.all()
       response = HttpResponse(
@@ -729,36 +723,27 @@ class ExportMixin(Parser):
       response['Content-Disposition'] = f"attachment; filename={datetime.now().strftime('%Y-%m-%d')}.xlsx"
       workbook = Workbook()
       workbook.remove(workbook.active)
-      workbook = create_worksheet_with_items(workbook, items)
-      workbook = create_worksheet_with_categories(workbook, items)
+      workbook = self.create_worksheet_with_items(workbook, items)
+      workbook = self.create_worksheet_with_categories(workbook, categories)
       workbook.save(response)
       return response
 
-  def write_categories_headers(self, filename='cats.csv', *args, **kwargs):
-    with open(filename, 'w') as csv_file:
-      keys = self.get_box_categories_sheet().keys()
-      fieldnames = [k for k in keys]
-      writer = csv.DictWriter(
-        csv_file,
-        fieldnames=fieldnames
-      )
-      writer.writeheader()
+  def admin_export_categories_to_csv(self, request, queryset):
+    filename = f"categories_{datetime.now().strftime('%Y-%m-%d')}.csv"
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = f'attachement; filename={filename}'
+    data   = self.get_categories_sheet(site='box')
+    writer = csv.writer(response)
+    writer.writerow([k for k in data.keys()])
+    for category in queryset:
+      data['Заголовок']       = category.title
+      data['Ссылка']          = category.slug
+      data['Ссылка_родителя'] = category.parent_slug
+      data['Изображения']     = category.thumbnail_path
+      writer.writerow([value for value in data.values()])
+    return response
 
-  def export_items(self, request, queryset):
-      meta = self.model._meta
-      field_names = ['Места'] + [field.name for field in meta.fields]
-      response = HttpResponse(content_type="text/csv")
-      response['Content-Disposition'] = f'attachement; filename={meta}.csv'
-      writer = csv.writer(response)
-      writer.writerow(field_names)
-      for obj in queryset:
-          # seats = ','.join([seat_in_order.seat.number for seat_in_order in SeatInOrder.objects.filter(order=obj)])
-          row = writer.writerow([getattr(obj, field) for field in field_names[1:]])
-          # writer.writerow([seats] + [getattr(obj, field) for field in field_names[1:]])
-          pass 
-      return response
-  
-  def export_items_photoes(self, request, queryset):
+  def admin_export_items_photoes(self, request, queryset):
     # https://thispointer.com/python-how-to-create-a-zip-archive-from-multiple-files-or-directory/
     import os 
     from zipfile import ZipFile, ZIP_DEFLATED
@@ -785,19 +770,21 @@ class ExportMixin(Parser):
     #   for f in files:
     #     # export_zip.write(os.path.join(root, f))
 
-  def delete_items_photoes(self, request, queryset):
+  def admin_delete_items_photoes(self, request, queryset):
     for item in queryset:
       item.images.all().delete()
 
-  def delete_items_features(self, request, queryset):
+  def admin_delete_items_features(self, request, queryset):
     for item in queryset:
       item.features.all().delete()
+  
+  # ! admin 
 
-  export_items.short_description          = "Простий експорт обраних товарів"
-  export_items_to_xlsx.short_description  = "Експорт обраних товарів в ексель"
-  export_items_photoes.short_description  = "Експорт у обраних товарів всіх фотографій"
-  delete_items_photoes.short_description  = "Видалити у обраних товарів всі фотографій"
-  delete_items_features.short_description = 'Видалити у обраних товарів всі характеристики'
+  admin_export_items_to_xlsx.short_description     = "Експорт обраних товарів в ексель"
+  admin_export_categories_to_csv.short_description = 'Експортувати обрані категорії '
+  admin_export_items_photoes.short_description     = "Експорт у обраних товарів всіх фотографій"
+  admin_delete_items_photoes.short_description     = "Видалити у обраних товарів всі фотографій"
+  admin_delete_items_features.short_description    = 'Видалити у обраних товарів всі характеристики'
 
   # DANGER!! DANGER!! XML AREA!! 
 
@@ -941,26 +928,31 @@ class ImportMixin(Parser):
 
   def create_categories(self, categories, list_file, *args, **kwargs):
     for category in categories:
-      title       = category["title"]
-      slug        = category["slug"]
-      code        = category["code"]
-      parent_slug = category["parent"]
-      image       = category.get('image', '')
-      # image_name  = image.split('/')[-1]
-      with transaction.atomic():
-        new_category, _ = ItemCategory.objects.get_or_create(
-          slug = slug,
-        )
-        new_category.code   = code
-        new_category.title  = title
-        new_category.meta_title = title
-        new_category.meta_descr = title
-        new_category.meta_key   = title
-        new_category.parent = ItemCategory.objects.filter(slug=parent_slug).first()
-        if image:
-          new_category.thumbnail = 'shop/category/' + image
-        new_category.save()
-        print(new_category)
+      title       = category["Заголовок"]
+      descr       = category.get("Описание", title)
+      meta_title  = category.get("Мета_Заголовок", title)
+      meta_descr  = category.get("Мета_Описание", descr)
+      meta_key    = category.get("Мета_Ключевые_Слова", title)
+      code        = category.get("Код")
+      slug        = category["Ссылка"]
+      parent_slug = category["Ссылка_родителя"]
+      image       = category.get('Изображение')
+      new_category, _ = ItemCategory.objects.get_or_create(
+        slug = slug,
+      )
+      new_category.code   = code
+      new_category.title  = title
+      new_category.meta_title = title
+      new_category.meta_descr = meta_descr
+      new_category.meta_key   = title
+      new_category.description= descr
+      new_category.parent = ItemCategory.objects.filter(slug=parent_slug).first()
+      if code:
+        new_category.code = code 
+      if image:
+        new_category.thumbnail = 'shop/category/' + image
+      new_category.save()
+      print(new_category)
     return True 
 
 
@@ -1004,11 +996,10 @@ class ImportMixin(Parser):
 
   def create_items(self, items, list_file, *args, **kwargs):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
-    # items = items
-    items = items[0:1]
+    # items = items[955:956]
     for item in items:
+      print("items.index(item):", items.index(item))
       self.create_item(item, *args, **kwargs)
-      print(items.index(item))
 
 
   def create_item(self, item, *args, **kwargs):
@@ -1025,14 +1016,14 @@ class ImportMixin(Parser):
     new_item.meta_descr  = meta_descr
     new_item.meta_key    = meta_key
     new_item = self.handle_categories(item, new_item, *args, **kwargs)
-    new_item = self.handle_slug(item, new_item, *args, **kwargs)
-    new_item = self.handle_manufacturer(item, new_item, *args, **kwargs)
-    new_item = self.handle_features(item, new_item, *args, **kwargs)
-    new_item = self.handle_currency(item, new_item, *args, **kwargs)
-    new_item = self.handle_price(item, new_item, *args, **kwargs)
-    new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
-    new_item = self.handle_images(item, new_item, *args, **kwargs)
-    new_item.save()
+    # new_item = self.handle_slug(item, new_item, *args, **kwargs)
+    # new_item = self.handle_manufacturer(item, new_item, *args, **kwargs)
+    # new_item = self.handle_features(item, new_item, *args, **kwargs)
+    # new_item = self.handle_currency(item, new_item, *args, **kwargs)
+    # new_item = self.handle_price(item, new_item, *args, **kwargs)
+    # new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
+    # new_item = self.handle_images(item, new_item, *args, **kwargs)
+    # new_item.save()
     # self.print_item(item, new_item)
 
 
@@ -1099,27 +1090,28 @@ class ImportMixin(Parser):
 
 
   def handle_categories(self, item, new_item, *args, **kwargs):
-    categories = item.get("Категории", "")#.lower().strip()
+    print(item['Заголовок'])
+    categories = item.get("Категории", "").lower().strip()
     if categories:
       if categories[0:2] == "['" and categories[-2:] == "']":
         categories   = ast.literal_eval(categories)
         if len(categories) == 3:
-          if categories[0].lower() == 'запчасти для jcb':
+          if categories[0].lower().strip() == 'запчасти для jcb':
             for category_title in categories:
-              category_title = category_title#.lower().strip()
-              category, _ = ItemCategory.objects.get_or_create(title=category_title)
+              category, _ = ItemCategory.objects.get_or_create(title=category_title.lower().strip())
               category_index = categories.index(category_title)
               if category_index != 0:
-                parent_category_title = categories[category_index-1]#.lower().strip()
+                parent_category_title = categories[category_index-1]
               elif category_index == 0:
                 parent_category_title = "Запчастини та комплектуючі"
-              parent_category, _ = ItemCategory.objects.get_or_create(title=parent_category_title)
+              parent_category, _ = ItemCategory.objects.get_or_create(title=parent_category_title.lower().strip())
               category.parent    = parent_category
               category.save()
+              new_item.set_category([category,])
       else:
-
+        category = categories
         category, _ = ItemCategory.objects.get_or_create(
-          slug__iexact=category,
+          slug__iexact=category.lower().strip(),
         )
         new_item.set_category([category,])
     return new_item

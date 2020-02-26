@@ -26,6 +26,13 @@ class Command(BaseCommand):
         type=str,
         help="Тип дії(import, export)"
     )
+    
+    parser.add_argument(
+      '-e',
+      '--ext',
+      type=str,
+      help='Розширення файлу(.csv, )'
+    )
 
   def handle(self, *args, **kwargs):
     '''
@@ -39,33 +46,38 @@ class Command(BaseCommand):
     '''
     exporter       = ExportMixin()
     importer       = ImportMixin()
-    file_name      = kwargs.get('file_name', "items.xlsx")
+    file_name      = kwargs.get('file_name')
+    ext            = kwargs.get('ext')
     content_type   = kwargs.get('content_type', 'item_category')
     action_type    = kwargs.get('action_type', 'import')
-    file_extension = file_name.split('.')[-1]
-
-
+    if file_name:
+      file_extension = file_name.split('.')[-1]
+    elif ext:
+      file_extension = ext  
+    else:
+      raise Exception
+    
     if file_extension == 'csv':
       if content_type == 'item_category':
 
         if action_type == 'import':
-          status = importer.read_items_categories_from_csv(file_name)
+          status = importer.read_items_categories_from_csv(file_name)   # TODO: NOT STARTED 
         elif action_type == 'export':
-          status = exporter.write_items_categories_to_csv(file_name)
+          status = exporter.export_items_categories_to_csv(file_name)   # TODO: NOT STARTED 
 
       elif content_type == 'item':
 
         if action_type == 'import':
-          status = importer.read_items_from_csv(file_name)
+          status = importer.read_items_from_csv(file_name)   # TODO: NOT STARTED 
         elif action_type == 'export':
-          status = exporter.write_items_to_csv(file_name)
+          status = exporter.write_items_to_csv(file_name)   # TODO: NOT STARTED 
 
       elif content_type == 'category':
 
         if action_type == 'import':
-          status = importer.read_categories_from_csv(file_name)
+          status = importer.read_categories_from_csv(file_name)   # TODO: NOT STARTED 
         elif action_type == 'export':
-          status = exporter.write_categories_from_csv
+          status = exporter.export_categories_to_csv(file_name)   # TODO: DONE
 
 
 
@@ -73,23 +85,23 @@ class Command(BaseCommand):
       if content_type == 'item_category':
 
         if action_type == 'import':
-          status = importer.read_items_categories_from_xlsx(file_name)
+          status = importer.read_items_categories_from_xlsx(file_name)   # TODO: NOT STARTED 
         elif action_type == 'export':
-          status = exporter.write_items_categories_to_xlsx(file_name)
+          status = exporter.write_items_categories_to_xlsx(file_name)   # TODO: NOT STARTED 
 
       elif content_type == 'item':
 
         if action_type == 'import':
-          status = importer.read_items_from_xlsx(file_name)
+          status = importer.read_items_from_xlsx(file_name)   # TODO: NOT STARTED 
         elif action_type == 'export':
-          status = exporter.write_items_to_xlsx(file_name)
+          status = exporter.export_items_to_xlsx(file_name)   # TODO: STARTED 
 
       elif content_type == 'category':
 
         if action_type == 'import':
-          status = importer.read_categories_from_xlsx(file_name)
+          status = importer.read_categories_from_xlsx(file_name)   # TODO: NOT STARTED 
         elif action_type == 'export':
-          status = exporter.write_categories_to_xlsx(file_name)
+          status = exporter.write_categories_to_xlsx(file_name)   # TODO: NOT STARTED 
 
 
 
@@ -97,23 +109,23 @@ class Command(BaseCommand):
       if content_type == 'item_category':
 
         if action_type == 'import':
-          status = False
+          status = False   # TODO: NOT STARTED
         elif action_type == 'export':
-          status = False
+          status = False   # TODO: NOT STARTED
 
       elif content_type == 'item':
 
         if action_type == 'import':
-          status = False 
+          status = False   # TODO: NOT STARTED 
         elif action_type == 'export':
-          status = False
+          status = False   # TODO: NOT STARTED
 
       elif content_type == 'category':
 
         if action_type == 'import':
-          status = False 
+          status = False   # TODO: NOT STARTED 
         elif action_type == 'export':
-          status = False
+          status = False   # TODO: NOT STARTED
 
 
 
@@ -121,7 +133,7 @@ class Command(BaseCommand):
       if content_type == 'item_category':
 
         if action_type == 'import':
-          status = False
+          status = False   # TODO: ALL
         elif action_type == 'export':
           status = exporter.export_items_to_xml(file_name=file_name, *args, **kwargs)
 
@@ -129,16 +141,16 @@ class Command(BaseCommand):
       elif content_type == 'item':
 
         if action_type == 'import':
-          status = False 
+          status = False   # TODO: ALL 
         elif action_type == 'export':
-          status = False
+          status = False   # TODO: ALL
 
       elif content_type == 'category':
 
         if action_type == 'import':
-          status = False 
+          status = False   # TODO: ALL 
         elif action_type == 'export':
-          status = False
+          status = False   # TODO: ALL
 
 
 
