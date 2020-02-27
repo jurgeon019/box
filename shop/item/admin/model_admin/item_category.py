@@ -20,7 +20,7 @@ from ..inlines import *
 class ItemCategoryAdmin(admin.ModelAdmin, ExportMixin):
     inlines = [
         # ItemInline,
-        # ItemCategoryInline,
+        ItemCategoryInline,
     ]
     actions = [
         'admin_export_categories_to_csv',

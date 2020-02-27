@@ -927,33 +927,54 @@ class ImportMixin(Parser):
 
 
   def create_categories(self, categories, list_file, *args, **kwargs):
+    # categories = categories[0:10]
     for category in categories:
-      title       = category["Заголовок"]
-      descr       = category.get("Описание", title)
-      meta_title  = category.get("Мета_Заголовок", title)
-      meta_descr  = category.get("Мета_Описание", descr)
-      meta_key    = category.get("Мета_Ключевые_Слова", title)
-      code        = category.get("Код")
-      slug        = category["Ссылка"]
-      parent_slug = category["Ссылка_родителя"]
-      image       = category.get('Изображение')
+      self.create_category(category)
+    return True
+
+
+  def create_category(self, category):
+    title       = category["Заголовок"]
+    descr       = category.get("Описание", title)
+    meta_title  = category.get("Мета_Заголовок", title)
+    meta_descr  = category.get("Мета_Описание", descr)
+    meta_key    = category.get("Мета_Ключевые_Слова", title)
+    code        = category.get("Код")
+    slug        = category["Ссылка"]
+    parent_slug = category["Ссылка_родителя"]
+    image       = category.get('Изображение')
+    from django.db.utils import IntegrityError
+    try:
       new_category, _ = ItemCategory.objects.get_or_create(
-        slug = slug,
+        # slug__iexact = slug.lower().strip(),
+        title = title.lower().strip(),
+
       )
-      new_category.code   = code
-      new_category.title  = title
+      # new_category.title      = title
+      new_category.code       = code
       new_category.meta_title = title
       new_category.meta_descr = meta_descr
       new_category.meta_key   = title
       new_category.description= descr
-      new_category.parent = ItemCategory.objects.filter(slug=parent_slug).first()
+      parent = ItemCategory.objects.filter(
+        slug = parent_slug, 
+      ).first()
+      new_category.parent = parent
       if code:
         new_category.code = code 
       if image:
         new_category.thumbnail = 'shop/category/' + image
       new_category.save()
+<<<<<<< HEAD
       print('sd', new_category)
     return True 
+=======
+      print(new_category)
+    except IntegrityError as e:
+      print(e)
+      print(title)
+
+>>>>>>> cbfa72afa3aaa7e21c7c10f5a0f72c3179df2d53
 
 
   def parse_item_features(self, items, list_file, *args, **kwargs):
@@ -1090,24 +1111,30 @@ class ImportMixin(Parser):
 
 
   def handle_categories(self, item, new_item, *args, **kwargs):
+    from django.db.utils import IntegrityError
     print(item['Заголовок'])
     categories = item.get("Категории", "").lower().strip()
+    
     if categories:
       if categories[0:2] == "['" and categories[-2:] == "']":
         categories   = ast.literal_eval(categories)
         if len(categories) == 3:
           if categories[0].lower().strip() == 'запчасти для jcb':
             for category_title in categories:
-              category, _ = ItemCategory.objects.get_or_create(title=category_title.lower().strip())
-              category_index = categories.index(category_title)
-              if category_index != 0:
-                parent_category_title = categories[category_index-1]
-              elif category_index == 0:
-                parent_category_title = "Запчастини та комплектуючі"
-              parent_category, _ = ItemCategory.objects.get_or_create(title=parent_category_title.lower().strip())
-              category.parent    = parent_category
-              category.save()
-              new_item.set_category([category,])
+              try:
+                category, _ = ItemCategory.objects.get_or_create(title=category_title.lower().strip())
+                category_index = categories.index(category_title)
+                if category_index != 0:
+                  parent_category_title = categories[category_index-1]
+                elif category_index == 0:
+                  parent_category_title = "Запчастини та комплектуючі"
+                parent_category, _ = ItemCategory.objects.get_or_create(title=parent_category_title.lower().strip())
+                category.parent    = parent_category
+                category.save()
+                new_item.set_category([category,])
+              except IntegrityError as e:
+                print(e)
+                print(categories)
       else:
         category = categories
         category, _ = ItemCategory.objects.get_or_create(

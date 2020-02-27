@@ -379,6 +379,7 @@ class ItemCategory(models.Model):
 	class Meta: 
 		verbose_name = ('категорія'); 
 		verbose_name_plural = ('категорії'); 
+		unique_together = ('title', 'parent')
 		
 	def get_absolute_url(self):
 		return reverse("item_category", kwargs={"slug": self.slug})
@@ -391,15 +392,36 @@ class ItemCategory(models.Model):
 		return thumbnail
 
 	@property
+	def thumbnail_url(self):
+		thumbnail = ''
+		if self.thumbnail:
+			thumbnail = self.thumbnail.url
+		return thumbnail
+	
+
+
+	@property
 	def parent_slug(self):
 		slug = ''
 		if self.parent:
 			slug = self.parent.slug	
 		return slug
+	
+	@property
+	def parents(self):
+		parent = self.parent 
+		parents = [self, parent]
+		while parent.parent:
+			parent = parent.parent 
+			parents.append(parent)
+			# parents.insert(0, parent)
+		parents = reversed(parents)
+		return parents 
 
 	@property
 	def tree_title(self):
 		result = self.title
+<<<<<<< HEAD
 		# try:
 		# 	full_path = [self.title]      
 		# 	parent = self.parent
@@ -411,6 +433,19 @@ class ItemCategory(models.Model):
 		# except Exception as e:
 		# 	print(e)
 		# 	result = self.title
+=======
+		try:
+			full_path = [self.title]      
+			parent = self.parent
+			while parent is not None:
+				print(parent)
+				full_path.append(parent.title)
+				parent = parent.parent
+			result = ' -> '.join(full_path[::-1]) 
+		except Exception as e:
+			print(e)
+			result = self.title
+>>>>>>> cbfa72afa3aaa7e21c7c10f5a0f72c3179df2d53
 		return result
 
 	def __str__(self):     
@@ -447,12 +482,15 @@ class ItemCategory(models.Model):
 			slug = slugify(self.title, allow_unicode=True)
 		if slug == '':
 			slug = slugify(self.title, allow_unicode=True)
-		origin_slug = slug 
-		numb = 1
-		while ItemCategory.objects.filter(slug=slug).exists():
-			slug = f'{origin_slug}-{numb}'
-			numb += 1
+
+		# numb = 1
+		# origin_slug = slug 
+		# while ItemCategory.objects.filter(slug=slug).exists():
+		# 	slug = f'{origin_slug}-{numb}'
+		# 	numb += 1
+
 		self.slug  = slug
+
 		super().save(*args, **kwargs)
 
 
