@@ -425,30 +425,6 @@ class ItemCategory(models.Model):
 	@property
 	def tree_title(self):
 		result = self.title
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 22e16bee33b8de6877b83e57f531a97dd40d0fb7
-		# try:
-		# 	full_path = [self.title]      
-		# 	parent = self.parent
-		# 	while parent is not None:
-<<<<<<< HEAD
-		# 		print(parent)
-		# 		full_path.append(parent.title)
-		# 		parent = parent.parent
-=======
-		# 			# print(parent)
-		# 			full_path.append(parent.title)
-		# 			parent = parent.parent
->>>>>>> 22e16bee33b8de6877b83e57f531a97dd40d0fb7
-		# 	result = ' -> '.join(full_path[::-1]) 
-		# except Exception as e:
-		# 	print(e)
-		# 	result = self.title
-<<<<<<< HEAD
-=======
-=======
 		try:
 			full_path = [self.title]      
 			parent = self.parent
@@ -460,8 +436,6 @@ class ItemCategory(models.Model):
 		except Exception as e:
 			print(e)
 			result = self.title
->>>>>>> cbfa72afa3aaa7e21c7c10f5a0f72c3179df2d53
->>>>>>> 22e16bee33b8de6877b83e57f531a97dd40d0fb7
 		return result
 
 	def __str__(self):     
