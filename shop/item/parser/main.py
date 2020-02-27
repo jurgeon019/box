@@ -965,16 +965,11 @@ class ImportMixin(Parser):
       if image:
         new_category.thumbnail = 'shop/category/' + image
       new_category.save()
-<<<<<<< HEAD
-      print('sd', new_category)
-    return True 
-=======
       print(new_category)
     except IntegrityError as e:
       print(e)
       print(title)
 
->>>>>>> cbfa72afa3aaa7e21c7c10f5a0f72c3179df2d53
 
 
   def parse_item_features(self, items, list_file, *args, **kwargs):
