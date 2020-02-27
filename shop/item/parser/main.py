@@ -948,7 +948,6 @@ class ImportMixin(Parser):
       new_category, _ = ItemCategory.objects.get_or_create(
         # slug__iexact = slug.lower().strip(),
         title = title.lower().strip(),
-
       )
       # new_category.title      = title
       new_category.code       = code
