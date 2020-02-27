@@ -291,7 +291,8 @@ class Item(models.Model):
 			if ratio.exists():
 				# print('main_currency: ', main_currency)
 				ratio = ratio.first().ratio
-				price = price / ratio
+				# print('\n')
+			price = price / ratio
 
 
 			ratio = CurrencyRatio.objects.filter(
@@ -307,7 +308,6 @@ class Item(models.Model):
 		# print('self.price.new_price: ', self.new_price)
 		# print('self.price.old_price: ', self.old_price)
 		# print('__________')
-		# print('\n')
 
 		return price 
 
@@ -350,6 +350,10 @@ class Item(models.Model):
 		else:
 			self.category = categories[-1]
 		self.save()
+
+	def get_categories(self, ):
+
+		return categories 
 
 
 from django.db.models.signals import post_save, pre_save
@@ -398,8 +402,6 @@ class ItemCategory(models.Model):
 			thumbnail = self.thumbnail.url
 		return thumbnail
 	
-
-
 	@property
 	def parent_slug(self):
 		slug = ''
@@ -411,27 +413,29 @@ class ItemCategory(models.Model):
 	def parents(self):
 		parent = self.parent 
 		parents = [self, parent]
-		while parent.parent:
-			parent = parent.parent 
-			parents.append(parent)
-			# parents.insert(0, parent)
+		if parent:
+			while parent.parent:
+				parent = parent.parent 
+				parents.append(parent)
+				# parents.insert(0, parent)
 		parents = reversed(parents)
 		return parents 
+
 
 	@property
 	def tree_title(self):
 		result = self.title
-		try:
-			full_path = [self.title]      
-			parent = self.parent
-			while parent is not None:
-				print(parent)
-				full_path.append(parent.title)
-				parent = parent.parent
-			result = ' -> '.join(full_path[::-1]) 
-		except Exception as e:
-			print(e)
-			result = self.title
+		# try:
+		# 	full_path = [self.title]      
+		# 	parent = self.parent
+		# 	while parent is not None:
+		# 		print(parent)
+		# 		full_path.append(parent.title)
+		# 		parent = parent.parent
+		# 	result = ' -> '.join(full_path[::-1]) 
+		# except Exception as e:
+		# 	print(e)
+		# 	result = self.title
 		return result
 
 	def __str__(self):     
@@ -456,7 +460,14 @@ class ItemCategory(models.Model):
 			elif alls.exists():
 				self.currency = alls.first()
 
-		self.title = self.title.lower().strip()
+
+		title = self.title.lower().strip()
+		# origin_title = title
+		# numb = 1
+		# while ItemCategory.objects.filter(title=title).exists():
+		# 	title = f'{origin_title} ({numb})'
+		# 	numb += 1
+		self.title = title
 
 		try:
 			slug = slugify(translit(self.title, reversed=True), allow_unicode=True) 
@@ -474,6 +485,8 @@ class ItemCategory(models.Model):
 		# while ItemCategory.objects.filter(slug=slug).exists():
 		# 	slug = f'{origin_slug}-{numb}'
 		# 	numb += 1
+
+
 
 		self.slug  = slug
 
