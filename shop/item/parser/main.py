@@ -1109,6 +1109,7 @@ class ImportMixin(Parser):
     from django.db.utils import IntegrityError
     print(item['Заголовок'])
     categories = item.get("Категории", "").lower().strip()
+    
     if categories:
       if categories[0:2] == "['" and categories[-2:] == "']":
         categories   = ast.literal_eval(categories)
@@ -1129,13 +1130,12 @@ class ImportMixin(Parser):
               except IntegrityError as e:
                 print(e)
                 print(categories)
-
-      # else:
-      #   category = categories
-      #   category, _ = ItemCategory.objects.get_or_create(
-      #     slug__iexact=category.lower().strip(),
-      #   )
-      #   new_item.set_category([category,])
+      else:
+        category = categories
+        category, _ = ItemCategory.objects.get_or_create(
+          slug__iexact=category.lower().strip(),
+        )
+        new_item.set_category([category,])
     return new_item
 
 
