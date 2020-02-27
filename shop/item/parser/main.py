@@ -952,7 +952,7 @@ class ImportMixin(Parser):
       if image:
         new_category.thumbnail = 'shop/category/' + image
       new_category.save()
-      print(new_category)
+      print('sd', new_category)
     return True 
 
 
