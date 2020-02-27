@@ -75,7 +75,7 @@ class Command(BaseCommand):
       elif content_type == 'category':
 
         if action_type == 'import':
-          status = importer.read_categories_from_csv(file_name)   # TODO: NOT STARTED 
+          status = importer.read_categories_from_csv(file_name)   # TODO: STARTED 
         elif action_type == 'export':
           status = exporter.export_categories_to_csv(file_name)   # TODO: DONE
 
