@@ -96,7 +96,11 @@ class Cart(models.Model):
   
   @property
   def currency(self):
-    return Currency.objects.get(is_main=True).name
+    currency = None 
+    currencies = Currency.objects.filter(is_main=True)
+    if currencies.exists():
+      currency = currencies.first().name
+    return currency
   
 
 class CartItem(models.Model):

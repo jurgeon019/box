@@ -9,6 +9,10 @@ from django.utils.html import mark_safe
 from django.core.files.base import ContentFile
 from django.conf import settings 
 from django.utils.text import slugify
+# from transliterate import slugify
+from transliterate import translit, get_available_language_codes
+from django.utils.text import slugify
+# from transliterate import slugify
 
 from transliterate import translit
 import os 
@@ -210,7 +214,7 @@ class Item(models.Model):
 
 	def create_currency(self):
 		if self.currency is None:
-			print('box.shop.item.models.ItemCategory.create_currency')
+			# print('box.shop.item.models.ItemCategory.create_currency')
 			if settings.MULTIPLE_CATEGORY:
 				if self.categories.all():
 					self.currency = self.categories.all().first().currency
@@ -287,7 +291,8 @@ class Item(models.Model):
 			if ratio.exists():
 				# print('main_currency: ', main_currency)
 				ratio = ratio.first().ratio
-				price = price / ratio
+				# print('\n')
+			price = price / ratio
 
 
 			ratio = CurrencyRatio.objects.filter(
@@ -303,7 +308,6 @@ class Item(models.Model):
 		# print('self.price.new_price: ', self.new_price)
 		# print('self.price.old_price: ', self.old_price)
 		# print('__________')
-		# print('\n')
 
 		return price 
 
@@ -347,6 +351,10 @@ class Item(models.Model):
 			self.category = categories[-1]
 		self.save()
 
+	def get_categories(self, ):
+
+		return categories 
+
 
 from django.db.models.signals import post_save, pre_save
 
@@ -359,7 +367,8 @@ class ItemCategory(models.Model):
 	title      = models.CharField(verbose_name=("Назва"),  max_length=255, blank=False, null=False)
 	thumbnail  = models.ImageField(verbose_name=("Картинка"), blank=True, null=True, upload_to='shop/category')
 	alt        = models.CharField(verbose_name=("Альт до картинки"),   blank=True, null=True, max_length=255)
-
+	description= models.TextField(verbose_name=("Опис"), blank=True, null=True)
+	
 	parent     = models.ForeignKey(verbose_name=("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.CASCADE, related_name='subcategories')
 	currency   = models.ForeignKey(verbose_name=("Валюта"), to="item.Currency", blank=True, null=True, related_name="categories",  on_delete=models.CASCADE)
 
@@ -374,37 +383,75 @@ class ItemCategory(models.Model):
 	class Meta: 
 		verbose_name = ('категорія'); 
 		verbose_name_plural = ('категорії'); 
+		unique_together = ('title', 'parent')
 		
 	def get_absolute_url(self):
 		return reverse("item_category", kwargs={"slug": self.slug})
 
 	@property
+	def thumbnail_path(self):
+		thumbnail = ''
+		if self.thumbnail:
+			thumbnail = self.thumbnail.path
+		return thumbnail
+
+	@property
+	def thumbnail_url(self):
+		thumbnail = ''
+		if self.thumbnail:
+			thumbnail = self.thumbnail.url
+		return thumbnail
+	
+	@property
+	def parent_slug(self):
+		slug = ''
+		if self.parent:
+			slug = self.parent.slug	
+		return slug
+	
+	@property
+	def parents(self):
+		parent = self.parent 
+		parents = [self, parent]
+		if parent:
+			while parent.parent:
+				parent = parent.parent 
+				parents.append(parent)
+				# parents.insert(0, parent)
+		parents = reversed(parents)
+		return parents 
+
+
+	@property
 	def tree_title(self):
 		result = self.title
-		# try:
-		# 	full_path = [self.title]      
-		# 	parent = self.parent
-		# 	while parent is not None:
-		# 			# print(parent)
-		# 			full_path.append(parent.title)
-		# 			parent = parent.parent
-		# 	result = ' -> '.join(full_path[::-1]) 
-		# except Exception as e:
-		# 	print(e)
-		# 	result = self.title
+		try:
+			full_path = [self.title]      
+			parent = self.parent
+			while parent is not None:
+				print(parent)
+				full_path.append(parent.title)
+				parent = parent.parent
+			result = ' -> '.join(full_path[::-1]) 
+		except Exception as e:
+			print(e)
+			result = self.title
 		return result
 
-	def __str__(self):         
+	def __str__(self):     
 		result = f'{self.title}'
-		# result = f'{self.tree_title} ({self.currency})'
+		result = f'{self.tree_title} ({self.currency})'
 		return result
-	
+
+
 	def save(self, *args, **kwargs):
+
 		if self.currency:
 			try:
 				self.items.all().update(currency=self.currency)
 			except:
 				pass
+
 		elif not self.currency:
 			alls  = Currency.objects.all()
 			mains = alls.filter(is_main=True)
@@ -413,16 +460,49 @@ class ItemCategory(models.Model):
 			elif alls.exists():
 				self.currency = alls.first()
 
+
 		title = self.title.lower().strip()
+		# origin_title = title
+		# numb = 1
+		# while ItemCategory.objects.filter(title=title).exists():
+		# 	title = f'{origin_title} ({numb})'
+		# 	numb += 1
 		self.title = title
-		if not self.slug:
-			try:
-				self.slug = slugify(translit(title, reversed=True))
-			except:
-				self.slug = self.pk
+
+		try:
+			slug = slugify(translit(self.title, reversed=True), allow_unicode=True) 
+		except Exception as e:
+			slug = slugify(translit(self.title, 'uk', reversed=True), allow_unicode=True) 
+		except Exception as e:
+			slug = slugify(translit(self.title, 'ru', reversed=True), allow_unicode=True) 
+		except Exception as e:
+			slug = slugify(self.title, allow_unicode=True)
+		if slug == '':
+			slug = slugify(self.title, allow_unicode=True)
+
+		# numb = 1
+		# origin_slug = slug 
+		# while ItemCategory.objects.filter(slug=slug).exists():
+		# 	slug = f'{origin_slug}-{numb}'
+		# 	numb += 1
+
+
+
+		self.slug  = slug
+
 		super().save(*args, **kwargs)
 
 
+def generate_unique_slug(klass, field, item, *args, **kwargs):
+	origin_slug = slugify(translit(field, reversed=True)) # slugify(field)
+	unique_slug = origin_slug
+	numb = 1
+	obj = klass.objects.filter(slug=unique_slug)
+	while obj.exists():
+		obj = obj.first()
+		unique_slug = f'{origin_slug}-{numb}'
+		numb += 1
+	return unique_slug
 
 
 def item_image_folder(instance, filename):
@@ -447,8 +527,8 @@ def item_image_folder(instance, filename):
 
 	return path 
 
-
 class ItemImage(models.Model):
+
 	item  = models.ForeignKey(verbose_name=("Товар"), to="item.Item", on_delete=models.CASCADE, related_name='images', null=True)
 	image = models.ImageField(verbose_name=('Ссилка зображення'), upload_to=item_image_folder, blank=True, null=True, default='shop/items/test_item.jpg')
 	alt   = models.CharField(verbose_name=("Альт"), max_length=255, blank=True, null=True)
@@ -457,7 +537,9 @@ class ItemImage(models.Model):
 
 	def __str__(self):
 		return "%s" % self.image
-			
+	
+
+
 	def save(self, *args, **kwargs):
 		super().save(*args, **kwargs)
 		# img = Image.open(self.image.path)

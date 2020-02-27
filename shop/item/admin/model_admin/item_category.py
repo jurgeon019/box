@@ -17,27 +17,35 @@ from ..inlines import *
 
 
 
-class ItemCategoryAdmin(admin.ModelAdmin):
+class ItemCategoryAdmin(admin.ModelAdmin, ExportMixin):
     inlines = [
         # ItemInline,
-        # ItemCategoryInline,
+        ItemCategoryInline,
+    ]
+    actions = [
+        'admin_export_categories_to_csv',
+        
     ]
     list_display = [
         'id',
         'tree_title',
-        'title',
+        # 'title',
         'slug',
         # 'code',
-        # 'currency',
+        'currency',
+    ]
+    search_fields = [
+        'title',
+        # 'id',
     ]
     list_display_links = [
         'id',
         'tree_title',
-        'title',
-        'slug',
+        # 'title',
+        # 'slug',
     ]
     list_editable= [
-        # 'currency',
+        'currency',
     #     'slug'
     ]
 
@@ -51,7 +59,7 @@ class ItemCategoryAdmin(admin.ModelAdmin):
                 "created",
                 'updated',
                 'parent',
-                # "currency",
+                "currency",
             ),
             'classes':(
                 'wide',
