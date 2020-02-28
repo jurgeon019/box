@@ -99,8 +99,8 @@ from django.db.models.signals import pre_save
 
 class ItemStock(models.Model):
 	# code = models.NullBooleanField(verbose_name=("Код"))
-	text = models.CharField(verbose_name=('Наявність'), max_length=255, unique=True)
-
+	text         = models.CharField(verbose_name=('Наявність'), max_length=255, unique=True)
+	availability = models.BooleanField(verbose_name=('Можливість покупки'), default=True)
 	def __str__(self):
 		return f"{self.text}"
 	
