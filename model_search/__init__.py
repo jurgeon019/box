@@ -3,7 +3,7 @@ from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
 
-from model_search.lib import (
+from box.model_search.lib import (
     normalize_query, model_search, tags_search, build_query)
 
 

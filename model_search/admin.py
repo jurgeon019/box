@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from modeltranslation.admin import TranslationTabularInline
 
-from model_search.models import SearchTag, SearchTagGroup, SearchQuery
+from box.model_search.models import SearchTag, SearchTagGroup, SearchQuery
 
 
 class SearchTagInline(TranslationTabularInline):
