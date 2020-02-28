@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'box.custom_auth',
     'box.pages',
     'box.blog',
+    'box.model_search',
     'box.shop',
     'box.shop.test_shop',
     'box.shop.item',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'box.shop.liqpay',
     'box.shop.privat24',
     'box.shop.profile',
+    'box.shop.novaposhta',
 
 ]
 

@@ -68,7 +68,7 @@ def filter_category(items, query):
 
 def paginate(items, query):
   page_number  = query.get('page', 1)
-  per_page     = query.get('per_page', 4)
+  per_page     = query.get('per_page', 100)
   ordering = query.get('sort', '-created')
   page         = Paginator(items, per_page=per_page).get_page(page_number)
   page_items   = ItemSerializer(page, many=True, read_only=True).data
@@ -110,7 +110,7 @@ def get_items(request):
   query = request.POST
   items = Item.objects.all()
 
-  items = filter_search(items, query)
+  # items = filter_search(items, query)
   items = filter_category(items, query)
   items = make_ordering(items, query)
   response = paginate(items, query)

@@ -1,14 +1,14 @@
-from box.urls import * 
+from box.core.urls import * 
 
 from django.urls import path, include
 
 urlpatterns = [
-  path('', include('box.urls')),
+  path('', include('box.core.urls')),
   path('', include('project.api.urls')),
 ]
 
 multilingual_urls = [
-  path('', include('box.multilingual_urls')),
+  path('', include('box.core.multilingual_urls')),
   path('', include('project.urls')),
 ]
 
