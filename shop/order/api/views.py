@@ -12,14 +12,14 @@ from django.http import JsonResponse
 
 
 def order_items(request):
-  name         = request.POST.get('name', "")
-  email        = request.POST.get('email', "")
-  phone        = request.POST.get('phone', "")
-  address      = request.POST.get('address', "")
+  name         = request.POST.get('name', "---")
+  email        = request.POST.get('email', "---")
+  phone        = request.POST.get('phone', "---")
+  address      = request.POST.get('address', "---")
 
-  payment_opt  = request.POST.get('payment', "")
-  delivery_opt = request.POST.get('delivery_opt', "")
-  comments     = request.POST.get('comments', "")
+  payment_opt  = request.POST.get('payment', "---")
+  delivery_opt = request.POST.get('delivery_opt', "---")
+  comments     = request.POST.get('comments', "---")
 
   order        = Order.objects.create(
 
@@ -51,12 +51,12 @@ def order_items(request):
 @csrf_exempt
 def order_request(request):
     print(request.POST)
-    name    = request.POST.get('name')
-    email   = request.POST.get('email')
-    phone   = request.POST.get('phone')
-    address = request.POST.get('address')
+    name    = request.POST.get('name', '---')
+    email   = request.POST.get('email', '---')
+    phone   = request.POST.get('phone', '---')
+    address = request.POST.get('address', '---')
+    item_id = request.POST.get('product_id', '---')
     payment = 'Покупка в 1 клік(при покупці в 1 клік оплати немає)'
-    item_id = request.POST.get('product_id')
 
     cart = get_cart(request)
     

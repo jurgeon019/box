@@ -28,6 +28,8 @@ class Command(BaseCommand):
     )
     
     parser.add_argument(
+      # я пишу код на петончику
+      #  лалалалала
       '-e',
       '--ext',
       type=str,

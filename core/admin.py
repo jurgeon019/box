@@ -39,7 +39,7 @@ from box.shop.item.admin import (
     CurrencyRatio, CurrencyRatioAdmin,
 )
 from box.shop.cart.admin import (
-    Cart, CartAdmin,
+    Cart, CartAdmin, CartItem, CartItemAdmin
 )
 from box.shop.profile.admin import * 
 from box.shop.order.admin import *
@@ -132,6 +132,15 @@ try:
     admin.site.unregister(SocialAccount)
 except: 
     pass
+
+
+
+
+admin_plus.register(Cart, CartAdmin)
+admin_plus.register(CartItem, CartItemAdmin)
+# admin_plus.register(Cart, CartAdmin)
+# admin_plus.register(Cart, CartAdmin)
+# admin_plus.register(Cart, CartAdmin)
 
 
 

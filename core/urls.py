@@ -34,7 +34,7 @@ urlpatterns = [
   
   path('i18n/',            include('django.conf.urls.i18n')),
   path('rosetta/',         include('rosetta.urls')),
-  # path('admin+/',          admin_plus.urls),
+  path('admin+/',          admin_plus.urls),
   # path('admin/',           custom_admin.urls),
   path('admin/',           admin.site.urls),
   path('tinymce/',         include('tinymce.urls')),

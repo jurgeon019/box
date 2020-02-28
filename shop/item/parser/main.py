@@ -1012,6 +1012,7 @@ class ImportMixin(Parser):
   def create_items(self, items, list_file, *args, **kwargs):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
     # items = items[955:956]
+    # items = items[0:1]
     for item in items:
       print("items.index(item):", items.index(item))
       self.create_item(item, *args, **kwargs)
@@ -1031,15 +1032,15 @@ class ImportMixin(Parser):
     new_item.meta_descr  = meta_descr
     new_item.meta_key    = meta_key
     new_item = self.handle_categories(item, new_item, *args, **kwargs)
-    # new_item = self.handle_slug(item, new_item, *args, **kwargs)
-    # new_item = self.handle_manufacturer(item, new_item, *args, **kwargs)
-    # new_item = self.handle_features(item, new_item, *args, **kwargs)
-    # new_item = self.handle_currency(item, new_item, *args, **kwargs)
-    # new_item = self.handle_price(item, new_item, *args, **kwargs)
-    # new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
-    # new_item = self.handle_images(item, new_item, *args, **kwargs)
-    # new_item.save()
-    # self.print_item(item, new_item)
+    new_item = self.handle_slug(item, new_item, *args, **kwargs)
+    new_item = self.handle_manufacturer(item, new_item, *args, **kwargs)
+    new_item = self.handle_features(item, new_item, *args, **kwargs)
+    new_item = self.handle_currency(item, new_item, *args, **kwargs)
+    new_item = self.handle_price(item, new_item, *args, **kwargs)
+    new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
+    new_item = self.handle_images(item, new_item, *args, **kwargs)
+    new_item.save()
+    self.print_item(item, new_item)
 
 
   def print_item(self, item, new_item, *args, **kwargs):
@@ -1065,8 +1066,6 @@ class ImportMixin(Parser):
 
   def handle_manufacturer(self, item, new_item, *args, **kwargs):
     manufacturer = item.get('Производитель')
-    print(new_item)
-    return new_item
     if manufacturer:
       new_item.manufacturer, _ = ItemManufacturer.objects.get_or_create(name=manufacturer)
     return new_item
@@ -1131,8 +1130,12 @@ class ImportMixin(Parser):
                 print(categories)
       else:
         category = categories
+        print(category)
+        print('sdfsdfsdf')
+        return 
         category, _ = ItemCategory.objects.get_or_create(
-          slug__iexact=category.lower().strip(),
+          # slug__iexact=category.lower().strip(),
+          title=category.lower().strip(),
         )
         new_item.set_category([category,])
     return new_item
@@ -1156,12 +1159,20 @@ class ImportMixin(Parser):
 
 
   def handle_price(self, item, new_item, *args, **kwargs):
-    old_price   = item.get("Старая_Цена")
-    new_price   = item.get("Новая_Цена")
+    old_price    = item.get("Старая_Цена")
+    new_price    = item.get("Новая_Цена")
+    price_netto  = item.get("price_netto")
+    price_brutto = item.get("price_brutto")
     if old_price:
       new_item.old_price = old_price
     if new_price:
       new_item.new_price = new_price
+    if price_netto:
+      new_item.currency, _ = Currency.objects.get_or_create(name=price_netto.split(' ')[-1].strip())
+      new_item.old_price = float(price_netto.split(' ')[0].strip().replace(',', '.'))
+    if price_brutto:
+      new_item.currency, _ = Currency.objects.get_or_create(name=price_brutto.split(' ')[-1].strip())
+      new_item.new_price = float(price_brutto.split(' ')[0].strip().replace(',', '.'))
     return new_item 
 
 
@@ -1323,6 +1334,9 @@ class ImportMixin(Parser):
   def import_items_from_xml(self, filename, *args, **kwargs):
     import_items_from_xml_by_xml_etree(filename)
     return True 
+
+
+
 
 
 

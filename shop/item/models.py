@@ -303,11 +303,11 @@ class Item(models.Model):
 				# print('current_currency: ', current_currency)
 				ratio = ratio.first().ratio
 				price = price * ratio
-		# print('price: ', price)
-		# print('self.currency: ', self.currency)
-		# print('self.price.new_price: ', self.new_price)
-		# print('self.price.old_price: ', self.old_price)
-		# print('__________')
+		print('price: ', price)
+		print('self.currency: ', self.currency)
+		print('self.price.new_price: ', self.new_price)
+		print('self.price.old_price: ', self.old_price)
+		print('__________')
 
 		return price 
 
@@ -425,17 +425,17 @@ class ItemCategory(models.Model):
 	@property
 	def tree_title(self):
 		result = self.title
-		try:
-			full_path = [self.title]      
-			parent = self.parent
-			while parent is not None:
-				print(parent)
-				full_path.append(parent.title)
-				parent = parent.parent
-			result = ' -> '.join(full_path[::-1]) 
-		except Exception as e:
-			print(e)
-			result = self.title
+		# try:
+		# 	full_path = [self.title]      
+		# 	parent = self.parent
+		# 	while parent is not None:
+		# 		print(parent)
+		# 		full_path.append(parent.title)
+		# 		parent = parent.parent
+		# 	result = ' -> '.join(full_path[::-1]) 
+		# except Exception as e:
+		# 	print(e)
+		# 	result = self.title
 		return result
 
 	def __str__(self):     

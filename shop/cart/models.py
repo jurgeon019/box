@@ -91,7 +91,8 @@ class Cart(models.Model):
     total_price = 0
     for cart_item in self.items.all():
     # for cart_item in CartItem.objects.filter(cart=self):
-      total_price += cart_item.total_price
+      if cart_item.total_price:
+        total_price += cart_item.total_price
     return total_price
   
   @property
@@ -101,7 +102,7 @@ class Cart(models.Model):
     if currencies.exists():
       currency = currencies.first().name
     return currency
-  
+
 
 class CartItem(models.Model):
   ordered  = models.BooleanField( verbose_name=("Замовлено"), default=False)
@@ -116,12 +117,15 @@ class CartItem(models.Model):
   @property
   def total_price(self):
     try:
-      return self.item.price * self.quantity
+      item = self.item.price
+      if item:
+        return item * self.quantity
+      else:
+        return None 
     except:
       print('Блядь поправ це гімно, відвалюється при покупці в 1 клік')
-      
       return 1
-  
+
   @property
   def price_per_item(self):
     return self.item.price
