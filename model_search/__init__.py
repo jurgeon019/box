@@ -11,8 +11,8 @@ __all__ = ['normalize_query', 'build_query', 'model_search']
 
 
 class ModelSearchConfig(AppConfig):
-    name = 'model_search'
+    name = 'box.model_search'
     verbose_name = _("Search")
 
 
-default_app_config = 'model_search.ModelSearchConfig'
+default_app_config = 'box.model_search.ModelSearchConfig'
