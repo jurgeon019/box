@@ -10,7 +10,7 @@ from django.http import JsonResponse
 
 
 
-
+@csrf_exempt
 def order_items(request):
   name         = request.POST.get('name', "---")
   email        = request.POST.get('email', "---")
