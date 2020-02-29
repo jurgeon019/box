@@ -9,7 +9,6 @@ from django.utils.html import mark_safe
 from django.core.files.base import ContentFile
 from django.conf import settings 
 from django.utils.text import slugify
-# from transliterate import slugify
 from transliterate import translit, get_available_language_codes
 from django.utils.text import slugify
 # from transliterate import slugify
@@ -17,6 +16,8 @@ from django.utils.text import slugify
 from transliterate import translit
 import os 
 from PIL import Image
+
+from box.shop.item import settings as item_settings 
 
 
 
@@ -310,6 +311,14 @@ class Item(models.Model):
 		print('__________')
 
 		return price 
+
+	@property
+	def thumbnail_url(self):
+		if self.thumbnail:
+			url = self.thumbnail.url
+		else:
+			url = item_settings.NO_ITEM_IMAGE
+		return url 
 
 	@property
 	def main_image(self):

@@ -12,6 +12,17 @@ from django.http import JsonResponse
 
 @csrf_exempt
 def order_items(request):
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
   name         = request.POST.get('name', "---")
   email        = request.POST.get('email', "---")
   phone        = request.POST.get('phone', "---")

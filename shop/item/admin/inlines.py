@@ -65,17 +65,17 @@ class ItemInline(TranslationTabularInline):
         'currency',
     ]
     classes = ['collapse']
-    if settings.MULTIPLE_CATEGORY:
-        filter_horizontal = [
-            'categories',
-        ]
-    else:
-        filter_horizontal = [
-            'category',
-        ]
+    # if settings.MULTIPLE_CATEGORY:
+    #     filter_horizontal = [
+    #         'categories',
+    #     ]
+    # else:
+    #     filter_horizontal = [
+    #         'category',
+    #     ]
 
 
-class ItemCategoryInline(TranslationTabularInline):
+class ItemCategoryInline(TranslationStackedInline):
     model = ItemCategory 
     extra = 0
     exclude = [
@@ -97,7 +97,7 @@ class ItemCategoryInline(TranslationTabularInline):
 
 class ItemFeatureInline(TranslationTabularInline):
     model = ItemFeature
-    extra = 0 # при extra 0 не працює TranslationTabularInline
+    extra = 0 
     classes = ['collapse']
     exclude = [
         'code',

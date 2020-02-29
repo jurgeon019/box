@@ -2,8 +2,8 @@ from django.contrib import admin
 
 from box.shop.order.models import Order, Status
 
-# from box.shop.liqpay.admin import PaymentInline
-# from box.shop.cart.admin import CartItemInline
+from box.shop.liqpay.admin import PaymentInline
+from box.shop.cart.admin import CartItemInline
 
 
 
@@ -39,8 +39,8 @@ class OrderAdmin(admin.ModelAdmin):
 
     total.short_description = 'Сумма замовлення'
     inlines = [
-        # CartItemInline,
-        # PaymentInline,
+        CartItemInline,
+        PaymentInline,
     ]
     list_display = [
         'id',

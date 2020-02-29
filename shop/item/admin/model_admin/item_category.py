@@ -17,7 +17,7 @@ from ..inlines import *
 
 
 
-class ItemCategoryAdmin(admin.ModelAdmin, ExportMixin):
+class ItemCategoryAdmin(TabbedTranslationAdmin, ExportMixin):
     inlines = [
         # ItemInline,
         ItemCategoryInline,

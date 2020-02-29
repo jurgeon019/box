@@ -10,6 +10,7 @@ from box.shop.item.models import Item, ItemCategory, ItemReview
 from box.shop.item.api.serializers import ItemSerializer, ItemReviewSerializer
 from box.shop.cart.utils import get_cart
 from box.core.utils import get_line
+from box.shop.item.api.search import filter_search
 
 
 def get_items_in_favours(request, items):
@@ -32,15 +33,7 @@ def get_items_in_cart(request, items):
   return items_in_cart
 
 
-def filter_search(items, query):
-    search = query.get('q')
-    if search:
-        search = search.lower()
-        items = items.filter(
-            Q(title__icontains=search) |
-            Q(description__icontains=search)
-        ).distinct()
-    return items
+
 
 
 def filter_category(items, query):
@@ -69,32 +62,37 @@ def filter_category(items, query):
 def paginate(items, query):
   page_number  = query.get('page', 1)
   per_page     = query.get('per_page', 100)
-  ordering = query.get('sort', '-created')
-  page         = Paginator(items, per_page=per_page).get_page(page_number)
-  page_items   = ItemSerializer(page, many=True, read_only=True).data
-  is_paginated = page.has_other_pages()
-  current_page = page.number
-  last_page    = page.paginator.num_pages
-  page_range   = page.paginator.page_range
-  has_prev     = page.has_previous()
-  has_next     = page.has_next()
-  next_url     = f'?page={page.next_page_number()}' if has_next else ''
-  prev_url     = f'?page={page.previous_page_number()}' if has_prev else ''
-  first_url    = f'?page=1'
-  last_url     = f'?page={last_page}'
+  ordering     = query.get('sort', '-created')
+  if not settings.PAGINATE_AJAX:
+    page = items      
+  else:
+    page = Paginator(items, per_page=per_page).get_page(page_number)
+    is_paginated = page.has_other_pages()
+    current_page = page.number
+    last_page    = page.paginator.num_pages
+    page_range   = page.paginator.page_range
+    has_prev     = page.has_previous()
+    has_next     = page.has_next()
+    next_url     = f'?page={page.next_page_number()}' if has_next else ''
+    prev_url     = f'?page={page.previous_page_number()}' if has_prev else ''
+    first_url    = f'?page=1'
+    last_url     = f'?page={last_page}'
+    response.update({
+      'is_paginated':    is_paginated,
+      'current_page':    current_page,
+      'page_range':      list(page_range),
+      'last_page':       last_page,
+      'first_url':       first_url,
+      'next_url':        next_url,
+      'prev_url':        prev_url,
+      'last_url':        last_url,
+      'has_prev':        has_prev,
+      'has_next':        has_next,
+    })
 
+  page_items = ItemSerializer(page, many=True, read_only=True).data
   response = {
     'paginated_items': page_items,
-    'is_paginated':    is_paginated,
-    'current_page':    current_page,
-    'page_range':      list(page_range),
-    'last_page':       last_page,
-    'first_url':       first_url,
-    'next_url':        next_url,
-    'prev_url':        prev_url,
-    'last_url':        last_url,
-    'has_prev':        has_prev,
-    'has_next':        has_next,
   }
   return response
 
@@ -109,8 +107,7 @@ def make_ordering(items, query):
 def get_items(request):
   query = request.POST
   items = Item.objects.all()
-
-  # items = filter_search(items, query)
+  items = filter_search(items, query)
   items = filter_category(items, query)
   items = make_ordering(items, query)
   response = paginate(items, query)
