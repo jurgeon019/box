@@ -8,7 +8,7 @@ env/
 # media/
 
 /media/shop/item
-**/shop/item/**
+**/media/shop/item/**
 
 
 
@@ -19,7 +19,6 @@ migrations/
 **/migrations/**
 !**/migrations
 !**/migrations/__init__.py
-settings.ini
 __pycache__
 __pycache__/
 **/__pycache__/**
