@@ -32,7 +32,7 @@ class Order(models.Model):
   email       = models.CharField(verbose_name=("Е-майл"),              max_length=255, blank=True, null=True)
   phone       = models.CharField(verbose_name=('Номер телефона'),      max_length=255, blank=True, null=True)
   address     = models.CharField(verbose_name=('Адрес'),               max_length=255, blank=True, null=True)
-  comments    = models.TextField(verbose_name=('Коментарии'),          blank=True, null=True, default=None)
+  comments    = models.TextField(verbose_name=('Коментарии'),          blank=True, null=True)
   payment_opt = models.CharField(verbose_name=("Спосіб оплати"),       blank=True, null=True, max_length=255, help_text=' ')
   delivery_opt= models.CharField(verbose_name=("Спосіб доставки"),     blank=True, null=True, max_length=255)
   ordered     = models.BooleanField(verbose_name=('Завершений'), default=False)
@@ -81,7 +81,7 @@ class Order(models.Model):
       order.save()
       cart.save()
     self.make_order_total_price()
-    send_order_mail()
+    # send_order_mail()
 
 
 class OrderRequest(models.Model):
@@ -98,4 +98,6 @@ class OrderRequest(models.Model):
     class Meta:
         verbose_name = 'Покупка в один клік'
         verbose_name_plural = 'покупки в 1 клік'
+
+
 

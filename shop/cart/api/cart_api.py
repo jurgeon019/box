@@ -61,3 +61,4 @@ def change_item_amount(request):
   }
   response.update(get_cart_info(request))
   return JsonResponse(response)
+

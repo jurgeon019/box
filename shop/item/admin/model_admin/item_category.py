@@ -17,7 +17,7 @@ from ..inlines import *
 
 
 
-class ItemCategoryAdmin(admin.ModelAdmin, ExportMixin):
+class ItemCategoryAdmin(TabbedTranslationAdmin, ExportMixin):
     inlines = [
         # ItemInline,
         ItemCategoryInline,
@@ -28,8 +28,8 @@ class ItemCategoryAdmin(admin.ModelAdmin, ExportMixin):
     ]
     list_display = [
         'id',
-        'tree_title',
-        # 'title',
+        # 'tree_title',
+        'title',
         'slug',
         # 'code',
         'currency',
@@ -40,8 +40,8 @@ class ItemCategoryAdmin(admin.ModelAdmin, ExportMixin):
     ]
     list_display_links = [
         'id',
-        'tree_title',
-        # 'title',
+        # 'tree_title',
+        'title',
         # 'slug',
     ]
     list_editable= [

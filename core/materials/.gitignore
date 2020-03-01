@@ -20,7 +20,7 @@ __pycache__/
 !**/__pycache__
 .pyc
 
-settings.ini
+# settings.ini
 static_root/
 
 

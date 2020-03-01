@@ -35,6 +35,13 @@ def get_liqpay_context(request):
 
 
 def get_response(request):
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print(request.POST)
+  print("request.POST")
   liqpay    = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
   data      = request.POST.get('data')
   signature = request.POST.get('signature')

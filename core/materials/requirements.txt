@@ -19,3 +19,7 @@ channels_redis
 Pillow 
 transliterate 
 pandas 
+bs4 
+selenium 
+xlsxwriter
+

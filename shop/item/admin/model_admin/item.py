@@ -112,14 +112,14 @@ class ItemAdmin(TabbedTranslationAdmin, ExportMixin):
     list_display = [
         'id',
         'title',
-        'category',
+        # 'category',
         'price',
         'old_price',
         'in_stock',
         'is_active',
     ]
     list_editable = [
-        'category',
+        # 'category',
     ]
     list_display_links = [
         'id', 
@@ -159,4 +159,7 @@ class CurrencyRatioAdmin(admin.ModelAdmin):
         'ratio',
     ]
 
+
+class ItemStockAdmin(admin.ModelAdmin):
+    pass 
 

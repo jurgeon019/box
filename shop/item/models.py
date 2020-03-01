@@ -9,7 +9,6 @@ from django.utils.html import mark_safe
 from django.core.files.base import ContentFile
 from django.conf import settings 
 from django.utils.text import slugify
-# from transliterate import slugify
 from transliterate import translit, get_available_language_codes
 from django.utils.text import slugify
 # from transliterate import slugify
@@ -17,6 +16,8 @@ from django.utils.text import slugify
 from transliterate import translit
 import os 
 from PIL import Image
+
+from box.shop.item import settings as item_settings 
 
 
 
@@ -99,8 +100,8 @@ from django.db.models.signals import pre_save
 
 class ItemStock(models.Model):
 	# code = models.NullBooleanField(verbose_name=("Код"))
-	text = models.CharField(verbose_name=('Наявність'), max_length=255, unique=True)
-
+	text         = models.CharField(verbose_name=('Наявність'), max_length=255, unique=True)
+	availability = models.BooleanField(verbose_name=('Можливість покупки'), default=True)
 	def __str__(self):
 		return f"{self.text}"
 	
@@ -158,7 +159,7 @@ class Item(models.Model):
 	title        = models.CharField(verbose_name=("Назва"), max_length=255, null=False)
 	description  = models.TextField(verbose_name=("Опис"),                    blank=True, null=True)
 	code         = models.CharField(verbose_name=("Артикул"), max_length=255,  blank=True, null=True, unique=True)   
-	slug         = models.SlugField(verbose_name=("Ссилка"),  max_length=255, unique=True, blank=True, null=True)
+	slug         = models.SlugField(verbose_name=("Ссилка"),  max_length=255, unique=True, blank=False, null=True)
 	thumbnail    = models.ImageField(verbose_name=("Маленька картинка"), blank=True, upload_to="shop/items/thumbnails")
 	markers      = models.ManyToManyField(verbose_name=("Маркери"), to='item.ItemMarker', related_name='items')
 	manufacturer = models.ForeignKey(verbose_name=("Виробник"), to="item.ItemManufacturer", blank=True, null=True, on_delete=models.SET_NULL, related_name='items')
@@ -303,13 +304,21 @@ class Item(models.Model):
 				# print('current_currency: ', current_currency)
 				ratio = ratio.first().ratio
 				price = price * ratio
-		# print('price: ', price)
-		# print('self.currency: ', self.currency)
-		# print('self.price.new_price: ', self.new_price)
-		# print('self.price.old_price: ', self.old_price)
-		# print('__________')
+		print('price: ', price)
+		print('self.currency: ', self.currency)
+		print('self.price.new_price: ', self.new_price)
+		print('self.price.old_price: ', self.old_price)
+		print('__________')
 
 		return price 
+
+	@property
+	def thumbnail_url(self):
+		if self.thumbnail:
+			url = self.thumbnail.url
+		else:
+			url = item_settings.NO_ITEM_IMAGE
+		return url 
 
 	@property
 	def main_image(self):
@@ -354,6 +363,15 @@ class Item(models.Model):
 	def get_categories(self, ):
 
 		return categories 
+	
+	def in_cart(self, request):
+		from box.shop.cart.models import CartItem
+		from box.shop.cart.utils import get_cart
+
+
+		in_cart = self.id in CartItem.objects.filter(cart=get_cart(request)).values_list('item__id', flat=True)
+
+		return in_cart 
 
 
 from django.db.models.signals import post_save, pre_save
@@ -425,17 +443,17 @@ class ItemCategory(models.Model):
 	@property
 	def tree_title(self):
 		result = self.title
-		try:
-			full_path = [self.title]      
-			parent = self.parent
-			while parent is not None:
-				print(parent)
-				full_path.append(parent.title)
-				parent = parent.parent
-			result = ' -> '.join(full_path[::-1]) 
-		except Exception as e:
-			print(e)
-			result = self.title
+		# try:
+		# 	full_path = [self.title]      
+		# 	parent = self.parent
+		# 	while parent is not None:
+		# 		print(parent)
+		# 		full_path.append(parent.title)
+		# 		parent = parent.parent
+		# 	result = ' -> '.join(full_path[::-1]) 
+		# except Exception as e:
+		# 	print(e)
+		# 	result = self.title
 		return result
 
 	def __str__(self):     

@@ -34,7 +34,7 @@ urlpatterns = [
   
   path('i18n/',            include('django.conf.urls.i18n')),
   path('rosetta/',         include('rosetta.urls')),
-  # path('admin+/',          admin_plus.urls),
+  path('admin+/',          admin_plus.urls),
   # path('admin/',           custom_admin.urls),
   path('admin/',           admin.site.urls),
   path('tinymce/',         include('tinymce.urls')),
@@ -48,17 +48,20 @@ urlpatterns = [
 
   path('test/', include('box.shop.test_shop.urls')),
   
-  path('',  include('box.shop.profile.api.urls')),
-  path('',  include('box.shop.cart.api.urls')),
-  path('',  include('box.shop.item.api.urls')),
-  path('',  include('box.shop.liqpay.api.urls')),
-  path('',  include('box.shop.order.api.urls')),
-  path('',  include('box.blog.api.urls')),
-  path('',  include('box.custom_auth.api.urls')),
-  path('',  include('box.custom_admin.api.urls')),
+  path('', include('box.shop.novaposhta.urls')),
+  path('', include('box.shop.profile.api.urls')),
+  path('', include('box.shop.cart.api.urls')),
+  path('', include('box.shop.item.api.urls')),
+  path('', include('box.shop.liqpay.api.urls')),
+  path('', include('box.shop.order.api.urls')),
+  path('', include('box.blog.api.urls')),
+  path('', include('box.custom_auth.api.urls')),
+  path('', include('box.custom_admin.api.urls')),
 ]
 
+
 from django.conf import settings
+
 
 if settings.DEBUG == True:
   from django.conf.urls.static import static
