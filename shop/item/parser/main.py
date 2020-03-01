@@ -1011,12 +1011,15 @@ class ImportMixin(Parser):
   def create_items(self, items, list_file, *args, **kwargs):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
     # items = items[955:956]
-    # items = items[320:321]
+    # items = items[75:]
     # items = items[0:1]
     for item in items:
-      new_item = self.create_item(item, *args, **kwargs)
-      self.print_item(item, new_item)
-      print("items.index(item):", items.index(item))
+      # try:
+        new_item = self.create_item(item, *args, **kwargs)
+        self.print_item(item, new_item)
+        print("items.index(item):", items.index(item))
+      # except Exception as e:
+      #   print(e)
 
 
   def create_item(self, item, *args, **kwargs):
@@ -1026,8 +1029,12 @@ class ImportMixin(Parser):
     meta_descr  = item.get("Мета_Описание", description)
     meta_key    = item.get("Мета_Ключевые_Слова", description)
     code        = item["Артикул"]
-    new_item, _ = Item.objects.get_or_create(code=code)
-    new_item.title       = title
+    new_item, _ = Item.objects.get_or_create(
+      # code=code,
+      title=title,
+    )
+    # new_item.title       = title
+    new_item.code       = code
     new_item.description = description
     new_item.meta_title  = meta_title
     new_item.meta_descr  = meta_descr

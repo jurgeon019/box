@@ -195,21 +195,22 @@ class Item(models.Model):
 
 	def save(self, *args, **kwargs):
 		self.create_currency()
-		super().save(*args, **kwargs)
 		# titles = Item.objects.all().values_list('title', flat=True)
 		# if self.title in titles:
 		# 	if self.title.endswith('(1)'):
 		# 		self.title 
 		# print(type(self.slug))
-
+		from transliterate.exceptions import LanguagePackNotFound, LanguageDetectionError
 		if not self.slug:
-			if self.title:
-				# slug = slugify(translit(self.title, 'en', reversed=True)) 
-				slug = f"{slugify(self.title)}_{self.id}"
-			else:
-				slug = f'{self.id}'
-			# print(slug)
+			try:
+				slug = slugify(translit(self.title, reversed=True)) 
+			except Exception as e:
+				slug = f"{slugify(self.title)}"
+			same = Item.objects.filter(slug=slug)
+			if same.exists():
+				slug = slug+f'_{same.count()+1}'
 			self.slug = slug
+		super().save(*args, **kwargs)
 		if self.thumbnail:
 			self.resize_thumbnail(self.thumbnail)
 
@@ -293,7 +294,7 @@ class Item(models.Model):
 				# print('main_currency: ', main_currency)
 				ratio = ratio.first().ratio
 				# print('\n')
-			price = price / ratio
+				price = price / ratio
 
 
 			ratio = CurrencyRatio.objects.filter(
@@ -431,13 +432,14 @@ class ItemCategory(models.Model):
 	def parents(self):
 		parent = self.parent 
 		parents = [self, parent]
+		# parents = [parent]
 		if parent:
 			while parent.parent:
 				parent = parent.parent 
 				parents.append(parent)
 				# parents.insert(0, parent)
-		parents = reversed(parents)
-		return parents 
+		# parents = reversed(parents)
+		return parents[-1::-1]
 
 
 	@property
@@ -487,26 +489,27 @@ class ItemCategory(models.Model):
 		# 	numb += 1
 		self.title = title
 
-		try:
-			slug = slugify(translit(self.title, reversed=True), allow_unicode=True) 
-		except Exception as e:
-			slug = slugify(translit(self.title, 'uk', reversed=True), allow_unicode=True) 
-		except Exception as e:
-			slug = slugify(translit(self.title, 'ru', reversed=True), allow_unicode=True) 
-		except Exception as e:
-			slug = slugify(self.title, allow_unicode=True)
-		if slug == '':
-			slug = slugify(self.title, allow_unicode=True)
+		if not self.slug:
+			try:
+				slug = slugify(translit(self.title, reversed=True), allow_unicode=True) 
+			except Exception as e:
+				slug = slugify(translit(self.title, 'uk', reversed=True), allow_unicode=True) 
+			except Exception as e:
+				slug = slugify(translit(self.title, 'ru', reversed=True), allow_unicode=True) 
+			except Exception as e:
+				slug = slugify(self.title, allow_unicode=True)
+			if slug == '':
+				slug = slugify(self.title, allow_unicode=True)
 
-		# numb = 1
-		# origin_slug = slug 
-		# while ItemCategory.objects.filter(slug=slug).exists():
-		# 	slug = f'{origin_slug}-{numb}'
-		# 	numb += 1
+			# numb = 1
+			# origin_slug = slug 
+			# while ItemCategory.objects.filter(slug=slug).exists():
+			# 	slug = f'{origin_slug}-{numb}'
+			# 	numb += 1
 
 
 
-		self.slug  = slug
+			self.slug  = slug
 
 		super().save(*args, **kwargs)
 
