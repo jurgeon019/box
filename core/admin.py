@@ -37,6 +37,7 @@ from box.shop.item.admin import (
     ItemCategory, ItemCategoryAdmin,
     Currency, CurrencyAdmin,
     CurrencyRatio, CurrencyRatioAdmin,
+    ItemStock, ItemStockAdmin, 
 )
 from box.shop.cart.admin import (
     Cart, CartAdmin, CartItem, CartItemAdmin
@@ -56,6 +57,8 @@ from box.custom_auth.models import User
 admin.site.register(Post, PostAdmin)
 admin.site.register(PostCategory, PostCategoryAdmin)
 admin.site.register(Currency, CurrencyAdmin)
+admin.site.register(ItemStock, ItemStockAdmin)
+
 admin.site.register(ItemCategory, ItemCategoryAdmin)
 admin.site.register(CurrencyRatio, CurrencyRatioAdmin)
 admin.site.register(Item, ItemAdmin)

@@ -159,7 +159,7 @@ class Item(models.Model):
 	title        = models.CharField(verbose_name=("Назва"), max_length=255, null=False)
 	description  = models.TextField(verbose_name=("Опис"),                    blank=True, null=True)
 	code         = models.CharField(verbose_name=("Артикул"), max_length=255,  blank=True, null=True, unique=True)   
-	slug         = models.SlugField(verbose_name=("Ссилка"),  max_length=255, unique=True, blank=True, null=True)
+	slug         = models.SlugField(verbose_name=("Ссилка"),  max_length=255, unique=True, blank=False, null=True)
 	thumbnail    = models.ImageField(verbose_name=("Маленька картинка"), blank=True, upload_to="shop/items/thumbnails")
 	markers      = models.ManyToManyField(verbose_name=("Маркери"), to='item.ItemMarker', related_name='items')
 	manufacturer = models.ForeignKey(verbose_name=("Виробник"), to="item.ItemManufacturer", blank=True, null=True, on_delete=models.SET_NULL, related_name='items')

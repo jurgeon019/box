@@ -1012,6 +1012,7 @@ class ImportMixin(Parser):
   def create_items(self, items, list_file, *args, **kwargs):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
     # items = items[955:956]
+    # items = items[320:321]
     # items = items[0:1]
     for item in items:
       print("items.index(item):", items.index(item))
@@ -1038,9 +1039,9 @@ class ImportMixin(Parser):
     new_item = self.handle_currency(item, new_item, *args, **kwargs)
     new_item = self.handle_price(item, new_item, *args, **kwargs)
     new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
-    new_item = self.handle_images(item, new_item, *args, **kwargs)
+    # new_item = self.handle_images(item, new_item, *args, **kwargs)
     new_item.save()
-    self.print_item(item, new_item)
+    # self.print_item(item, new_item)
 
 
   def print_item(self, item, new_item, *args, **kwargs):
@@ -1074,6 +1075,8 @@ class ImportMixin(Parser):
   def handle_images(self, item, new_item, *args, **kwargs):
     images = item.get("Изображения")
     if images:
+      
+      print()
       if not images[:2] == "['" and not images[-2:] == "']":
         images = images.split(",")
         for image in images:
@@ -1084,7 +1087,8 @@ class ImportMixin(Parser):
           )
         new_item.save()
         new_item.create_thumbnail_from_images()
-      if images[:2] == "['" and not images[-2:] == "']":
+      if images[:2] == "['" and images[-2:] == "']":
+        print('sdfsdfsdf')
         images = ast.literal_eval(images)
         for image in images:
           ext = image.split('.')[-1]
@@ -1099,6 +1103,9 @@ class ImportMixin(Parser):
           except:
               pass
           image = Image.open(BytesIO(requests.get(image).content))
+          print("image:  ")
+          print(image)
+          print(image)
           image.save(path)
     return new_item
 
@@ -1130,14 +1137,16 @@ class ImportMixin(Parser):
                 print(categories)
       else:
         category = categories
+        print("category")
         print(category)
-        print('sdfsdfsdf')
-        return 
-        category, _ = ItemCategory.objects.get_or_create(
-          # slug__iexact=category.lower().strip(),
-          title=category.lower().strip(),
-        )
-        new_item.set_category([category,])
+        print(category)
+        print(category)
+        if category:
+          category, _ = ItemCategory.objects.get_or_create(
+            # slug__iexact=category.lower().strip(),
+            title=category.lower().strip(),
+          )
+          new_item.set_category([category,])
     return new_item
 
 
@@ -1179,7 +1188,10 @@ class ImportMixin(Parser):
   def handle_in_stock(self, item, new_item, *args, **kwargs):
     in_stock    = item.get("Наличие")
     if in_stock:
-      new_item.in_stock, _ = ItemStock.objects.get_or_create(text=in_stock)
+      st = ItemStock.objects.get_or_create(text=in_stock)
+      if in_stock.strip() in ['Товар не доступен', 'Нет в наличии']:
+        st.availability = False 
+      new_item.in_stock, _ = st
     return new_item 
 
 

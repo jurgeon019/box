@@ -160,3 +160,6 @@ class CurrencyRatioAdmin(admin.ModelAdmin):
     ]
 
 
+class ItemStockAdmin(admin.ModelAdmin):
+    pass 
+
