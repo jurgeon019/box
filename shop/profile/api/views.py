@@ -4,6 +4,40 @@ from box.shop.order.models import Order
 from django.shortcuts import get_object_or_404
 from django.contrib import messages 
 from django.utils.translation import gettext as _
+from django.http import JsonResponse
+
+from .serializers import OrderSerializer
+from box.shop.order.models import Status 
+
+
+def get_orders(request):
+  query     = request.GET or request.POST
+  order_by  = query.get('order_by', '-created')
+  status_id = query.get('status_id')
+  orders    = Order.objects.filter(
+    user=get_user(request),
+  ).order_by(order_by)
+  if status_id:
+    orders = orders.filter(status__id=status_id)
+  response = {
+    'ДОПОМОГА ФРОНТЕНДЕРУ':{
+      'order_by (поля заказів для сортування)':[
+        'created',
+        'name',
+        'email',
+        'phone',
+        'address',
+        '-created',
+        '-name',
+        '-email',
+        '-phone',
+        '-address',
+      ],
+      'status_id (статуси заказів для фільтрування)':list(Status.objects.all().values_list('id', flat=True)),
+      'orders':OrderSerializer(orders, many=True).data,
+    }
+  }
+  return JsonResponse(response)
 
 
 def update_profile(request):

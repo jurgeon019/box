@@ -304,11 +304,11 @@ class Item(models.Model):
 				# print('current_currency: ', current_currency)
 				ratio = ratio.first().ratio
 				price = price * ratio
-		print('price: ', price)
-		print('self.currency: ', self.currency)
-		print('self.price.new_price: ', self.new_price)
-		print('self.price.old_price: ', self.old_price)
-		print('__________')
+		# print('price: ', price)
+		# print('self.currency: ', self.currency)
+		# print('self.price.new_price: ', self.new_price)
+		# print('self.price.old_price: ', self.old_price)
+		# print('__________')
 
 		return price 
 
