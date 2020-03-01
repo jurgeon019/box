@@ -970,7 +970,6 @@ class ImportMixin(Parser):
       print(title)
 
 
-
   def parse_item_features(self, items, list_file, *args, **kwargs):
     items       = items
     headers_row = list_file[0]
@@ -1015,8 +1014,9 @@ class ImportMixin(Parser):
     # items = items[320:321]
     # items = items[0:1]
     for item in items:
+      new_item = self.create_item(item, *args, **kwargs)
+      self.print_item(item, new_item)
       print("items.index(item):", items.index(item))
-      self.create_item(item, *args, **kwargs)
 
 
   def create_item(self, item, *args, **kwargs):
@@ -1027,7 +1027,7 @@ class ImportMixin(Parser):
     meta_key    = item.get("Мета_Ключевые_Слова", description)
     code        = item["Артикул"]
     new_item, _ = Item.objects.get_or_create(code=code)
-    new_item.title       = title 
+    new_item.title       = title
     new_item.description = description
     new_item.meta_title  = meta_title
     new_item.meta_descr  = meta_descr
@@ -1041,7 +1041,8 @@ class ImportMixin(Parser):
     new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
     # new_item = self.handle_images(item, new_item, *args, **kwargs)
     new_item.save()
-    # self.print_item(item, new_item)
+    return new_item 
+    
 
 
   def print_item(self, item, new_item, *args, **kwargs):
@@ -1075,8 +1076,6 @@ class ImportMixin(Parser):
   def handle_images(self, item, new_item, *args, **kwargs):
     images = item.get("Изображения")
     if images:
-      
-      print()
       if not images[:2] == "['" and not images[-2:] == "']":
         images = images.split(",")
         for image in images:
@@ -1112,9 +1111,7 @@ class ImportMixin(Parser):
 
   def handle_categories(self, item, new_item, *args, **kwargs):
     from django.db.utils import IntegrityError
-    print(item['Заголовок'])
     categories = item.get("Категории", "").lower().strip()
-    
     if categories:
       if categories[0:2] == "['" and categories[-2:] == "']":
         categories   = ast.literal_eval(categories)
@@ -1137,15 +1134,19 @@ class ImportMixin(Parser):
                 print(categories)
       else:
         category = categories
-        print("category")
-        print(category)
-        print(category)
-        print(category)
         if category:
+          parts = ItemCategory.objects.get(title="Запчастини та комплектуючі".lower().strip())
+
+          parent = ItemCategory.objects.get(title='Запчастини PERKINS'.lower())
+          # parent = ItemCategory.objects.get(code='parts_perkins')
           category, _ = ItemCategory.objects.get_or_create(
             # slug__iexact=category.lower().strip(),
             title=category.lower().strip(),
           )
+          parent.parent = parts
+          parent.save()
+          category.parent = parent 
+          category.save()
           new_item.set_category([category,])
     return new_item
 
@@ -1176,22 +1177,28 @@ class ImportMixin(Parser):
       new_item.old_price = old_price
     if new_price:
       new_item.new_price = new_price
-    if price_netto:
-      new_item.currency, _ = Currency.objects.get_or_create(name=price_netto.split(' ')[-1].strip())
-      new_item.old_price = float(price_netto.split(' ')[0].strip().replace(',', '.'))
-    if price_brutto:
-      new_item.currency, _ = Currency.objects.get_or_create(name=price_brutto.split(' ')[-1].strip())
-      new_item.new_price = float(price_brutto.split(' ')[0].strip().replace(',', '.'))
+    try:
+      if price_netto:
+        new_item.currency, _ = Currency.objects.get_or_create(name=price_netto.split(' ')[-1].strip())
+        new_item.old_price = float(price_netto.split(' ')[0].strip().replace(',', '.'))
+      if price_brutto:
+          new_item.currency, _ = Currency.objects.get_or_create(name=price_brutto.split(' ')[-1].strip())
+          new_item.new_price = float(price_brutto.split(' ')[0].strip().replace(',', '.'))
+    except:
+      currency_name = 'UAH'
+      new_item.currency, _ = Currency.objects.get_or_create(name=currency_name)
+      new_price = float(''.join(price_netto.split()).replace(',', '.').replace('грн.', ''))
+      new_item.new_price = new_price
     return new_item 
 
 
   def handle_in_stock(self, item, new_item, *args, **kwargs):
     in_stock    = item.get("Наличие")
     if in_stock:
-      st = ItemStock.objects.get_or_create(text=in_stock)
+      st, _ = ItemStock.objects.get_or_create(text=in_stock)
       if in_stock.strip() in ['Товар не доступен', 'Нет в наличии']:
         st.availability = False 
-      new_item.in_stock, _ = st
+      new_item.in_stock = st
     return new_item 
 
 
