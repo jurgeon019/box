@@ -363,6 +363,15 @@ class Item(models.Model):
 	def get_categories(self, ):
 
 		return categories 
+	
+	def in_cart(self, request):
+		from box.shop.cart.models import CartItem
+		from box.shop.cart.utils import get_cart
+
+
+		in_cart = self.id in CartItem.objects.filter(cart=get_cart(request)).values_list('item__id', flat=True)
+
+		return in_cart 
 
 
 from django.db.models.signals import post_save, pre_save
