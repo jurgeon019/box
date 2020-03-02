@@ -551,6 +551,7 @@ def item_image_folder(instance, filename):
 
 	return path 
 
+
 class ItemImage(models.Model):
 
 	item  = models.ForeignKey(verbose_name=("Товар"), to="item.Item", on_delete=models.CASCADE, related_name='images', null=True)

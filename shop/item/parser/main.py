@@ -1011,7 +1011,7 @@ class ImportMixin(Parser):
   def create_items(self, items, list_file, *args, **kwargs):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
     # items = items[955:956]
-    items = items[857:]
+    # items = items[857:]
     # items = items[0:1]
     try:
       for item in items:
@@ -1041,7 +1041,7 @@ class ImportMixin(Parser):
       # code=code,
       title=title,
     )
-    # new_item.title       = title
+    new_item.title       = title
     new_item.code       = code
     new_item.description = description
     new_item.meta_title  = meta_title
@@ -1054,7 +1054,7 @@ class ImportMixin(Parser):
     new_item = self.handle_currency(item, new_item, *args, **kwargs)
     new_item = self.handle_price(item, new_item, *args, **kwargs)
     new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
-    # new_item = self.handle_images(item, new_item, *args, **kwargs)
+    new_item = self.handle_images(item, new_item, *args, **kwargs)
     new_item.save()
     return new_item 
 
@@ -1090,10 +1090,11 @@ class ImportMixin(Parser):
   def handle_images(self, item, new_item, *args, **kwargs):
     images = item.get("Изображения")
     if images:
+      # print(images); return None;  
       if not images[:2] == "['" and not images[-2:] == "']":
+        print('123'); return None; 
         images = images.split(",")
         for image in images:
-          # print(image)
           image = ItemImage.objects.create(
             image = f"shop/items/{image.strip()}",
             item  =  new_item, 
@@ -1101,25 +1102,30 @@ class ImportMixin(Parser):
         new_item.save()
         new_item.create_thumbnail_from_images()
       if images[:2] == "['" and images[-2:] == "']":
-        print('sdfsdfsdf')
         images = ast.literal_eval(images)
         for image in images:
+          # print('321', image); return None; 
           ext = image.split('.')[-1]
-          new_image = ItemImage.objects.create(
+          # new_image = ItemImage.objects.create(
+          new_image, created = ItemImage.objects.get_or_create(
               item=new_item,
-              image=f'shop/item/{new_item.slug}/{new_item.slug}_{images.index(image)}.{ext}'
+              image=f'shop/item/{new_item.slug}/{new_item.slug}created{images.index(image)}.{ext}'
           )
-          path = new_image.image.path
-          save_path = '/'.join(path.split('/')[:-1])
-          try:
-              os.makedirs(save_path)
-          except:
-              pass
-          image = Image.open(BytesIO(requests.get(image).content))
-          print("image:  ")
-          print(image)
-          print(image)
-          image.save(path)
+          if created:
+            path = new_image.image.path
+            save_path = '/'.join(path.split('/')[:-1])
+            try:
+                os.makedirs(save_path)
+            except:
+                pass
+            image = Image.open(BytesIO(requests.get(image).content))
+            print("image:  ")
+            print(image)
+            print(image)
+            image.save(path)
+            new_item.save()
+            new_item.create_thumbnail_from_images()
+
     return new_item
 
 
