@@ -15,7 +15,7 @@ class OrderManager(models.Manager):
 
 
 class Status(models.Model):
-  name      = models.CharField(verbose_name=("Статус"), max_length=24, blank=True, null=True, default=None)
+  name      = models.CharField(verbose_name=("Статус"), max_length=255, blank=False, null=False)
   
   def __str__(self):
     return f"{self.name}"
@@ -36,7 +36,7 @@ class Order(models.Model):
   payment_opt = models.CharField(verbose_name=("Спосіб оплати"),       blank=True, null=True, max_length=255, help_text=' ')
   delivery_opt= models.CharField(verbose_name=("Спосіб доставки"),     blank=True, null=True, max_length=255)
   ordered     = models.BooleanField(verbose_name=('Завершений'), default=False)
-  status      = models.ForeignKey(verbose_name=('Статус'),  on_delete=models.CASCADE, to="Status", blank=True, null=True, related_name='orders', default=1) 
+  status      = models.ForeignKey(verbose_name=('Статус'),  on_delete=models.CASCADE, to="Status", blank=False, null=True, related_name='orders') 
   is_active   = models.BooleanField(default=True)
   
   objects     = OrderManager()
@@ -47,6 +47,12 @@ class Order(models.Model):
   class Meta: 
     verbose_name = ('Замовлення товарів')
     verbose_name_plural = ('Замовлення товарів')
+  
+  def save(self, *args, **kwargs):
+    if not self.status:
+      if Status.objects.all().exists():
+        self.status = Status.objects.all().first()
+    super().save(*args, **kwargs)
 
   def __str__(self):
     return f'{self.phone}|{self.name}|{self.email}|{self.address}' 

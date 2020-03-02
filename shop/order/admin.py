@@ -1,7 +1,10 @@
 from django.contrib import admin 
+from django.shortcuts import reverse 
+from django.utils.html import mark_safe
+
+
 
 from box.shop.order.models import Order, Status
-
 from box.shop.liqpay.admin import PaymentInline
 from box.shop.cart.admin import CartItemInline
 
@@ -36,6 +39,18 @@ class StatusAdmin(admin.ModelAdmin):
 class OrderAdmin(admin.ModelAdmin):
     def total(self, obj=None):
         return f'{obj.total_price} {obj.currency}'
+    def show_user(self, obj):
+      option = "change" # "delete | history | change"
+      massiv = []
+      obj   = obj.user
+      app   = obj._meta.app_label
+      model = obj._meta.model_name
+      url   = f'admin:custom_auth_{model}_{option}'
+      href  = reverse(url, args=(obj.pk,))
+      name  = f'{obj.username}'
+      link  = mark_safe(f"<a href={href}>{name}</a>")
+      return link
+    show_user.short_description = 'Користувач'
 
     total.short_description = 'Сумма замовлення'
     inlines = [
@@ -62,13 +77,6 @@ class OrderAdmin(admin.ModelAdmin):
     list_editable = [
         'status'
     ]
-    exclude = [
-        'sk', 
-        'user',
-        'comments',
-        'delivery_opt',
-
-    ]
     search_fields = [
         'user__username',
         'name',
@@ -79,26 +87,36 @@ class OrderAdmin(admin.ModelAdmin):
     ]
     list_filter = [
         'status',
-        'created'
+        'created',
+        'updated',
     ]
     fields = [
+        # 'user',
+        'show_user',
         'name',
         'email',
         'phone',
         'address',
+        'comments',
         'payment_opt',
+        'delivery_opt',
         'ordered',
         'total',
+        'status',
     ]
     readonly_fields = [
+        # 'user',
+        'show_user',
         'name',
         'email',
         'phone',
         'address',
+        'comments',
         'payment_opt',
+        'delivery_opt',
         'ordered',
         'total',
-
     ]
+
 
 

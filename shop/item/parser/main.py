@@ -1011,12 +1011,19 @@ class ImportMixin(Parser):
   def create_items(self, items, list_file, *args, **kwargs):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
     # items = items[955:956]
-    # items = items[320:321]
+    items = items[857:]
     # items = items[0:1]
-    for item in items:
-      new_item = self.create_item(item, *args, **kwargs)
-      self.print_item(item, new_item)
-      print("items.index(item):", items.index(item))
+    try:
+      for item in items:
+        # try:
+          new_item = self.create_item(item, *args, **kwargs)
+          if new_item:
+            self.print_item(item, new_item)
+          print("items.index(item):", items.index(item))
+        # except Exception as e:
+        #   print(e)
+    except Exception as e:
+      print(e)
 
 
   def create_item(self, item, *args, **kwargs):
@@ -1026,8 +1033,16 @@ class ImportMixin(Parser):
     meta_descr  = item.get("Мета_Описание", description)
     meta_key    = item.get("Мета_Ключевые_Слова", description)
     code        = item["Артикул"]
-    new_item, _ = Item.objects.get_or_create(code=code)
-    new_item.title       = title
+    existing_items = Item.objects.filter(code=code)
+    if existing_items.exists() and not existing_items.first().title.lower().strip() == title.lower().strip():
+        print(F'ITEM WITH CODE {code} ALREADY EXISTS')
+        return 
+    new_item, _ = Item.objects.get_or_create(
+      # code=code,
+      title=title,
+    )
+    # new_item.title       = title
+    new_item.code       = code
     new_item.description = description
     new_item.meta_title  = meta_title
     new_item.meta_descr  = meta_descr
@@ -1050,12 +1065,12 @@ class ImportMixin(Parser):
         print(field.name+':')
         print(getattr(new_item, field.name))
         print('----')
-    print('____')
+    print("__________________________")
     print("__________________________")
     for k, v in item.items():
-        print(k)
+        print(k+':')
         print(v)
-        print()
+        print('----')
 
 
   def handle_slug(self, item, new_item, *args, **kwargs):
@@ -1179,10 +1194,10 @@ class ImportMixin(Parser):
       new_item.new_price = new_price
     try:
       if price_netto:
-        new_item.currency, _ = Currency.objects.get_or_create(name=price_netto.split(' ')[-1].strip())
+        # new_item.currency, _ = Currency.objects.get_or_create(name=price_netto.split(' ')[-1].strip())
         new_item.old_price = float(price_netto.split(' ')[0].strip().replace(',', '.'))
       if price_brutto:
-          new_item.currency, _ = Currency.objects.get_or_create(name=price_brutto.split(' ')[-1].strip())
+          # new_item.currency, _ = Currency.objects.get_or_create(name=price_brutto.split(' ')[-1].strip())
           new_item.new_price = float(price_brutto.split(' ')[0].strip().replace(',', '.'))
     except:
       currency_name = 'UAH'
