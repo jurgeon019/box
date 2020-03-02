@@ -72,12 +72,26 @@ class Order(models.Model):
   def make_order(self, request):
     order = self
     order.ordered = True
-
     order.save()
-
     cart = get_cart(request)
     cart.ordered = True
-    cart.items.all().update(ordered=True, order=order)
+    # cart.items.all().update(ordered=True, order=order)
+    from box.shop.item.models import ItemStock 
+    unavailable_stocks = ItemStock.objects.filter(available=False)
+    for cart_item in cart.items.all():
+      cart_item.ordered = True
+      cart_item.order = order
+      item = cart_item.item 
+      if item.amount < cart_item.quantity:
+        cart_item.quantity = item.amount 
+        item.amount = 0 
+        if unavailable_stocks.exists():
+          item.in_stock = unavailable_stocks.first()
+        else:
+          item.in_stock = None 
+      else:
+        item.amount -= quantity 
+      item.save()
     cart.order = order 
     cart.save()
 

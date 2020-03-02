@@ -56,7 +56,7 @@ class Currency(models.Model):
 
 	def save(self, *args, **kwargs):
 		Currency.objects.all().update(is_main=False)
-		super(Currency, self).save(*args, **kwargs)
+		super().save(*args, **kwargs)
 
 
 class CurrencyRatio(models.Model):
@@ -177,8 +177,8 @@ class Item(models.Model):
 	else:
 		category     = models.ForeignKey(verbose_name=("Категорія"), to='item.ItemCategory', related_name="items", on_delete=models.SET_NULL, blank=True, null=True)    
 
-	in_stock     = models.ForeignKey(to="item.ItemStock", on_delete=models.CASCADE, blank=True, null=True)
-	amount       = models.PositiveIntegerField(verbose_name=("Кількість"), blank=True, null=True)
+	in_stock     = models.ForeignKey(verbose_name=("Наявність"), to="item.ItemStock", on_delete=models.SET_NULL, blank=True, null=True, help_text='"Кількість" в пріорітеті над "наявністю"')
+	amount       = models.PositiveIntegerField(verbose_name=("Кількість"), blank=True, null=True, default=None, help_text='"Кількість" в пріорітеті над "наявністю"')
 	is_active    = models.BooleanField(verbose_name=("Активний"),      default=True,  help_text="Присутність товару на сайті в списку товарів")
 
 	created      = models.DateTimeField(verbose_name=("Створений"), default=timezone.now)
@@ -193,33 +193,55 @@ class Item(models.Model):
 	def __str__(self):
 		return f"{self.title}, {self.slug}"
 
-	def generate_unique_slug(self, *args, **kwargs):
-		from transliterate.exceptions import LanguagePackNotFound, LanguageDetectionError
-		try:
-			slug = slugify(translit(self.title, reversed=True)) 
-		except Exception as e:
-			slug = f"{slugify(self.title)}"
-	
-		origin_slug = slug
-		numb = 1
-		while Item.objects.filter(slug=slug).exists():
-			slug = f'{origin_slug}-{numb}'
-			numb += 1
-		print('sdf', slug)
-		self.slug = slug
-
-
 	def save(self, *args, **kwargs):
-		self.create_currency()
-		if not self.slug:
-			self.generate_unique_slug()
+		self.handle_currency(*args, **kwargs)
+		self.handle_slug(*args, **kwargs)
+		self.handle_availability(*args, **kwargs)
 		super().save(*args, **kwargs)
-		if self.thumbnail:
-			self.resize_thumbnail(self.thumbnail)
+		self.resize_thumbnail(self.thumbnail)
 
-	def create_currency(self):
+	def handle_slug(self, *args, **kwargs):
+		if not self.slug:
+			from transliterate.exceptions import LanguagePackNotFound, LanguageDetectionError
+			try:
+				slug = slugify(translit(self.title, reversed=True)) 
+			except Exception as e:
+				slug = f"{slugify(self.title)}"
+		
+			origin_slug = slug
+			numb = 1
+			while Item.objects.filter(slug=slug).exists():
+				slug = f'{origin_slug}-{numb}'
+				numb += 1
+			print('sdf', slug)
+			self.slug = slug
+
+	def handle_availability(self, *args, **kwargs):
+		'''
+		self.in_stock              == None  - безкінечний
+		self.in_stock.availability == False - відсутній
+		self.in_stock.availability == True  - присутній 
+
+		self.amount == None                 - безкінечний
+		self.amount == 0                    - відсутній
+		self.amount > 0                     - присутній 
+
+		'''
+
+		available_stocks   = ItemStock.objects.filter(availability=True)
+		unavailable_stocks = ItemStock.objects.filter(availability=False)
+
+		if self.amount == 0:
+			if unavailable_stocks.exists():
+				self.in_stock = unavailable_stocks.first()
+		# if self.amount == None or self.amount > 0:
+		# 	if available_stocks.exists():
+		# 		self.in_stock = available_stocks.first()
+		# 	else:
+		# 		self.in_stock == None 
+		 
+	def handle_currency(self):
 		if self.currency is None:
-			# print('box.shop.item.models.ItemCategory.create_currency')
 			if settings.MULTIPLE_CATEGORY:
 				if self.categories.all():
 					self.currency = self.categories.all().first().currency
@@ -235,12 +257,13 @@ class Item(models.Model):
 						self.currency = Currency.objects.all().first()
 
 	def resize_thumbnail(self, thumbnail):
-		width  = 400
-		img    = Image.open(thumbnail.path)
-		# height = 400
-		height = int((float(img.size[1])*float((width/float(img.size[0])))))
-		img    = img.resize((width,height), Image.ANTIALIAS)
-		img.save(thumbnail.path) 
+		if thumbnail:
+			width  = 400
+			img    = Image.open(thumbnail.path)
+			# height = 400
+			height = int((float(img.size[1])*float((width/float(img.size[0])))))
+			img    = img.resize((width,height), Image.ANTIALIAS)
+			img.save(thumbnail.path) 
 
 	def create_thumbnail_from_images(self):
 		thumbnail = self.images.all().first().image
@@ -384,8 +407,8 @@ class ItemCategory(models.Model):
 	alt        = models.CharField(verbose_name=("Альт до картинки"),   blank=True, null=True, max_length=255)
 	description= models.TextField(verbose_name=("Опис"), blank=True, null=True)
 	
-	parent     = models.ForeignKey(verbose_name=("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.CASCADE, related_name='subcategories')
-	currency   = models.ForeignKey(verbose_name=("Валюта"), to="item.Currency", blank=True, null=True, related_name="categories",  on_delete=models.CASCADE)
+	parent     = models.ForeignKey(verbose_name=("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
+	currency   = models.ForeignKey(verbose_name=("Валюта"), to="item.Currency", blank=True, null=True, related_name="categories",  on_delete=models.SET_NULL)
 
 	is_active  = models.BooleanField(verbose_name=("Чи активна"), default=True, help_text=("Присутність категорії на сайті"))
 
@@ -547,7 +570,7 @@ def item_image_folder(instance, filename):
 
 class ItemImage(models.Model):
 
-	item  = models.ForeignKey(verbose_name=("Товар"), to="item.Item", on_delete=models.CASCADE, related_name='images', null=True)
+	item  = models.ForeignKey(verbose_name=("Товар"), to="item.Item", on_delete=models.SET_NULL, related_name='images', null=True)
 	image = models.ImageField(verbose_name=('Ссилка зображення'), upload_to=item_image_folder, blank=True, null=True, default='shop/items/test_item.jpg')
 	alt   = models.CharField(verbose_name=("Альт"), max_length=255, blank=True, null=True)
 	order = models.IntegerField(verbose_name=("Порядок"), default=1)
@@ -581,15 +604,15 @@ class ItemFeatureName(models.Model):
 
 
 class ItemFeature(models.Model):
-	item     = models.ForeignKey(verbose_name="Товар", to="item.Item", related_name="features", on_delete=models.CASCADE, blank=True, null=True)
+	item     = models.ForeignKey(verbose_name="Товар", to="item.Item", related_name="features", on_delete=models.SET_NULL, blank=True, null=True)
 	name     = models.CharField(verbose_name="Назва характеристики", max_length=255, blank=True, null=True)
 
 	# items    = models.ManyToManyField(verbose_name=("Товар"),to='item.Item', blank=True, null=True, related_name="features")
-	# name     = models.ForeignKey(to="item.ItemFeatureName",verbose_name="Назва характеристики", blank=True, null=True, related_name='features', on_delete=models.CASCADE)
+	# name     = models.ForeignKey(to="item.ItemFeatureName",verbose_name="Назва характеристики", blank=True, null=True, related_name='features', on_delete=models.SET_NULL)
 
 	code     = models.CharField(blank=True, null=True, max_length=255, verbose_name=("Код"))
 	value    = models.TextField(verbose_name="Значення характеристики", blank=True, null=True)
-	category = models.ForeignKey(verbose_name="Категорія характеристики", to="item.ItemFeatureCategory", related_name="items", on_delete=models.CASCADE, blank=True, null=True)
+	category = models.ForeignKey(verbose_name="Категорія характеристики", to="item.ItemFeatureCategory", related_name="items", on_delete=models.SET_NULL, blank=True, null=True)
 
 	def __str__(self):
 		return f'{self.name}'
@@ -601,7 +624,7 @@ class ItemFeature(models.Model):
 
 
 class ItemFeatureCategory(models.Model):
-	parent = models.ForeignKey(verbose_name=("Батьківська категорія"), to='self',related_name='subcategories', blank=True, null=True, on_delete=models.CASCADE)
+	parent = models.ForeignKey(verbose_name=("Батьківська категорія"), to='self',related_name='subcategories', blank=True, null=True, on_delete=models.SET_NULL)
 	name   = models.CharField(verbose_name=("Назва категорії"), max_length=255, unique=True, blank=True, null=True)
 
 	def __str__(self):
@@ -613,7 +636,7 @@ class ItemFeatureCategory(models.Model):
 
 
 class ItemReview(models.Model):
-	item    = models.ForeignKey(verbose_name=("Товар"), to='item.Item', blank=True, null=True, on_delete=models.CASCADE, related_name="reviews",)
+	item    = models.ForeignKey(verbose_name=("Товар"), to='item.Item', blank=True, null=True, on_delete=models.SET_NULL, related_name="reviews",)
 	user    = models.ForeignKey(verbose_name=("Автор"), to=User, blank=True, null=True, on_delete=models.SET_NULL, related_name="reviews",)
 	text    = models.CharField(verbose_name=("Відгук"),  max_length=255, blank=True, null=True)
 	phone   = models.CharField(verbose_name=("Телефон"), max_length=255, blank=True, null=True)

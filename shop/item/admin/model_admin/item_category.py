@@ -19,7 +19,7 @@ from ..inlines import *
 
 class ItemCategoryAdmin(TabbedTranslationAdmin, ExportMixin):
     inlines = [
-        # ItemInline,
+        ItemInline,
         ItemCategoryInline,
     ]
     actions = [

@@ -35,6 +35,7 @@ def get_fieldsets():
     item_classes = []
     item_fields = [
         (
+        'amount',
         'in_stock',
         'is_active',
         ),
@@ -161,5 +162,17 @@ class CurrencyRatioAdmin(admin.ModelAdmin):
 
 
 class ItemStockAdmin(TabbedTranslationAdmin):
-    pass 
+    list_display = [
+        'id',
+        'text',
+        'availability',
+    ] 
+    list_display_links = [
+        'id',
+        'text',
+
+    ] 
+    list_editable = [
+        'availability',
+    ]
 
