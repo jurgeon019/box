@@ -77,7 +77,7 @@ class Order(models.Model):
     cart.ordered = True
     # cart.items.all().update(ordered=True, order=order)
     from box.shop.item.models import ItemStock 
-    unavailable_stocks = ItemStock.objects.filter(available=False)
+    unavailable_stocks = ItemStock.objects.filter(availability=False)
     for cart_item in cart.items.all():
       cart_item.ordered = True
       cart_item.order = order
