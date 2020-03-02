@@ -256,13 +256,6 @@ class Item(models.Model):
 	def get_absolute_url(self):
 		return reverse("item", kwargs={"slug": self.slug})
 
-	# def get_category(self):
-	#   if self.category:
-	#     category = self.category
-	#   else:
-	#     category = self.categories.all().first()
-	#   return category
-
 	@property
 	def similars(self):
 		if settings.MULTIPLE_CATEGORY:
@@ -371,10 +364,7 @@ class Item(models.Model):
 	def in_cart(self, request):
 		from box.shop.cart.models import CartItem
 		from box.shop.cart.utils import get_cart
-
-
 		in_cart = self.id in CartItem.objects.filter(cart=get_cart(request)).values_list('item__id', flat=True)
-
 		return in_cart 
 
 
