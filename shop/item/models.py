@@ -178,7 +178,7 @@ class Item(models.Model):
 		category     = models.ForeignKey(verbose_name=("Категорія"), to='item.ItemCategory', related_name="items", on_delete=models.SET_NULL, blank=True, null=True)    
 
 	in_stock     = models.ForeignKey(to="item.ItemStock", on_delete=models.CASCADE, blank=True, null=True)
-	amount       = models.IntegerField(verbose_name=("Кількість"), default=1, blank=True, null=True)
+	amount       = models.PositiveIntegerField(verbose_name=("Кількість"), blank=True, null=True)
 	is_active    = models.BooleanField(verbose_name=("Активний"),      default=True,  help_text="Присутність товару на сайті в списку товарів")
 
 	created      = models.DateTimeField(verbose_name=("Створений"), default=timezone.now)
@@ -266,7 +266,10 @@ class Item(models.Model):
 	
 	@property
 	def is_in_stock(self):
-		is_in_stock = 'Є в наявності' if self.in_stock else 'Немає в наявності'
+		if self.amount == 0:
+			is_in_stock = False
+		else:
+			is_in_stock = True 
 		return is_in_stock
 
 	@property

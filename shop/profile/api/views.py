@@ -42,19 +42,23 @@ def get_orders(request):
 
 @csrf_exempt
 def update_profile(request):
-  first_name   = request.POST['first_name']
-  last_name    = request.POST['last_name']
-  phone_number = request.POST['phone_number']
-  email        = request.POST['email']
-  user = request.user
-  user.first_name=first_name
-  user.last_name = last_name
+  first_name   = request.POST.get('first_name')
+  last_name    = request.POST.get('last_name')
+  phone_number = request.POST.get('phone_number')
+  email        = request.POST.get('email')
+  user              = request.user
+  user.first_name   = first_name
+  user.last_name    = last_name
   user.phone_number = phone_number
-  user.email = email
+  user.email        = email
   user.save()
   messages.success(request, 'Ваші данні були оновлені')
   print(request.user)
-  return redirect('profile')
+  return JsonResponse({
+    'status':'OK',
+    'message':'Ваші данні були оновлені',
+  })
+  # return redirect('profile')
 
 
 # @login_required

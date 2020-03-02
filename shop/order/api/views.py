@@ -88,7 +88,10 @@ def order_request(request):
     order.cart = cart
     order.save()
     order.make_order(request)
-    return JsonResponse({'status':'OK'})
+    return JsonResponse({
+      'status':'OK',
+      
+    })
   
 
 

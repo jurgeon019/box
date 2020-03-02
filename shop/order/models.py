@@ -87,7 +87,18 @@ class Order(models.Model):
       order.save()
       cart.save()
     self.make_order_total_price()
-    # send_order_mail()
+    model = order 
+    link = reverse()
+    link  = reverse(f'admin:{model._meta.app_label}_{model._meta.model_name}_change', args=(model.id,))
+    send_mail(
+      subject = 'Отримано замовлення',
+      # message = get_template('contact_message.txt').render({'message':message}),
+      message = settings.CURRENT_DOMEN+link,
+      from_email = settings.EMAIL_HOST_USER,
+      recipient_list = [settings.EMAIL_HOST_USER],
+      fail_silently=False,
+      # fail_silently=True,
+    )
 
 
 class OrderRequest(models.Model):
