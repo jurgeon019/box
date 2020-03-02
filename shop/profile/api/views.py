@@ -10,6 +10,7 @@ from .serializers import OrderSerializer
 from box.shop.order.models import Status 
 
 
+@csrf_exempt
 def get_orders(request):
   query     = request.GET or request.POST
   order_by  = query.get('order_by', '-created')
@@ -39,7 +40,7 @@ def get_orders(request):
   }
   return JsonResponse(response)
 
-
+@csrf_exempt
 def update_profile(request):
   first_name   = request.POST['first_name']
   last_name    = request.POST['last_name']
@@ -57,6 +58,7 @@ def update_profile(request):
 
 
 # @login_required
+@csrf_exempt
 def delete_order(request, pk):
   order = Order.objects.filter(
     pk=pk,
