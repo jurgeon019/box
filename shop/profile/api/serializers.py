@@ -12,6 +12,9 @@ class StatusSerializer(serializers.ModelSerializer):
 class OrderSerializer(serializers.ModelSerializer):
     status     = StatusSerializer()
     currency   = serializers.ReadOnlyField()
+    created    = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+    updated    = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
+
     cart_items = CartItemSerializer(many=True)
     class Meta:
         model = Order 
