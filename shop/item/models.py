@@ -106,8 +106,8 @@ class ItemStock(models.Model):
 		return f"{self.text}"
 	
 	class Meta:
-		verbose_name = ('Наявність')
-		verbose_name_plural = ('Наявність')
+		verbose_name = ('Статус наявності')
+		verbose_name_plural = ('Статуси наявності')
 
 
 class ItemMarker(models.Model):
