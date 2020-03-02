@@ -1,3 +1,7 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,18 +12,29 @@
   <title>{{page.meta_title}}</title>
   <meta name="description" content="{{page.meta_descr}}"/>
   <meta name="keywords" content="{{page.meta_key}}" />
-  {% block ogimage %}
-  <meta property="og:image" content="/static/ogimage_square.png">
-  <meta property="og:image" content="/static/ogimage.png">
-  <meta property="og:image" content="/static/ogimage_square.png">
-  {% endblock ogimage %}
   {% block favicon %}
   <link rel="shortcut icon" type="image/png" href="/static/favicon.ico">
   {% endblock favicon %}
   {% block hreflang %}
   {% include 'core/includes/hreflang.html' %}
   {% endblock hreflang %}
-  
+
+
+  {% block ogimage %}
+  {% if LANGUAGE_CODE == 'ru' %}
+  <meta property="og:image" content="/static/og/square_ru.png">
+  <meta property="og:image" content="/static/og/rectangle_ru.png">
+  <meta property="og:image" content="/static/og/square_ru.png">
+  {% elif LANGUAGE_CODE == 'uk' %}
+  <meta property="og:image" content="/static/og/square_uk.png">
+  <meta property="og:image" content="/static/og/rectangle_uk.png">
+  <meta property="og:image" content="/static/og/square_uk.png">
+  {% elif LANGUAGE_CODE == 'en' %}
+  <meta property="og:image" content="/static/og/square_en.png">
+  <meta property="og:image" content="/static/og/rectangle_en.png">
+  <meta property="og:image" content="/static/og/square_en.png">
+  {% endif%}
+  {% endblock ogimage %}
   {% block robots %}
   <meta name="robots" content="noindex,nofollow">
   {% endblock robots %}
