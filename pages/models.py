@@ -36,6 +36,24 @@ class PageFeature(models.Model):
     return f'{self.page}, {self.name}'
 
 
+class General(models.Model):
+
+  class Meta:
+    verbose_name="Загальна інформація на сторінках"
+    verbose_name_plural="Загальна інформація на сторінках"
+
+  def __str__(self):
+    return f''
+
+class GeneralFeature(models.Model):
+  general = models.ForeignKey(verbose_name=(''), to='pages.General', blank=False, null=False, on_delete=models.CASCADE)
+  class Meta:
+    verbose_name="Загальна інформація на сторінках"
+    verbose_name_plural="Загальна інформація на сторінках"
+
+  def __str__(self):
+    return f''
+
 
 class PageImage(models.Model):
   page  = models.ForeignKey(verbose_name=("Сторінка"), to='pages.Page', related_name="images", on_delete=models.CASCADE, blank=True, null=True)

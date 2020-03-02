@@ -193,23 +193,26 @@ class Item(models.Model):
 	def __str__(self):
 		return f"{self.title}, {self.slug}"
 
+	def generate_unique_slug(self, *args, **kwargs):
+		from transliterate.exceptions import LanguagePackNotFound, LanguageDetectionError
+		try:
+			slug = slugify(translit(self.title, reversed=True)) 
+		except Exception as e:
+			slug = f"{slugify(self.title)}"
+	
+		origin_slug = slug
+		numb = 1
+		while Item.objects.filter(slug=slug).exists():
+			slug = f'{origin_slug}-{numb}'
+			numb += 1
+		print('sdf', slug)
+		self.slug = slug
+
+
 	def save(self, *args, **kwargs):
 		self.create_currency()
-		# titles = Item.objects.all().values_list('title', flat=True)
-		# if self.title in titles:
-		# 	if self.title.endswith('(1)'):
-		# 		self.title 
-		# print(type(self.slug))
-		from transliterate.exceptions import LanguagePackNotFound, LanguageDetectionError
 		if not self.slug:
-			try:
-				slug = slugify(translit(self.title, reversed=True)) 
-			except Exception as e:
-				slug = f"{slugify(self.title)}"
-			same = Item.objects.filter(slug=slug)
-			if same.exists():
-				slug = slug+f'_{same.count()+1}'
-			self.slug = slug
+			self.generate_unique_slug()
 		super().save(*args, **kwargs)
 		if self.thumbnail:
 			self.resize_thumbnail(self.thumbnail)
