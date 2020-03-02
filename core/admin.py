@@ -39,6 +39,9 @@ from box.shop.item.admin import (
     CurrencyRatio, CurrencyRatioAdmin,
     ItemStock, ItemStockAdmin, 
 )
+from box.shop.order.models import (
+    ItemRequest
+)
 from box.shop.cart.admin import (
     Cart, CartAdmin, CartItem, CartItemAdmin
 )
@@ -65,6 +68,8 @@ admin.site.register(Item, ItemAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(User, CustomUserAdmin)
+admin.site.register(ItemRequest, ItemRequestAdmin)
+
 try:
     admin.site.register(Page, PageAdmin)
 except:

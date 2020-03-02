@@ -120,3 +120,35 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 
+class ItemRequestAdmin(admin.ModelAdmin):
+    def show_item(self, obj=None):
+        from django.shortcuts import reverse 
+        from django.utils.html import mark_safe 
+        option = "change" # "delete | history | change"
+        massiv = []
+        obj   = obj.item
+        app   = obj._meta.app_label
+        model = obj._meta.model_name
+        url   = f'admin:{app}_{model}_{option}'
+        href  = reverse(url, args=(obj.pk,))
+        name  = f'{obj.title}'
+        link  = mark_safe(f"<a href={href}>{name}</a>")
+        return link
+
+    show_item.short_description = 'Техніка'
+    readonly_fields = [
+        'show_item',
+        'name',
+        'email',
+        'phone',
+        'message',
+    ]
+    fields = [
+        'show_item',
+        'name',
+        'email',
+        'phone',
+        'message',
+    ]
+
+

@@ -1,4 +1,4 @@
-from box.shop.order.models import ( Order, OrderRequest )
+from box.shop.order.models import ( Order, OrderRequest, ItemRequest )
 from box.shop.item.models import Item 
 from box.shop.cart.utils import get_cart
 from box.shop.cart.models import Cart, CartItem
@@ -6,6 +6,7 @@ from box.shop.cart.models import Cart, CartItem
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, reverse
 from django.http import JsonResponse
+from django.core.mail import send_mail
 
 
 
@@ -90,9 +91,42 @@ def order_request(request):
     order.make_order(request)
     return JsonResponse({
       'status':'OK',
-      
+      'url':reverse('thank_you'),
     })
   
 
 
+
+
+@csrf_exempt
+def item_info(request):
+  query   = request.GET or request.POST
+  item_id = query.get('product_id')
+  name    = query.get('name', '---') 
+  phone   = query.get('phone', '---') 
+  email   = query.get('email', '---')
+  message = query.get('message', '---') 
+  model   = ItemRequest.objects.create(
+    name=name,
+    phone=phone,
+    email=email,
+    message=message,
+  )
+  if item_id:
+    item = Item.objects.get(id=item_id)
+    model.item = item
+    model.save()
+  link  = reverse(f'admin:{model._meta.app_label}_{model._meta.model_name}_change', args=(model.id,))
+  from django.conf import settings 
+  send_mail(
+    subject = 'Заявка на інформацію про товар',
+    message = f'{settings.CURRENT_DOMEN+link}',
+    from_email = settings.EMAIL_HOST_USER,
+    recipient_list = [settings.EMAIL_HOST_USER,],
+    fail_silently=False,
+  )
+  return JsonResponse({
+    'status':'OK',
+    
+  })
 
