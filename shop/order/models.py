@@ -82,15 +82,16 @@ class Order(models.Model):
       cart_item.ordered = True
       cart_item.order = order
       item = cart_item.item 
-      if item.amount < cart_item.quantity:
-        cart_item.quantity = item.amount 
-        item.amount = 0 
-        if unavailable_stocks.exists():
-          item.in_stock = unavailable_stocks.first()
+      if item.amount != None:
+        if item.amount < cart_item.quantity:
+          cart_item.quantity = item.amount 
+          item.amount = 0 
+          if unavailable_stocks.exists():
+            item.in_stock = unavailable_stocks.first()
+          else:
+            item.in_stock = None 
         else:
-          item.in_stock = None 
-      else:
-        item.amount -= quantity 
+          item.amount -= quantity 
       item.save()
     cart.order = order 
     cart.save()
