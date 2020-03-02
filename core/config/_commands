@@ -1,7 +1,6 @@
 sudo ln -s /home/jurgeon/projects/project_name/src/config/project_name                    /etc/nginx/sites-enabled/
 sudo ln -s /home/jurgeon/projects/project_name/src/config/project_name.service            /etc/systemd/system/
 
-
 sudo systemctl enable nginx
 sudo systemctl start nginx
 sudo systemctl restart nginx
@@ -40,3 +39,6 @@ sudo service nginx restart
 sudo /etc/init.d/nginx start 
 sudo /etc/init.d/nginx restart
 #sudo reboot
+
+
+

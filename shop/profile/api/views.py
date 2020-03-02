@@ -35,8 +35,8 @@ def get_orders(request):
         '-address',
       ],
       'status_id (статуси заказів для фільтрування)':list(Status.objects.all().values_list('id', flat=True)),
-      'orders':OrderSerializer(orders, many=True).data,
-    }
+    },
+    'orders':OrderSerializer(orders, many=True).data,
   }
   return JsonResponse(response)
 
