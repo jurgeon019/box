@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages 
 from django.utils.translation import gettext as _
 from django.http import JsonResponse
-
+from django.views.decorators.csrf import csrf_exempt
 from .serializers import OrderSerializer
 from box.shop.order.models import Status 
 
