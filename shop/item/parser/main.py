@@ -1054,7 +1054,7 @@ class ImportMixin(Parser):
     new_item = self.handle_currency(item, new_item, *args, **kwargs)
     new_item = self.handle_price(item, new_item, *args, **kwargs)
     new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
-    new_item = self.handle_images(item, new_item, *args, **kwargs)
+    # new_item = self.handle_images(item, new_item, *args, **kwargs)
     new_item.save()
     return new_item 
 
