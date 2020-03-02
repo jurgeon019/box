@@ -160,6 +160,6 @@ class CurrencyRatioAdmin(admin.ModelAdmin):
     ]
 
 
-class ItemStockAdmin(admin.ModelAdmin):
+class ItemStockAdmin(TabbedTranslationAdmin):
     pass 
 

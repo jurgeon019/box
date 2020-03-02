@@ -15,7 +15,6 @@ class ItemTranslationOptions(TranslationOptions):
         'meta_key',
         'title',
         'description',
-        # 'slug',
     )
 translator.register(Item, ItemTranslationOptions)
 
@@ -27,7 +26,6 @@ class ItemCategoryTranslationOptions(TranslationOptions):
         'meta_descr',
         'meta_key',
         'title',
-        # 'slug',
     )
 
 translator.register(ItemCategory, ItemCategoryTranslationOptions)
@@ -55,5 +53,8 @@ class ItemImageTranslationOptions(TranslationOptions):
     ]
 
 
+translator.register(ItemStock, fields=[
+    'text',
+])
 
 

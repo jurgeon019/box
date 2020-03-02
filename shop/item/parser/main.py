@@ -1057,7 +1057,6 @@ class ImportMixin(Parser):
     # new_item = self.handle_images(item, new_item, *args, **kwargs)
     new_item.save()
     return new_item 
-    
 
 
   def print_item(self, item, new_item, *args, **kwargs):

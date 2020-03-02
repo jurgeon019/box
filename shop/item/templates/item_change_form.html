@@ -32,7 +32,7 @@
   </form>
   <hr><br>
   {% endif %}
-  {% if original.slug %}
+  <!-- {% if original.slug %}
   <form method="POST" action="{% url 'delete_item_photoes' original.slug  %}">
     {% csrf_token %}
     <input type="submit"  value="Видалити всі фото"/>
@@ -45,7 +45,7 @@
     <input type="submit"  value="Видалити всі характеристики"/>
   </form>
   <hr><br>
-  {% endif %}
+  {% endif %} -->
 
 
 {% endblock object-tools %}
