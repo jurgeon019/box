@@ -97,11 +97,17 @@ from django.db.models.signals import pre_save
 
 # pre_save.connect(pre_save_item_slug, sender=Category)
 
+STOCK_COLOR_CHOICES = (
+	('g', "green"),
+	('o', "orange"),
+	('r', "red"),
+)
 
 class ItemStock(models.Model):
 	# code = models.NullBooleanField(verbose_name=("Код"))
 	text         = models.CharField(verbose_name=('Наявність'), max_length=255, unique=True)
 	availability = models.BooleanField(verbose_name=('Можливість покупки'), default=True)
+	colour       = models.CharField(verbose_name=('Колір'), choices=STOCK_COLOR_CHOICES, max_length=255, default=1)
 	def __str__(self):
 		return f"{self.text}"
 	
@@ -304,7 +310,7 @@ class Item(models.Model):
 			price = self.new_price
 		else:
 			price = self.old_price
-		return price 
+		# return price 
 		# !!!!!!!!!!!!
 		main_currency = Currency.objects.get(is_main=True)
 		current_currency = self.currency

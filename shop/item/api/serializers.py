@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from box.shop.item.models import (
   Item, ItemFeature, ItemCategory, ItemFeatureCategory, ItemImage, ItemReview,
-  Currency
+  Currency, ItemStock
 )
 
 from django.conf import settings 
@@ -61,6 +61,10 @@ class ItemCategorySerializer(serializers.ModelSerializer):
     model = ItemCategory
     exclude = []
 
+class ItemStockSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = ItemStock 
+    exclude = []
 
 class ItemSerializer(serializers.ModelSerializer):
   images   = ItemImageSerializer(many=True, read_only=True)
@@ -77,8 +81,8 @@ class ItemSerializer(serializers.ModelSerializer):
   price    = serializers.ReadOnlyField()
   reviews  = ItemReviewSerializer(many=True)
   currency = CurrencySerializer()
+  in_stock = ItemStockSerializer()
   class Meta:
     model = Item
-    exclude = [
-    ]
+    exclude = []
 

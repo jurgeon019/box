@@ -169,6 +169,7 @@ class ItemStockAdmin(TabbedTranslationAdmin):
         'id',
         'text',
         'availability',
+        'colour',
     ] 
     list_display_links = [
         'id',
