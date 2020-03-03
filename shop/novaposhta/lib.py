@@ -15,7 +15,9 @@ def search_warehouses(query, limit=None):
         return []
 
     queryset = model_search(
-        query, Warehouse.objects.all(), ['title', 'address'])
+        # query, Warehouse.objects.all(), ['title', 'address'])
+        query, Warehouse.objects.all(), ['address'])
+        # query, Warehouse.objects.all(), ['title'])
 
     if limit is not None:
         return queryset[:limit]

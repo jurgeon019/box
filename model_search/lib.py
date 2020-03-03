@@ -41,6 +41,7 @@ def build_query(query_string, search_fields):
              for field_name in search_fields)
         ) for term in terms),
     )
+
     return query
 
 

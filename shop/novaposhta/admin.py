@@ -33,3 +33,6 @@ class WarehouseAdmin(TabbedTranslationAdmin):
 
 
 admin.site.register(Warehouse, WarehouseAdmin)
+
+
+
