@@ -12,7 +12,7 @@ class PostTranslationOptions(TranslationOptions):
         "meta_key",
         "title",
         "content",
-        "slug",  
+        # "slug",  
         "alt",
     )
 
@@ -25,7 +25,7 @@ class PostCategoryTranslationOptions(TranslationOptions):
         "meta_descr",
         "meta_key",
         "title",
-        "slug",  
+        # "slug",  
         "alt",
     )
 
