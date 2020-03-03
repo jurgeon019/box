@@ -241,9 +241,6 @@ class Item(models.Model):
 		# 		self.in_stock == None 
 		 
 	def handle_currency(self, *args, **kwargs):
-		print(self.currency)
-		print(self.title)
-		print()
 		if not self.currency:
 			if settings.MULTIPLE_CATEGORY:
 				if self.categories.all().exists():
@@ -307,6 +304,8 @@ class Item(models.Model):
 			price = self.new_price
 		else:
 			price = self.old_price
+		return price 
+		# !!!!!!!!!!!!
 		main_currency = Currency.objects.get(is_main=True)
 		current_currency = self.currency
 		# current_currency = self.category.currency
@@ -338,7 +337,7 @@ class Item(models.Model):
 		# print('self.price.new_price: ', self.new_price)
 		# print('self.price.old_price: ', self.old_price)
 		# print('__________')
-
+		print(price)
 		return price 
 
 	@property

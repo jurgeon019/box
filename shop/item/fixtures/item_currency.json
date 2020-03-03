@@ -6,13 +6,20 @@
     {"model":"item.Currency", "pk":2, "fields":{
         "name":"USD"
     }},
+    {"model":"item.Currency", "pk":3, "fields":{
+        "name":"EUR"
+    }},
 
 
     {"model":"item.CurrencyRatio", "pk":1, "fields":{
         "main":2,
         "compared":1,
         "ratio":25
+    }},
+    {"model":"item.CurrencyRatio", "pk":2, "fields":{
+        "main":3,
+        "compared":1,
+        "ratio":27
     }}
-
 
 ]
