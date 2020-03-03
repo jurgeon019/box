@@ -69,9 +69,9 @@ class ItemStockSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
   images   = ItemImageSerializer(many=True, read_only=True)
   features = ItemFeatureSerializer(many=True)
-  full_url = serializers.SerializerMethodField() # define a SerializerMethodField        
+  full_url = serializers.SerializerMethodField() 
   def get_full_url(self, obj):
-      return obj.get_absolute_url() # return the absolute url of the object
+      return obj.get_absolute_url()
 
   if settings.MULTIPLE_CATEGORY:
     categories = ItemCategorySerializer(many=True)
