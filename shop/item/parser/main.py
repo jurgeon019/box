@@ -1011,7 +1011,7 @@ class ImportMixin(Parser):
   def create_items(self, items, list_file, *args, **kwargs):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
     # items = items[161+77+22+119+622:]
-    items = items[1464:1722]
+    # items = items[1464:1722]
     # try:
     for item in items:
       try:
@@ -1053,7 +1053,7 @@ class ImportMixin(Parser):
     new_item = self.handle_currency(item, new_item, *args, **kwargs)
     new_item = self.handle_price(item, new_item, *args, **kwargs)
     new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
-    new_item = self.handle_images(item, new_item, *args, **kwargs)
+    # new_item = self.handle_images(item, new_item, *args, **kwargs)
     new_item.save()
     return new_item 
 
