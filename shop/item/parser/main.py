@@ -1010,20 +1010,19 @@ class ImportMixin(Parser):
 
   def create_items(self, items, list_file, *args, **kwargs):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
-    # items = items[955:956]
-    # items = items[857:]
-    # items = items[0:3]
-    try:
-      for item in items:
-        # try:
-          new_item = self.create_item(item, *args, **kwargs)
-          if new_item:
-            self.print_item(item, new_item)
-          print("items.index(item):", items.index(item))
-        # except Exception as e:
-        #   print(e)
-    except Exception as e:
-      print(e)
+    # items = items[161+77+22+119+622:]
+    items = items[1464:1722]
+    # try:
+    for item in items:
+      try:
+        new_item = self.create_item(item, *args, **kwargs)
+        if new_item:
+          self.print_item(item, new_item)
+        print("items.index(item):", items.index(item))
+      except Exception as e:
+        print(e)
+    # except Exception as e:
+    #   print(e)
 
 
   def create_item(self, item, *args, **kwargs):
@@ -1054,7 +1053,7 @@ class ImportMixin(Parser):
     new_item = self.handle_currency(item, new_item, *args, **kwargs)
     new_item = self.handle_price(item, new_item, *args, **kwargs)
     new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
-    # new_item = self.handle_images(item, new_item, *args, **kwargs)
+    new_item = self.handle_images(item, new_item, *args, **kwargs)
     new_item.save()
     return new_item 
 
