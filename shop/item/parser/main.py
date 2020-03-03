@@ -1012,7 +1012,7 @@ class ImportMixin(Parser):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
     # items = items[955:956]
     # items = items[857:]
-    # items = items[0:1]
+    # items = items[0:3]
     try:
       for item in items:
         # try:
@@ -1035,7 +1035,7 @@ class ImportMixin(Parser):
     code        = item["Артикул"]
     existing_items = Item.objects.filter(code=code)
     if existing_items.exists() and not existing_items.first().title.lower().strip() == title.lower().strip():
-        print(F'ITEM WITH CODE {code} ALREADY EXISTS')
+        print(f'ITEM WITH CODE {code} ALREADY EXISTS')
         return 
     new_item, _ = Item.objects.get_or_create(
       # code=code,
@@ -1197,18 +1197,24 @@ class ImportMixin(Parser):
       new_item.old_price = old_price
     if new_price:
       new_item.new_price = new_price
-    try:
-      if price_netto:
-        # new_item.currency, _ = Currency.objects.get_or_create(name=price_netto.split(' ')[-1].strip())
-        new_item.old_price = float(price_netto.split(' ')[0].strip().replace(',', '.'))
-      if price_brutto:
-          # new_item.currency, _ = Currency.objects.get_or_create(name=price_brutto.split(' ')[-1].strip())
-          new_item.new_price = float(price_brutto.split(' ')[0].strip().replace(',', '.'))
-    except:
-      currency_name = 'UAH'
-      new_item.currency, _ = Currency.objects.get_or_create(name=currency_name)
-      new_price = float(''.join(price_netto.split()).replace(',', '.').replace('грн.', ''))
-      new_item.new_price = new_price
+
+    if '€' in price_netto:
+      new_item.old_price   = float(price_netto.replace('€', '').strip().replace(',','.').replace(' ', ''))
+      new_item.new_price   = float(price_brutto.replace('€', '').strip().replace(',','.').replace(' ', ''))
+      new_item.currency, _ = Currency.objects.get_or_create(name='EUR')
+    elif 'грн' in price_netto:
+      price_netto          = price_netto.replace(' ', '').replace('грн.', '').strip().replace(',','.').replace(' ', '')
+      price_brutto         = price_brutto.replace(' ', '').replace('грн.', '').strip().replace(',','.').replace(' ', '')
+      price_netto          = price_netto.replace('\xa0', '').replace(' ', '')
+      price_brutto         = price_brutto.replace('\xa0', '').replace(' ', '')
+      new_item.old_price   = float(price_netto)
+      new_item.new_price   = float(price_brutto)
+      new_item.currency, _ = Currency.objects.get_or_create(name='UAH')
+    elif 'Цену уточняйте' in price_netto:
+      new_item.old_price   = None 
+      new_item.new_price   = None 
+      new_item.currency    = None 
+    # print('1:', new_item.currency)
     return new_item 
 
 

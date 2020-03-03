@@ -194,10 +194,11 @@ class Item(models.Model):
 		return f"{self.title}, {self.slug}"
 
 	def save(self, *args, **kwargs):
-		self.handle_currency(*args, **kwargs)
+		# self.handle_currency(*args, **kwargs)
 		self.handle_slug(*args, **kwargs)
 		self.handle_availability(*args, **kwargs)
 		super().save(*args, **kwargs)
+		# print('3:', self.currency)
 		self.resize_thumbnail(self.thumbnail)
 
 	def handle_slug(self, *args, **kwargs):
@@ -213,7 +214,6 @@ class Item(models.Model):
 			while Item.objects.filter(slug=slug).exists():
 				slug = f'{origin_slug}-{numb}'
 				numb += 1
-			print('sdf', slug)
 			self.slug = slug
 
 	def handle_availability(self, *args, **kwargs):
@@ -240,13 +240,19 @@ class Item(models.Model):
 		# 	else:
 		# 		self.in_stock == None 
 		 
-	def handle_currency(self):
-		if self.currency is None:
+	def handle_currency(self, *args, **kwargs):
+		print(self.currency)
+		print(self.title)
+		print()
+		if not self.currency:
 			if settings.MULTIPLE_CATEGORY:
-				if self.categories.all():
+				if self.categories.all().exists():
 					self.currency = self.categories.all().first().currency
 				else:
-					self.currency = Currency.objects.get(is_main=True)
+					try:
+						self.currency = Currency.objects.get(is_main=True)
+					except:
+						self.currency = Currency.objects.all().first()
 			else:
 				if self.category:
 					self.currency = self.category.currency
@@ -486,10 +492,11 @@ class ItemCategory(models.Model):
 	def save(self, *args, **kwargs):
 
 		if self.currency:
-			try:
-				self.items.all().update(currency=self.currency)
-			except:
-				pass
+			# try:
+			# 	self.items.all().update(currency=self.currency)
+			# except:
+			# 	pass
+			pass
 
 		elif not self.currency:
 			alls  = Currency.objects.all()

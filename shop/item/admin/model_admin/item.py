@@ -114,8 +114,11 @@ class ItemAdmin(TabbedTranslationAdmin, ExportMixin):
         'id',
         'title',
         # 'category',
-        'price',
+        'new_price',
         'old_price',
+        # 'price',
+        'currency',
+        # 'old_price',
         'in_stock',
         'is_active',
     ]
