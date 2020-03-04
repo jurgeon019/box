@@ -1172,7 +1172,7 @@ class ImportMixin(Parser):
           perkinses_400_title = ItemCategory.objects.filter(
             # title_ru=title,
             title_uk=title,
-            title_uk=title,
+            # title=title,
             # title__iexact=title,
             # title__icontains=title,
           )
