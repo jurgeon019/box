@@ -1011,9 +1011,10 @@ class ImportMixin(Parser):
   def create_items(self, items, list_file, *args, **kwargs):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
     # items = items[161+77+22+119+622:]
-    # items = items[1464+1722:]
+    items = items[1464+1722:]
     # try:
     for item in items:
+      # return print('sdfsdf')
       try:
         new_item = self.create_item(item, *args, **kwargs)
         if new_item:
