@@ -93,6 +93,7 @@ class Order(models.Model):
         else:
           item.amount -= quantity 
       item.save()
+      cart_item.save()
     cart.order = order 
     cart.save()
 

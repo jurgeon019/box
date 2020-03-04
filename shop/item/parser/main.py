@@ -1012,6 +1012,7 @@ class ImportMixin(Parser):
     items = self.parse_item_features(items, list_file, *args, **kwargs)
     # items = items[161+77+22+119+622:]
     # items = items[1464+1722:]
+    items = items[159:161]
     # try:
     for item in items:
       try:
@@ -1040,7 +1041,7 @@ class ImportMixin(Parser):
       # code=code,
       title=title,
     )
-    new_item.title       = title
+    # new_item.title       = title
     new_item.code       = code
     new_item.description = description
     new_item.meta_title  = meta_title
@@ -1053,9 +1054,9 @@ class ImportMixin(Parser):
     new_item = self.handle_currency(item, new_item, *args, **kwargs)
     new_item = self.handle_price(item, new_item, *args, **kwargs)
     new_item = self.handle_in_stock(item, new_item, *args, **kwargs)
-    # new_item = self.handle_images(item, new_item, *args, **kwargs)
+    new_item = self.handle_images(item, new_item, *args, **kwargs)
     new_item.save()
-    return new_item 
+    # return new_item 
 
 
   def print_item(self, item, new_item, *args, **kwargs):
@@ -1089,9 +1090,7 @@ class ImportMixin(Parser):
   def handle_images(self, item, new_item, *args, **kwargs):
     images = item.get("Изображения")
     if images:
-      # print(images); return None;  
       if not images[:2] == "['" and not images[-2:] == "']":
-        print('123'); return None; 
         images = images.split(",")
         for image in images:
           image = ItemImage.objects.create(
@@ -1103,14 +1102,15 @@ class ImportMixin(Parser):
       if images[:2] == "['" and images[-2:] == "']":
         images = ast.literal_eval(images)
         for image in images:
-          # print('321', image); return None; 
           ext = image.split('.')[-1]
           # new_image = ItemImage.objects.create(
           new_image, created = ItemImage.objects.get_or_create(
               item=new_item,
               image=f'shop/item/{new_item.slug}/{new_item.slug}created{images.index(image)}.{ext}'
           )
-          if created:
+          print(new_image)
+          # if created:
+          if True:
             path = new_image.image.path
             save_path = '/'.join(path.split('/')[:-1])
             try:
@@ -1158,9 +1158,42 @@ class ImportMixin(Parser):
 
           parent = ItemCategory.objects.get(title='Запчастини PERKINS'.lower())
           # parent = ItemCategory.objects.get(code='parts_perkins')
+
+          title = category.lower().strip()
+
+          # print(title)
+          # title = 'запчастини до двигуна perkins 400'#.lower().strip()
+          # print(title)
+          slug  = 'zapchasti-k-dvigatelju-perkins-400'
+
+          perkinses_400_slug = ItemCategory.objects.filter(
+            slug=slug
+          )
+          perkinses_400_title = ItemCategory.objects.filter(
+            # title_ru=title,
+            title_uk=title,
+            title_uk=title,
+            # title__iexact=title,
+            # title__icontains=title,
+          )
+          perkinses_400_slug_title = perkinses_400_slug.first().title 
+          # perkinses_400_title_title = perkinses_400_title.first().title 
+
+          print()
+          print("title: ", title)
+          print("slug: ",  slug)
+          print("perkinses_400_slug: ", perkinses_400_slug)
+          print("perkinses_400_title: ", perkinses_400_title)
+          print("perkinses_400_slug_title: ", perkinses_400_slug_title)
+          # print("perkinses_400_title_title: ", perkinses_400_title_title)
+          print()
+
+          
           category, _ = ItemCategory.objects.get_or_create(
             # slug__iexact=category.lower().strip(),
-            title=category.lower().strip(),
+            title__iexact=title,
+            # title__icontains=title,
+            # title_ru=title,
           )
           parent.parent = parts
           parent.save()

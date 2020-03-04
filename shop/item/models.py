@@ -519,7 +519,6 @@ class ItemCategory(models.Model):
 		# 	title = f'{origin_title} ({numb})'
 		# 	numb += 1
 		self.title = title
-
 		if not self.slug:
 			try:
 				slug = slugify(translit(self.title, reversed=True), allow_unicode=True) 
@@ -541,6 +540,11 @@ class ItemCategory(models.Model):
 
 
 			self.slug  = slug
+		cats = ItemCategory.objects.filter(slug=slug)
+		# if cats.exists():
+		# 	cat = cats.first()
+		# print(slug)
+		# print(cat)
 
 		super().save(*args, **kwargs)
 
