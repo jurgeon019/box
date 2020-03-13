@@ -4,6 +4,8 @@ from .installed_apps import *
 from .middleware import * 
 from .templates import * 
 from .translation import * 
+from ._tinymce import * 
+from ._admin_toolbar import * 
 
 """
 in core.settings

@@ -8,6 +8,7 @@ from box.shop.order.models import Order, Status
 from box.shop.liqpay.admin import PaymentInline
 from box.shop.cart.admin import CartItemInline
 
+from .models import *
 
 
 
@@ -117,7 +118,6 @@ class OrderAdmin(admin.ModelAdmin):
         'ordered',
         'total',
     ]
-
 
 
 class ItemRequestAdmin(admin.ModelAdmin):

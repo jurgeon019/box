@@ -7,6 +7,8 @@ from django.urls import path, include
 from django.views.i18n import JavaScriptCatalog as js_cat
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView as t_v
+from django.conf import settings
+
 
 from box.shop.item.sitemaps import *
 from box.blog.sitemaps import *
@@ -31,11 +33,12 @@ handler500 = 'box.core.views.handler_500'
 
 
 urlpatterns = [
-  
+  path('admin_tools/',     include('admin_tools.urls')),
+  # path('selectable/',      include('selectable.urls')),
+  path('grappelli/',       include('grappelli.urls')),
   path('i18n/',            include('django.conf.urls.i18n')),
   path('rosetta/',         include('rosetta.urls')),
   path('admin+/',          admin_plus.urls),
-  # path('admin/',           custom_admin.urls),
   path('admin/',           admin.site.urls),
   path('tinymce/',         include('tinymce.urls')),
   path('filebrowser/',     site.urls),
@@ -48,8 +51,10 @@ urlpatterns = [
 
   path('test/', include('box.shop.test_shop.urls')),
   
+
+  path('', include('box.global_config.urls')),
   path('', include('box.shop.novaposhta.urls')),
-  path('', include('box.shop.profile.api.urls')),
+  path('', include('box.shop.customer.api.urls')),
   path('', include('box.shop.cart.api.urls')),
   path('', include('box.shop.item.api.urls')),
   path('', include('box.shop.liqpay.api.urls')),
@@ -58,9 +63,6 @@ urlpatterns = [
   path('', include('box.custom_auth.api.urls')),
   path('', include('box.custom_admin.api.urls')),
 ]
-
-
-from django.conf import settings
 
 
 if settings.DEBUG == True:

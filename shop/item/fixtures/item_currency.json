@@ -1,22 +1,22 @@
 [
-    {"model":"item.Currency", "pk":1, "fields":{
+    {"model":"item.ItemCurrency", "pk":1, "fields":{
         "name":"UAH",
         "is_main":true
     }},
-    {"model":"item.Currency", "pk":2, "fields":{
+    {"model":"item.ItemCurrency", "pk":2, "fields":{
         "name":"USD"
     }},
-    {"model":"item.Currency", "pk":3, "fields":{
+    {"model":"item.ItemCurrency", "pk":3, "fields":{
         "name":"EUR"
     }},
 
 
-    {"model":"item.CurrencyRatio", "pk":1, "fields":{
+    {"model":"item.ItemCurrencyRatio", "pk":1, "fields":{
         "main":2,
         "compared":1,
         "ratio":25
     }},
-    {"model":"item.CurrencyRatio", "pk":2, "fields":{
+    {"model":"item.ItemCurrencyRatio", "pk":2, "fields":{
         "main":3,
         "compared":1,
         "ratio":27

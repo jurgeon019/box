@@ -1,0 +1,7 @@
+BOX_CART = 'box.shop.cart.models.Cart'
+BOX_ITEM = 'box.shop.item.models.Item'
+BOX_ITEM_CATEGORY = 'box.shop.item.models.ItemCategory'
+BOX_ITEM = 'box.shop.item.models.Item'
+BOX_ITEM = 'box.shop.item.models.Item'
+BOX_ITEM = 'box.shop.item.models.Item'
+BOX_ITEM = 'box.shop.item.models.Item'

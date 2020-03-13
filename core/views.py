@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from django.http import JsonResponse 
+from django.http import JsonResponse, HttpResponse
+
 from box.shop.help import help as shop_help 
 from box.blog.help import help as blog_help 
-
+from box.seo.models import Robots
 
 
 def handler_404(request, exception):
@@ -14,7 +15,12 @@ def handler_500(request):
 
 
 def robots(request):
-  return render(request, 'robots.txt', locals())
+  robots = Robots.get_solo().robots_txt
+  if robots:
+    response = HttpResponse(robots)
+  else:
+    response = render(request, 'core/robots.txt', locals())
+  return response
 
 
 def help(request):

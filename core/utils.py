@@ -14,10 +14,29 @@ class AdminImageWidget(AdminFileWidget):
       file_name = str(value)
       output.append(
         f' <a href="{image_url}" target="_blank">'
-        f'  <img src="{image_url}" alt="{file_name}" width="150" height="150" '
+        # f'  <img src="{image_url}" alt="{file_name}" '
+        # f'  <img src="{image_url}" alt="{file_name}" width="{self.width}" height="{self.height}" '
+        f'  <img src="{image_url}" alt="{file_name}" width="auto" height="150" '
         f'style="object-fit: cover;"/> </a>')
     output.append(super(AdminFileWidget, self).render(name, value, attrs, renderer))
     return mark_safe(u''.join(output))
+
+
+
+def show_admin_link(obj, obj_attr=None, obj_name=None, option='change'):
+    try:
+        obj   = getattr(obj, obj_attr)
+    except:
+        pass 
+    try:
+        name = f'{getattr(obj, obj_name)}'
+    except:
+        pass
+    app   = obj._meta.app_label 
+    model = obj._meta.model_name 
+    url = f'admin_{app}_{model}_{option}'
+    href = reverse(url, args=(obj.pk,))
+    return mark_safe(f'<a href={href}>{name}</a>')
 
 
 

@@ -1,55 +1,85 @@
-{% load i18n %}
-{% get_current_language as LANGUAGE_CODE %}
+{% load i18n core %}
 {% get_available_languages as LANGUAGES %}
-{% get_language_info_list for LANGUAGES as languages %}
 <!DOCTYPE html>
 <html>
 <head>
-  <!-- head -->
+  {% block head_top_scripts %}
+    {% for script in seo.scripts.all %}
+      {% if script.position == 'head_top' %}
+        {{script.code|safe}}
+      {% endif%}
+    {% endfor %}
+  {% endblock head_top_scripts %}
+
   {% block head %}
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="utf-8">
-  <title>{{page.meta_title}}</title>
-  <meta name="description" content="{{page.meta_descr}}"/>
-  <meta name="keywords" content="{{page.meta_key}}" />
-  {% block favicon %}
-  <link rel="shortcut icon" type="image/png" href="/static/favicon.ico">
-  {% endblock favicon %}
-  {% block hreflang %}
-  {% include 'core/includes/hreflang.html' %}
-  {% endblock hreflang %}
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>{{page.meta_title}}</title>
+    <meta name="description" content="{{page.meta_descr}}"/>
+    <meta name="keywords" content="{{page.meta_key}}" />
 
+    {% block favicon %}
+      <link rel="icon" href="{{config.get_favicon_url}}" type="{{favicon.get_favicon_type}}" />
+    {% endblock favicon %}
 
-  {% block ogimage %}
-  {% if LANGUAGE_CODE == 'ru' %}
-  <meta property="og:image" content="/static/og/square_ru.png">
-  <meta property="og:image" content="/static/og/rectangle_ru.png">
-  <meta property="og:image" content="/static/og/square_ru.png">
-  {% elif LANGUAGE_CODE == 'uk' %}
-  <meta property="og:image" content="/static/og/square_uk.png">
-  <meta property="og:image" content="/static/og/rectangle_uk.png">
-  <meta property="og:image" content="/static/og/square_uk.png">
-  {% elif LANGUAGE_CODE == 'en' %}
-  <meta property="og:image" content="/static/og/square_en.png">
-  <meta property="og:image" content="/static/og/rectangle_en.png">
-  <meta property="og:image" content="/static/og/square_en.png">
-  {% endif%}
-  {% endblock ogimage %}
-  {% block robots %}
-  <meta name="robots" content="noindex,nofollow">
-  {% endblock robots %}
-  <!-- css, fonts -->
-  {% block styles %}{% endblock styles%}
+    {% block hreflang %}
+      {% for language_code, language_name in LANGUAGES %}
+      <link
+          rel="alternate"
+          hreflang="{{ language_code }}"
+          href="{% translate_url language_code %}" />
+      {% endfor %}
+      <link 
+          rel="alternate" 
+          hreflang="x-default" 
+          href="{% translate_url 'uk' %}" />
+    {% endblock hreflang %}
+
+    {% block ogimage %}
+      <meta property="og:image" content="{{config.get_og_image_square_url}}" />
+      <meta property="og:image" content="{{config.get_og_image_rectangle_url}}" />
+      <meta property="og:image" content="{{config.get_og_image_square_url}}" />
+    {% endblock ogimage %}
+
+    {% block styles %}{% endblock styles%}
+
+    {% block extra_styles %}{% endblock extra_styles %}
+
   {% endblock head %}
+  {% block head_bottom_scripts %}
+    {% for script in seo.scripts.all %}
+      {% if script.position == 'head_bottom' %}
+        {{script.code|safe}}
+      {% endif%}
+    {% endfor %}
+  {% endblock head_bottom_scripts %}
+
 </head>
 <body>
+  {% block body_top_scripts %}
+    {% for script in seo.scripts.all %}
+      {% if script.position == 'body_top' %}
+        {{script.code|safe}}
+      {% endif%}
+    {% endfor %}
+  {% endblock body_top_scripts %}
+  
+
   {% block header %}{% endblock header %} 
   {% block content %}{% endblock content %}
   {% block extra_content %}{% endblock extra_content %}
   <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
   {% block scripts %}{% endblock scripts%}
   {% block extra_scripts %}{% endblock extra_scripts%}
-  
+
+
+  {% block body_bottom_scripts %}
+    {% for script in seo.scripts.all %}
+      {% if script.position == 'body_bottom' %}
+        {{script.code|safe}}
+      {% endif%}
+    {% endfor %}
+  {% endblock body_bottom_scripts %}
 </body>
 </html>
 

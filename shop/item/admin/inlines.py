@@ -14,10 +14,13 @@ from box.core.utils import AdminImageWidget
 
 
 
+from adminsortable.admin import NonSortableParentAdmin, SortableStackedInline, SortableTabularInline
 
 
-class ItemImageInline(TranslationTabularInline):
-    
+class ItemImageInline(
+    SortableStackedInline,
+    TranslationTabularInline,
+    ):
     model = ItemImage
     extra = 0
     classes = ['collapse']
@@ -25,6 +28,9 @@ class ItemImageInline(TranslationTabularInline):
         'image',
         'order',
         'alt',
+    ]
+    readonly_fields = [
+        'order',
     ]
     formfield_overrides = {models.ImageField: {'widget': AdminImageWidget}}
 
@@ -34,7 +40,7 @@ class ItemReviewInline(admin.TabularInline):
     extra = 0 
     classes = ['collapse']
     exclude = [
-
+        
     ]
 
 
@@ -94,9 +100,9 @@ class ItemCategoryInline(TranslationStackedInline):
         "slug": ("title",), 
     }
 
-
-class ItemFeatureInline(TranslationTabularInline):
+class BaseItemFeatureInline:
     model = ItemFeature
+    # model = ItemFeature.items.through
     extra = 0 
     classes = ['collapse']
     exclude = [
@@ -104,8 +110,20 @@ class ItemFeatureInline(TranslationTabularInline):
         'category',
         'categories',
     ]
+    autocomplete_fields = [
+        'name',
+    ]
+    # raw_id_fields = [
+    #     'name',
+    # ]
+
     formfield_overrides = {
         # models.CharField: {'widget': NumberInput(attrs={'size':'20'})},
         models.CharField: {'widget': TextInput(attrs={'size':'50'})},
         models.TextField: {'widget': Textarea(attrs={'rows':2, 'cols':70, 'style':'resize:vertical'})},
     }
+
+class ItemFeatureTabularInline(BaseItemFeatureInline, TranslationTabularInline):
+    pass 
+class ItemFeatureStackedInline(BaseItemFeatureInline, TranslationStackedInline):
+    pass 

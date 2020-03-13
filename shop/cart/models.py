@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
-from box.shop.item.models import Item, Currency 
+from box.shop.item.models import Item, ItemCurrency 
 
 
 User = get_user_model() 
@@ -98,7 +98,7 @@ class Cart(models.Model):
   @property
   def currency(self):
     currency = None 
-    currencies = Currency.objects.filter(is_main=True)
+    currencies = ItemCurrency.objects.filter(is_main=True)
     if currencies.exists():
       currency = currencies.first().name
     return currency

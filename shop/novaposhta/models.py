@@ -12,6 +12,14 @@ class Warehouse(models.Model):
     def full_name(self):
         return '{}, {}'.format(self.title, self.address)
 
+    @classmethod
+    def modeltranslation_fields(cls):        
+        fields = [
+            'title',
+            'address',
+        ]
+        return fields
+
     def __str__(self):
         return self.full_name
 

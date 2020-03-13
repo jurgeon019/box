@@ -12,7 +12,7 @@ from django.contrib import admin
 from django.contrib.auth.models import (User, Group,)
 from django.contrib.auth.admin import (UserAdmin, GroupAdmin,)
 
-from box.shop.profile.models import (Profile,)
+from box.shop.customer.models import (Customer,)
 from box.shop.order.admin import (OrderInline,)
 
 from box.custom_auth.models import User 
@@ -20,7 +20,7 @@ from box.custom_auth.models import User
 
 
 class ProfileInline(admin.StackedInline):
-    model = Profile
+    model = Customer
     extra = 1
     # def has_add_permission(self, request, obj=None):
     #     return True 

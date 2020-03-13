@@ -57,10 +57,10 @@ def import_item_photoes(request, slug=None):
 
 @staff_member_required
 def export_item_photoes(request, slug=None):
-  from box.shop.item.utils import ExportMixin
+  from box.imp_exp.main import ExportMixin
   export   = ExportMixin()
   queryset = Item.objects.filter(slug=slug)
-  response = export.export_items_photoes(request, queryset)
+  response = export.admin_export_items_photoes(request, queryset)
   return response
 
 

@@ -63,6 +63,7 @@ class Command(BaseCommand):
       if content_type == 'item_category':
 
         if action_type == 'import':
+          print("sdfsdf")
           status = importer.read_items_categories_from_csv(file_name)   # TODO: NOT STARTED 
         elif action_type == 'export':
           status = exporter.export_items_categories_to_csv(file_name)   # TODO: NOT STARTED 

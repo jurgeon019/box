@@ -18,7 +18,6 @@ from django.conf.urls.i18n import i18n_patterns
 
 urlpatterns += i18n_patterns(
   path('', include(multilingual_urls)),
-  # prefix_default_language=settings.USE_I18N,
   prefix_default_language=True,
 )
 

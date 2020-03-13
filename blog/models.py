@@ -51,6 +51,19 @@ class Post(models.Model):
   def __str__(self):
     return f'{self.title}'
 
+  @classmethod
+  def modeltranslation_fields(cls):
+      fields = [
+        "meta_title",
+        "meta_descr",
+        "meta_key",
+        "title",
+        "content",
+        # "slug",  
+        "alt",
+      ]
+      return fields
+
   class Meta:
     verbose_name = 'Публікація'
     verbose_name_plural = 'Публікації'
@@ -74,6 +87,17 @@ class PostCategory(models.Model):
   def __str__(self):
     return f'{self.title}'
 
+  @classmethod
+  def modeltranslation_fields(cls):
+      fields = [
+        "meta_title",
+        "meta_descr",
+        "meta_key",
+        "title",
+        # "slug",  
+        "alt",
+      ]
+      return fields
   class Meta:
     verbose_name = 'Категорія'
     verbose_name_plural = 'Категорії'

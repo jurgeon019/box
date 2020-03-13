@@ -16,6 +16,7 @@ DATABASES = {
 #   }
 }
 
+CSRF_COOKIE_HTTPONLY = False 
 ROOT_URLCONF     = 'core.urls'
 WSGI_APPLICATION = 'core.wsgi.application'
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
@@ -32,7 +33,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = '/media/'
 CKEDITOR_UPLOAD_PATH = ''
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = 'customer'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 SITE_ID=1
 ACCOUNT_LOGOUT_ON_GET = True

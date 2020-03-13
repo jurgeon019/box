@@ -1,4 +1,5 @@
-from .model_admin import * 
-from .inlines import * 
+from .item_category import * 
+from .item import * 
+from .item_image import * 
 
 

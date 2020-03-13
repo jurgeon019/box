@@ -28,6 +28,12 @@ class SearchTag(models.Model):
     class Meta:
         verbose_name = _('Search tag')
         verbose_name_plural = _('Search tags')
+    @classmethod
+    def modeltranslation_fields(cls):        
+        fields = [
+            'text',
+        ]
+        return fields
 
 
 class SearchQuery(models.Model):

@@ -24,7 +24,7 @@
 		// This accentuates the need for the creation of a real `window`.
 		// e.g. var jQuery = require("jquery")(window);
 		// See ticket #14549 for more info.
-		module.exports = global.document ?
+		module.exports = global_config.document ?
 			factory( global, true ) :
 			function( w ) {
 				if ( !w.document ) {
@@ -5110,7 +5110,7 @@ jQuery.event = {
 			}
 
 			// Keep track of which events have ever been used, for event optimization
-			jQuery.event.global[ type ] = true;
+			jQuery.event.global_config[ type ] = true;
 		}
 
 	},
@@ -9311,7 +9311,7 @@ jQuery.extend( {
 
 		// We can fire global events as of now if asked to
 		// Don't fire events if jQuery.event is undefined in an AMD-usage scenario (#15118)
-		fireGlobals = jQuery.event && s.global;
+		fireGlobals = jQuery.event && s.global_config;
 
 		// Watch for a new set of requests
 		if ( fireGlobals && jQuery.active++ === 0 ) {

@@ -83,7 +83,7 @@ def custom_login(request):
             'message':message,
             'is_authenticated':request.user.is_authenticated,
             # 'url':reverse('index'),
-            'url':reverse('profile'),
+            'url':reverse('customer'),
         })
     messages.success(request, message)
     return response
