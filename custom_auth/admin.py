@@ -7,71 +7,104 @@ from django.contrib.auth.forms import (
 )
 from django.utils.translation import gettext, gettext_lazy as _
 from django import forms 
-from django.contrib import admin 
+from django.db import models 
 from django.contrib import admin 
 from django.contrib.auth.models import (User, Group,)
 from django.contrib.auth.admin import (UserAdmin, GroupAdmin,)
+from django.utils.html import mark_safe 
+from django.shortcuts import reverse, render, redirect
 
 from box.shop.customer.models import (Customer,)
 from box.shop.order.admin import (OrderInline,)
-
 from box.custom_auth.models import User 
-
-
-
-class ProfileInline(admin.StackedInline):
-    model = Customer
-    extra = 1
-    # def has_add_permission(self, request, obj=None):
-    #     return True 
+from box.core.utils import move_to
+from .forms import * 
 
 
 class CustomUserAdmin(UserAdmin):
-    inlines = [
-        # ProfileInline,
-        # OrderInline,
-    ]
 
+    def change_group(self, request, queryset):
+        initial = {
+            'model':CustomerGroup,
+            'attr':'group',
+            'action_value':'change_group',
+            'action_type':'add',
+            'text':_('Нова група буде застосована для наступних позиций:'),
+            'title':_("Додавання маркерів"),
+            'message':_('Група {0} була застосована до {1} користувачів'),
+        }
+        return move_to(self, request, queryset, initial)
+
+
+    def full_name(self, obj):
+        full_name = obj.get_full_name()
+        if not full_name:
+            full_name = obj.username
+        return full_name
+    
+    def delete(self, obj):
+        app = obj._meta.app_label 
+        model = obj._meta.model_name 
+        url = f'admin:{app}_{model}_delete'
+        href = reverse(url, args=(obj.pk,))
+        link = mark_safe(f'<a href={href} style="color:red" >x</a>')
+        return link 
+    full_name.short_description = _("Назва")
+    delete.short_description = _("Видалити")
+    change_group.short_description = ("Перемістити у групу")
+    def order_count(self, obj):
+        count = obj.orders.all().count()
+        return count
+    actions = [
+        change_group
+    ]
+    inlines = [
+        OrderInline,
+    ]
     fieldsets = (
         (_('Personal info'), {
             'fields': (
+                'username', 
+                'password',
+                (
                 'first_name', 
                 'last_name', 
+                ),
+                (
                 'email',
                 'phone_number',
-            )
+                ),
+                (
+                'address',
+                'group',
+                ),
+            ),
+            'classes':[
+                'wide',
+            ]
         }),
-        (None, {
+        (_('Permissions'), {
             'fields': (
-                'username', 
-                'password'
-            )
+                'is_active', 
+                'is_staff', 
+                'is_superuser', 
+                'groups', 
+                'user_permissions'
+            ),
+            'classes':[
+                'collapse'
+            ]
         }),
-        # (_('Permissions'), {
-        #     'fields': (
-        #         'is_active', 
-        #         'is_staff', 
-        #         'is_superuser', 
-        #         'groups', 
-        #         'user_permissions'
-        #     ),
-        # }),
-        # (_('Important dates'), {
-        #     'fields': (
-        #         'last_login', 
-        #         'date_joined',
-        #     ),
-        # }),
+        (_('Important dates'), {
+            'fields': (
+                'last_login', 
+                'date_joined',
+            ),
+            'classes':[
+                'collapse'
+            ]
+        }),
     )
-    readonly_fields = [
-        # 'username',
-        # 'first_name',
-        # 'last_name',
-        # 'email',
-        # 'phone_number',
-        # 'last_login',
-        # 'date_joined',
-    ]
     add_fieldsets = (
         (None, {
             'classes': (
@@ -84,28 +117,34 @@ class CustomUserAdmin(UserAdmin):
             ),
         }),
     )
-
-
+    formfield_overrides = {
+        models.TextField:{'widget':forms.Textarea(attrs={'rows':'2', 'cols':'33'})}
+    }
     list_per_page = 100
     save_as_continue = False 
     save_on_top = True 
 
-    list_display = (
-        'id', 
-        'username',
-        'email',
-        'first_name',
-        'last_name',
-        'phone_number',
-    )
-    list_display_links = [
-        'id',
-        'email',
-        'username',
-        'first_name',
-        'last_name',
-        'phone_number',
+    autocomplete_fields = [
+        # 'groups',
+        # 'user_permissions',
+        'group',
+
     ]
+
+    readonly_fields = [
+        'date_joined',
+        'last_login',
+    ]
+
+    list_display = [
+        'full_name',
+        'email',
+        'date_joined',
+        'group',
+        'order_count',
+        "delete",
+    ]
+    list_display_links = list_display
     search_fields = [
         'email',
         'username',
@@ -115,6 +154,7 @@ class CustomUserAdmin(UserAdmin):
     ]
 
 
-
 class CustomGroup(GroupAdmin):
     exclude = []
+
+

@@ -1,28 +1,62 @@
 from django.db import models 
 from django.contrib.auth import get_user_model 
-from django.utils.translation import ugettext_lazy as _
-from box.shop.cart.utils import get_cart
-from .utils import send_order_mail 
+from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+
+from box.shop.cart.utils import get_cart
+from box.shop.item.models import ItemStock 
+from box.global_config.models import NotificationConfig
+from box.core.mail import box_send_mail
+
+from colorfield.fields import ColorField
+
+from .managers import * 
 
 User = get_user_model()
 
 
-class OrderManager(models.Manager):
-  def all(self):
-    # return super(OrderManager, self).get_queryset().filter(ordered=False)
-    return super(OrderManager, self).get_queryset().filter(is_active=True)
-
 
 class Status(models.Model):
-  name      = models.CharField(verbose_name=("Статус"), max_length=255, blank=False, null=False)
+  action_choices = (
+    (True,_("Списувати товар")),
+    (False,_("Не списувати товар")),
+  )
+  color  = ColorField(verbose_name=("Колір"), blank=False, null=False)
+  action = models.BooleanField(verbose_name=("Дія над товаром"), choices=action_choices, default=0)
+  name   = models.CharField(verbose_name=("Назва"), max_length=255, blank=False, null=False)
+  config = models.ForeignKey(to='order.OrderConfig', null=True, blank=False, on_delete=models.CASCADE)
   
   def __str__(self):
     return f"{self.name}"
+  
+  @classmethod 
+  def modeltranslation_fields(cls):
+    fields = [
+      'name',
+    ]
+    return fields 
 
   class Meta: 
-    verbose_name = ('Статус замовлення')
-    verbose_name_plural = ('Статуси замовлення')
+    verbose_name = ('статус замовленнь')
+    verbose_name_plural = ('Статуси замовленнь')
+
+
+class OrderTag(models.Model):
+  color    = ColorField(verbose_name=("Колір"), )
+  name     = models.CharField(verbose_name=("Назва"), max_length=255, blank=False, null=False)
+  config = models.ForeignKey(to='order.OrderConfig', null=True, blank=False, on_delete=models.CASCADE)
+  def __str__(self):
+    return f"{self.name}"
+  
+  @classmethod 
+  def modeltranslation_fields(cls):
+    fields = [
+    ]
+    return fields 
+
+  class Meta: 
+    verbose_name = ('мітка замовленнь')
+    verbose_name_plural = ('мітки замовленнь')
 
 
 class Order(models.Model):
@@ -35,18 +69,22 @@ class Order(models.Model):
   comments    = models.TextField(verbose_name=('Коментарии'),          blank=True, null=True)
   payment_opt = models.CharField(verbose_name=("Спосіб оплати"),       blank=True, null=True, max_length=255, help_text=' ')
   delivery_opt= models.CharField(verbose_name=("Спосіб доставки"),     blank=True, null=True, max_length=255)
-  ordered     = models.BooleanField(verbose_name=('Завершений'), default=False)
-  status      = models.ForeignKey(verbose_name=('Статус'),  on_delete=models.CASCADE, to="Status", blank=False, null=True, related_name='orders') 
-  is_active   = models.BooleanField(default=True)
-  
+  ordered     = models.BooleanField(verbose_name=('Завершено'), default=False)
+  paid        = models.BooleanField(verbose_name=('Сплачено'),   default=False)
+  note        = models.TextField(verbose_name=('Примітки адміністратора'), blank=True, null=True)
+  status      = models.ForeignKey(verbose_name=('Статус'),  on_delete=models.CASCADE, to="order.Status", blank=False, null=True) 
+  tags        = models.ManyToManyField(verbose_name=("Мітки"), blank=True, to="order.OrderTag")
+  coupon      = models.ForeignKey(verbose_name=("Купон"), blank=True, null=True, to='customer.Coupon', on_delete=models.SET_NULL)
   objects     = OrderManager()
+  is_active   = models.BooleanField(verbose_name=("Активність"),default=True)
 
-  created     = models.DateTimeField(verbose_name=('Дата створення'),   default=timezone.now)
+  created     = models.DateTimeField(verbose_name=('Дата замовлення'),   default=timezone.now)
   updated     = models.DateTimeField(verbose_name=('Дата обовлення'), auto_now_add=False, auto_now=True,  blank=True, null=True)
 
+
   class Meta: 
-    verbose_name = ('Замовлення товарів')
-    verbose_name_plural = ('Замовлення товарів')
+    verbose_name = ('замовлення')
+    verbose_name_plural = ('Список замовлень')
   
   def save(self, *args, **kwargs):
     if not self.status:
@@ -76,7 +114,6 @@ class Order(models.Model):
     cart = get_cart(request)
     cart.ordered = True
     # cart.items.all().update(ordered=True, order=order)
-    from box.shop.item.models import ItemStock 
     unavailable_stocks = ItemStock.objects.filter(availability=False)
     for cart_item in cart.items.all():
       cart_item.ordered = True
@@ -103,19 +140,12 @@ class Order(models.Model):
       order.save()
       cart.save()
     self.make_order_total_price()
-    model = order 
-    from django.shortcuts import reverse 
-    from django.conf import settings 
-    from django.core.mail import send_mail
-    link  = reverse(f'admin:{model._meta.app_label}_{model._meta.model_name}_change', args=(model.id,))
-    send_mail(
-      subject = 'Отримано замовлення',
-      # message = get_template('contact_message.txt').render({'message':message}),
-      message = settings.CURRENT_DOMEN+link,
-      from_email = settings.EMAIL_HOST_USER,
-      recipient_list = [settings.EMAIL_HOST_USER],
-      fail_silently=False,
-      # fail_silently=True,
+    config = NotificationConfig.get_solo()
+    data = config.get_data('order')
+    box_send_mail(
+      subject=data['subject'],
+      recipient_list=data['emails'],
+      model=order
     )
 
 
@@ -135,8 +165,6 @@ class OrderRequest(models.Model):
         verbose_name_plural = 'покупки в 1 клік'
 
 
-
-
 class ItemRequest(models.Model):
     name    = models.CharField(verbose_name=("Ім'я"),         max_length=255, blank=True, null=True)
     phone   = models.CharField(verbose_name=("Телефон"),      max_length=255, blank=True, null=True)
@@ -152,6 +180,13 @@ class ItemRequest(models.Model):
         verbose_name = 'Заявка на інформацію про товар'
         verbose_name_plural = 'Заявки на інформацію про товар'
 
+from box.solo.models import SingletonModel
 
-
+class OrderConfig(SingletonModel):
+  def __str__(self):
+    return f'{self.id}'
+  class Meta:
+    verbose_name = _("Налаштування замовленя")
+    verbose_name_plural = verbose_name
+    
 

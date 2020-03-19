@@ -26,10 +26,10 @@ ADMIN_TOOLS_MENU = {
 }
 
 
+# Обнуляет логотип "Джанго"
 ADMIN_TOOLS_THEMING_CSS = 'custom_admin/css/theming.css' 
 # ADMIN_TOOLS_THEMING_CSS = 'admin_tools/media/admin_tools/css/theming.css' 
 
-# Обнуляет логотип "Джанго"
 
 
 

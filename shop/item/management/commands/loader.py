@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from box.shop.item.parser.main import Parser, ExportMixin, ImportMixin
+from box.imp_exp.main import Parser, ExportMixin, ImportMixin
 
 
 class Command(BaseCommand):

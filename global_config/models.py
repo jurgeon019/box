@@ -6,127 +6,189 @@ from django.core.exceptions import ValidationError
 
 
 
+__all__ = [
+  'SiteConfig',
+  'NotificationConfig',
+  'CatalogueConfig',
+]
+
+
 class SiteConfig(SingletonModel):
-
-  # Налаштування сайту 
-  DEFAULT_SITE_NAME    = 'Інтернет-магазин'
-  DEFAULT_DATE_FORMAT_CHOICES  = (
-    ('d.m.Y','d.m.Y'),
-  )
-  DEFAULT_ADMIN_EMAIL             = 'jurgeon018@gmail.com'
-  DEFAULT_TECH_MESSAGE            = 'Алярм! Сайт впав!'
-  default_site_og_image_square    = '/static/ogimages/ogimage.png'
-  default_site_og_image_rectangle = '/static/ogimages/ogimage.png'
-  default_site_favicon            = '/static/favicon.ico'
-
-  SITE_NAME                  = getattr(settings, 'SITE_NAME', DEFAULT_SITE_NAME)
-  DATE_FORMAT_CHOICES        = getattr(settings, 'DATE_FORMAT_CHOICES', DEFAULT_DATE_FORMAT_CHOICES)
-  ADMIN_EMAIL                = getattr(settings, 'ADMIN_EMAIL', DEFAULT_ADMIN_EMAIL)
-  TECH_MESSAGE               = getattr(settings, 'TECH_MESSAGE', DEFAULT_TECH_MESSAGE)
-  site_og_image_square       = getattr(settings, 'site_og_image_square', default_site_og_image_square)
-  site_og_image_rectangle    = getattr(settings, 'site_og_image_rectangle', default_site_og_image_rectangle)
-  site_favicon               = getattr(settings, 'site_favicon', default_site_favicon)
-
-  site_name          = models.CharField(verbose_name=("Ім'я сайту"), max_length=255, default=SITE_NAME)
-  date_format        = models.CharField(verbose_name=("Формат дати"), max_length=255, choices=DATE_FORMAT_CHOICES, default=0) 
-  admin_email        = models.CharField(verbose_name=("E-mail адміна"), max_length=255,default=ADMIN_EMAIL) 
-  site_on            = models.BooleanField(verbose_name=("Вимкнення сайту"), default=True)
-  tech_message       = models.TextField(verbose_name=("Технічне повідомлення"), default=TECH_MESSAGE)
-
-  og_image_square    = models.ImageField(verbose_name=("og:image квадрат"),     blank=True, null=True, upload_to='ogimage')
-  og_image_rectangle = models.ImageField(verbose_name=("og:image прямокутник"), blank=True, null=True, upload_to='ogimage')
-  favicon            = models.ImageField(verbose_name=("Іконка"), blank=True, null=True, upload_to='favicon')
-
-  # captcha
-  # ..... captcha 
-
-  def __str__(self):
-    return f"{self.id}"
+  liqpay_public_key   = models.TextField(_("Публічний ключ лікпею"), blank=False, null=False, default=settings.LIQPAY_PUBLIC_KEY)
+  liqpay_private_key  = models.TextField(_("Приватний ключ лікпею"), blank=False, null=False, default=settings.LIQPAY_PRIVATE_KEY)
+  # captcha_type_choices = (
+  #   ("default","default"),
+  #   ("v2","v2"),
+  #   ("v3","v3"),
+  #   ("invisible","invisible"),
+  # )
+  # captcha_type        = models.CharField(_("Тип капчі"), blank=False, null=False, max_length=100, choices=captcha_type_choices, default=0)
+  # captcha_v2_public   = models.TextField(_("Ключ"), blank=False, null=False, default=settings.CAPTCHA_V2_PUBLIC)
+  # captcha_v2_secret   = models.TextField(_("Приватний ключ"), blank=False, null=False, default=settings.CAPTCHA_V2_SECRET)
+  # captcha_v3_public   = models.TextField(_("Ключ"), blank=False, null=False, default=settings.CAPTCHA_V3_PUBLIC)
+  # captcha_v3_secret   = models.TextField(_("Приватний ключ"), blank=False, null=False, default=settings.CAPTCHA_V3_SECRET)
+  # captcha_v3_humanity = models.PositiveIntegerField(_("Людяність"), blank=False, null=False, default=0.5)
   
-  def get_og_image_square_url(self):
-    og_image_square_url = self.site_og_image_square
-    if self.og_image_square:
-      og_image_square_url = self.og_image_square.url
-    return og_image_square_url
-
-  def get_og_image_rectangle_url(self):
-    og_image_rectangle_url = self.site_og_image_rectangle
-    if self.og_image_rectangle:
-      og_image_rectangle_url = self.og_image_rectangle.url
-    return og_image_rectangle_url
-
-  def get_favicon_url(self):
-    favicon_url = self.site_favicon
-    if self.favicon:
-      favicon_url = self.favicon.url
-    return favicon_url
-
-  def get_favicon_type(self):
-    ext = self.favicon.split('.')[-1]
-    if ext == 'png':
-      favicon_type == 'image/png'
-    elif ext == 'ico':
-      favicon_type == 'x-icon'
-    return favicon_type
   @classmethod
   def modeltranslation_fields(cls):
       fields = [
-          'og_image_square',
-          'og_image_rectangle',
       ]
       return fields
   class Meta:
-    verbose_name        = 'Налаштування сайту'
-    verbose_name_plural = 'Налаштування сайту'
+    verbose_name        = _('Налаштування сайту')
+    verbose_name_plural = _('Налаштування сайту')
 
 
 class NotificationConfig(SingletonModel):
-  # admin_mails_language_choices = (
-  #   ('',''),
-  #   ('',''),
-  #   ('',''),
-  # )
+
+  default_emails = getattr(settings, 'DEFAULT_RECIPIENTS', ['jurgeon018@gmail.com',])
+  default_emails = ','.join(default_emails)
+
   admin_mails_language_choices = settings.LANGUAGES
-  order_email_notif     = models.CharField(verbose_name=("Email-сповіщення про замовлення"),  max_length=255, null=True, blank=False)
-  reverse_email_notif   = models.CharField(verbose_name=("Зворотна адреса сповіщень"),        max_length=255, null=True, blank=False)
-  comment_email_notif   = models.CharField(verbose_name=("Email-сповіщення про коментарі"),   max_length=255, null=True, blank=False)
-  sender_name           = models.CharField(verbose_name=("Ім'я відправника листа"),           max_length=255, null=True, blank=False)
-  admin_mails_language  = models.CharField(verbose_name=("Мова листів адміністратору"),       max_length=255, null=True, blank=False, choices=admin_mails_language_choices)
-  auto_comment_approval = models.BooleanField(verbose_name=("Автоматичне схвалення коментарів"), default=True)
+
+  order_subject = models.TextField(
+    verbose_name=("Текст сповіщення про замовлення"), 
+    blank=False, null=False, 
+    default='Отримано замовлення товарів',
+  )
+  contact_subject = models.TextField(
+    verbose_name=("Текст сповіщення про контакти"), 
+    blank=False, null=False, 
+    default='Отримано контактну форму',
+  )
+  review_subject = models.TextField(
+    verbose_name=("Текст сповіщення про відгуки"), 
+    blank=False, null=False, 
+    default='Отримано відгук до товару',
+  )
+  comment_subject = models.TextField(
+    verbose_name=("Текст сповіщення про коментарі"), 
+    blank=False, null=False, 
+    default='Отримано коментар до блогу',
+  )
+
+
+  order_emails  = models.TextField(
+    verbose_name=("замовлення"),
+    help_text=("Email-адреси для сповіщень про замовлення товарів. Перечислити через кому."),  
+    max_length=255, null=False, blank=False, 
+    default=default_emails
+  )
+  contact_emails  = models.TextField(
+    verbose_name=("контакти"),
+    help_text=("Email-адреси для сповіщень про форми звязку. Перечислити через кому."),  
+    null=False, blank=False, 
+    default=default_emails
+  )
+  review_emails  = models.TextField(
+    verbose_name=("відгуки"),
+    help_text=("Email-адреси для сповіщень про відгуки про товар. Перечислити через кому."),  
+    null=False, blank=False, 
+    default=default_emails
+  )
+  comment_emails  = models.TextField(
+    verbose_name=("коментарі"),
+    help_text=("Email-адреси для сповіщень про коментарі в блозі. Перечислити через кому."),   
+    null=False, blank=False, 
+    default=default_emails
+  )
+  other_emails  = models.TextField(
+    verbose_name=("інше"),
+    help_text=("Email-адреси для загальних сповіщень. Перечислити через кому."),   
+    null=False, blank=False, 
+    default=default_emails
+  )
+
+  reverse_emails_help_text = ('Email-адреси на яку будуть дублюватися всі листи. Перечислити через кому.')
+  reverse_emails = models.TextField(
+    verbose_name=("Зворотні Email-адреси"),   
+    help_text=reverse_emails_help_text,
+    null=True, blank=True, 
+  )
+
+  sender_name = models.CharField(
+    verbose_name=("Ім'я відправника листа"),           
+    max_length=255, null=True, blank=True
+  )
+
+  admin_mails_language  = models.CharField(
+    verbose_name=("Мова листів адміністратору"),       
+    max_length=255, null=True, blank=True, 
+    choices=admin_mails_language_choices
+  )
+
+
+  def get_data(self, field, *args, **kwargs):
+    lst = ['order','contact','review','comment','other', 'reverse',]
+    if field not in lst:
+      raise Exception('поле мусить бути в %s' % lst)
+    
+    emails  = getattr(self, f'{field}_emails').replace(' ', '').split(',')
+    subject = getattr(self, f'{field}_subject', None)
+    return  {'subject':subject, 'emails':emails}
+
+
+  auto_comment_approval = models.BooleanField(verbose_name=("Автоматичне схвалення коментарів до блогу"), default=True)
+  auto_review_approval  = models.BooleanField(verbose_name=("Автоматичне схвалення відгуків до товару"),  default=True)
 
   # smpt config
   host = models.CharField(
       blank = True, null = True,
-      max_length = 256, verbose_name = _("Email Host"))
+      max_length = 256, verbose_name = _("EMAIL_HOST"),
+      help_text=_("Сервер"), 
+      default=settings.EMAIL_HOST,
+  )
 
   port = models.SmallIntegerField(
       blank = True, null = True,
-      verbose_name = _("Email Port"))
+      verbose_name = _("EMAIL_PORT"),
+      help_text=_("Порт"), 
+      default=settings.EMAIL_PORT,
+  )
 
   from_email = models.CharField(
       blank = True, null = True,
-      max_length = 256, verbose_name = _("Default From Email"))
+      max_length = 256, verbose_name = _("DEFAULT_FROM_EMAIL"),
+      help_text=_("Почта відправки листів"), 
+      default=settings.DEFAULT_FROM_EMAIL,
+  )
 
   username = models.CharField(
       blank = True, null = True,
-      max_length = 256, verbose_name = _("Email Authentication Username"))
+      max_length = 256, verbose_name = _("EMAIL_HOST_USER"),
+      help_text=_("Логін"), 
+      default=settings.EMAIL_HOST_USER,
+  )
 
   password = models.CharField(
       blank = True, null = True,
-      max_length = 256, verbose_name = _("Email Authentication Password"))
+      max_length = 256, verbose_name = _("EMAIL_HOST_PASSWORD"),
+      help_text=_("Пароль"), 
+      default=settings.EMAIL_HOST_PASSWORD,
+  )
 
   use_tls = models.BooleanField(
-      default = False, verbose_name = _("Use TLS"))
+      verbose_name = _("EMAIL_USE_TLS"),
+      help_text=_(""), 
+      default=settings.EMAIL_USE_TLS,
+  )
 
   use_ssl = models.BooleanField(
-      default = False, verbose_name = _("Use SSL"))
+      verbose_name = _("EMAIL_USE_SSL"),
+      help_text=_(""), 
+      default=settings.EMAIL_USE_SSL,
+  )
 
   fail_silently = models.BooleanField(
-      default = False, verbose_name = _("Fail Silently"))
+      default = False, verbose_name = _("fail_silently"),
+      help_text=_("Помилка при невдалій відправці")
+  )
 
   timeout = models.SmallIntegerField(
       blank = True, null = True,
-      verbose_name = _("Email Send Timeout (seconds)"))
+      verbose_name = _("timeout"),
+      help_text=_("Таймаут в секундах")
+  )
 
   def clean(self):
       if self.use_ssl and self.use_tls:
@@ -134,81 +196,55 @@ class NotificationConfig(SingletonModel):
               _("\"Use TLS\" and \"Use SSL\" are mutually exclusive, "
               "so only set one of those settings to True."))
 
-
   def __str__(self):
     return f'{self.id}'
   
   class Meta:
     verbose_name        = 'Налаштування сповіщень'
-    verbose_name_plural = 'Налаштування сповіщень'
+    verbose_name_plural = verbose_name
 
 
-class CalagoueConfig(SingletonModel):
-  DEFAULT_ITEMS_PER_PAGE       = 24
-  DEFAULT_POSTS_PER_PAGE       = 24
-  DEFAULT_MAX_ORDER_ITEMS      = 50
-  DEFAULT_MAX_COMPARISON_ITEMS = 50
-  DEFAULT_ITEM_MEASURMENT_UNIT  = 'шт'
-  DEFAULT_PENNY_DIVIDER = (
+class CatalogueConfig(SingletonModel):
+  PENNY_DIVIDER = (
     ('dot','.'),
     ('coma',','),
   )
-  DEFAULT_THOUSANDS_DIVIDER = (
-    ("no",""),
-    ("space"," "),
-    ("coma",","),
+  THOUSANDS_DIVIDER = (
+    ("no","без роздільника: 1234567 грн"),
+    ("space","пробіл: 1 234 456 грн "),
+    ("coma","кома: 1,234,456"),
   )
-  DEFAULT_ABSENT_ITEMS_POSITION = (
+  ABSENT_ITEMS_POSITION = (
     ("default","default"),
     ("end","end"),
     ("hide","hide"),
   )
-  DEFAULT_ABSENT_ITEMS_PREORDER = False 
-  DEFAULT_EMPTY_CATEGORIES_VISIBILITY = False 
 
-  DEFAULT_CLEAR_CATALOGUE = False 
+  items_per_page               = models.PositiveIntegerField(verbose_name=("Товарів на сторінці сайту"), null=True, default=24)
+  posts_per_page               = models.PositiveIntegerField(verbose_name=("Статей на сторінці блоґу"), default=50)
+  # max_order_items              = models.PositiveIntegerField(verbose_name=("Максимум товарів у замовленні"), default=24)
+  # max_comparison_items         = models.PositiveIntegerField(verbose_name=("Максимум товарів у порівнянні"), default=50)
+  # item_measurment_unit         = models.CharField(verbose_name=("Одиниці вимірювання товарів"), default="шт", max_length=255)
+  # penny_divider                = models.CharField(verbose_name=("Роздільник копійок"), choices=PENNY_DIVIDER, default=0, max_length=255)
+  # thousands_divider            = models.CharField(verbose_name=("Роздільник тисяч"), choices=THOUSANDS_DIVIDER, default=0, max_length=255)
+  # absent_items_position        = models.CharField(verbose_name=("Відсутні товари "), choices=ABSENT_ITEMS_POSITION, default=0, max_length=255)
+  # absent_items_preorder        = models.BooleanField(verbose_name=("Передзамовлення відсутніх товарів"), default=False)
+  # empty_categories_visibility  = models.BooleanField(verbose_name=("Відображати порожні категорії"), default=False)
 
-  DEFAULT_WATERMARK_HORIZONTAL = 50
-  DEFAULT_WATERMARK_VERTICAL = 50
-
-
-  ITEMS_PER_PAGE               = getattr(settings, 'ITEMS_PER_PAGE', DEFAULT_ITEMS_PER_PAGE) 
-  POSTS_PER_PAGE               = getattr(settings, 'POSTS_PER_PAGE', DEFAULT_POSTS_PER_PAGE) 
-  MAX_ORDER_ITEMS              = getattr(settings, 'MAX_ORDER_ITEMS', DEFAULT_MAX_ORDER_ITEMS)
-  MAX_COMPARISON_ITEMS         = getattr(settings, 'MAX_COMPARISON_ITEMS', DEFAULT_MAX_COMPARISON_ITEMS)
-  ITEM_MEASURMENT_UNIT         = getattr(settings, 'ITEM_MEASURMENT_UNIT', DEFAULT_ITEM_MEASURMENT_UNIT)
-  PENNY_DIVIDER                = getattr(settings, 'PENNY_DIVIDER', DEFAULT_PENNY_DIVIDER)
-  THOUSANDS_DIVIDER            = getattr(settings, 'THOUSANDS_DIVIDER', DEFAULT_THOUSANDS_DIVIDER)
-  ABSENT_ITEMS_POSITION        = getattr(settings, 'ABSENT_ITEMS_POSITION', DEFAULT_ABSENT_ITEMS_POSITION)
-  ABSENT_ITEMS_PREORDER        = getattr(settings, 'ABSENT_ITEMS_PREORDER', DEFAULT_ABSENT_ITEMS_PREORDER)
-  EMPTY_CATEGORIES_VISIBILITY  = getattr(settings, 'EMPTY_CATEGORIES_VISIBILITY', DEFAULT_EMPTY_CATEGORIES_VISIBILITY)
-
-  CLEAR_CATALOGUE              = getattr(settings, 'CLEAR_CATALOGUE', DEFAULT_CLEAR_CATALOGUE)
-
-  WATERMARK_HORIZONTAL         = getattr(settings, 'WATERMARK_HORIZONTAL', DEFAULT_WATERMARK_HORIZONTAL)
-  WATERMARK_VERTICAL           = getattr(settings, 'WATERMARK_VERTICAL', DEFAULT_WATERMARK_VERTICAL)
-
-
-  items_per_page               = models.PositiveIntegerField(verbose_name=("Товарів на сторінці сайту"), null=True, default=ITEMS_PER_PAGE)
-  max_order_items              = models.PositiveIntegerField(verbose_name=("Максимум товарів у замовленні"), default=POSTS_PER_PAGE)
-  posts_per_page               = models.PositiveIntegerField(verbose_name=("Статей на сторінці блоґу"), default=MAX_ORDER_ITEMS)
-  max_comparison_items         = models.PositiveIntegerField(verbose_name=("Максимум товарів у порівнянні"), default=MAX_COMPARISON_ITEMS)
-  item_measurment_unit         = models.CharField(verbose_name=("Одиниці вимірювання товарів"), default=ITEM_MEASURMENT_UNIT, max_length=255)
-  penny_divider                = models.CharField(verbose_name=("Роздільник копійок"), choices=PENNY_DIVIDER, default=0, max_length=255)
-  thousands_divider            = models.CharField(verbose_name=("Роздільник тисяч"), choices=THOUSANDS_DIVIDER, default=0, max_length=255)
-  absent_items_position        = models.CharField(verbose_name=("Відсутні товари "), choices=ABSENT_ITEMS_POSITION, default=0, max_length=255)
-  absent_items_preorder        = models.BooleanField(verbose_name=("Передзамовлення відсутніх товарів"), default=ABSENT_ITEMS_PREORDER)
-  empty_categories_visibility  = models.BooleanField(verbose_name=("Відображати порожні категорії"), default=EMPTY_CATEGORIES_VISIBILITY)
-
-  clear_catalogue              = models.BooleanField(verbose_name=(" Очистити каталог товарів "), default=CLEAR_CATALOGUE)
+  clear_catalogue              = models.BooleanField(verbose_name=(" Очистити каталог товарів "), default=False)
   # https://stackoverflow.com/questions/849142/how-to-limit-the-maximum-value-of-a-numeric-field-in-a-django-model
-  watermark_horizontal         = models.PositiveIntegerField(verbose_name=("Горизонтальне положення водяного знака (лівіше-правіше)"), blank=True, null=True)#, max_value=100, min_value=1)
-  watermark_vertical           = models.PositiveIntegerField(verbose_name=("Вертикальне положення водяного знака (вижче-нижче)"), blank=True, null=True)#, max_value=100, min_value=1)
+  # watermark_horizontal         = models.PositiveIntegerField(verbose_name=("Горизонтальне положення водяного знака (лівіше-правіше)"), blank=True, null=True)#, max_value=100, min_value=1)
+  # watermark_vertical           = models.PositiveIntegerField(verbose_name=("Вертикальне положення водяного знака (вижче-нижче)"), blank=True, null=True)#, max_value=100, min_value=1)
 
   def __str__(self):
     return f'{self.id}'
   
+  def __save__(self, *args, **kwargs):
+    if self.clear_catalogue:
+      Item.default_objects.all().delete()
+    super().save(*args, **kwargs)
+  
   class Meta:
-    verbose_name        = 'Налаштування каталогу'
-    verbose_name_plural = 'Налаштування каталогу'
+    verbose_name        = _('Налаштування каталогу')
+    verbose_name_plural = _('Налаштування каталогу')
 

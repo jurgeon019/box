@@ -3,7 +3,7 @@ from box.blog.models import Post
 from django.shortcuts import  reverse 
 
 
-class PostViewSitemap(Sitemap):
+class PostSitemap(Sitemap):
     i18n = True
     changefreq = 'weekly' 
     protocol = 'https'

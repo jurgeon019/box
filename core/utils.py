@@ -1,9 +1,41 @@
 from django.utils import translation
-from django.shortcuts import redirect
-
-
+from django.shortcuts import redirect, reverse, render 
 from django.utils.safestring import mark_safe
 from django.contrib.admin.widgets import AdminFileWidget
+from django.contrib import admin 
+from django.db import models 
+from django.utils.translation import gettext_lazy as _
+
+from .forms import * 
+
+from box.shop.item.models import ItemCategory 
+
+from import_export.admin import *
+from adminsortable2.admin import SortableAdminMixin
+from box.custom_admin.modelclone import ClonableModelAdmin
+
+
+seo = [_("SEO"), {
+    "fields":[
+        (
+        "slug",
+        "alt",
+        ),
+        "meta_title",
+        "meta_descr",
+        "meta_key",
+    ],
+    'classes':[
+      "collapse",
+    ]
+}]
+base_main_info = [_("ОСНОВНА ІНФОРМАЦІЯ"), {
+    "fields":[
+        'title',
+        'image',
+        'description',
+    ]
+}]
 
 
 class AdminImageWidget(AdminFileWidget):
@@ -19,38 +51,153 @@ class AdminImageWidget(AdminFileWidget):
         f'  <img src="{image_url}" alt="{file_name}" width="auto" height="150" '
         f'style="object-fit: cover;"/> </a>')
     output.append(super(AdminFileWidget, self).render(name, value, attrs, renderer))
-    return mark_safe(u''.join(output))
+    return mark_safe(''.join(output))
+
+class BaseAdmin(
+  ImportExportActionModelAdmin,
+  ImportExportModelAdmin, 
+  SortableAdminMixin, 
+  ClonableModelAdmin, 
+  admin.ModelAdmin,
+  ):
+    def is_active_on(self, request, queryset):
+        queryset.update(is_active=True)
+    def is_active_off(self, request, queryset):
+        queryset.update(is_active=False)
+    def show_site_link(self, obj):
+        show = _("Показати на сайті")
+        if obj.is_active:
+          return mark_safe(f"<a href='{obj.get_absolute_url()}'>{show}</a>")
+        return _(f"{obj._meta.verbose_name} не активний")
+    def show_delete_link(self, obj):
+        return mark_safe(f"<a href='/admin/{obj._meta.app_label}/{obj._meta.model_name}/{obj.pk}/delete/' style='color:red'>x</a>")
+    def show_image(self, obj):
+        img  = f'<img src="{obj.image_url}" style="height:55px; max-width:150px" />'
+        return mark_safe(img)
+    def show_edit_link(self, obj):
+        return mark_safe(f'<a href="/admin/{obj._meta.app_label}/{obj._meta.model_name}/{obj.id}/change/">Змінити</a>')
+    show_site_link.short_description     = ("Переглянути на сайті")
+    show_edit_link.short_description   = ("Змінити")    
+    show_delete_link.short_description = ("Видалити")
+    show_image.short_description       = ('Зображення')
+    is_active_on.short_description     = ("Увімкнути")
+    is_active_off.short_description    = ("Вимкнути")
+    # changelist
+    actions = [
+        "is_active_on",
+        "is_active_off",
+    ]
+    list_per_page = 100
+    search_fields = [
+      'title',
+    ]
+    list_display = [
+        'show_image',
+        'title',
+        'is_active',
+        'show_site_link',
+        'show_delete_link',
+    ]
+    list_display_links = [
+        'show_image',
+        'title',
+    ]
+    list_editable = [
+        'is_active',
+    ]
+    list_filter = [
+      'is_active',
+    ]
+    # changeform
+    formfield_overrides = {
+        models.ImageField:{'widget':AdminImageWidget}
+    }
+    readonly_fields = [
+        'created',
+        'updated',
+    ]
+    save_on_top = True 
+    save_on_bottom = True 
 
 
 
 def show_admin_link(obj, obj_attr=None, obj_name=None, option='change'):
-    try:
-        obj   = getattr(obj, obj_attr)
-    except:
-        pass 
-    try:
-        name = f'{getattr(obj, obj_name)}'
-    except:
-        pass
+  # TODO: допиляти так, шоб можна було стукатись до obj без obj_attr i obj_name
+  link = '---'
+  obj   = getattr(obj, obj_attr, None)
+  if obj:
+    name = getattr(obj, obj_name, '')
     app   = obj._meta.app_label 
     model = obj._meta.model_name 
-    url = f'admin_{app}_{model}_{option}'
+    url = f'admin:{app}_{model}_{option}'
     href = reverse(url, args=(obj.pk,))
-    return mark_safe(f'<a href={href}>{name}</a>')
+    link = mark_safe(f'<a href={href}>{name}</a>')
+    return link 
 
 
-
-
-def set_lang(request, lang=None):
-  # lang = request.POST['lang']
-  translation.activate(lang)
-  request.session[translation.LANGUAGE_SESSION_KEY] = lang
-  # return redirect(request.META['HTTP_REFERER'])
-  url = request.META['HTTP_REFERER'].split('/')
-  url[3] = lang
-  url = '/'.join(url)
-  print(lang)
-  return redirect(url)
+def move_to(self, request, queryset, initial):
+  form = None 
+  model        = initial['model']
+  attr         = initial['attr']
+  message      = initial['message']
+  action_value = initial['action_value']
+  title        = initial['title']
+  text         = initial['text']
+  action_type  = initial['action_type']
+  klass = queryset.first()._meta.model._meta.get_field(attr).__class__
+  mro   = klass.__mro__ 
+  if models.ManyToManyField in mro:
+    widget = forms.CheckboxSelectMultiple
+    formfield = forms.ModelMultipleChoiceField
+  elif models.ForeignKey in mro:
+    formfield = forms.ModelChoiceField
+    widget = forms.SelectMultiple
+  if 'apply' in request.POST:
+    initial = {
+      "model":model, 
+      "formfield":formfield, 
+      'widget':widget,
+    }
+    form = ChangeForm(data=request.POST, initial=initial)
+    count = 0 
+    if form.is_valid():
+      field = form.cleaned_data['field']
+      for item in queryset:
+        klass = item._meta.model._meta.get_field(attr).__class__
+        mro = klass.__mro__w
+        field_type = item._meta.model._meta.get_field(attr).get_internal_type()
+        # if field_type == models.ManyToManyField:
+        if models.ManyToManyField in mro:
+          for f in field:
+            if action_type == 'remove':
+              getattr(item, attr).remove(f)
+            else:
+              getattr(item, attr).add(f)
+        # elif field_type == models.ForeignKey:
+        elif models.ForeignKey in mro:
+        # else:
+          setattr(item, attr, field)
+        item.save()
+        count += 1 
+      self.message_user(request, message.format(field, count))
+      return redirect(request.get_full_path())
+    elif not form.is_valid():
+      raise("FORM IS INVALID")
+  if not form:
+    initial = {
+        'model':model, 
+        'widget':widget, 
+        "formfield":formfield, 
+        '_selected_action':request.POST.getlist(admin.ACTION_CHECKBOX_NAME),
+      }
+    form = ChangeForm(initial=initial)
+    return render(request, 'core/admin/move_to.html', {
+      "queryset":queryset, 
+      "form":form, 
+      'action_value':action_value,
+      "title":title,
+      'text':text,
+    })
 
 
 def get_sk(request):

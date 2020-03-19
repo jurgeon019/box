@@ -7,6 +7,9 @@ from django.views.decorators.csrf import csrf_exempt
 from ..models import Post, PostCategory, PostComment
 from .serializers import PostSerializer
 
+from box.core.mail import box_send_mail
+from box.global_config.models import NotificationConfig, CatalogueConfig
+
 def filter_search(posts, query):
     search = query.get('q')
     if search:
@@ -29,7 +32,7 @@ def filter_category(posts, query):
 
 def paginate(posts, query):
     page_number  = query.get('page_number')
-    per_page     = query.get('per_page', 8)
+    per_page     = query.get('per_page', CatalogueConfig.get_solo().posts_per_page)
     page         = Paginator(posts, per_page=per_page).get_page(page_number)
     page_posts   = PostSerializer(page, many=True, read_only=True).data
     is_paginated = page.has_other_pages()
@@ -82,3 +85,31 @@ def search_posts(request):
     return JsonResponse(response)
 
 
+
+@csrf_exempt
+def create_comment(request):
+    # TODO: фукнція не дороблена.
+    config = NotificationConfig.get_solo()
+    query   = request.POST or request.GET
+    post_id = query.get('post_id')
+    text    = query.get('text')
+    comment = PostComment.objects.create(
+        text=text
+    )
+    if post_id:
+        comment.post = Post.objects.get(id=post_id)
+        comment.save()
+    if config.auto_comment_approval:
+        comment.is_active = True 
+        comment.save()
+    data = config.get_data('comment')
+    box_send_mail(
+        model=comment,
+        subject=data['subject'],
+        recipients_list=data['emails'],
+    )
+    response = {
+        'status':'OK',
+        'is_active':comment.is_active,
+    }
+    return JsonResponse(response)

@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 class Cart(models.Model):
-  user    = models.ForeignKey(verbose_name=("Юзер"), to=User, on_delete=models.SET_NULL, related_name='carts', blank=True, null=True)
+  user    = models.ForeignKey(verbose_name=("Користувач"), to=User, on_delete=models.SET_NULL, related_name='carts', blank=True, null=True)
   order   = models.OneToOneField(verbose_name=("Замовлення"), to="order.Order", blank=True, null=True, on_delete=models.CASCADE, related_name='cart')
   ordered = models.BooleanField(verbose_name=("Замовлено"), default=False)
   created = models.DateTimeField(verbose_name=('Дата створення'), default=timezone.now)
@@ -94,7 +94,7 @@ class Cart(models.Model):
       if cart_item.total_price:
         total_price += cart_item.total_price
     return total_price
-  
+
   @property
   def currency(self):
     currency = None 

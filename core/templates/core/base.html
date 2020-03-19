@@ -17,28 +17,27 @@
     <title>{{page.meta_title}}</title>
     <meta name="description" content="{{page.meta_descr}}"/>
     <meta name="keywords" content="{{page.meta_key}}" />
-
-    {% block favicon %}
-      <link rel="icon" href="{{config.get_favicon_url}}" type="{{favicon.get_favicon_type}}" />
-    {% endblock favicon %}
-
+    
     {% block hreflang %}
       {% for language_code, language_name in LANGUAGES %}
-      <link
+        <link
           rel="alternate"
           hreflang="{{ language_code }}"
           href="{% translate_url language_code %}" />
       {% endfor %}
       <link 
-          rel="alternate" 
-          hreflang="x-default" 
-          href="{% translate_url 'uk' %}" />
+        rel="alternate" 
+        hreflang="x-default" 
+        href="{% translate_url 'uk' %}" />
     {% endblock hreflang %}
-
+    
+    {% block favicon %}
+      <link rel="icon" href="{{design.favicon_url}}" type="{{design.favicon_type}}" />
+    {% endblock favicon %}
     {% block ogimage %}
-      <meta property="og:image" content="{{config.get_og_image_square_url}}" />
-      <meta property="og:image" content="{{config.get_og_image_rectangle_url}}" />
-      <meta property="og:image" content="{{config.get_og_image_square_url}}" />
+      <meta property="og:image" content="{{design.og_image_square_url}}" />
+      <meta property="og:image" content="{{design.og_image_rectangle_url}}" />
+      <meta property="og:image" content="{{design.og_image_square_url}}" />
     {% endblock ogimage %}
 
     {% block styles %}{% endblock styles%}

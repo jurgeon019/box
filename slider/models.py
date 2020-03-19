@@ -2,28 +2,24 @@ from django.db import models
 from django.conf import settings 
 
 
-class ActiveManager(models.Manager):
-    def all(self):
-        return super().get_queryset().filter(is_active=True)
+from box.core.models import BaseMixin
 
-
-class Slide(models.Model):
+class Slide(
+    BaseMixin,
+    ):
     DISPLAY_CHOICES = (
         ("no_text", "Зображенні без тексту"),
         ("text_toned", "Текст на зображенні з тонуванням"),
         ("text_right", "Текст праворуч, зображення зліва"),
         ("text_left", "Текст зліва, зображення праворуч"),
     )
-    slider    = models.ForeignKey(verbose_name=("Група слайдерів"), to='slider.Slider', related_name='images', on_delete=models.SET_NULL, null=True, blank=True) 
-    page      = models.ForeignKey(verbose_name=("Сторінки"), to="page.Page", related_name="slides", on_delete=models.SET_NULL, blank=True, null=True)
     name      = models.CharField(verbose_name=("Назва"), max_length=255, blank=True, null=True)  
     image     = models.ImageField(verbose_name=("Зображення"), blank=False, null=False)
     alt       = models.CharField(verbose_name=("Назва зображення(alt)"), max_length=255, blank=True, null=True) 
     title     = models.CharField(verbose_name=("Вспливаюча підказка(title)"), max_length=255, blank=True, null=True)  
+    slider    = models.ForeignKey(verbose_name=("Слайдер"), to='slider.Slider', related_name='images', on_delete=models.SET_NULL, null=True, blank=True) 
+    page      = models.ForeignKey(verbose_name=("Сторінки"), to="page.Page", related_name="slides", on_delete=models.SET_NULL, blank=True, null=True)
     text      = models.TextField(verbose_name=("Текст"), blank=True, null=True)  
-    is_active = models.BooleanField(verbose_name=("Активність"), default=True)
-    objects   = ActiveManager
-
     # TODO: настройки для лобецького
     # display   = models.CharField(verbose_name=("Варіант відображення"), choices=DISPLAY_CHOICES, max_length=255, default=0)  
     # mw_desc   = models.IntegerField(verbose_name=("Максимальна ширина дексктопі"), default=1050)  
@@ -42,6 +38,7 @@ class Slide(models.Model):
         super().save(*args, **kwargs)
     
     def get_image_url(self):
+        image_url = settings.NO_SLIDER_IMAGE_URL
         if self.image:
             image_url = self.image.url
         return image_url 
@@ -58,15 +55,14 @@ class Slide(models.Model):
     class Meta:
         verbose_name = ('Слайд')
         verbose_name_plural = ('Слайди')
+        ordering = ['order']
     
 
 
 
-class Slider(models.Model):
+class Slider(BaseMixin):
 
     name      = models.CharField(verbose_name=("Назва"), max_length=255, blank=True, null=True)
-    is_active = models.BooleanField(verbose_name=("Активність"), default=True)
-    objects   = ActiveManager
 
     page = models.ForeignKey(
         verbose_name=("Сторінка"), 
@@ -127,7 +123,6 @@ class Slider(models.Model):
     navigation = models.BooleanField(verbose_name=('Точки навігації слайдів'), default=True)
     speed      = models.PositiveIntegerField(verbose_name=('Швидкість зміни слайдів'), blank=True, null=True, default=6500, help_text=SPEED_HELP)
 
-
     def __str__(self):
         return f'{self.name}'
     
@@ -147,3 +142,6 @@ class Slider(models.Model):
     class Meta:
         verbose_name = ('Слайдер')
         verbose_name_plural = ('Слайдери')
+        ordering = ['order']
+
+

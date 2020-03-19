@@ -11,6 +11,8 @@ from box.shop.item.api.serializers import ItemSerializer, ItemReviewSerializer
 from box.shop.cart.utils import get_cart
 from box.core.utils import get_line
 from box.shop.item.api.search import filter_search
+from box.core.mail import box_send_mail
+from box.global_config.models import NotificationConfig, CatalogueConfig
 
 
 def get_items_in_favours(request, items):
@@ -40,7 +42,6 @@ def filter_category(items, query):
   category = query.get('category')
   if category:
     if settings.MULTIPLE_CATEGORY:
-
       cat1 = ItemCategory.objects.all().get(slug=category)
       cat2 = ItemCategory.objects.all().filter(parent__slug=category)
       categories = [
@@ -61,7 +62,7 @@ def filter_category(items, query):
 
 def paginate(items, query):
   page_number  = query.get('page', 1)
-  per_page     = query.get('per_page', 100)
+  per_page     = query.get('per_page', CatalogueConfig.get_solo().items_per_page)
   ordering     = query.get('sort', '-created')
   if not settings.PAGINATE_AJAX:
     page = items      
@@ -139,14 +140,23 @@ def create_review(request):
       name=name,
       rating=rating,
     )
+    if NotificationConfig.get_solo().auto_review_approval:
+      review.is_active = True 
+      review.save()
     json_review = ItemReviewSerializer(review).data
     response = {
       "review":json_review,
       "reviews_count":item.reviews.all().count(),
       "current_star":rating,
       "rounded_stars":item.rounded_stars,
-      "stars":item.stars
+      "stars":item.stars,
+      "is_active":review.is_active,
     }
+    box_send_mail(
+      subject=NotificationConfig.get_colo().get_data('review')['subject'],
+      recipient_list=NotificationConfig.get_colo().get_data('review')['emails'],
+      model=review,
+    )
     return JsonResponse(response)
 
 

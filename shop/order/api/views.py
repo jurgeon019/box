@@ -2,28 +2,20 @@ from box.shop.order.models import ( Order, OrderRequest, ItemRequest )
 from box.shop.item.models import Item 
 from box.shop.cart.utils import get_cart
 from box.shop.cart.models import Cart, CartItem
+from box.core.mail import box_send_mail 
+from box.global_config.models import *
 
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, reverse
 from django.http import JsonResponse
-from django.core.mail import send_mail
+from django.conf import settings 
+
 
 
 
 
 @csrf_exempt
 def order_items(request):
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
   name         = request.POST.get('name', "---")
   email        = request.POST.get('email', "---")
   phone        = request.POST.get('phone', "---")
@@ -106,7 +98,7 @@ def item_info(request):
   phone   = query.get('phone', '---') 
   email   = query.get('email', '---')
   message = query.get('message', '---') 
-  model   = ItemRequest.objects.create(
+  item_request   = ItemRequest.objects.create(
     name=name,
     phone=phone,
     email=email,
@@ -114,19 +106,16 @@ def item_info(request):
   )
   if item_id:
     item = Item.objects.get(id=item_id)
-    model.item = item
-    model.save()
-  link  = reverse(f'admin:{model._meta.app_label}_{model._meta.model_name}_change', args=(model.id,))
-  from django.conf import settings 
-  send_mail(
-    subject = 'Заявка на інформацію про товар',
-    message = f'{settings.CURRENT_DOMEN+link}',
-    from_email = settings.EMAIL_HOST_USER,
-    recipient_list = [settings.EMAIL_HOST_USER,],
-    fail_silently=False,
+    item_request.item = item
+    item_request.save()
+
+  box_send_mail(
+    model=item_request, 
+    subject=('Було отримано заявку на інформацію про товар'),
+    recipient_list=NotificationConfig.objects.get_solo().get_data('other')['emails'],
   )
   return JsonResponse({
     'status':'OK',
-    
   })
+
 

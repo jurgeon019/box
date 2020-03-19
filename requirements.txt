@@ -59,7 +59,8 @@ django-solo
 
 django-modeltranslation
 django-rosetta
-
+django-colorfield
+django-admin-sortable
 django-taggit
 django-select2
 django-allauth
@@ -73,7 +74,7 @@ django-rest-framework
 django-crispy-forms
 django-import-export
 django-decouple 
-django-autocompolete-light 
+django-autocomplete-light 
 
 django-admin-autocomplete-filter
 

@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
+from django.core.mail import send_mail 
+from django.conf import settings 
 
-from box.shop.help import help as shop_help 
-from box.blog.help import help as blog_help 
 from box.seo.models import Robots
 
 
@@ -23,11 +23,29 @@ def robots(request):
   return response
 
 
-def help(request):
-  response = {}
-  response.update(shop_help) 
-  response.update(blog_help) 
-  return JsonResponse(response)
+def set_lang(request, lang=None):
+  # lang = request.POST['lang']
+  translation.activate(lang)
+  request.session[translation.LANGUAGE_SESSION_KEY] = lang
+  # return redirect(request.META['HTTP_REFERER'])
+  url = request.META['HTTP_REFERER'].split('/')
+  url[3] = lang
+  url = '/'.join(url)
+  print(lang)
+  return redirect(url)
 
+
+
+def testmail(request):
+  if request.POST:
+    send_mail(
+      subject='123123123',
+      message='123123123',
+      from_email=settings.DEFAULT_FROM_EMAIL,
+      recipient_list=['jurgeon018@gmail.com'],
+      fail_silently=False,
+    )
+
+  return render(request, 'core/testmail.html', locals())
 
 

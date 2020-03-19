@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <p>{{text}}</p>
+    <ul>{{ queryset|unordered_list }}</ul>
+    <input type="hidden" name="action" value="{{action_value}}" />
+    <input type="submit" name="apply" value="{% trans 'Зберегти' %}" />
+</form>
+{% endblock %}
+
+

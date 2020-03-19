@@ -1,0 +1,29 @@
+{% extends 'admin/base_site.html' %}
+{% load i18n %}
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="/static/imp_exp/main.css">
+{% endblock extrastyle%}
+{% block content%}
+<div class="box" style="color:grey">
+    <a href="{% url 'admin:get_example' %}">
+        {% trans 'Завантажити зразок файлу' %}
+    </a>
+    <h1 style='color:#333; font-weight: 600;'>
+        Завантаження CSV файлу
+    </h1>
+    <div class="red">
+        Створіть бекап на випадок невдалого імпорту.
+    </div>
+    <div class="blue">
+        Максимальний розмір файлу 50 МБ
+    </div>
+    <form action='{% url "" %}' method='post'>
+        <input type="file">
+        <input class='right' type="submit" value='Завантажити'>
+    </form>
+</div>
+{% endblock content%}
+
+
+

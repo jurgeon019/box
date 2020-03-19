@@ -15,9 +15,12 @@ admin.site.register(User, CustomUserAdmin)
 from box.blog.admin import (
     Post, PostAdmin,
     PostCategory, PostCategoryAdmin,
+    PostComment, PostCommentAdmin,
 )
 admin.site.register(Post, PostAdmin)
 admin.site.register(PostCategory, PostCategoryAdmin)
+admin.site.register(PostComment, PostCommentAdmin)
+
 
 from box.shop.item.admin import (
     Item, ItemAdmin,
@@ -28,6 +31,10 @@ from box.shop.item.admin import (
     ItemFeatureName, ItemFeatureNameAdmin,
     ItemMarker, ItemMarkerAdmin,
     ItemBrand, ItemBrandAdmin,
+    ItemImage, ItemImageAdmin,
+    ItemReview, ItemReviewAdmin,
+    ItemFeature, ItemFeatureAdmin,
+    ItemFeatureValue, ItemFeatureValueAdmin,
 )
 admin.site.register(ItemCurrency, ItemCurrencyAdmin)
 admin.site.register(ItemStock, ItemStockAdmin)
@@ -35,9 +42,13 @@ admin.site.register(ItemCategory, ItemCategoryAdmin)
 admin.site.register(ItemCurrencyRatio, ItemCurrencyRatioAdmin)
 admin.site.register(ItemFeatureName, ItemFeatureNameAdmin)
 admin.site.register(Item, ItemAdmin)
+admin.site.register(ItemImage, ItemImageAdmin)
 admin.site.register(ItemMarker, ItemMarkerAdmin)
 admin.site.register(ItemBrand, ItemBrandAdmin)
 
+admin.site.register(ItemReview, ItemReviewAdmin)
+admin.site.register(ItemFeature, ItemFeatureAdmin)
+admin.site.register(ItemFeatureValue, ItemFeatureValueAdmin)
 
 
 
@@ -46,16 +57,21 @@ from box.shop.cart.admin import (
     CartItem, CartItemAdmin
 )
 from box.shop.customer.admin import (
-    ProfileAdmin,
+    Customer, CustomerAdmin,
 )
+admin.site.register(Customer, CustomerAdmin)
 from box.shop.order.admin import (
     Status, StatusAdmin,
     Order, OrderAdmin,
     ItemRequest, ItemRequestAdmin,
+    OrderConfig, OrderConfigAdmin,
+    OrderTag, OrderTagAdmin,
 )
 admin.site.register(Order, OrderAdmin)
-admin.site.register(Status, StatusAdmin)
 admin.site.register(ItemRequest, ItemRequestAdmin)
+admin.site.register(OrderConfig, OrderConfigAdmin)
+admin.site.register(Status, StatusAdmin)
+admin.site.register(OrderTag, OrderTagAdmin)
 
 from box.shop.liqpay.admin import (
     Payment, PaymentAdmin,
@@ -69,11 +85,11 @@ admin.site.register(PageFeature, PageFeatureAdmin)
 from box.global_config.admin import (
     SiteConfig, SiteConfigAdmin,
     NotificationConfig, NotificationConfigAdmin,
-    CalagoueConfig, CalagoueConfigAdmin,
+    CatalogueConfig, CatalogueConfigAdmin,
 )
 admin.site.register(SiteConfig, SiteConfigAdmin)
 admin.site.register(NotificationConfig, NotificationConfigAdmin)
-admin.site.register(CalagoueConfig, CalagoueConfigAdmin)
+admin.site.register(CatalogueConfig, CatalogueConfigAdmin)
 
 
 from box.seo.admin import (

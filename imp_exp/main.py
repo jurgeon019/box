@@ -36,8 +36,7 @@ import csv
 import re 
 
 from box.shop.item.models import *
-
-count = 0
+from box.page.models import *
 
 __all__ = [
   "Parser",
@@ -619,13 +618,6 @@ class Parser(object):
 
 
 class ExportMixin(Parser):
-  def admin_is_active_on(self, request, queryset):
-      queryset.update(is_active=True)
-  
-  def admin_is_active_off(self, request, queryset):
-      queryset.update(is_active=False)
-  admin_is_active_on.short_description = ("Увімкнути")
-  admin_is_active_off.short_description = ("Вимкнути")
   def create_worksheet_with_items(self, workbook, items):
     worksheet1 = workbook.create_sheet(
         title='Товары',
@@ -714,7 +706,7 @@ class ExportMixin(Parser):
         data['Заголовок']       = category.title
         data['Ссылка']          = category.slug
         data['Ссылка_родителя'] = category.parent_slug
-        data['Изображения']     = category.thumbnail_path
+        data['Изображения']     = category.image_path
         writer.writerow(data)
     return True 
 
@@ -747,7 +739,7 @@ class ExportMixin(Parser):
       data['Заголовок']       = category.title
       data['Ссылка']          = category.slug
       data['Ссылка_родителя'] = category.parent_slug
-      data['Изображения']     = category.thumbnail_path
+      data['Изображения']     = category.image_path
       writer.writerow([value for value in data.values()])
     return response
 
@@ -774,9 +766,6 @@ class ExportMixin(Parser):
     response = HttpResponse(FileWrapper(open('export.zip', 'rb')), content_type='application/zip')
     response['Content-Disposition'] = 'attachment; filename=export.zip'
     return response 
-    # for root, dirs, files in os.walk(settings.MEDIA_ROOT):
-    #   for f in files:
-    #     # export_zip.write(os.path.join(root, f))
 
   def admin_delete_items_photoes(self, request, queryset):
     for item in queryset:
@@ -846,8 +835,8 @@ class ExportMixin(Parser):
       <field name="slug" descr="{item._meta.get_field('slug').verbose_name}">
         {item.slug}
       </field>
-      <field name="thumbnail" descr="{item._meta.get_field('thumbnail').verbose_name}">
-        {item.thumbnail}
+      <field name="image" descr="{item._meta.get_field('image').verbose_name}">
+        {item.image}
       </field>
       <field name="old_price" descr="{item._meta.get_field('old_price').verbose_name}">
         {item.old_price}
@@ -970,7 +959,7 @@ class ImportMixin(Parser):
       if code:
         new_category.code = code 
       if image:
-        new_category.thumbnail = 'shop/category/' + image
+        new_category.image = 'shop/category/' + image
       new_category.save()
       print(new_category)
     except IntegrityError as e:
@@ -1107,7 +1096,7 @@ class ImportMixin(Parser):
             item  =  new_item, 
           )
         new_item.save()
-        new_item.create_thumbnail_from_images()
+        new_item.create_image_from_images()
       if images[:2] == "['" and images[-2:] == "']":
         images = ast.literal_eval(images)
         for image in images:
@@ -1132,7 +1121,7 @@ class ImportMixin(Parser):
             print(image)
             image.save(path)
             new_item.save()
-            new_item.create_thumbnail_from_images()
+            new_item.create_image_from_images()
 
     return new_item
 
@@ -1303,7 +1292,7 @@ class ImportMixin(Parser):
     description = None
     code        = None
     slug        = None
-    thumbnail   = None
+    image   = None
     old_price   = None
     new_price   = None
     currency    = None
@@ -1357,7 +1346,7 @@ class ImportMixin(Parser):
       description = xml_item.fields['description']
       code        = xml_item.fields['code']
       slug        = xml_item.fields['slug']
-      thumbnail   = xml_item.fields['thumbnail']
+      image   = xml_item.fields['image']
       old_price   = xml_item.fields['old_price']
       new_price   = xml_item.fields['new_price']
       currency    = xml_item.fields['currency']
@@ -1383,7 +1372,7 @@ class ImportMixin(Parser):
       item.description = description
       item.code        = code
       item.slug        = slug
-      item.thumbnail   = thumbnail
+      item.image   = image
       item.old_price   = old_price
       item.new_price   = new_price
       item.currency    = currency
@@ -1421,8 +1410,6 @@ class ImportMixin(Parser):
     import_items_from_xml_by_xml_etree(filename)
     return True 
 
-
-from box.page.models import Page, PageFeature, PageImage
 
 class Content(object):
   def import_content(self, filename, *args, **kwargs):
@@ -1486,4 +1473,3 @@ class Content(object):
     # TODO:
     pass 
 
-  

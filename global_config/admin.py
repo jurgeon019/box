@@ -1,5 +1,7 @@
 from django.contrib import admin 
 from django.db import models 
+from django.forms import TextInput, Textarea
+
 
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline, TranslationTabularInline
 
@@ -12,23 +14,26 @@ from box.core.utils import AdminImageWidget
 
 
 class SiteConfigAdmin(SingletonModelAdmin, TabbedTranslationAdmin):
-    formfield_overrides = {
-        models.ImageField:{'widget': AdminImageWidget}
-    }
+    pass 
+
 
 
 class NotificationConfigAdmin(SingletonModelAdmin):
-    form = NotificationConfigForm
-    change_form_template = 'des/change_form.html'
     class Media:
         js = ('js/des.js'),
         css = {
             'all': ('css/des.css',)
         }
+    form = NotificationConfigForm
+    change_form_template = 'des/change_form.html'
+    formfield_overrides = {
+        models.TextField:{'widget':Textarea(attrs={'cols':'30', 'rows':'1'})}
+    }
 
-
-class CalagoueConfigAdmin(SingletonModelAdmin):
+class CatalogueConfigAdmin(SingletonModelAdmin):
     pass 
+
+
 
 
 

@@ -1,18 +1,16 @@
-from filebrowser.sites import site
-from box.core.views import robots
-from box.core.utils import set_lang
-from box.core.admin import custom_admin, admin_plus
 from django.contrib import admin
 from django.urls import path, include 
 from django.views.i18n import JavaScriptCatalog as js_cat
 from django.contrib.sitemaps.views import sitemap
-from django.views.generic import TemplateView as t_v
 from django.conf import settings
 
+from filebrowser.sites import site
 
-from box.shop.item.sitemaps import *
-from box.blog.sitemaps import *
-from project.sitemaps import *
+from box.core.views import robots, set_lang, testmail
+from box.core.admin import custom_admin, admin_plus
+from box.shop.item.sitemaps import ItemSitemap, CategorySitemap
+from box.blog.sitemaps import PostSitemap
+from project.sitemaps import StaticSitemap
 
 
 admin.site.site_header = "STARWAY CMS"
@@ -21,16 +19,30 @@ admin.site.index_title = "STARWAY CMS"
 
 
 sitemaps = {
-  'items': ItemSitemap,
+  'items':      ItemSitemap,
   'categories': CategorySitemap,
-  'posts': PostViewSitemap, 
-  'static':StaticViewSitemap,
+  'posts':      PostSitemap, 
+  'static':     StaticSitemap,
 }
 
 
 handler404 = 'box.core.views.handler_404'
 handler500 = 'box.core.views.handler_500'
 
+
+
+api_urls = [
+  path('', include('box.shop.novaposhta.api.urls')),
+  path('', include('box.shop.customer.api.urls')),
+  path('', include('box.shop.cart.api.urls')),
+  path('', include('box.shop.item.api.urls')),
+  path('', include('box.shop.liqpay.api.urls')),
+  path('', include('box.shop.order.api.urls')),
+  path('', include('box.blog.api.urls')),
+  path('', include('box.custom_auth.api.urls')),
+  path('', include('box.custom_admin.api.urls')),
+  path('', include('box.contact_form.api.urls')),
+]
 
 urlpatterns = [
   path('admin_tools/',     include('admin_tools.urls')),
@@ -47,21 +59,15 @@ urlpatterns = [
   path('robots.txt/',      robots, name='robots'),
   path('set_lang/<lang>/', set_lang,         name="set_lang"),
   path('jsi18n/',          js_cat.as_view(), name='javascript-catalog'),
-  path('help/',            help, name='help'),
+  path('testmail/',        testmail, name='testmail'),
 
-  path('test/', include('box.shop.test_shop.urls')),
-  
-
+  path('test/',          include('box.shop.test_shop.urls')),
   path('', include('box.global_config.urls')),
   path('', include('box.shop.novaposhta.urls')),
-  path('', include('box.shop.customer.api.urls')),
-  path('', include('box.shop.cart.api.urls')),
-  path('', include('box.shop.item.api.urls')),
-  path('', include('box.shop.liqpay.api.urls')),
-  path('', include('box.shop.order.api.urls')),
-  path('', include('box.blog.api.urls')),
-  path('', include('box.custom_auth.api.urls')),
-  path('', include('box.custom_admin.api.urls')),
+
+  # path('api/', include(api_urls))
+  path('', include(api_urls))
+
 ]
 
 

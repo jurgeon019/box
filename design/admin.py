@@ -1,18 +1,36 @@
 from django.contrib import admin 
+from django import forms
+
 from modeltranslation.admin import *
-from .models import * 
 
 from box.solo.admin import SingletonModelAdmin
-
-from django import forms
 from box.core.utils import AdminImageWidget
+from .models import * 
 
 
 
-class DesignAdvantageInline(TranslationStackedInline):
+class DesignPhoneInline(admin.StackedInline):
     extra = 0 
-    model = DesignAdvantage
     classes = ['collapse']
+    model = DesignPhone
+
+
+class DesignEmailInline(admin.StackedInline):
+    extra = 0 
+    classes = ['collapse']
+    model = DesignEmail
+
+
+class DesignSocialInline(admin.StackedInline):
+    extra = 0 
+    classes = ['collapse']
+    model = DesignSocial
+
+
+class DesignAddressInline(admin.StackedInline):
+    extra = 0 
+    classes = ['collapse']
+    model = DesignAddress
 
 
 class DesignConfigAdmin(TabbedTranslationAdmin, SingletonModelAdmin):
@@ -20,59 +38,10 @@ class DesignConfigAdmin(TabbedTranslationAdmin, SingletonModelAdmin):
         models.ImageField:{'widget':AdminImageWidget}
     }
     inlines = [
-        DesignAdvantageInline,
+        DesignPhoneInline,
+        DesignEmailInline,
+        DesignSocialInline,
+        DesignAddressInline,
     ]
-    fieldsets = [
-        [(""), {
-            "fields":[
-                (
-                    'logo',
-                    'favicon',
-                ),
-                (
-                    "delivery",
-                    "payment",
-                ),
-            ],
-            'classes':[
-                # 'collapse',
-                # 'wide',
-                'extrapretty',
-            ]
-        }],
-        [("Контакти"), {
-            "fields":[
-                "email",
-                "phones",
-                "time",
-                "social",
-            ],
-            'classes':['collapse']
-        }],
-        [("Налаштування кольорів теми"), {
-            "fields":[
-                (
-                "colour_buttons",
-                "colour_buttons_text",
-                "colour_buttons_hover",
-                "colour_buttons_text_hover",
-                ),
-                (
-                "colour_main",
-                "colour_additional",
-                "colour_main_background",
-                "colour_additional_background",
-                "colour_background",
-                )
-            ],
-            "classes":['collapse']
-        }]
-    ]
-
-from box.page.admin import PageFeatureAdmin
-# class TranslationAdmin(TabbedTranslationAdmin):
-class TranslationAdmin(admin.ModelAdmin):
-# class TranslationAdmin(PageFeatureAdmin):
-    pass 
-
+   
 

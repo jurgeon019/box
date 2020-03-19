@@ -1,13 +1,18 @@
-from .liqpay import LiqPay
+from django.shortcuts import redirect
+from django.conf import settings 
+
+from box.global_config.models import SiteConfig
 from box.shop.order.models import Order
 from box.shop.cart.utils import get_cart
-from django.shortcuts import redirect
 from box.shop.cart.models import CartItem
-from django.conf import settings 
 from .forms import PaymentForm
+from .liqpay import LiqPay
+
 
 
 def get_liqpay_context(request):
+  config = SiteConfig.get_solo()
+
   cart   = get_cart(request)
   order  = Order.objects.get(
     cart=cart,
@@ -26,9 +31,9 @@ def get_liqpay_context(request):
       'order_id': str(order.id),
       'version': '3',
       'sandbox': 1, # sandbox mode, set to 1 to enable it
-      'server_url': f'{settings.CURRENT_DOMEN}pay_callback/', # url to callback view
+      'server_url': f'{site}pay_callback/', # url to callback view
   }
-  liqpay    = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
+  liqpay    = LiqPay(config.liqpay_public_key, config.liqpay_private_key)
   signature = liqpay.cnb_signature(params)
   data      = liqpay.cnb_data(params)
   return signature, data  
@@ -42,10 +47,11 @@ def get_response(request):
   print(request.POST)
   print(request.POST)
   print("request.POST")
-  liqpay    = LiqPay(settings.LIQPAY_PUBLIC_KEY, settings.LIQPAY_PRIVATE_KEY)
+  config = SiteConfig.get_solo()
+  liqpay    = LiqPay(config.liqpay_public_key, config.liqpay_private_key)
   data      = request.POST.get('data')
   signature = request.POST.get('signature')
-  sign      = liqpay.str_to_sign(settings.LIQPAY_PRIVATE_KEY + data + settings.LIQPAY_PRIVATE_KEY)
+  sign      = liqpay.str_to_sign(config.liqpay_private_key + data + config.liqpay_private_key)
   response  = liqpay.decode_data_from_str(data)
   print(response)
   if sign == signature: 

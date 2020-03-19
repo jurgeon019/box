@@ -8,9 +8,6 @@ from box.shop.novaposhta import views
 
 
 urlpatterns = [
-
-    path('autocomplete/', views.autocomplete, name='autocomplete'),
-
     path('refresh/', views.refresh, name='refresh')
 
 ]

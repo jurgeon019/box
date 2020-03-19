@@ -6,7 +6,9 @@ from django.http import HttpResponse
 from django.shortcuts import redirect 
 from django.conf import settings 
 
-from box.shop.item.parser.main import *
+# from box.shop.item.parser.main import *
+from box.imp_exp.main import ExportMixin
+
 from box.shop.item.models import Item, ItemImage
 
 

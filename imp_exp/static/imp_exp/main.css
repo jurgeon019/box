@@ -1,0 +1,21 @@
+
+.red {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    color: #F55753;
+    font-size: 16px;
+    line-height: 26px;
+}
+.blue{
+    font-family: 'Open Sans', sans-serif;
+    font-weight: normal;
+    color: #48b0f7;
+    font-size: 16px;
+    line-height: 26px;
+}
+.box{
+    height: 100px;
+}
+.right{
+    float:right;
+}

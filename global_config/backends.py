@@ -25,3 +25,5 @@ class ConfiguredEmailBackend(EmailBackend):
 
 
 __all__ = ['ConfiguredEmailBackend']
+
+

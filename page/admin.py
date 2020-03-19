@@ -40,7 +40,9 @@ class PageAdmin(TabbedTranslationAdmin):
             ),
         }],
     ]
-
+    search_fields = [
+        'meta_title',
+    ]
 
 class PageFeatureAdmin(TabbedTranslationAdmin):
     list_display_links = [
