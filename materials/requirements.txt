@@ -19,3 +19,5 @@ channels_redis
 Pillow 
 transliterate 
 pandas 
+
+pip3 install box/materials/requirements.txt
