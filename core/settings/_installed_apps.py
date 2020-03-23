@@ -1,4 +1,5 @@
-INSTALLED_APPS = [
+up = [
+    'corsheaders',
     'admin_tools',
     'admin_tools.theming',
     'admin_tools.menu',
@@ -13,6 +14,8 @@ INSTALLED_APPS = [
     'box.custom_admin',
     'filebrowser',
     'modeltranslation',
+]
+django_contrib = [
     'django.contrib.auth',
     'django.contrib.sites',
     'django.contrib.admin',
@@ -23,7 +26,8 @@ INSTALLED_APPS = [
     'django.contrib.redirects',
     'django.contrib.flatpages',
     'django.contrib.sitemaps',
-
+]
+third_party = [
     "mptt",
     "crispy_forms",
     "tinymce",
@@ -38,14 +42,11 @@ INSTALLED_APPS = [
     'colorfield',
     # 'adminsortable',
     'adminsortable2',
-
-
-    'box.filemanager',
-    'box.solo',
-    # 'box.constance',
+]
+box = [
     'box',
     'box.core',
-    'box.slider',
+    'box.editor',
     'box.seo',
     'box.design',
     'box.contact_form',
@@ -54,9 +55,7 @@ INSTALLED_APPS = [
     'box.statistic',
     'box.global_config',
     'box.custom_auth',
-    'box.page',
-    'box.blog',
-    'box.model_search',
+    'box.content',
     'box.shop',
     'box.shop.test_shop',
     'box.shop.item',
@@ -66,6 +65,21 @@ INSTALLED_APPS = [
     'box.shop.privat24',
     'box.shop.customer',
     'box.shop.novaposhta',
+    'box.filemanager',
+    'box.blog',
+    'box.solo',
+    'box.model_search',
+    # 'box.constance',
 
 ]
+installed_apps  = [
+    *up,
+    *django_contrib,
+    *third_party,
+    *box,
+]
+
+INSTALLED_APPS = installed_apps 
+
+
 

@@ -1,0 +1,7 @@
+{% load i18n %}
+<div class="admin-panel">
+    <a class="btn" href="/admin/">{% trans 'Перейти в адмін-панель' %}</a><br><br>
+    {% if page.get_admin_url %}
+    <a class="btn edit" href={{page.get_admin_url}}>{% trans 'Редагувати сторінку' %}</a>
+    {% endif%}
+</div>

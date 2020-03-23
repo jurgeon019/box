@@ -10,11 +10,11 @@ User = get_user_model()
 
 
 class Cart(models.Model):
-  user    = models.ForeignKey(verbose_name=("Користувач"), to=User, on_delete=models.SET_NULL, related_name='carts', blank=True, null=True)
-  order   = models.OneToOneField(verbose_name=("Замовлення"), to="order.Order", blank=True, null=True, on_delete=models.CASCADE, related_name='cart')
-  ordered = models.BooleanField(verbose_name=("Замовлено"), default=False)
-  created = models.DateTimeField(verbose_name=('Дата створення'), default=timezone.now)
-  updated = models.DateTimeField(verbose_name=('Дата оновлення'),  auto_now_add=False, auto_now=True,  blank=True, null=True)
+  user    = models.ForeignKey(verbose_name=_("Користувач"), to=User, on_delete=models.SET_NULL, related_name='carts', blank=True, null=True)
+  order   = models.OneToOneField(verbose_name=_("Замовлення"), to="order.Order", blank=True, null=True, on_delete=models.CASCADE, related_name='cart')
+  ordered = models.BooleanField(verbose_name=_("Замовлено"), default=False)
+  created = models.DateTimeField(verbose_name=_('Дата створення'), default=timezone.now)
+  updated = models.DateTimeField(verbose_name=_('Дата оновлення'),  auto_now_add=False, auto_now=True,  blank=True, null=True)
 
   def __str__(self):
     return f"{self.id}"
@@ -109,10 +109,10 @@ class CartItem(models.Model):
   cart     = models.ForeignKey(   to='cart.Cart',   verbose_name=("Корзина"), on_delete=models.CASCADE, blank=True, null=True, related_name="items")
   order    = models.ForeignKey(   to='order.Order', verbose_name=('Замовлення'),   on_delete=models.CASCADE, blank=True, null=True, related_name="cart_items")
   item     = models.ForeignKey(   to='item.Item',   verbose_name=('Товар'),   on_delete=models.CASCADE, blank=True, null=True, related_name="cart_items")
-  quantity = models.IntegerField(verbose_name=('Кількість'), default=1)
+  quantity = models.IntegerField(verbose_name=_('Кількість'), default=1)
   
-  created  = models.DateTimeField(verbose_name=('Дата создания'),  default=timezone.now)
-  updated  = models.DateTimeField(verbose_name=('Дата обновления'),auto_now_add=False, auto_now=True,  blank=True, null=True)
+  created  = models.DateTimeField(verbose_name=_('Дата создания'),  default=timezone.now)
+  updated  = models.DateTimeField(verbose_name=_('Дата обновления'),auto_now_add=False, auto_now=True,  blank=True, null=True)
 
   @property
   def total_price(self):

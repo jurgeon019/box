@@ -1,6 +1,6 @@
 from django.db import models 
 from box.solo.models import SingletonModel
-
+from django.utils.translation import gettext_lazy as _
 
 __all__ = [
   'Robots',
@@ -12,7 +12,7 @@ __all__ = [
 
 
 class Robots(SingletonModel):
-  robots_txt = models.TextField(verbose_name=('robots.txt'), blank=True, null=True)
+  robots_txt = models.TextField(verbose_name=_('robots.txt'), blank=True, null=True)
 
   def __str__(self):
     return f'{self.id}'
@@ -30,9 +30,9 @@ class SeoScript(models.Model):
     ("body_bottom","Перед закриваючим body"),
   )
   setting  = models.ForeignKey(to="seo.Seo", on_delete=models.CASCADE, related_name='scripts',)
-  name     = models.CharField(verbose_name=("Назва коду"), max_length=255)
-  position = models.CharField(verbose_name=("Положення коду на сторінці"), max_length=255, choices=POSITION_CHOICES)
-  code     = models.TextField(verbose_name=("Код для вставлення"))
+  name     = models.CharField(verbose_name=_("Назва коду"), max_length=255)
+  position = models.CharField(verbose_name=_("Положення коду на сторінці"), max_length=255, choices=POSITION_CHOICES)
+  code     = models.TextField(verbose_name=_("Код для вставлення"))
 
   def __str__(self):
     return f'{self.name}, {self.position}, {self.code}'
@@ -49,12 +49,12 @@ class Seo(SingletonModel):
 
 
 class ItemSeo(models.Model):
-  categories       = models.ManyToManyField(verbose_name=("Категорія"), to="item.ItemCategory",  related_name='item_seos', blank=True)
-  meta_title       = models.CharField(verbose_name=("Auto Meta-title"), max_length=255, blank=True, null=True)
-  meta_description = models.CharField(verbose_name=("Auto Meta-description"), max_length=255, blank=True, null=True)
-  meta_keywords    = models.CharField(verbose_name=("Auto Meta-keywords"), max_length=255, blank=True, null=True)
-  h1               = models.CharField(verbose_name=("Auto H1"), max_length=255, blank=True, null=True)
-  description      = models.TextField(verbose_name=("Шаблон опису товарів"), blank=True, null=True)
+  categories       = models.ManyToManyField(verbose_name=_("Категорія"), to="item.ItemCategory",  related_name='item_seos', blank=True)
+  meta_title       = models.CharField(verbose_name=_("Auto Meta-title"), max_length=255, blank=True, null=True)
+  meta_description = models.CharField(verbose_name=_("Auto Meta-description"), max_length=255, blank=True, null=True)
+  meta_keywords    = models.CharField(verbose_name=_("Auto Meta-keywords"), max_length=255, blank=True, null=True)
+  h1               = models.CharField(verbose_name=_("Auto H1"), max_length=255, blank=True, null=True)
+  description      = models.TextField(verbose_name=_("Шаблон опису товарів"), blank=True, null=True)
 
   def __str__(self):
     return f"{self.meta_title}"
@@ -87,12 +87,12 @@ class ItemSeo(models.Model):
 
 
 class ItemCategorySeo(models.Model):
-  categories       = models.ManyToManyField(verbose_name=("Категорія"), to="item.ItemCategory",  related_name='item_category_seos', blank=True)
-  meta_title       = models.CharField(verbose_name=("Auto Meta-title"), max_length=255, blank=True, null=True)
-  meta_description = models.CharField(verbose_name=("Auto Meta-description"), max_length=255, blank=True, null=True)
-  meta_keywords    = models.CharField(verbose_name=("Auto Meta-keywords"), max_length=255, blank=True, null=True)
-  h1               = models.CharField(verbose_name=("Auto H1"), max_length=255, blank=True, null=True)
-  description      = models.TextField(verbose_name=("Шаблон опису товарів"), blank=True, null=True)
+  categories       = models.ManyToManyField(verbose_name=_("Категорія"), to="item.ItemCategory",  related_name='item_category_seos', blank=True)
+  meta_title       = models.CharField(verbose_name=_("Auto Meta-title"), max_length=255, blank=True, null=True)
+  meta_description = models.CharField(verbose_name=_("Auto Meta-description"), max_length=255, blank=True, null=True)
+  meta_keywords    = models.CharField(verbose_name=_("Auto Meta-keywords"), max_length=255, blank=True, null=True)
+  h1               = models.CharField(verbose_name=_("Auto H1"), max_length=255, blank=True, null=True)
+  description      = models.TextField(verbose_name=_("Шаблон опису товарів"), blank=True, null=True)
 
   def __str__(self):
     return f"{self.meta_title}"

@@ -1,0 +1,12 @@
+{% load i18n %}
+{% for slide in obj %}
+<div class="hero__slider_item ">
+    <div class="db_content">
+        <img class="" data-lazy="{{slide.image_url}}" alt="{{slide.alt}}">
+        <div class="show">
+            <a href="{{slide.get_admin_url}}" target="_blank">{% trans 'Редагувати слайд' %}</a>
+            <a href="{{slide.slider.get_admin_url}}" target="_blank">{% trans 'Редагувати слайдер' %}</a>
+        </div>
+    </div>
+</div>
+{% endfor %}

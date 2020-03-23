@@ -233,7 +233,7 @@ class ItemCategoryAdmin(
         seo,
     ]
     readonly_fields = [
-        'code',
+        # 'code',
         'created',
         'updated',
     ]
@@ -266,71 +266,13 @@ class ItemImageAdmin(BaseAdmin, SortableAdminMixin):
     ]
 
 
-def gen_item_fieldsets(self=None):
-    item_fields = [
-        (
-        'amount',
-        'in_stock',
-        'is_active',
-        ),
-        (
-        'title',
-        'code',
-        ),
-        (
-        'old_price',
-        'new_price',
-        'currency',
-        ),
-        'description',
-        'image',
-        # 'categories',
-        'created',
-        'updated',
-    ]
-    if settings.MULTIPLE_CATEGORY:
-        item_fields.insert(-2 ,'categories')
-    else:
-        item_fields.insert(-2 ,'category')
-    fieldsets = [
-        [('ОСНОВНА ІНФОРМАЦІЯ'), {
-            'fields':item_fields
-        }],
-        seo,
-    ]
-    return fieldsets
-
 
 class ItemAdmin(
     BaseAdmin,
     TabbedTranslationAdmin, 
     ): 
-    # changeform
-    resource_class = ItemResource
-    autocomplete_fields = [
-        'brand',
-        # 'similars',
-        'in_stock',
-    ]
-    if settings.MULTIPLE_CATEGORY:
-        autocomplete_fields.append('categories')
-    else:
-        autocomplete_fields.append('category')
-    form = ItemForm
-    fieldsets = gen_item_fieldsets()
-    # change_list_template = 'item_change_list.html'
-    # change_form_template = 'item_change_form.html'
-    prepopulated_fields = {
-        "slug": ("title",),
-        "code": ("title",),
-    }
-    inlines = [
-        ItemImageInline,
-        ItemFeatureStackedInline,
-        ItemOptionInline,
-        ItemReviewInline, 
-    ]  
     # changelist  
+    # change_list_template = 'item_change_list.html'
     def change_category(self, request, queryset):
         initial = {
             'model':ItemCategory,
@@ -417,7 +359,7 @@ class ItemAdmin(
         'new_price',
         'currency',
         'amount',
-        'unit',
+        # 'units',
         # 'in_stock',
         'is_active',
         # "clone_link",
@@ -429,7 +371,7 @@ class ItemAdmin(
         'new_price',
         'currency',
         'amount',
-        # 'unit',
+        # 'units',
         # TODO: змінити ширину інпута
         'is_active',
     ]
@@ -437,17 +379,97 @@ class ItemAdmin(
         'order',
         'title',
     ]
+    # changeform
+    # change_form_template = 'item_change_form.html'
+    form = ItemForm
+    resource_class = ItemResource
+    autocomplete_fields = [
+        # 'similars',
+        'markers',
+        'brand',
+        'in_stock',
+        'currency',
+    ]
+    if settings.MULTIPLE_CATEGORY:
+        autocomplete_fields.append('categories')
+    else:
+        autocomplete_fields.append('category')
+    prepopulated_fields = {
+        "slug": ("title",),
+        # "code": ("title",),
+    }
+    inlines = [
+        ItemImageInline,
+        ItemFeatureStackedInline,
+        ItemOptionInline,
+        ItemReviewInline, 
+    ]  
+    item_fields = [
+        'title',
+        "brand",
+        'in_stock',
+        'currency',
+        "markers",   # TODO: Додаються всі маркери
+        # "similars",   # TODO: : Додаються всі товари
+        (
+        'old_price',
+        'new_price',
+        ),
+        (
+        "units",
+        'amount',
+        ),
+        'is_active',
+        'description',
+        'image',
+        'code',
+        'created',
+        'updated',
+    ]
+    if settings.MULTIPLE_CATEGORY:
+        item_fields.insert(2 ,'categories')
+    else:
+        item_fields.insert(2 ,'category')
+    fieldsets = [
+        [('ОСНОВНА ІНФОРМАЦІЯ'), {
+            'fields':item_fields
+        }],
+        seo,
+    ]    
 
 
-class ItemCurrencyAdmin(TabbedTranslationAdmin):
-    list_display_links = [
-        'id',
-        'name',
+class ItemCurrencyAdmin(BaseAdmin, TabbedTranslationAdmin):
+    resource_class = ItemCurrencyResource
+    actions = [
+        'delete',
     ]
     list_display = [
-        'id',
         'name',
+        'iso',
+        'rate',
         'is_main',
+    ]
+    list_display_links = [
+        'name',
+        'iso',
+    ]
+    list_editable = [
+        'rate',
+    ]
+    readonly_fields = [
+        'is_active',
+        'is_main',
+        'updated',
+        'created',
+        'code',
+    ]
+    formfield_overrides = {
+        # models.CharField: {'widget': TextInput(attrs={'size':8})},
+        # models.DecimalField: {'widget': NumberInput(attrs={"style":"width:70px"})}
+    }
+    search_fields = [
+        'name',
+        'iso',
     ]
 
 
@@ -511,9 +533,15 @@ class ItemFeatureValueAdmin(TabbedTranslationAdmin):
 
 
 class ItemMarkerAdmin(TabbedTranslationAdmin):
-    pass 
     # def get_model_perms(self, request):
     #     return {}
+    search_fields = [
+        'text',
+    ]
+    fields = [
+        'text',
+    ]
+
 
 
 class ItemBrandAdmin(BaseAdmin, SortableAdminMixin, TabbedTranslationAdmin):

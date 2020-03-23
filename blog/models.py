@@ -7,17 +7,17 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings 
 
-from box.core.models import Page, BaseMixin
+from box.core.models import AbstractPage, BaseMixin
 
 User = get_user_model() 
 
 
 
-class Post(Page):
-  content    = HTMLField(verbose_name=("Контент"), blank=False, null=True)
-  category   = models.ForeignKey(verbose_name=("Категорія"), to="blog.PostCategory", blank=True, null=True, on_delete=models.CASCADE)
-  author     = models.ForeignKey(verbose_name=("Автор"), to=User, on_delete=models.CASCADE, blank=True, null=True)
-  # recomended = models.ManyToManyField(verbose_name=("Рекомендовані товари"), to="item.Item", blank=True, null=True)
+class Post(AbstractPage):
+  content    = HTMLField(verbose_name=_("Контент"), blank=False, null=True)
+  category   = models.ForeignKey(verbose_name=_("Категорія"), to="blog.PostCategory", blank=True, null=True, on_delete=models.CASCADE)
+  author     = models.ForeignKey(verbose_name=_("Автор"), to=User, on_delete=models.CASCADE, blank=True, null=True)
+  # recomended = models.ManyToManyField(verbose_name=_("Рекомендовані товари"), to="item.Item", blank=True, null=True)
 
   def save(self, *args, **kwargs):
     # print(self.recomended.all())
@@ -38,7 +38,7 @@ class Post(Page):
       return reverse("post", kwargs={"slug": self.slug})
 
 
-class PostCategory(Page):
+class PostCategory(AbstractPage):
 
   class Meta:
     verbose_name = ('Категорія')
@@ -52,9 +52,9 @@ class PostCategory(Page):
 class PostComment(BaseMixin):
   parent  = models.ForeignKey(to='self', on_delete=models.CASCADE, blank=True, null=True, related_name='subcomments')
   post    = models.ForeignKey(to="blog.Post", blank=True, null=True, related_name='comments', on_delete=models.CASCADE)
-  title   = models.CharField(verbose_name=("Заголовок"),max_length=120, blank=True, null=True)
-  content = models.TextField(verbose_name=("Коммент"), blank=True, null=True)  
-  author  = models.ForeignKey(verbose_name=("Автор"), to=User,related_name='post_comments', on_delete=models.CASCADE, blank=True, null=True)
+  title   = models.CharField(verbose_name=_("Заголовок"),max_length=120, blank=True, null=True)
+  content = models.TextField(verbose_name=_("Коммент"), blank=True, null=True)  
+  author  = models.ForeignKey(verbose_name=_("Автор"), to=User,related_name='post_comments', on_delete=models.CASCADE, blank=True, null=True)
   
   def __str__(self):
     return f"{self.title}"

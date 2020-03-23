@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, reverse, redirect
 from django.http import JsonResponse, HttpResponse
 from django.core.mail import send_mail 
 from django.conf import settings 
-
+from django.utils import translation
 from box.seo.models import Robots
 
 

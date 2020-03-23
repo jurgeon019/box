@@ -60,7 +60,7 @@ def paginate(posts, query):
 @csrf_exempt
 def get_posts(request):
     query        = request.POST or request.GET
-    posts        = Post.objects.all()
+    posts        = Post.active_objects.all()
     posts        = filter_search(posts, query)
     posts        = filter_category(posts, query)
     response     = paginate(posts, query)
@@ -75,7 +75,7 @@ def get_posts(request):
 def search_posts(request):
     query = request.POST
     query = request.GET
-    posts = Post.objects.all()
+    posts = Post.active_objects.all()
     posts = filter_search(posts, query)
     posts = filter_category(posts, query)
     posts = PostSerializer(posts, many=True).data

@@ -7,10 +7,10 @@ from django.conf import settings
 from filebrowser.sites import site
 
 from box.core.views import robots, set_lang, testmail
-from box.core.admin import custom_admin, admin_plus
+from box.core.admin import admin_plus
 from box.shop.item.sitemaps import ItemSitemap, CategorySitemap
 from box.blog.sitemaps import PostSitemap
-from project.sitemaps import StaticSitemap
+from box.core.sitemaps import StaticSitemap
 
 
 admin.site.site_header = "STARWAY CMS"

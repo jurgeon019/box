@@ -3,11 +3,11 @@ from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 from .models import *
 
-from box.custom_auth.admin import CustomUserAdmin
+from box.custom_auth.admin import BoxUserAdmin
 
 
 
-class CustomerAdmin(CustomUserAdmin):
+class CustomerAdmin(BoxUserAdmin):
     pass
 
 

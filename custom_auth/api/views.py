@@ -1,4 +1,4 @@
-from django.http import JsonResponse, JsonResponse 
+from django.http import JsonResponse, HttpResponse 
 from django.views.decorators.csrf import csrf_exempt
 from django.db.models import Q
 from django.contrib.auth import (authenticate, get_user_model, login, logout)
@@ -14,9 +14,15 @@ User = get_user_model()
 @csrf_exempt 
 def custom_login(request):
 
+
+    query = request.POST or request.GET
+
+
+    print(query)
+    print(request.is_ajax())
     response    = redirect(request.META['HTTP_REFERER'])
-    username    = request.POST['username']
-    password    = request.POST['password']
+    username    = query['username']
+    password    = query['password']
     remember_me = request.GET.get('remember_me')
 
     if remember_me == "true":
@@ -209,5 +215,15 @@ def custom_register(request):
             'url':reverse('index'),
         })
     return response
+
+
+@csrf_exempt
+def user_status(request):
+    return JsonResponse({'status':request.user.is_authenticated})
+    # return JsonResponse({
+    #     'status':request.user
+    # })
+
+
 
 

@@ -7,6 +7,7 @@ from box.shop.cart.utils import get_cart
 def cart_content(request):
     cart         = get_cart(request)
     cart_items   = cart.items.all()
+
     favour_items = cart.favour_items.all()
 
     cart_items_amount = 0

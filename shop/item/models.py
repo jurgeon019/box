@@ -23,7 +23,7 @@ import os
 from PIL import Image
 
 from box.core.managers import *
-from box.core.models import * 
+from box.core.models import AbstractPage, BaseMixin
 from .utils import generate_unique_slug, item_image_folder
 
 
@@ -45,6 +45,7 @@ __all__ = [
 	"ItemFeatureValue",
 	"ItemFeatureCategory",
 	"ItemReview",
+	"ItemVariant",
 ]
 
 
@@ -58,24 +59,24 @@ STOCK_COLOR_CHOICES = (
 )
 
 
-class Item(Page):
+class Item(AbstractPage):
+	if settings.MULTIPLE_CATEGORY:
+		categories   = models.ManyToManyField(verbose_name=_("Категорія"), to='item.ItemCategory', related_name="items", blank=True)    
+	else:
+		category     = TreeForeignKey(verbose_name=_("Категорія"), to='item.ItemCategory', related_name="items", on_delete=models.SET_NULL, blank=True, null=True)    
+	markers      = models.ManyToManyField(verbose_name=_("Маркери"), to='item.ItemMarker', related_name='items', blank=True)
+	similars     = models.ManyToManyField(verbose_name=_("Схожі товари"), to="self", related_name="similars_set", blank=True, default=None)
+	manufacturer = models.ForeignKey(verbose_name=_("Виробник"), to="item.ItemManufacturer", blank=True, null=True, on_delete=models.SET_NULL, related_name='items')
+	brand        = models.ForeignKey(verbose_name=_("Бренд"), to='item.ItemBrand', related_name='items', on_delete=models.SET_NULL, null=True, blank=True)
+	in_stock     = models.ForeignKey(verbose_name=_("Наявність"), to="item.ItemStock", on_delete=models.SET_NULL, blank=True, null=True, help_text='"Кількість" в пріорітеті над "наявністю"')
+	currency     = models.ForeignKey(verbose_name=_("Валюта"),    to="item.ItemCurrency",     related_name="items", on_delete=models.SET_NULL, help_text=("Якщо залишити порожнім, то буде встановлена валюта категорії, у якій знаходиться товар"), blank=True, null=True)
 	# old_price    = models.DecimalField(verbose_name=_("Стара ціна"), max_digits=10, decimal_places=2, default=0)
 	# price        = models.DecimalField(verbose_name=_("Нова ціна"),  max_digits=10, decimal_places=2, default=0)
 	# TODO: rest_framework.serializers.ModelSerializer чогось не серіалізує DecimalField
 	old_price    = models.FloatField(verbose_name=_("Стара ціна"), blank=True, null=True)
 	new_price    = models.FloatField(verbose_name=_("Актуальна ціна"), blank=True, null=True)
+	units         = models.CharField(verbose_name=_("Одиниці вимірювання"), blank=True, null=True, max_length=255)
 	amount       = models.PositiveIntegerField(verbose_name=_("Кількість"), blank=True, null=True, default=None, help_text='"Кількість" в пріорітеті над "наявністю"')
-	unit         = models.CharField(verbose_name=_("Одиниці вимірювання"), blank=True, null=True, max_length=255)
-	markers      = models.ManyToManyField(verbose_name=_("Маркери"), to='item.ItemMarker', related_name='items', blank=True)
-	similars     = models.ManyToManyField(verbose_name=_("Схожі товари"), to="self", related_name="similars_set", blank=True, default=None)
-	manufacturer = models.ForeignKey(verbose_name=_("Виробник"), to="item.ItemManufacturer", blank=True, null=True, on_delete=models.SET_NULL, related_name='items')
-	brand        = models.ForeignKey(verbose_name=_("Бренд"), to='item.ItemBrand', related_name='items', on_delete=models.SET_NULL, null=True, blank=True)
-	currency     = models.ForeignKey(verbose_name=_("Валюта"),    to="item.ItemCurrency",     related_name="items", on_delete=models.SET_NULL, help_text=("Якщо залишити порожнім, то буде встановлена валюта категорії, у якій знаходиться товар"), blank=True, null=True)
-	in_stock     = models.ForeignKey(verbose_name=_("Наявність"), to="item.ItemStock", on_delete=models.SET_NULL, blank=True, null=True, help_text='"Кількість" в пріорітеті над "наявністю"')
-	if settings.MULTIPLE_CATEGORY:
-		categories   = models.ManyToManyField(verbose_name=_("Категорія"), to='item.ItemCategory', related_name="items", blank=True)    
-	else:
-		category     = TreeForeignKey(verbose_name=_("Категорія"), to='item.ItemCategory', related_name="items", on_delete=models.SET_NULL, blank=True, null=True)    
 
 	class Meta: 
 		verbose_name = _('Товар'); 
@@ -87,17 +88,11 @@ class Item(Page):
 
 	def save(self, *args, **kwargs):
 		# self.handle_currency(*args, **kwargs)
-		self.handle_code(*args, **kwargs)
+		# self.handle_category(*args, **kwargs) #TODO:
 		self.handle_slug(*args, **kwargs)
 		self.handle_availability(*args, **kwargs)
 		super().save(*args, **kwargs)
 		self.resize_image(self.image)
-
-	def handle_code(self, *args, **kwagrs):
-		if not self.code:
-			item = Item.default_objects.all().last()
-			if item:
-				self.code += item.code
 
 	def handle_slug(self, *args, **kwargs):
 		if not self.slug:
@@ -287,7 +282,7 @@ class Item(Page):
 		return in_cart 
 
 
-class ItemBrand(Page):
+class ItemBrand(AbstractPage):
 	def get_absolute_url(self):
 		try:
 			return reverse("brand", kwargs={"slug": self.slug})
@@ -299,7 +294,7 @@ class ItemBrand(Page):
 		ordering = ['order']
 
 
-class ItemCategory(Page, MPTTModel):
+class ItemCategory(AbstractPage, MPTTModel):
 	# TODO: визначити якого хуя з включеним ItemCategoryManager дочірні категорії  виводяться не ті шо треба, а всі підряд
 	parent     = TreeForeignKey(verbose_name=_("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
 	currency   = models.ForeignKey(verbose_name=_("Валюта"), to="item.ItemCurrency", blank=True, null=True, related_name="categories",  on_delete=models.SET_NULL)
@@ -438,43 +433,82 @@ class ItemImage(BaseMixin):
 
 
 class ItemCurrency(BaseMixin):
-	# TODO: 
-	# Валюти як на mottoex.com.ua, чи валюти як на serwis-kop.pl? 
-	# Вибір в settings.py
-	name      = models.CharField(verbose_name=_("Назва"), max_length=255)
-	symbol    = models.CharField(verbose_name=_("Знак"), max_length=255)
-	code      = models.CharField(verbose_name=_("Код ІSO"), max_length=255)
-	rate      = models.DecimalField(verbose_name=_("Курс"), max_digits=9, decimal_places=7, blank=False, null=True)
-	is_main   = models.BooleanField(
-		verbose_name=("Головна"), 
-		default=False, 
-		help_text=("Якщо валюта головна, то відносно неї будуть конвертуватись інші валюти на сайті")
-		# help_text=("Основной валютой сайта считается та, которая стоит первой в списке. Для того чтобы сменить основную валюту, просто перетяните нужную вам валюту на первое место ")
+	name = models.CharField(
+		verbose_name=_("Назва"), max_length=255, blank=True, null=True, 
+		help_text=_("Наприклад: гривня, долар, рубль, євро")
 	)
-
+	symbol = models.CharField(
+		verbose_name=_("Символ"), max_length=255, blank=False, null=False, 
+		help_text=_("Наприклад: грн., дол., $, руб., Є. Буде відображатись біля ціни в товарі."),
+	)
+	iso = models.CharField(
+		verbose_name=_("Код ІSO"), max_length=255, unique=True, blank=False, null=False, 
+		help_text=_("Наприклад: UAH, USD, RUB, EUR")
+	)
+	rate = models.DecimalField(
+		verbose_name=_("Курс"), max_digits=9, decimal_places=7, blank=False, null=True, 
+		help_text=_("__")
+	)
+	is_main = models.BooleanField(
+		verbose_name=_("Головна"), default=False,
+	)
 	class Meta: 
 		verbose_name = _('валюта'); 
-		verbose_name_plural = _('Валюти')
+		verbose_name_plural = _('валюти')
 		ordering = ['order',]
 
 	def __str__(self):
-		return f"{self.name}"
+		return f"{self.order}:{self.name}"
 
 	@classmethod
 	def modeltranslation_fields(cls):
 		fields = [
-		    'name',
 			'symbol',
 		]
 		return fields
 
 	def save(self, *args, **kwargs):
-		ItemCurrency.objects.all().update(is_main=False)
+		# currencies = ItemCurrency.objects.all()
+		# old_main_rate = currencies.get(is_main=True).rate
+		# currencies.update(is_main=False)
+		# if self.is_main:
+		# 	self.is_main = True 
+		# 	new_main_rate = self.rate
+		# 	self.rate = 1
+		# for currency in currencies:
+		# 	currency.rate = currency.rate / old_main_rate
+
+		# TODO: доделать возможность менять главную валюту. 
+		# Пока что в этом нет необходимости, так как для liqpay можно использовать только гривны
+		#TODO: периодичная таска, для стягивания валют с банка
+		# https://api.privatbank.ua/p24api/exchange_rates?json&date=21.03.2020
+		# https://api.privatbank.ua/#p24/exchangeArchive
+		# https://api.privatbank.ua/#p24/exchange
+		'''
+		+  гривня   1   
+		-  долар    0.04
+		-  евро     0.03
+		-  рубль    2.92
+		_______
+		-  гривня   27   
+		+  долар    1    
+		-  евро     0.93
+		-  рубль    80
+		_______
+		-  гривня   30   
+		-  долар    1.08
+		+  евро     1
+		-  рубль    86
+		_______
+		-  гривня   0.34   
+		-  долар    0.01  
+		-  евро     0.009
+		+  рубль    1   
+
+		'''
 		super().save(*args, **kwargs)
 
-
 class ItemMarker(BaseMixin):
-	code  = models.CharField(verbose_name=_("Код"), max_length=255, unique=True) 
 	text  = models.CharField(verbose_name=_('Текст'), max_length=255)
 
 	def __str__(self):
@@ -545,7 +579,7 @@ class ItemCurrencyRatio(models.Model):
 		return f"{self.main}, {self.compared}"
 
 
-class ItemStock(models.Model):
+class ItemStock(BaseMixin):
 	text         = models.CharField(verbose_name=_('Наявність'), max_length=255, unique=True)
 	availability = models.BooleanField(verbose_name=_('Можливість покупки'), default=True)
 	colour       = models.CharField(verbose_name=_('Колір'), choices=STOCK_COLOR_CHOICES, max_length=255, default=1)
@@ -568,9 +602,6 @@ class ItemStock(models.Model):
 
 
 
-
-
-
 # варіанти
 
 class ItemVariant(BaseMixin):
@@ -583,7 +614,7 @@ class ItemVariant(BaseMixin):
 class ItemOption(models.Model):
 	item      = models.ForeignKey(verbose_name=_("Товар"), to="item.Item", related_name="options", on_delete=models.SET_NULL, blank=True, null=True)
 	name      = models.CharField(verbose_name=_("Назва"), blank=False, null=False, max_length=255)
-	price     = models.FloatField(verbose_name=("Ціна"), blank=False, null=False, default=0)
+	price     = models.FloatField(verbose_name=_("Ціна"), blank=False, null=False, default=0)
 	help_text = models.TextField(verbose_name=_("Допоміжний текст"), blank=True, null=True)
 
 	@classmethod
@@ -603,7 +634,7 @@ class ItemOption(models.Model):
 
 
 class ItemFeatureName(models.Model):
-	name = models.CharField(verbose_name=_("Назва характеристики"), max_length=255)
+	name = models.CharField(verbose_name=_("Назва характеристики"), max_length=255, unique=True)
 	slug = models.SlugField(verbose_name=_("ЧПУ характеристики"), unique=True)
 	help_text = models.TextField(verbose_name=_("Допоміжний текст"), blank=True, null=True)
 
@@ -653,7 +684,6 @@ class ItemFeatureValue(models.Model):
 
 
 
-
 class ItemFeature(models.Model):
 	code     = models.CharField(verbose_name=_("Код"), blank=True, null=True, max_length=255, help_text="Код для прямого звернення до характеристики в шаблоні")
 	category = models.ForeignKey(verbose_name=_("Категорія характеристики"), to="item.ItemFeatureCategory", related_name="items", on_delete=models.SET_NULL, blank=True, null=True)
@@ -661,7 +691,7 @@ class ItemFeature(models.Model):
 	name     = models.ForeignKey(verbose_name=_("Назва характеристики"), to="item.ItemFeatureName",blank=True, null=True, related_name='features', on_delete=models.SET_NULL)
 	# value    = models.TextField(verbose_name=_("Значення характеристики"), blank=False, null=False)
 	# value    = models.ForeignKey(verbose_name=_("Значення характеристики"), to="item.ItemFeatureValue", blank=True, null=True, related_name='features', on_delete=models.SET_NULL)
-	value    = models.ManyToManyField(verbose_name=_("Значення характеристики"), to="item.ItemFeatureValue", blank=True, null=True, related_name='features')
+	value    = models.ManyToManyField(verbose_name=_("Значення характеристики"), to="item.ItemFeatureValue", blank=True, related_name='features')
 
 	@classmethod
 	def modeltranslation_fields(cls):
@@ -677,6 +707,10 @@ class ItemFeature(models.Model):
 	class Meta:
 		verbose_name = _('Характеристика товару')
 		verbose_name_plural = _('Характеристики товару')
+		unique_together = [
+			'name',
+			'item'
+		]
 
 
 class ItemFeatureCategory(models.Model):
@@ -696,19 +730,3 @@ class ItemFeatureCategory(models.Model):
 		verbose_name = _('Категорія характеристики')
 		verbose_name_plural = _('Категорії характеристики')
 
-
-
-
-
-class Product(models.Model):
-	title = models.TextField()
-	order = models.PositiveIntegerField(blank=False, null=False, default=0)
-	class Meta:
-		ordering = ['order']
-	
-from adminsortable2.admin import SortableAdminMixin
-class ProductAdmin(SortableAdminMixin, admin.ModelAdmin):
-	pass 
-
-
-admin.site.register(Product, ProductAdmin )

@@ -35,3 +35,5 @@ CAPTCHA_V3_SECRET = 'SDF'
 FAVICON = '/static/favicon/favicon.ico'
 OGIMAGE_SQUARE = '/static/ogimages/ogimage.png'
 OGIMAGE_RECTANGLE = '/static/ogimages/ogimage.png'
+
+CORS_ORIGIN_ALLOW_ALL = True 

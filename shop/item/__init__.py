@@ -1,1 +1,11 @@
-default_app_config = 'box.shop.item.apps.ItemConfig'
+from django.apps import AppConfig
+from django.utils.translation import gettext_lazy as _
+
+
+class ItemConfig(AppConfig):
+    name = 'box.shop.item'
+    verbose_name = _('магазин')
+    verbose_name_plural = verbose_name
+
+
+default_app_config = 'box.shop.item.ItemConfig'

@@ -1,16 +1,15 @@
 from django.contrib import admin
 from django.contrib.redirects.models import Redirect
 from django.contrib.sites.models import Site
+from django.contrib.auth import get_user_model 
 from django.contrib.auth.admin import (
     User, UserAdmin,
     Group, GroupAdmin,
 )
 from box.custom_auth.admin import (
-    CustomUserAdmin,
+   BoxUserAdmin,
 )
-from django.contrib.auth import get_user_model 
-User = get_user_model()
-admin.site.register(User, CustomUserAdmin)
+admin.site.register(get_user_model(), BoxUserAdmin)
 
 from box.blog.admin import (
     Post, PostAdmin,
@@ -45,7 +44,6 @@ admin.site.register(Item, ItemAdmin)
 admin.site.register(ItemImage, ItemImageAdmin)
 admin.site.register(ItemMarker, ItemMarkerAdmin)
 admin.site.register(ItemBrand, ItemBrandAdmin)
-
 admin.site.register(ItemReview, ItemReviewAdmin)
 admin.site.register(ItemFeature, ItemFeatureAdmin)
 admin.site.register(ItemFeatureValue, ItemFeatureValueAdmin)
@@ -78,10 +76,10 @@ from box.shop.liqpay.admin import (
 )
 from box.page.admin import (
     Page, PageAdmin,
-    PageFeature, PageFeatureAdmin,
+    Text, TextAdmin,
 )
 admin.site.register(Page, PageAdmin)
-admin.site.register(PageFeature, PageFeatureAdmin)
+admin.site.register(Text, TextAdmin)
 from box.global_config.admin import (
     SiteConfig, SiteConfigAdmin,
     NotificationConfig, NotificationConfigAdmin,
@@ -182,14 +180,6 @@ except:
 # admin plus zone 
 
 
-class CustomAdmin(admin.AdminSite):
-    site_header = "Site Admin"
-    site_title  = "Site Admin"
-    index_title = "Site Admin"
-
-
-custom_admin = CustomAdmin(name='custom_admin')
-
 
 class AdminPlus(admin.AdminSite):
     site_header = "Site Admin"
@@ -204,6 +194,3 @@ admin_plus.register(User, UserAdmin)
 admin_plus.register(Group, GroupAdmin)
 admin_plus.register(Cart, CartAdmin)
 admin_plus.register(CartItem, CartItemAdmin)
-# admin_plus.register(Cart, CartAdmin)
-# admin_plus.register(Cart, CartAdmin)
-# admin_plus.register(Cart, CartAdmin)

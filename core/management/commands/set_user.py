@@ -32,23 +32,26 @@ class Command(BaseCommand):
     password = kwargs['password']
     email    = kwargs['email']
     try:
+        User.objects.filter(username=username)
         User.objects.create_superuser(
             username = username, 
             email    = email, 
             password = password,
         )
         print('user has been created')
-    except:
+    except Exception as e :
+        print(e)
         user = User.objects.get(
             username=username,
         )
-        user.set_password(password)
-        user.email = email
-        user.save()
-        print('password has been set')
-        print(user.username)
-        print(user.password)
-        user.save()
+        print(user)
+        # user.set_password(password)
+        # user.email = email
+        # user.save()
+        # print('password has been set')
+        # print(user.username)
+        # print(user.password)
+        # user.save()
     self.stdout.write(self.style.SUCCESS('Data imported successfully'))
 
 

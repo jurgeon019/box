@@ -21,9 +21,9 @@ class Status(models.Model):
     (True,_("Списувати товар")),
     (False,_("Не списувати товар")),
   )
-  color  = ColorField(verbose_name=("Колір"), blank=False, null=False)
-  action = models.BooleanField(verbose_name=("Дія над товаром"), choices=action_choices, default=0)
-  name   = models.CharField(verbose_name=("Назва"), max_length=255, blank=False, null=False)
+  color  = ColorField(verbose_name=_("Колір"), blank=False, null=False)
+  action = models.BooleanField(verbose_name=_("Дія над товаром"), choices=action_choices, default=0)
+  name   = models.CharField(verbose_name=_("Назва"), max_length=255, blank=False, null=False)
   config = models.ForeignKey(to='order.OrderConfig', null=True, blank=False, on_delete=models.CASCADE)
   
   def __str__(self):
@@ -42,8 +42,8 @@ class Status(models.Model):
 
 
 class OrderTag(models.Model):
-  color    = ColorField(verbose_name=("Колір"), )
-  name     = models.CharField(verbose_name=("Назва"), max_length=255, blank=False, null=False)
+  color    = ColorField(verbose_name=_("Колір"), )
+  name     = models.CharField(verbose_name=_("Назва"), max_length=255, blank=False, null=False)
   config = models.ForeignKey(to='order.OrderConfig', null=True, blank=False, on_delete=models.CASCADE)
   def __str__(self):
     return f"{self.name}"
@@ -60,26 +60,26 @@ class OrderTag(models.Model):
 
 
 class Order(models.Model):
-  user        = models.ForeignKey(verbose_name=("Користувач"), to=User, on_delete=models.SET_NULL, related_name='orders', blank=True, null=True)
-  total_price = models.DecimalField(verbose_name=('Сумма замовлення'), max_digits=10, decimal_places=2, default=0)
-  name        = models.CharField(verbose_name=('Імя'),                 max_length=255, blank=True, null=True)
-  email       = models.CharField(verbose_name=("Е-майл"),              max_length=255, blank=True, null=True)
-  phone       = models.CharField(verbose_name=('Номер телефона'),      max_length=255, blank=True, null=True)
-  address     = models.CharField(verbose_name=('Адрес'),               max_length=255, blank=True, null=True)
-  comments    = models.TextField(verbose_name=('Коментарии'),          blank=True, null=True)
-  payment_opt = models.CharField(verbose_name=("Спосіб оплати"),       blank=True, null=True, max_length=255, help_text=' ')
-  delivery_opt= models.CharField(verbose_name=("Спосіб доставки"),     blank=True, null=True, max_length=255)
-  ordered     = models.BooleanField(verbose_name=('Завершено'), default=False)
-  paid        = models.BooleanField(verbose_name=('Сплачено'),   default=False)
-  note        = models.TextField(verbose_name=('Примітки адміністратора'), blank=True, null=True)
-  status      = models.ForeignKey(verbose_name=('Статус'),  on_delete=models.CASCADE, to="order.Status", blank=False, null=True) 
-  tags        = models.ManyToManyField(verbose_name=("Мітки"), blank=True, to="order.OrderTag")
-  coupon      = models.ForeignKey(verbose_name=("Купон"), blank=True, null=True, to='customer.Coupon', on_delete=models.SET_NULL)
+  user        = models.ForeignKey(verbose_name=_("Користувач"), to=User, on_delete=models.SET_NULL, related_name='orders', blank=True, null=True)
+  total_price = models.DecimalField(verbose_name=_('Сумма замовлення'), max_digits=10, decimal_places=2, default=0)
+  name        = models.CharField(verbose_name=_('Імя'),                 max_length=255, blank=True, null=True)
+  email       = models.CharField(verbose_name=_("Е-майл"),              max_length=255, blank=True, null=True)
+  phone       = models.CharField(verbose_name=_('Номер телефона'),      max_length=255, blank=True, null=True)
+  address     = models.CharField(verbose_name=_('Адрес'),               max_length=255, blank=True, null=True)
+  comments    = models.TextField(verbose_name=_('Коментарии'),          blank=True, null=True)
+  payment_opt = models.CharField(verbose_name=_("Спосіб оплати"),       blank=True, null=True, max_length=255, help_text=' ')
+  delivery_opt= models.CharField(verbose_name=_("Спосіб доставки"),     blank=True, null=True, max_length=255)
+  ordered     = models.BooleanField(verbose_name=_('Завершено'), default=False)
+  paid        = models.BooleanField(verbose_name=_('Сплачено'),   default=False)
+  note        = models.TextField(verbose_name=_('Примітки адміністратора'), blank=True, null=True)
+  status      = models.ForeignKey(verbose_name=_('Статус'),  on_delete=models.CASCADE, to="order.Status", blank=False, null=True) 
+  tags        = models.ManyToManyField(verbose_name=_("Мітки"), blank=True, to="order.OrderTag")
+  coupon      = models.ForeignKey(verbose_name=_("Купон"), blank=True, null=True, to='customer.Coupon', on_delete=models.SET_NULL)
   objects     = OrderManager()
-  is_active   = models.BooleanField(verbose_name=("Активність"),default=True)
+  is_active   = models.BooleanField(verbose_name=_("Активність"),default=True)
 
-  created     = models.DateTimeField(verbose_name=('Дата замовлення'),   default=timezone.now)
-  updated     = models.DateTimeField(verbose_name=('Дата обовлення'), auto_now_add=False, auto_now=True,  blank=True, null=True)
+  created     = models.DateTimeField(verbose_name=_('Дата замовлення'),   default=timezone.now)
+  updated     = models.DateTimeField(verbose_name=_('Дата обовлення'), auto_now_add=False, auto_now=True,  blank=True, null=True)
 
 
   class Meta: 
@@ -150,12 +150,12 @@ class Order(models.Model):
 
 
 class OrderRequest(models.Model):
-    name    = models.CharField(verbose_name=("Ім'я"),         max_length=255, blank=True, null=True)
-    surname = models.CharField(verbose_name=("Фамілія"),      max_length=255, blank=True, null=True)
-    phone   = models.CharField(verbose_name=("Телефон"),      max_length=255, blank=True, null=True)
-    email   = models.CharField(verbose_name=("Емайл"),        max_length=255, blank=True, null=True)
-    item    = models.ForeignKey(verbose_name=("Товар"),       blank=True, null=True, on_delete=models.CASCADE, to="item.Item")
-    created = models.DateTimeField(verbose_name=("Створено"), blank=True, null=True, default=timezone.now)
+    name    = models.CharField(verbose_name=_("Ім'я"),         max_length=255, blank=True, null=True)
+    surname = models.CharField(verbose_name=_("Фамілія"),      max_length=255, blank=True, null=True)
+    phone   = models.CharField(verbose_name=_("Телефон"),      max_length=255, blank=True, null=True)
+    email   = models.CharField(verbose_name=_("Емайл"),        max_length=255, blank=True, null=True)
+    item    = models.ForeignKey(verbose_name=_("Товар"),       blank=True, null=True, on_delete=models.CASCADE, to="item.Item")
+    created = models.DateTimeField(verbose_name=_("Створено"), blank=True, null=True, default=timezone.now)
     
     def __str__(self):
         return f"{self.name}, {self.email}, {self.phone}"
@@ -166,12 +166,12 @@ class OrderRequest(models.Model):
 
 
 class ItemRequest(models.Model):
-    name    = models.CharField(verbose_name=("Ім'я"),         max_length=255, blank=True, null=True)
-    phone   = models.CharField(verbose_name=("Телефон"),      max_length=255, blank=True, null=True)
-    email   = models.CharField(verbose_name=("Емайл"),        max_length=255, blank=True, null=True)
-    message = models.TextField(verbose_name=("Повідомлення"), blank=True, null=True)
-    item    = models.ForeignKey(verbose_name=("Товар"),       blank=True, null=True, on_delete=models.CASCADE, to="item.Item")
-    created = models.DateTimeField(verbose_name=("Створено"), blank=True, null=True, default=timezone.now)
+    name    = models.CharField(verbose_name=_("Ім'я"),         max_length=255, blank=True, null=True)
+    phone   = models.CharField(verbose_name=_("Телефон"),      max_length=255, blank=True, null=True)
+    email   = models.CharField(verbose_name=_("Емайл"),        max_length=255, blank=True, null=True)
+    message = models.TextField(verbose_name=_("Повідомлення"), blank=True, null=True)
+    item    = models.ForeignKey(verbose_name=_("Товар"),       blank=True, null=True, on_delete=models.CASCADE, to="item.Item")
+    created = models.DateTimeField(verbose_name=_("Створено"), blank=True, null=True, default=timezone.now)
     
     def __str__(self):
         return f"{self.name}, {self.email}, {self.phone}"

@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings 
 
 from box.solo.models import SingletonModel
-from box.page.models import PageFeature
+from box.page.models import Text
 
 from tinymce import HTMLField
 from colorfield.fields import ColorField
@@ -11,15 +11,11 @@ from colorfield.fields import ColorField
 
 class DesignConfig(SingletonModel):
 
-    logo     = models.ImageField(verbose_name=("Логотип сайту"), blank=True, null=True, help_text=("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), default='')
-    favicon  = models.ImageField(verbose_name=("Фавікон сайту"), blank=True, null=True, upload_to='favicon', help_text=("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), default='') 
-    og_image_square    = models.ImageField(verbose_name=("og:image квадрат"),     blank=True, null=True, upload_to='ogimage')
-    og_image_rectangle = models.ImageField(verbose_name=("og:image прямокутник"), blank=True, null=True, upload_to='ogimage')
-    map      = models.TextField(verbose_name=("Мапа в контактах"), blank=True, null=True, help_text=("Необхідно вставити код з Google maps або Яндекс карти"))
+    logo     = models.ImageField(verbose_name=_("Логотип сайту"), blank=True, null=True, help_text=("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), default='')
+    favicon  = models.ImageField(verbose_name=_("Фавікон сайту"), blank=True, null=True, upload_to='favicon', help_text=("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), default='') 
+    og_image_square    = models.ImageField(verbose_name=_("og:image квадрат"),     blank=True, null=True, upload_to='ogimage')
+    og_image_rectangle = models.ImageField(verbose_name=_("og:image прямокутник"), blank=True, null=True, upload_to='ogimage')
 
-    # time     = HTMLField(verbose_name=("Чаc роботи"), null=True, blank=True, )
-    # delivery = HTMLField(verbose_name=("Способи доставки(в картці товару)"), blank=True, null=True, )
-    # payment  = HTMLField(verbose_name=("Способи оплати(в картці товару)"), blank=True, null=True, )
 
     @property
     def favicon_type(self):
@@ -54,15 +50,15 @@ class DesignConfig(SingletonModel):
         og_image_rectangle_url = self.og_image_rectangle.url
       return og_image_rectangle_url
 
-    # colour_buttons                = ColorField(verbose_name=("Колір кнопок"), blank=True, null=True)
-    # colour_buttons_text           = ColorField(verbose_name=("Колір тексту на кнопках"), blank=True, null=True)
-    # colour_buttons_hover          = ColorField(verbose_name=("Колір кнопок по наведенню"), blank=True, null=True)
-    # colour_buttons_text_hover     = ColorField(verbose_name=("Колір тексту на кнопках по наведенню"), blank=True, null=True)
-    # colour_main                   = ColorField(verbose_name=("Основний корпоративний колір"), blank=True, null=True)
-    # colour_additional             = ColorField(verbose_name=("Додатковий корпоративний колір"), blank=True, null=True)
-    # colour_main_background        = ColorField(verbose_name=("Колір тексту на основному корпоративному фоні"), blank=True, null=True)
-    # colour_additional_background  = ColorField(verbose_name=("Колір тексту на додатковому корпоративному фоні"), blank=True, null=True)
-    # colour_background             = ColorField(verbose_name=("Колір фону сайту"), blank=True, null=True)
+    # colour_buttons                = ColorField(verbose_name=_("Колір кнопок"), blank=True, null=True)
+    # colour_buttons_text           = ColorField(verbose_name=_("Колір тексту на кнопках"), blank=True, null=True)
+    # colour_buttons_hover          = ColorField(verbose_name=_("Колір кнопок по наведенню"), blank=True, null=True)
+    # colour_buttons_text_hover     = ColorField(verbose_name=_("Колір тексту на кнопках по наведенню"), blank=True, null=True)
+    # colour_main                   = ColorField(verbose_name=_("Основний корпоративний колір"), blank=True, null=True)
+    # colour_additional             = ColorField(verbose_name=_("Додатковий корпоративний колір"), blank=True, null=True)
+    # colour_main_background        = ColorField(verbose_name=_("Колір тексту на основному корпоративному фоні"), blank=True, null=True)
+    # colour_additional_background  = ColorField(verbose_name=_("Колір тексту на додатковому корпоративному фоні"), blank=True, null=True)
+    # colour_background             = ColorField(verbose_name=_("Колір фону сайту"), blank=True, null=True)
 
     @classmethod
     def modeltranslation_fields(cls):        
@@ -77,26 +73,6 @@ class DesignConfig(SingletonModel):
         return f"{self.id}"
 
     class Meta:
-        verbose_name = ('Налаштування дизайну')
+        verbose_name = _('Налаштування дизайну')
         verbose_name_plural = verbose_name
-
-
-class DesignAddress(models.Model):
-  design  = models.ForeignKey("design.DesignConfig", verbose_name=_("Конфіг"), on_delete=models.CASCADE)
-  address = models.CharField(_('Адреса'), max_length=255)
-
-
-class DesignPhone(models.Model):
-  design = models.ForeignKey("design.DesignConfig", verbose_name=_("Конфіг"), on_delete=models.CASCADE)
-  phone = models.CharField(_('Телефон'), max_length=255)
-
-
-class DesignEmail(models.Model):
-  design = models.ForeignKey("design.DesignConfig", verbose_name=_("Конфіг"), on_delete=models.CASCADE)
-  email = models.CharField(_('Емайл'), max_length=255)
-
-
-class DesignSocial(models.Model):
-  design = models.ForeignKey("design.DesignConfig", verbose_name=_("Конфіг"), on_delete=models.CASCADE)
-  link   = models.CharField(verbose_name=("Ссилка"), max_length=255)
 

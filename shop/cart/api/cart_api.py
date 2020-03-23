@@ -15,8 +15,9 @@ def get_cart_items(request):
 @csrf_exempt
 def add_cart_item(request):
   cart = get_cart(request)
-  quantity = request.POST.get('quantity', 1)
-  item_id  = request.POST['item_id']
+  query = request.POST or request.GET
+  quantity = query.get('quantity', 1)
+  item_id  = query['item_id']
   cart.add_item(item_id, quantity)
   return JsonResponse(get_cart_info(request))
 
@@ -24,7 +25,8 @@ def add_cart_item(request):
 @csrf_exempt
 def remove_cart_item(request):
   cart = get_cart(request)
-  cart_item_id = request.POST['cart_item_id']
+  query = request.POST or request.GET
+  cart_item_id = query['cart_item_id']
   cart.remove_cart_item(cart_item_id)
   return JsonResponse(get_cart_info(request))
 
@@ -38,8 +40,9 @@ def clear_cart(request):
 
 @csrf_exempt
 def change_cart_item_amount(request):
-  cart_item_id = request.POST['cart_item_id']
-  quantity     = request.POST['quantity']
+  query = request.POST or request.GET
+  cart_item_id = query['cart_item_id']
+  quantity     = query['quantity']
   cart         = get_cart(request)
   cart_item    = cart.change_cart_item_amount(cart_item_id, quantity)
   response     = {
@@ -53,8 +56,9 @@ def change_cart_item_amount(request):
 @csrf_exempt
 def change_item_amount(request):
   cart = get_cart(request)
-  item_id   = request.POST['item_id']
-  quantity  = request.POST['quantity']
+  query = request.POST or request.GET
+  item_id   = query['item_id']
+  quantity  = query['quantity']
   cart_item = cart.change_item_amount(item_id, quantity)
   response  = {
     "cart_item_id":cart_item.id,

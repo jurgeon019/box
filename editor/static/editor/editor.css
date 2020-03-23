@@ -1,0 +1,32 @@
+.admin-panel{
+    background-color: lightblue;
+    position: fixed;
+    top: 40%;
+    opacity: 1;
+}
+.admin-panel a {
+    border: 1px solid black;
+} 
+
+
+
+.db_content{
+    position: relative;
+}
+.show {
+    display: none;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    opacity: 0; /* По умолчанию скрываем подменю */
+    visibility: hidden;
+    transition-property: opacity, visibility; /* Важно чтобы transition применялось к обоим свойствам */
+    transition-duration: 0.2s; /* Добавляем анимацию 0.3 сек. */
+    transition-delay: 0.15s; /* Добавляем задержку в 0.15 сек. */
+}
+.db_content:hover .show {
+    display: block;
+    opacity: 1; /* Показываем подменю при ховере */
+    visibility: visible;
+}
+

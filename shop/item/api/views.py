@@ -49,7 +49,7 @@ def filter_category(items, query):
       ]
       for cat in cat2:
         categories.append(cat)
-      items = Item.objects.all().filter(categories__in=categories)
+      items = Item.active_objects.all().filter(categories__in=categories)
     else:
       items = items.filter(
         Q(category__slug=category) |
@@ -107,7 +107,7 @@ def make_ordering(items, query):
 @csrf_exempt
 def get_items(request):
   query = request.POST
-  items = Item.objects.all()
+  items = Item.active_objects.all()
   items = filter_search(items, query)
   items = filter_category(items, query)
   items = make_ordering(items, query)
@@ -115,12 +115,12 @@ def get_items(request):
 
   # items_in_favours = get_items_in_favours(request, items)
   # items_in_cart    = get_items_in_cart(request, items)
-  json_items   = ItemSerializer(items, many=True, read_only=True).data
+  # json_items   = ItemSerializer(items, many=True, read_only=True).data
   # TODO: кешування. Коли на сайті 1000+ товарів, то вони серіалізуються 10 сеукнд
   response.update({
     # 'items_in_favours':items_in_favours,
     # 'items_in_cart':   items_in_cart,
-    'json_items':      json_items,
+    # 'json_items':      json_items,
   })
   return JsonResponse(response)
 
@@ -165,7 +165,7 @@ def get_item(request):
   query = request.POST
   query = request.GET
   item_id = query.get('item_id', 1)
-  # item = Item.default_objects.get(id=item_id)
+  # item = Item.objects.get(id=item_id)
   item = Item.objects.get(id=item_id)
   item = ItemSerializer(item).data
   response = item

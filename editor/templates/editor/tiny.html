@@ -1,0 +1,8 @@
+{% load i18n %}
+<div class="db_content">
+    {{obj.get_text}}
+    <div class="show">
+        <a href="{{obj.get_admin_url}}" target="_blank">{% trans 'Редагувати' %}</a>
+    </div>
+</div>
+

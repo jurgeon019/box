@@ -16,13 +16,21 @@ from django.shortcuts import reverse, render, redirect
 
 from box.shop.customer.models import (Customer,)
 from box.shop.order.admin import (OrderInline,)
-from box.custom_auth.models import User 
+from box.custom_auth.models import BoxUser 
 from box.core.utils import move_to
 from .forms import * 
+from .resources import BoxUserResource
+
+from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
 
 
-class CustomUserAdmin(UserAdmin):
 
+class BoxUserAdmin(
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+    UserAdmin,
+    ):
+    resource_class = BoxUserResource
     def change_group(self, request, queryset):
         initial = {
             'model':CustomerGroup,
@@ -34,15 +42,12 @@ class CustomUserAdmin(UserAdmin):
             'message':_('Група {0} була застосована до {1} користувачів'),
         }
         return move_to(self, request, queryset, initial)
-
-
     def full_name(self, obj):
         full_name = obj.get_full_name()
         if not full_name:
             full_name = obj.username
         return full_name
-    
-    def delete(self, obj):
+    def show_delete_link(self, obj):
         app = obj._meta.app_label 
         model = obj._meta.model_name 
         url = f'admin:{app}_{model}_delete'
@@ -50,7 +55,7 @@ class CustomUserAdmin(UserAdmin):
         link = mark_safe(f'<a href={href} style="color:red" >x</a>')
         return link 
     full_name.short_description = _("Назва")
-    delete.short_description = _("Видалити")
+    show_delete_link.short_description = _("Видалити")
     change_group.short_description = ("Перемістити у групу")
     def order_count(self, obj):
         count = obj.orders.all().count()
@@ -128,21 +133,18 @@ class CustomUserAdmin(UserAdmin):
         # 'groups',
         # 'user_permissions',
         'group',
-
     ]
-
     readonly_fields = [
         'date_joined',
         'last_login',
     ]
-
     list_display = [
         'full_name',
         'email',
         'date_joined',
         'group',
         'order_count',
-        "delete",
+        "show_delete_link",
     ]
     list_display_links = list_display
     search_fields = [

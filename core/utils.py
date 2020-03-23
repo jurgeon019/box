@@ -3,16 +3,71 @@ from django.shortcuts import redirect, reverse, render
 from django.utils.safestring import mark_safe
 from django.contrib.admin.widgets import AdminFileWidget
 from django.contrib import admin 
+from django.conf import settings 
 from django.db import models 
 from django.utils.translation import gettext_lazy as _
 
 from .forms import * 
 
+from box.custom_admin.modelclone import ClonableModelAdmin
 from box.shop.item.models import ItemCategory 
 
 from import_export.admin import *
 from adminsortable2.admin import SortableAdminMixin
-from box.custom_admin.modelclone import ClonableModelAdmin
+
+
+
+
+def get_resource(name):
+    resources = get_resources()
+    for resource in resources:
+        if resource.__name__ == name:
+            return resource 
+    raise Exception("Resource not found")
+            
+
+def get_resources():
+    import inspect 
+    from import_export.resources import ModelResource
+    from django.conf import settings
+    from importlib import import_module
+
+    resources = []
+    for appname in settings.INSTALLED_APPS:
+        if appname.startswith('box.'):
+            try:
+                module = import_module(appname+'.resources') 
+                for name, obj in inspect.getmembers(module):
+                    if  inspect.isclass(obj) and \
+                        ModelResource in obj.__mro__ and \
+                        obj is not ModelResource:
+                            resources.append(obj)
+            except:
+                pass
+    return resources
+
+def loader(extention, file_name, action_type, resource_name):
+  from tablib import Dataset
+  Resource       = get_resource(resource_name)
+  dataset = Dataset()
+  if action_type == 'export':
+    data   = getattr(Resource().export(), extention)
+    with open(file_name, 'w') as f:
+      f.write(data)
+    return True 
+  elif action_type == 'import':
+    with open(file_name, 'r') as f:
+      # imported_data = dataset.load(f.read())
+      dataset.load(f.read())
+    result = Resource().import_data(dataset, dry_run=True)
+    if not result.has_errors():
+      Resource().import_data(dataset, dry_run=False)  
+      return True 
+    else:
+      print('RESULT HAS ERRORS')
+      return False 
+
+
 
 
 seo = [_("SEO"), {
@@ -36,6 +91,15 @@ base_main_info = [_("ОСНОВНА ІНФОРМАЦІЯ"), {
         'description',
     ]
 }]
+
+
+def get_multilingual_fields(model):
+    multilingual_fields = {}
+    for field in model.modeltranslation_fields():
+        multilingual_fields[field] = [field,]
+        for lang in [lang_tuple[0] for lang_tuple in settings.LANGUAGES]:
+            multilingual_fields[field].append(f'{field}_{lang}')
+    return multilingual_fields
 
 
 class AdminImageWidget(AdminFileWidget):
@@ -83,10 +147,13 @@ class BaseAdmin(
     is_active_on.short_description     = ("Увімкнути")
     is_active_off.short_description    = ("Вимкнути")
     # changelist
+    change_list_template = 'core/sortable_import_export_change_list.html'
     actions = [
         "is_active_on",
         "is_active_off",
     ]
+    actions_on_top = True
+    actions_on_bottom = True 
     list_per_page = 100
     search_fields = [
       'title',
@@ -113,8 +180,9 @@ class BaseAdmin(
         models.ImageField:{'widget':AdminImageWidget}
     }
     readonly_fields = [
-        'created',
+        'code',
         'updated',
+        'created',
     ]
     save_on_top = True 
     save_on_bottom = True 
@@ -219,3 +287,4 @@ def get_line():
   print(caller)
   # print('filename:', inspect.getframeinfo(inspect.currentframe()).filename)
   # print('line:', inspect.getframeinfo(inspect.currentframe()).lineno)
+

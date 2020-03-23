@@ -12,11 +12,15 @@
   {% endblock head_top_scripts %}
 
   {% block head %}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="utf-8">
     <title>{{page.meta_title}}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{page.meta_descr}}"/>
     <meta name="keywords" content="{{page.meta_key}}" />
+
+    <link rel="stylesheet" href="/static/editor/editor.css">
+    {% if request.user.is_staff %}
+    {% endif %}
     
     {% block hreflang %}
       {% for language_code, language_name in LANGUAGES %}
@@ -67,6 +71,14 @@
   {% block header %}{% endblock header %} 
   {% block content %}{% endblock content %}
   {% block extra_content %}{% endblock extra_content %}
+
+  {% if request.user.is_staff %}
+    {% include 'editor/includes/admin_model.html' %}
+  {% endif %}
+
+  {% if request.user.is_staff %}
+    <script src="/static/editor/editor.js"></script>
+  {% endif %}
   <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
   {% block scripts %}{% endblock scripts%}
   {% block extra_scripts %}{% endblock extra_scripts%}
@@ -81,5 +93,9 @@
   {% endblock body_bottom_scripts %}
 </body>
 </html>
+
+
+
+
 
 

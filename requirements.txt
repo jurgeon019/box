@@ -15,6 +15,35 @@ python-magic
 
 # django 
 django
+django-cors-headers
+
+django-modeltranslation
+django-rosetta
+django-colorfield
+django-admin-sortable
+django-admin-sortable2
+django-taggit
+django-select2
+django-allauth
+django-ckeditor
+django-filter
+django-tinymce4-lite 
+django-mptt
+django-debug-toolbar
+django-extensions
+django-rest-framework
+django-crispy-forms
+django-import-export
+django-decouple 
+django-autocomplete-light 
+
+django-admin-autocomplete-filter
+
+
+django-celery-beat 
+django-redis
+channels
+channels_redis 
 
 #file 
 django-filer 
@@ -53,36 +82,6 @@ django-constance
 django-solo
 
 
-
-
-# other 
-
-django-modeltranslation
-django-rosetta
-django-colorfield
-django-admin-sortable
-django-taggit
-django-select2
-django-allauth
-django-ckeditor
-django-filter
-django-tinymce4-lite 
-django-mptt
-django-debug-toolbar
-django-extensions
-django-rest-framework
-django-crispy-forms
-django-import-export
-django-decouple 
-django-autocomplete-light 
-
-django-admin-autocomplete-filter
-
-
-django-celery-beat 
-django-redis
-channels
-channels_redis 
 
 
 

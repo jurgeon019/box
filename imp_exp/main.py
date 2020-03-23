@@ -1423,7 +1423,7 @@ class Content(object):
         value_en = text['value_en']
         value_ru = text['value_ru']
 
-        feature, _ = PageFeature.objects.get_or_create(code=code)
+        feature, _ = Text.objects.get_or_create(code=code)
         feature.value_uk = value_uk 
         feature.value_en = value_en 
         feature.value_ru = value_ru 
@@ -1449,7 +1449,7 @@ class Content(object):
     with open(filename, 'w') as f:
       writer = csv.DictWriter(f, fieldnames=list(data.keys()))
       writer.writeheader()
-    for feature in PageFeature.objects.all():
+    for feature in Text.objects.all():
       with open(filename, 'a') as f:
         writer = csv.DictWriter(f, fieldnames=list(data.keys()))
         data['code']     = feature.code

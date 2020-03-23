@@ -2,7 +2,8 @@ from django.db import models
 
 
 __all__ = [
-	"BasicManager",
+	'BasicManager',
+	'ActiveManager',
 ]
 
 
@@ -11,5 +12,13 @@ __all__ = [
 class BasicManager(models.Manager):
 	use_for_related_fields = True
 	def all(self):
-		return super().get_queryset().filter(is_active=True).order_by('order')
+		return super().get_queryset().order_by('order')
+
+
+class ActiveManager(models.Manager):
+	use_for_related_fields = True 
+	def all(self):
+		return super().get_queryset().order_by('order').filter(is_active=True)
+
+
 

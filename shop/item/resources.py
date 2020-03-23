@@ -1,11 +1,89 @@
-from import_export.resources import ModelResource
-from .models import Item 
-
 from django.utils import timezone 
+from django.conf import settings 
+from django.utils.translation import gettext_lazy as _
+from django.db.models.query import QuerySet
+from django.contrib.sites.models import Site
+
+from import_export.resources import ModelResource
+from import_export.fields import Field 
+
+import tablib
+
+import random
+
+from .models import * 
+from box.core.utils import get_multilingual_fields
 
 
+
+class ItemCurrencyResource(ModelResource):
+    
+    class Meta:
+        model = ItemCurrency
+        exclude = [
+            'id',
+            'code',
+            'order',
+            'is_active',
+            'created',
+            'updated',
+        ]
+    
+    def get_export_order(self):
+        multilingual_fields = get_multilingual_fields(self._meta.model)
+        order = [
+            'is_main',
+            'name',
+            'iso',
+            'rate',
+            *multilingual_fields['symbol'],
+        ]
+        return order 
+    
+    def get_import_id_fields(self):
+        import_id_fields = [
+            'iso',
+        ]
+        return import_id_fields 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# https://stackoverflow.com/questions/33608952/django-import-export-fields
+# _choice_fields = [
+#     'field_a', 'field_b',
+# ]
+# for _field_name in _choice_fields:
+#     locals()[_field_name] = import_export.fields.Field(
+#         attribute='get_%s_display' % _field_name,
+#         column_name=MyModel._meta.get_field(_field_name).verbose_name
+#     )
+
+
+
+class CustomTablib(tablib.Dataset):
+    pass
+    # def _validate(self, row=None, col=None, safety=True):
+    #     return super()._validate(row, col, safety)
 
 class ItemResource(ModelResource):
+    images  = Field(column_name=_('images') )
+    remote_images_url = Field(column_name=_('remote_images_url') )
+    reviews  = Field(column_name=_('reviews') )
+    variants = Field(column_name=_('variants') )
+    # options  = Field(column_name=_('options') )
+    features = Field(column_name=_('features') )
 
     class Meta:
         model = Item 
@@ -14,171 +92,135 @@ class ItemResource(ModelResource):
             'created',
             'updated',
             'order',
-
-            'category',
         ]
-        import_id_fields = [
+
+
+    def get_export_order(self):
+        multilingual_fields = get_multilingual_fields(self._meta.model)
+        order = [
+            *multilingual_fields['title'],
+            *multilingual_fields['description'],
+            'old_price',
+            'new_price',
+            'amount',
+            'units',
+            'code',
+            'image',
+            'is_active',
             'slug',
+            *multilingual_fields['alt'],
+            *multilingual_fields['meta_title'],
+            *multilingual_fields['meta_descr'],
+            *multilingual_fields['meta_key'],
+
+            "images",
+            "features",
+            # "reviews",
+            # "variants",
+            # "options",
+
+            "category",
+            "markers",
+            # "similars",
+            "manufacturer",
+            "brand",
+            "in_stock",
+            "currency",
         ]
+        return order 
 
-    # def before_save_instance(self, instance, using_transactions, dry_run):
-    #     print()
-    #     print("1  ___ before_save_instance !!!!")
-    #     # print(timezone.now())
-    #     # print("instance:", instance)
-    #     for i in dir(instance):
-    #         print(i)
-    #     print(type(instance))
-    #     x = instance.description
-    #     print(x)
-
-    #     # print("using_transactions:", using_transactions)
-    #     # print("dry_run:", dry_run)
-    #     print()
-    #     super().before_save_instance(instance, using_transactions, dry_run)
-
-    # def after_save_instance(self, instance, using_transactions, dry_run):
-    #     print()
-    #     print("2  ___ after_save_instance !!!!")
-    #     # print(timezone.now())
-    #     # print("instance:", instance)
-    #     # print("using_transactions:", using_transactions)
-    #     print(dir(instance))
-        
-    #     print()
-    #     super().after_save_instance(instance, using_transactions, dry_run)
-
-    # def before_delete_instance(self, instance, dry_run):
-    #     print()
-    #     print("3  ___ before_delete_instance")
-    #     print(timezone.now())
-    #     print("instance:", instance)
-    #     print("dry_run:", dry_run)
-    #     print()
-    #     super().before_delete_instance(instance, dry_run)
-
-    # def after_delete_instance(self, instance, dry_run):
-    #     print()
-    #     print("4  ___ after_delete_instance")
-    #     print(timezone.now())
-    #     print("instance:", instance)
-    #     print("dry_run:", dry_run)
-    #     print()
-    #     super().after_delete_instance(instance, dry_run)
-
-    # def before_import(self, dataset, using_transactions, dry_run, **kwargs):
-    #     print()
-    #     print("5  ___ before_import")
-    #     # print(timezone.now())
-    #     # print("dataset:", dataset)
-    #     print(dir(dataset))
-    #     print(type(dataset))
-    #     x = dataset.csv
+    def get_import_id_fields(self):
+        fields = [
+            'slug',
+            'code',
+        ]
+        return fields 
 
 
-    #     # print("using_transactions:", using_transactions)
-    #     # print("dry_run:", dry_run)
-    #     print()
-    #     super().before_import(dataset, using_transactions, dry_run, **kwargs)
+    # related
+    def dehydrate_variants(self, item):
+        variants = ItemVariant.objects.all().filter(item=item)
+        # if variants.exists:
+        #     return variants
+        # return None
+        return variants.values_list('code', flat=True)    
+        # return variants
 
-    # def after_import(self, dataset, result, using_transactions, dry_run, **kwargs):
-    #     print()
-    #     print("6  ___ after_import")
-    #     print(timezone.now())
-    #     print("dataset:", dataset)
-    #     print("result:", result)
-    #     print("using_transactions:", using_transactions)
-    #     print("dry_run:", dry_run)
-    #     print("kwargs:", kwargs)
-    #     print()
-    #     super().after_import(dataset, result, using_transactions, dry_run, **kwargs)
+    def dehydrate_images(self, item):
+        images = ItemImage.objects.all().filter(item=item) 
+        images_url = ','.join([image.image.url for image in images])
+        return images_url
 
-    def before_import_row(self, row, **kwargs):
-        print()
-        print("7  ___ before_import_row")
-        print(timezone.now())
-        print("row:", row)
-        print("dir(row):", dir(row))
-        print("type(row):", type(row))
-        print("kwargs:", kwargs)
-        print()
-        # super().before_import_row(row, **kwargs)
+    def dehydrate_reviews(self, item):
+        reviews = ItemReview.objects.all().filter(item=item)
+        return reviews.values_list('code', flat=True)
+        # return reviews
 
-    # def after_import_row(self, row, row_result, **kwargs):
-    #     print()
-    #     print("8  ___ after_import_row")
-    #     print(timezone.now())
-    #     print("row:", row)
-    #     print(row_result)
-    #     print("kwargs:", kwargs)
-    #     print()
-    #     super().after_import_row(row, row_result, **kwargs)
+    # def dehydrate_options(self, item):
+    #     options = ItemOption.objects.all().filter(item=item)
+    #     return options#.values_list('code', flat=True)
 
-    # def after_import_instance(self, instance, new, **kwargs):
-    #     print()
-    #     print("9  ___ after_import_instance")
-    #     print(timezone.now())
-    #     print("instance:", instance)
-    #     print("new:", new)
-    #     print("kwargs:", kwargs)
-    #     print()
-    #     super().after_import_instance(instance, new, **kwargs)
+    def dehydrate_features(self, item):
+        features = []
+        count = 0 # 1
+        for feature in ItemFeature.objects.all().filter(item=item):
+            values = [value.value for value in feature.value.all()]
+            features.append({
+                'id': feature.id,
+                'code':feature.code,
+                'name':feature.name.name,
+                'values':values,
+                # 'feature_value':feature.value.value,
+            })
+            count += 1 
+        return features
 
 
-
-
-    def before_export(self, queryset, *args, **kwargs):
-        print()
-        print("10  ___ before_export")
-        print(timezone.now())
-        print()
-        super().before_export(queryset, *args, **kwargs)
-
-    def after_export(self, queryset, data, *args, **kwargs):
-        print()
-        print("11  ___ after_export")
-        print(timezone.now())
-        print()
-        super().after_export(queryset, data, *args, **kwargs)
-
-
-
-
-    # Image
-    # Review
-    # Feature
-    # Variant
-    # Option
-
-    # markers
-    # similars
-    # manufacturer
-    # brand 
-    # currency
-    # in_stock
+    # m2m 
     def dehydrate_markers(self, item):
-        markers = ''
+        markers = None 
+        if item.markers:
+            markers = ','.join([marker.text for marker in item.markers.all()])
         return markers
 
     def dehydrate_similars(self, item):
-        similars = ''
-        return similars
+        similars = None 
+        if item.similars:
+            similars = item.similars.all()
+        return similars.values_list('code', flat=True)
+        # return similars
 
+    # fk
     def dehydrate_manufacturer(self, item):
-        manufacturer = ''
+        manufacturer = None 
+        if item.manufacturer:
+            manufacturer = item.manufacturer.code
         return manufacturer
 
     def dehydrate_brand(self, item):
-        brand = ''
+        brand = None 
+        if item.brand:
+            brand = item.brand.code
         return brand
 
     def dehydrate_currency(self, item):
-        currency = ''
+        currency = None
+        if item.currency:
+            currency = item.currency.code 
         return currency
+    
+    def dehydrate_category(self, item):
+        category = None 
+        if item.category:
+            category = item.category.code 
+        return category
 
     def dehydrate_in_stock(self, item):
-        in_stock = ''
+        in_stock = None 
+        if item.in_stock:
+            in_stock = item.in_stock.code 
         return in_stock
+
 
 
 
