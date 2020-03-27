@@ -36,7 +36,7 @@ import csv
 import re 
 
 from box.shop.item.models import *
-from box.page.models import *
+from box.content.models import *
 
 __all__ = [
   "Parser",

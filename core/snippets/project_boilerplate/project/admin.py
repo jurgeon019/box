@@ -1,5 +1,5 @@
 from django.contrib import admin
-from dev.models import * 
+from project.models import * 
 
 
 class ContactFormAdmin(admin.ModelAdmin):

@@ -1,0 +1,6 @@
+sudo -H python -m pip install xlsxwriter
+pip freeze | grep -v "pkg-resources" > requirements.txt
+python -m pip install --user google-assistant-sdk[samples]
+sudo python -m pip install google-assistant-sdk[samples]
+
+python -m pip install xlsxwriter

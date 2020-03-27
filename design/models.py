@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from django.conf import settings 
 
 from box.solo.models import SingletonModel
-from box.page.models import Text
+from box.content.models import Text
 
 from tinymce import HTMLField
 from colorfield.fields import ColorField
