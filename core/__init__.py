@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from django import apps
 from django.utils.translation import gettext_lazy as _
 
@@ -29,5 +28,3 @@ default_app_config = 'box.core.CoreConfig'
 
 
 
-=======
->>>>>>> a4d5039198efa087a744d65d8decd13b37be8dfc

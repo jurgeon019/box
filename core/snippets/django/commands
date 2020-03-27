@@ -1,0 +1,22 @@
+Commands
+python manage.py --help 
+python manage.py makemessages -l ru
+python manage.py makemessages -l en
+python manage.py makemessages -l uk
+Исключение ненужных папок
+python manage.py makemessages [-l en] [-i env] [-i services]
+Обновление существующих переводов
+python manage.py makemessages [-a] [-i venv] [-i] [services]
+python manage.py makemessages [-a] [-d djangojs]
+
+python manage.py compilemessages 
+
+python manage.py inspectdb
+
+python manage.py inspectdb > file.py
+
+python manage.py update_translation_fields
+
+python manage.py runserver --insecure
+
+python manage.py dumpdata app_name.model_name > dumpfile.json

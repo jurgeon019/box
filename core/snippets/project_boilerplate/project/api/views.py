@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.core.mail import send_mail
 from django.conf import settings 
 from django.urls import reverse
-from dev.models import ContactForm
+from project.models import ContactForm
 
 
 def contact_form(request):

@@ -1,0 +1,13 @@
+sudo which apache2
+sudo apt-get remove apache2
+sudo apt-get purge apache2
+sudo apt autoremove
+sudo apt remove apache2.*
+sudo dpkg -S `which apache2`
+sudo apt-get purge apache2 apache2-utils apache2.2-bin apache2-common
+sudo apt-get purge apache2 apache2-utils apache2-bin apache2.2-common
+sudo service apache2 stop
+sudo apt-get purge apache2 apache2-utils apache2.2-bin apache2-common
+sudo apt-get autoremove
+sudo whereis apache2
+sudo rm -rf /etc/apache2  

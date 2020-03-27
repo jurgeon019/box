@@ -12,7 +12,4 @@ MIDDLEWARE = [
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     
     'django.middleware.common.BrokenLinkEmailsMiddleware',
-    "box.core.middleware.StackOverflowMiddleware",
-    # 'dev.middleware.StackOverflowMiddleware',
 ]
-
