@@ -70,7 +70,8 @@ box_urlpatterns = [
   path('test/',          include('box.shop.test_shop.urls')),
   path('', include('box.global_config.urls')),
   path('', include('box.shop.novaposhta.urls')),
-  path('', include(api_urls))
+  path('', include(api_urls)),
+  path('api/', include(api_urls)),
 ]
 
 urlpatterns = [
@@ -79,6 +80,7 @@ urlpatterns = [
   path('', include(third_party_urlpatterns)),
 ]
 for url in settings.PROJECT_CORE_URLS:
+  print(url)
   urlpatterns.append(path('', include(url)))
 
 urlpatterns += i18n_patterns(
@@ -89,3 +91,5 @@ urlpatterns += i18n_patterns(
 if settings.DEBUG == True:
   urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+print(urlpatterns)
