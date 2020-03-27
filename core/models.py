@@ -17,7 +17,8 @@ __all__ = [
 
 
 class BaseMixin(models.Model):
-	code            = models.CharField(verbose_name=_("Код"), max_length=255, blank=True, null=True, unique=True)
+	# code            = models.CharField(verbose_name=_("Код"), max_length=255, blank=True, null=True, unique=True)
+	code            = models.SlugField(verbose_name=_("Код"), max_length=255, blank=True, null=True, unique=True)
 	order           = models.PositiveIntegerField(verbose_name=_("Порядок"), default=0, blank=False, null=False)
 	is_active       = models.BooleanField(verbose_name=_("Активність"), default=True, help_text=_("Відображення на сайті"))
 	created         = models.DateTimeField(verbose_name=_("Створено"), default=timezone.now)
@@ -36,18 +37,19 @@ class BaseMixin(models.Model):
 	def get_admin_url(self):
 		return get_admin_url(self)
 	
+	
 
 
 
 class AbstractPage(BaseMixin):
+	title      = models.CharField(verbose_name=_("Заголовок"),          blank=False, null=False, max_length=255, help_text=("Назва сторінки"))
+	description= HTMLField(verbose_name=_("Опис"), blank=True, null=True)
 	meta_title = models.TextField(verbose_name=_("Мета-заголовок"),     blank=True, null=True, help_text=_("Заголовок сторінки в браузері, який відображається у видачі пошукових систем"))
 	meta_descr = models.TextField(verbose_name=_("Мета-опис"),          blank=True, null=True, help_text=_("__"))
 	meta_key   = models.TextField(verbose_name=_("Ключові слова"),      blank=True, null=True, help_text=_("Список ключових слів"))
 	slug       = models.SlugField(verbose_name=_("Посилання"),          max_length=255, null=True, blank=False, unique=True)
 	alt        = models.CharField(verbose_name=_("Альт до картинки"),   blank=True, null=True, max_length=255)
 	image      = models.ImageField(verbose_name=_("Картинка"), blank=True, null=True, upload_to='shop/category')
-	title      = models.CharField(verbose_name=_("Назва"),              blank=False, null=False, max_length=255, )
-	description= HTMLField(verbose_name=_("Опис"), blank=True, null=True)
 
 	class Meta:
 		abstract = True

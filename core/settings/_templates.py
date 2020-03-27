@@ -25,7 +25,5 @@ TEMPLATES = [
         },
     },
 ]
-TEMPLATES[0]['OPTIONS']['context_processors'].extend([
-    'project.context_processors.context',
-])
+
 

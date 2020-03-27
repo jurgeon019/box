@@ -19,12 +19,3 @@ class PageAdminForm(forms.ModelForm):
             'meta_key',
         ]
 
-
-
-
-class TextAdminForm(forms.ModelForm):
-    text = forms.Textarea(attrs={'cols': '10', 'rows': '1'})
-    class Meta:
-        model = Text 
-        exclude = [
-        ]

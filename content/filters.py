@@ -1,6 +1,7 @@
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import gettext_lazy as _
 
+from admin_auto_filters.filters import AutocompleteFilter 
 
 
 
@@ -20,5 +21,11 @@ class TextIsNoneFilter(SimpleListFilter):
             return queryset.distinct().filter(value__isnull=True)
         
 
+
+
+
+class SliderFilter(AutocompleteFilter):
+    title = 'слайдерами'
+    field_name = 'slider'
 
 

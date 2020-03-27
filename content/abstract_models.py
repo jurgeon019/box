@@ -2,10 +2,12 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone 
 
+from box.core.helpers import get_admin_url
+
 
 class AbstractContent(models.Model):
   page    = models.ForeignKey(
-    verbose_name=_("Сторінка"), to='page.Page', 
+    verbose_name=_("Сторінка"), to="content.Page", 
     on_delete=models.SET_NULL, blank=True, null=True,
   )
   code    = models.SlugField(
@@ -13,7 +15,8 @@ class AbstractContent(models.Model):
     unique=True, null=False, blank=False, 
     help_text=("Назва змінної, по якій об'єкт буде діставатись у HTML-шаблоні."), 
   )
-  created = models.DateTimeField(verbose_name=_("Створено"), default=timezone.now, blank=True, null=True)
+  created = models.DateTimeField(
+    verbose_name=_("Створено"), default=timezone.now, blank=True, null=True)
   updated = models.DateTimeField(verbose_name=_("Оновлено"), auto_now=True,auto_now_add=False)
 
   class Meta:
@@ -24,6 +27,10 @@ class AbstractContent(models.Model):
 
   def get_admin_url(self):
     return get_admin_url(self)
+  
+  @classmethod
+  def modeltranslation_fields(self):
+    return []
 
   def __str__(self):
     return f'{self.page}, {self.code}'

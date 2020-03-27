@@ -1,7 +1,0 @@
-
-Jump left one word: ESC+B
-Jump right one word: ESC+F
-Jump to the beginning of the line: CTRL+A
-Jump to the end of the line: CTRL+E
-Delete the previous word: CTRL+W
-Clear the entire line: CTRL+U

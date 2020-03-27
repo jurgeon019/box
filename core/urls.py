@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.urls import path, include 
 from django.views.i18n import JavaScriptCatalog as js_cat
 from django.contrib.sitemaps.views import sitemap
+from django.conf.urls.static import static
+from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
 
 from filebrowser.sites import site
@@ -12,11 +14,9 @@ from box.shop.item.sitemaps import ItemSitemap, CategorySitemap
 from box.blog.sitemaps import PostSitemap
 from box.core.sitemaps import StaticSitemap
 
-
 admin.site.site_header = "STARWAY CMS"
 admin.site.site_title = "STARWAY CMS"
 admin.site.index_title = "STARWAY CMS"
-
 
 sitemaps = {
   'items':      ItemSitemap,
@@ -25,11 +25,16 @@ sitemaps = {
   'static':     StaticSitemap,
 }
 
-
 handler404 = 'box.core.views.handler_404'
 handler500 = 'box.core.views.handler_500'
 
-
+multilingual_urls = [
+  path('accounts/', include('allauth.urls')),
+  path('', include('box.content.urls')),
+  path('', include('box.shop.item.urls')),
+]
+for url in settings.PROJECT_CORE_MULTILINGUAL_URLS:
+  multilingual_urls.append(path('', include(url)))
 
 api_urls = [
   path('', include('box.shop.novaposhta.api.urls')),
@@ -44,9 +49,8 @@ api_urls = [
   path('', include('box.contact_form.api.urls')),
 ]
 
-urlpatterns = [
+third_party_urlpatterns = [
   path('admin_tools/',     include('admin_tools.urls')),
-  # path('selectable/',      include('selectable.urls')),
   path('grappelli/',       include('grappelli.urls')),
   path('i18n/',            include('django.conf.urls.i18n')),
   path('rosetta/',         include('rosetta.urls')),
@@ -59,25 +63,29 @@ urlpatterns = [
   path('robots.txt/',      robots, name='robots'),
   path('set_lang/<lang>/', set_lang,         name="set_lang"),
   path('jsi18n/',          js_cat.as_view(), name='javascript-catalog'),
-  path('testmail/',        testmail, name='testmail'),
+]
 
+box_urlpatterns = [
+  path('testmail/',        testmail, name='testmail'),
   path('test/',          include('box.shop.test_shop.urls')),
   path('', include('box.global_config.urls')),
   path('', include('box.shop.novaposhta.urls')),
-
-  # path('api/', include(api_urls))
   path('', include(api_urls))
-
 ]
 
+urlpatterns = [
+  path('', include(third_party_urlpatterns)),
+  path('', include(box_urlpatterns)),
+  path('', include(third_party_urlpatterns)),
+]
+for url in settings.PROJECT_CORE_URLS:
+  urlpatterns.append(path('', include(url)))
+
+urlpatterns += i18n_patterns(
+  path('', include(multilingual_urls)),
+  prefix_default_language=True,
+)
 
 if settings.DEBUG == True:
-  from django.conf.urls.static import static
   urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-
-
-
-
-

@@ -1,197 +1,25 @@
 from import_export.resources import ModelResource
+
+from box.core.utils import get_multilingual_fields
+from .abstract_resources import (
+    AbstractContentResource, AbstractLinkResource, 
+    AbstractTextResource,
+)
 from .models import *
-from box.core.utils import get_multilingual_fields 
 
-
-
-class AbstractContentResource(ModelResource):
-    def get_export_order(self):
-        export_order = [
-            # '',
-        ]
-        return export_order
-    def get_import_id_fields(self):
-        import_id_fields = [
-
-        ]
-        return import_id_fields
-
-
-
-class AbstractTextResource(ModelResource):
-    def get_export_order(self):
-        export_order = [
-            # '',
-        ]
-        return export_order
-    def get_import_id_fields(self):
-        import_id_fields = [
-
-        ]
-        return import_id_fields
-
-
-
-class AbstractLinkResource(ModelResource):
-    def get_export_order(self):
-        export_order = [
-            # '',
-        ]
-        return export_order
-    def get_import_id_fields(self):
-        import_id_fields = [
-
-        ]
-        return import_id_fields
-
-
-
-
-class MapResource():
-    class Meta:
-        model = Map 
-        exclude = [
-
-        ]
-
-
-class ImgResource():
-    class Meta:
-        model = Img 
-        exclude = [
-
-        ]
-
-
-class TextResource():
-    class Meta:
-        model = Text 
-        exclude = [
-
-        ]
-
-
-class AddressResource():
-    class Meta:
-        model = Address 
-        exclude = [
-
-        ]
-
-
-class TelResource():
-    class Meta:
-        model = Tel 
-        exclude = [
-
-        ]
-
-
-class MailtoResource():
-    class Meta:
-        model = Mailto 
-        exclude = [
-
-        ]
-
-
-class LinkResource():
-    class Meta:
-        model = Link 
-        exclude = [
-
-        ]
-
-
-# Social
-
-
-
-
-class TextResource(ModelResource):
-    
-    class Meta:
-        model = Text 
-        exclude = [
-            'id',
-            'created',
-            'updated',
-        ]
-
-    def get_export_order(self):
-        multilingual_fields = get_multilingual_fields(self._meta.model)
-        export_order = [
-            'page',
-            'code',
-            *multilingual_fields['text']
-        ]
-        return export_order
-
-    def get_import_id_fields(self):
-        import_id_fields = [
-            'code',
-        ]
-        return import_id_fields
-
-    def dehydrate_page(self, obj):
-        page = None 
-        if obj.page:
-            page = obj.page.code 
-        return page 
-
-    def before_import_row(self, row, **kwargs):
-        if row['page']:
-            row['page'] = Page.objects.get_or_create(code=row['page'])[0].id
-
-
-class ImgResource(ModelResource):
-    # TODO: не імпортується alt_ru
-
-    class Meta:
-        model = Img 
-        exclude = [
-            'id',
-            'created',
-            'updated',
-        ]
-
-    def get_export_order(self):
-        multilingual_fields = get_multilingual_fields(self._meta.model)
-        export_order = [
-            'page',
-            'code',
-            'image',
-            *multilingual_fields['alt'],
-        ]
-        return export_order
-
-    def get_import_id_fields(self):
-        import_id_fields = [
-            'code',
-        ]
-        return import_id_fields
-
-    def dehydrate_page(self, feature):
-        page = None 
-        if feature.page:
-            page = feature.page.code 
-        return page 
-    
-    def before_import_row(self, row, **kwargs):
-        # print('row:', row)
-        if row['page']:
-            row['page'] = Page.objects.get_or_create(code=row['page'])[0].id
+base_exclude = [
+    'id',
+    'created',
+    'updated',
+]
 
 
 
 class PageResource(ModelResource):
     class Meta:
         model = Page
-        exclude = [
-            'id',
-            'created',
-            'updated',
-        ]
+        exclude = base_exclude
+       
 
     def get_export_order(self):
         multilingual_fields = get_multilingual_fields(self._meta.model)
@@ -210,17 +38,68 @@ class PageResource(ModelResource):
         return import_id_fields
 
 
+class MapResource(AbstractContentResource):
+    class Meta:
+        model = Map 
+        exclude = base_exclude
+
+    def get_export_order(self):
+        export_order = [
+            'html',
+        ]
+        return super().get_export_order() + export_order
 
 
+class ImgResource(AbstractContentResource):
+    # TODO: не імпортується alt_ru
+    class Meta:
+        model = Img 
+        exclude = base_exclude 
+
+    def get_export_order(self):
+        multilingual_fields = get_multilingual_fields(self._meta.model)
+        export_order = [
+            'image',
+            *multilingual_fields['alt'],
+        ]
+        return super().get_export_order() + export_order
 
 
+# AbstractText
 
-from import_export.resources import ModelResource 
+class TextResource(AbstractTextResource):
+    class Meta:
+        model = Text 
+        exclude = base_exclude
 
-from .models import * 
-from box.page.models import Page 
-from box.core.utils import get_multilingual_fields
 
+class AddressResource(AbstractLinkResource):
+    class Meta:
+        model = Address 
+        exclude = base_exclude
+
+
+# AbstractLink 
+
+class LinkResource(AbstractLinkResource):
+    class Meta:
+        model = Link 
+        exclude = base_exclude
+    
+
+class TelResource(AbstractLinkResource):
+    class Meta:
+        model = Tel 
+        exclude = base_exclude 
+    
+
+class MailtoResource(AbstractLinkResource):
+    class Meta:
+        model = Mailto 
+        exclude = base_exclude
+
+
+# class Social():
 
 
 class SlideResource(ModelResource):

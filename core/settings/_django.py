@@ -17,13 +17,14 @@ POSTGRES = {
     'PORT' : '5432',
 }
 DB = SQLITE
+# DB = POSTGRES
 DATABASES = {
     'default': DB,
 }
-CSRF_COOKIE_HTTPONLY = False 
-ROOT_URLCONF     = 'core.urls'
-WSGI_APPLICATION = 'core.wsgi.application'
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
+# CSRF_COOKIE_HTTPONLY = False 
+# ROOT_URLCONF     = 'box.core.urls'
+# WSGI_APPLICATION = 'box.core.wsgi.application'
+# DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 ALLOWED_HOSTS = ['*']
 AUTH_USER_MODEL = 'custom_auth.User'
 SECRET_KEY = config('SECRET_KEY') or 'ss'

@@ -1,14 +1,28 @@
+from box.content.models import *
 
 
-def validate_phone_number(number):
-  if not number.startswith('+'):
-    return False 
-  if not len(number) == 13:
-    return False 
-  try:
-    int(number[1:])
-  except:
-    return False 
-  return True 
+def set_page(obj, page_code=None):
+    if page_code:
+        page = Page.objects.filter(code=page_code)
+        if page.exists:
+            obj.page = page.first() 
+            obj.save()
+
+
+def get_class(content_type):
+    mapper = {
+        'map':     Map,
+        'img':     Img,
+        'tiny':    Text,
+        'plain':   Text,
+        'address': Address,
+        'tel':     Tel,
+        'mailto':  Mailto,
+        'link':    Link,
+        'slider':  Slider,
+        'slide':   Slide,
+    }
+    return mapper[content_type] 
+
 
 
