@@ -1,1 +1,0 @@
-default_app_config = 'box.shop.privat24.apps.Privat24Config'

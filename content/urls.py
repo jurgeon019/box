@@ -1,19 +1,28 @@
 from django.urls import path 
-from django.conf import settings 
-from django.shortcuts import render 
-
-from django.conf import settings 
-# CMS_TEMPLATES = settings.CMS_TEMPLATES 
-
-from functools import partial
+from .views import * 
 
 
-urlpatterns = []
+urlpatterns = [
+    path('<code>/',  page,  name='page'),
+]
 
 
 
 
 
+
+
+
+
+
+
+# from django.conf import settings 
+# from django.shortcuts import render 
+
+# from django.conf import settings 
+# # CMS_TEMPLATES = settings.CMS_TEMPLATES 
+
+# from functools import partial
 
 
 

@@ -1,16 +1,16 @@
 [
     {"model":"item.ItemCurrency", "pk":1, "fields":{
         "name":"UAH",
-        "iso":"UAH",
+        "code":"UAH",
         "is_main":true
     }},
     {"model":"item.ItemCurrency", "pk":2, "fields":{
         "name":"USD",
-        "iso":"USD"
+        "code":"USD"
     }},
     {"model":"item.ItemCurrency", "pk":3, "fields":{
         "name":"EUR",
-        "iso":"EUR"
+        "code":"EUR"
     }},
 
 

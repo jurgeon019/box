@@ -4,7 +4,7 @@ from django.shortcuts import reverse, render, redirect
 from django.utils.html import mark_safe
 
 from box.shop.order.models import Order, Status
-from box.shop.liqpay.admin import PaymentInline
+from box.payment.liqpay.admin import PaymentInline
 from box.shop.cart.admin import CartItemInline
 from box.core.utils import show_admin_link
 from box.solo.admin import SingletonModelAdmin

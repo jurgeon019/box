@@ -17,7 +17,8 @@ __all__ = [
 
 
 class BaseMixin(models.Model):
-	code            = models.CharField(verbose_name=_("Код"), max_length=255, blank=True, null=True, unique=True)
+	# code == int, тому що для товара потрібно інкрементування.
+	code            = models.IntegerField(verbose_name=_("Код"),  blank=True, null=True, unique=True)
 	order           = models.PositiveIntegerField(verbose_name=_("Порядок"), default=0, blank=False, null=False)
 	is_active       = models.BooleanField(verbose_name=_("Активність"), default=True, help_text=_("Відображення на сайті"))
 	created         = models.DateTimeField(verbose_name=_("Створено"), default=timezone.now)
@@ -40,6 +41,9 @@ class BaseMixin(models.Model):
 
 
 class AbstractPage(BaseMixin):
+	# code == slug, тому що для контенту потрібен виклик в шаблоні по "змінній"
+	# UPD: товар наслідується від цього класу, тому має бути інтежер
+	# code       = models.SlugField(verbose_name=_("Код"), max_length=255, blank=False, null=False, unique=True)
 	meta_title = models.TextField(verbose_name=_("Мета-заголовок"),     blank=True, null=True, help_text=_("Заголовок сторінки в браузері, який відображається у видачі пошукових систем"))
 	meta_descr = models.TextField(verbose_name=_("Мета-опис"),          blank=True, null=True, help_text=_("__"))
 	meta_key   = models.TextField(verbose_name=_("Ключові слова"),      blank=True, null=True, help_text=_("Список ключових слів"))
@@ -60,7 +64,7 @@ class AbstractPage(BaseMixin):
 		super().save(*args, **kwargs)
 	
 	def __str__(self):
-		return f'{self.meta_title}'
+		return f'{self.title}'
 	
 	@property
 	def image_url(self):
@@ -88,4 +92,8 @@ class AbstractPage(BaseMixin):
 			'alt',
 		]
 		return fields 
+	
+	def get_absolute_url(self):
+		return reverse("page", kwargs={"code": self.code})
+	
 

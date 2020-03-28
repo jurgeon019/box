@@ -71,15 +71,32 @@ admin.site.register(OrderConfig, OrderConfigAdmin)
 admin.site.register(Status, StatusAdmin)
 admin.site.register(OrderTag, OrderTagAdmin)
 
-from box.shop.liqpay.admin import (
+from box.payment.liqpay.admin import (
     Payment, PaymentAdmin,
 )
 from box.content.admin import (
-    Page, PageAdmin,
-    Text, TextAdmin,
+    Page,    PageAdmin,
+    Map,     MapAdmin,
+    Img,     ImgAdmin,
+    Text,    TextAdmin,
+    Address, AddressAdmin,
+    Link,    LinkAdmin,
+    Tel,     TelAdmin,
+    Mailto,  MailtoAdmin,
+    Slide,  SlideInline,
+    Slider,  SliderAdmin,
+    Slide,   SlideAdmin,
 )
-admin.site.register(Page, PageAdmin)
-admin.site.register(Text, TextAdmin)
+admin.site.register(Page,    PageAdmin)
+admin.site.register(Map,     MapAdmin)
+admin.site.register(Img,     ImgAdmin)
+admin.site.register(Text,    TextAdmin)
+admin.site.register(Address, AddressAdmin)
+admin.site.register(Link,    LinkAdmin)
+admin.site.register(Tel,     TelAdmin)
+admin.site.register(Mailto,  MailtoAdmin)
+admin.site.register(Slide,   SlideAdmin)
+admin.site.register(Slider,  SliderAdmin)
 from box.global_config.admin import (
     SiteConfig, SiteConfigAdmin,
     NotificationConfig, NotificationConfigAdmin,
@@ -104,13 +121,6 @@ from box.faq.admin import (
     Faq, FaqAdmin,
 )
 admin.site.register(Faq, FaqAdmin)
-
-from box.content.admin import (
-    Slide, SlideAdmin,
-    Slider, SliderAdmin,
-)
-admin.site.register(Slider, SliderAdmin)
-admin.site.register(Slide, SlideAdmin)
 
 from box.imp_exp.admin import (
     ImportLog, ImportLogAdmin

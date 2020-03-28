@@ -1,17 +1,11 @@
 up = [
     'corsheaders',
-    'admin_tools',
-    'admin_tools.theming',
-    'admin_tools.menu',
-    'admin_tools.dashboard',
+    'box.custom_admin',  
+    'admin_tools', 'admin_tools.theming', 'admin_tools.menu', 'admin_tools.dashboard',
+
     'dal',
     'dal_select2',
     'admin_auto_filters',
-    # 'grappelli',
-    # 'jet',
-    # 'suit',
-    # 'box.wpadmin',
-    'box.custom_admin',
     'filebrowser',
     'modeltranslation',
 ]
@@ -42,33 +36,42 @@ third_party = [
     'colorfield',
     # 'adminsortable',
     'adminsortable2',
+    "rest_framework",
 ]
 box = [
+
     'box',
-    'box.core',
-    'box.seo',
-    'box.design',
+    'box.blog',
     'box.contact_form',
-    'box.faq',
-    'box.imp_exp',
-    'box.statistic',
-    'box.global_config',
-    'box.custom_auth',
     'box.content',
+    'box.core',
+    'box.custom_auth',
+    'box.design',
+    'box.faq',
+    'box.filemanager',
+    'box.global_config',
+    'box.imp_exp',
+    'box.model_search',
+
+    'box.payment',
+    'box.payment.liqpay',
+    'box.payment.privat24',
+    'box.payment.wayforpay',
+    'box.payment.interkassa',
+
+    'box.seo',
+
     'box.shop',
     'box.shop.test_shop',
     'box.shop.item',
     'box.shop.order',
     'box.shop.cart',
-    'box.shop.liqpay',
-    'box.shop.privat24',
     'box.shop.customer',
     'box.shop.novaposhta',
-    'box.filemanager',
-    'box.blog',
+
+    
     'box.solo',
-    'box.model_search',
-    # 'box.constance',
+    'box.statistic',
 
 ]
 installed_apps  = [

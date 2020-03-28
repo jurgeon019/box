@@ -232,11 +232,6 @@ class ItemCategoryAdmin(
         }],
         seo,
     ]
-    readonly_fields = [
-        # 'code',
-        'created',
-        'updated',
-    ]
    
 
 class ItemImageAdmin(BaseAdmin, SortableAdminMixin):
@@ -322,10 +317,10 @@ class ItemAdmin(
         }
         return move_to(self, request, queryset, initial)
 
-    change_category.short_description = ("Змінити категорію")
-    add_markers.short_description     = ("Додати маркери")
-    remove_markers.short_description  = ("Забрати маркери")
-    change_brand.short_description    = ("Змінити бренд")
+    change_category.short_description = _("Змінити категорію")
+    add_markers.short_description     = _("Додати маркери")
+    remove_markers.short_description  = _("Забрати маркери")
+    change_brand.short_description    = _("Змінити бренд")
     actions = [
         "is_active_on",
         "is_active_off",
@@ -437,31 +432,37 @@ class ItemAdmin(
         seo,
     ]    
 
-
-class ItemCurrencyAdmin(BaseAdmin, TabbedTranslationAdmin):
+from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
+class ItemCurrencyAdmin(
+    # BaseAdmin, 
+    ImportExportModelAdmin,
+    ImportExportActionModelAdmin,
+    TabbedTranslationAdmin,
+    ):
     resource_class = ItemCurrencyResource
     actions = [
         'delete',
     ]
+    list_filter = []
     list_display = [
         'name',
-        'iso',
+        'code',
         'rate',
         'is_main',
     ]
     list_display_links = [
         'name',
-        'iso',
+        'code',
     ]
     list_editable = [
         'rate',
     ]
     readonly_fields = [
-        'is_active',
+        # 'is_active',
         'is_main',
-        'updated',
-        'created',
-        'code',
+        # 'updated',
+        # 'created',
+        # 'code',
     ]
     formfield_overrides = {
         # models.CharField: {'widget': TextInput(attrs={'size':8})},
@@ -469,7 +470,7 @@ class ItemCurrencyAdmin(BaseAdmin, TabbedTranslationAdmin):
     }
     search_fields = [
         'name',
-        'iso',
+        'code',
     ]
 
 

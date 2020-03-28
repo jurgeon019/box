@@ -7,20 +7,23 @@ class CoreConfig(apps.AppConfig):
     verbose_name = _('Ядро')
     verbose_name_plural = verbose_name
     def ready(self):
-        from .signals import post_save, handle_code
+        from .signals import post_save, handle_code, handle_slug
         from box.shop.item.models import (
             Item, ItemCategory, ItemBrand,  
-            ItemCurrency,
         )
         from box.blog.models import (
             Post, PostCategory,
         )
-        post_save.connect(receiver=handle_code, sender=Item)
-        post_save.connect(receiver=handle_code, sender=ItemCategory)
-        post_save.connect(receiver=handle_code, sender=ItemBrand)
-        post_save.connect(receiver=handle_code, sender=ItemCurrency)
-        post_save.connect(receiver=handle_code, sender=Post)
-        post_save.connect(receiver=handle_code, sender=PostCategory)
+        models = [
+            Item,
+            ItemCategory,
+            ItemBrand,
+            Post,
+            PostCategory,
+        ]
+        for model in models:
+            post_save.connect(receiver=handle_code, sender=model)
+            post_save.connect(receiver=handle_slug, sender=model)
 
 
 

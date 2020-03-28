@@ -20,39 +20,9 @@ from .forms import *
 from .abstract_admin import * 
 
 
-
-class TextInline(TranslationStackedInline):
-    def has_add_permission(self,request, obj):
-        return False 
-    model = Img
-    extra = 0
-    classes = ['collapse']
-    exclude = [
-        'created',
-        'updated',
-    ]
-    readonly_fields = [
-        'code',
-    ]
-
-
-class ImgInline(TranslationStackedInline):
-    def has_add_permission(self,request, obj):
-        return False 
-    model = Text
-    classes = ['collapse']
-    extra = 0
-    exclude = [
-        'created',
-        'updated',
-    ]
-    readonly_fields = [
-        'code',
-    ]
-
-
-class MapInline(TranslationStackedInline):
-    model = Map 
+class BaseInline(TranslationStackedInline):
+    def has_add_permission(self, request, obj=None):
+        return False
     classes = [
         'collapse',
     ]
@@ -63,6 +33,42 @@ class MapInline(TranslationStackedInline):
     readonly_fields = [
         'code',
     ]
+    formfield_overrides = {
+        models.ImageField:{'widget':AdminImageWidget},
+        models.TextField: {'widget': Textarea(attrs={'rows':2, 'cols':25})},
+
+    }
+
+
+class ImgInline(BaseInline):
+    model = Img
+
+
+class MapInline(BaseInline):
+    model = Map
+
+
+class TextInline(BaseInline):
+    model = Text
+
+
+class AddressInline(BaseInline):
+    model = Address
+
+
+class LinkInline(BaseInline):
+    model = Link
+
+
+class TelInline(BaseInline):
+    model = Tel
+
+
+class MailtoInline(BaseInline):
+    model = Mailto
+
+
+
 
 
 class PageAdmin(
@@ -72,16 +78,18 @@ class PageAdmin(
     ):
     resource_class = PageResource
 
-    # def get_changelist_form(self, request, **kwargs):
-    #     return PageAdminForm
-
+    inlines = [
+        ImgInline,
+        MapInline,
+        TextInline,
+        AddressInline,
+        LinkInline,
+        TelInline,
+        MailtoInline,
+    ]
     formfield_overrides = {
         models.TextField: {'widget': Textarea(attrs={'rows':'2', 'cols':'25'})},
     }
-    inlines = [
-        TextInline, 
-        ImgInline,
-    ]
     list_editable = [
         'meta_key',
     ]
@@ -225,7 +233,7 @@ class TextAdmin(AbstractTextAdmin):
 
 
 class AddressAdmin(AbstractTextAdmin):
-    resource_class = Address 
+    resource_class = AddressResource 
     search_fields = [
         'code',
         'text',
@@ -262,7 +270,7 @@ class AddressAdmin(AbstractTextAdmin):
 
 
 class LinkAdmin(AbstractLinkAdmin):
-    resource_class = Link 
+    resource_class = LinkResource
     search_fields = [
         'code',
         'text',
@@ -300,7 +308,7 @@ class LinkAdmin(AbstractLinkAdmin):
 
 
 class TelAdmin(AbstractLinkAdmin):
-    resource_class = Tel 
+    resource_class = TelResource
     search_fields = [
         'code',
         'text',
@@ -333,7 +341,7 @@ class TelAdmin(AbstractLinkAdmin):
 
 
 class MailtoAdmin(AbstractLinkAdmin):
-    resource_class = Mailto 
+    resource_class = MailtoResource 
     list_per_page = 20
     readonly_fields = [
         'code',

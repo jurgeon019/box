@@ -1,1 +1,0 @@
-default_app_config = 'box.shop.liqpay.apps.LiqpayConfig'
