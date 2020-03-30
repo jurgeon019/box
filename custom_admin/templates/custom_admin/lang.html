@@ -1,0 +1,98 @@
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+{% get_language_info_list for LANGUAGES as languages %}
+<!-- 
+{% for language in languages %}
+    {% if language.code == LANGUAGE_CODE %} 
+        <a class="lang__item lang__item-active">{{ language.name_translated }}</a>
+    {% endif %}
+{% endfor %}
+
+{% for language in languages %}
+    {% if language.code != LANGUAGE_CODE %}
+        <a class="lang__item" href="{% url 'set_lang' language.code %}">{{ language.name_translated }}</a>
+    {% endif%}
+{% endfor%}
+ -->
+
+
+<div class="lang" >
+<div class="current">
+    {% trans "Поточна мова" %}: 
+    {% for language in languages %}
+        {% if language.code == LANGUAGE_CODE %}
+                {{ language.name_translated }} 
+        {% endif%}
+    {% endfor%}
+</div>
+{% trans "доступні мови" %}: 
+{% for language in languages %}
+    {% if language.code != LANGUAGE_CODE %}
+    <a class="show"  href="{% url 'set_lang' language.code %}">{{ language.name_translated }}</a>
+    {% endif%}
+{% endfor%}
+</div>
+
+
+
+<style>
+    .lang{
+        line-height: 20px;
+        margin-left:10px;
+    }
+</style>
+<!-- <style>
+
+.current{
+    position: relative;
+}
+.show {
+    display: none;
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    opacity: 0; 
+    visibility: hidden;
+    transition-property: opacity, visibility; 
+    transition-duration: 0.2s; 
+    transition-delay: 0.15s; 
+}
+
+
+</style>
+<script>
+
+
+function show(show_block){
+    show_block.style.display = "block";
+    show_block.style.opacity = "1";
+    show_block.style.visibility = "visible";
+    show_block.style.color = 'black';
+}
+
+function hide(show_block){
+    show_block.style.display = 'none';
+    show_block.style.opacity = "0"; 
+    show_block.style.visibility = "hidden";
+}
+
+
+var current = document.querySelector('.current')
+var show_block = current.nextElementSibling
+show_block.addEventListener('mouseover', function(){
+    show(show_block)
+})
+show_block.addEventListener('mouseout', function(){
+    hide(show_block)
+})
+current.addEventListener('mouseover', function(){
+    show(show_block)        
+})
+current.addEventListener('mouseout', function(){
+    hide(show_block)
+})
+
+
+
+</script> -->

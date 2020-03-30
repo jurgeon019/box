@@ -24,7 +24,6 @@ class SingletonModelAdmin(admin.ModelAdmin):
 
     def get_urls(self):
         urls = super(SingletonModelAdmin, self).get_urls()
-
         # _meta.model_name only exists on Django>=1.6 -
         # on earlier versions, use module_name.lower()
         try:
@@ -48,7 +47,8 @@ class SingletonModelAdmin(admin.ModelAdmin):
                 name='%s_change' % url_name_prefix),
         ]
         # By inserting the custom URLs first, we overwrite the standard URLs.
-        return custom_urls + urls
+        urls = custom_urls + urls
+        return urls 
 
     def response_change(self, request, obj):
         msg = _('%(obj)s was changed successfully.') % {'obj': force_unicode(obj)}

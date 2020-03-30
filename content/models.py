@@ -12,14 +12,17 @@ from .abstract_models import (
 from .validators import validate_phone_number
 
 class Page(AbstractPage):
-  title      = models.CharField(verbose_name=_("Заголовок"), blank=True, null=True, max_length=255, help_text=("Назва сторінки"))
+  title = models.CharField(verbose_name=_("Заголовок"), blank=True, null=True, max_length=255, help_text=("Назва сторінки"))
+  code  = models.SlugField(verbose_name=_("Код"), blank=False, null=False, unique=True, max_length=255, help_text=("Код сторінки"))
 
   class Meta:
     verbose_name        = _("cторінка")
     verbose_name_plural = _("cторінки")
 
   def __str__(self):
-    return f'{self.code}, {self.meta_title}'
+    title = '' 
+    if self.title:title = self.title 
+    return f'{self.code} {title}'
 
 
 class Map(AbstractContent):
@@ -116,6 +119,7 @@ class Link(AbstractLink):
 
 
 class Slide(BaseMixin):
+    code       = models.SlugField(verbose_name=_("Код"), max_length=255, blank=False, null=False, unique=True)
     page      = models.ForeignKey(verbose_name=_("Сторінка"), to="content.Page", related_name="slides", on_delete=models.SET_NULL, blank=True, null=True)
     image     = models.ImageField(verbose_name=_("Зображення"), blank=False, null=False)
     slider    = models.ForeignKey(verbose_name=_("Слайдер"), to='content.Slider', related_name='slides', on_delete=models.SET_NULL, null=True, blank=False) 
@@ -184,6 +188,7 @@ class Slide(BaseMixin):
 
 
 class Slider(BaseMixin):
+    code = models.SlugField(verbose_name=_("Код"), max_length=255, blank=False, null=False, unique=True)
     name = models.CharField(verbose_name=_("Назва"), max_length=255, blank=True, null=True)
     page = models.ForeignKey(
         verbose_name=("Сторінка"), 

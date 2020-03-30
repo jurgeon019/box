@@ -1,4 +1,4 @@
-from box.blog.models import Post 
+from .models import Post 
 from django.core.paginator import Paginator
 
 

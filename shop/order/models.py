@@ -24,7 +24,8 @@ class Status(models.Model):
   color  = ColorField(verbose_name=_("Колір"), blank=False, null=False)
   action = models.BooleanField(verbose_name=_("Дія над товаром"), choices=action_choices, default=0)
   name   = models.CharField(verbose_name=_("Назва"), max_length=255, blank=False, null=False)
-  config = models.ForeignKey(to='order.OrderConfig', null=True, blank=False, on_delete=models.CASCADE)
+  # config = models.ForeignKey(to='order.OrderConfig', null=True, blank=False, on_delete=models.CASCADE)
+  config = models.ForeignKey(to='order.OrderConfig', null=True, blank=True, on_delete=models.CASCADE)
   
   def __str__(self):
     return f"{self.name}"

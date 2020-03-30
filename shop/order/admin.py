@@ -4,7 +4,7 @@ from django.shortcuts import reverse, render, redirect
 from django.utils.html import mark_safe
 
 from box.shop.order.models import Order, Status
-from box.shop.liqpay.admin import PaymentInline
+from box.payment.liqpay.admin import PaymentInline
 from box.shop.cart.admin import CartItemInline
 from box.core.utils import show_admin_link
 from box.solo.admin import SingletonModelAdmin
@@ -60,6 +60,11 @@ class OrderTagAdmin(TabbedTranslationAdmin):
   search_fields = [
     'name'
   ]
+
+
+from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
+
+
 
 
 class OrderAdmin(admin.ModelAdmin):
@@ -150,6 +155,7 @@ class OrderAdmin(admin.ModelAdmin):
       put_tags_on,
       put_tags_off,
     ]
+    date_hierarchy = 'created'
     show_user.short_description = _('Користувач')
     show_id.short_description = _('ID замовлення')
     items_count.short_description = _('Товари')
@@ -191,8 +197,8 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = [
         'status',
         'tags',
-        'created',
-        'updated',
+        ('created', DateTimeRangeFilter), 
+        ('updated', DateTimeRangeFilter),
     ]
     fields = [
         # 'user',

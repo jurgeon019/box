@@ -76,9 +76,11 @@ seo = [_("SEO"), {
         "slug",
         "alt",
         ),
+        # (
         "meta_title",
         "meta_descr",
         "meta_key",
+        # ),
     ],
     'classes':[
       "collapse",
@@ -117,75 +119,93 @@ class AdminImageWidget(AdminFileWidget):
     output.append(super(AdminFileWidget, self).render(name, value, attrs, renderer))
     return mark_safe(''.join(output))
 
+
+class BaseMixin(object):
+  def is_active_on(self, request, queryset):
+      queryset.update(is_active=True)
+  def is_active_off(self, request, queryset):
+      queryset.update(is_active=False)
+  def show_site_link(self, obj):
+      show = _("Показати на сайті")
+      if obj.is_active:
+        return mark_safe(f"<a href='{obj.get_absolute_url()}'>{show}</a>")
+      return _(f"{obj._meta.verbose_name} не активний")
+  def show_delete_link(self, obj):
+      return mark_safe(f"<a href='/admin/{obj._meta.app_label}/{obj._meta.model_name}/{obj.pk}/delete/' style='color:red'>x</a>")
+  def show_image(self, obj):
+      img  = f'<img src="{obj.image_url}" style="height:55px; max-width:150px" />'
+      return mark_safe(img)
+  def show_edit_link(self, obj):
+      return mark_safe(f'<a href="/admin/{obj._meta.app_label}/{obj._meta.model_name}/{obj.id}/change/">Змінити</a>')
+  show_site_link.short_description     = ("Переглянути на сайті")
+  show_edit_link.short_description   = ("Змінити")    
+  show_delete_link.short_description = ("Видалити")
+  show_image.short_description       = ('Зображення')
+  is_active_on.short_description     = ("Увімкнути")
+  is_active_off.short_description    = ("Вимкнути")
+  # changelist
+  change_list_template = 'core/sortable_import_export_change_list.html'
+  actions = [
+      "is_active_on",
+      "is_active_off",
+  ]
+  actions_on_top = True
+  actions_on_bottom = True 
+
+  list_per_page = 100
+  search_fields = [
+    'title',
+  ]
+  list_display = [
+      'show_image',
+      'title',
+      'is_active',
+      'show_site_link',
+      'show_delete_link',
+  ]
+  list_display_links = [
+      'show_image',
+      'title',
+  ]
+  list_editable = [
+      'is_active',
+  ]
+  list_filter = [
+    'is_active',
+  ]
+  # changeform
+  formfield_overrides = {
+      models.ImageField:{'widget':AdminImageWidget}
+  }
+  readonly_fields = [
+      # 'code',
+      'updated',
+      'created',
+  ]
+  save_on_top = True 
+  save_on_bottom = True 
+
+
+
+
+class ImportExportClonableMixin(
+  BaseMixin,
+  ImportExportActionModelAdmin,
+  ImportExportModelAdmin, 
+  ClonableModelAdmin, 
+  admin.ModelAdmin,
+  ):
+  pass
+
 class BaseAdmin(
+  BaseMixin,
   ImportExportActionModelAdmin,
   ImportExportModelAdmin, 
   SortableAdminMixin, 
   ClonableModelAdmin, 
   admin.ModelAdmin,
   ):
-    def is_active_on(self, request, queryset):
-        queryset.update(is_active=True)
-    def is_active_off(self, request, queryset):
-        queryset.update(is_active=False)
-    def show_site_link(self, obj):
-        show = _("Показати на сайті")
-        if obj.is_active:
-          return mark_safe(f"<a href='{obj.get_absolute_url()}'>{show}</a>")
-        return _(f"{obj._meta.verbose_name} не активний")
-    def show_delete_link(self, obj):
-        return mark_safe(f"<a href='/admin/{obj._meta.app_label}/{obj._meta.model_name}/{obj.pk}/delete/' style='color:red'>x</a>")
-    def show_image(self, obj):
-        img  = f'<img src="{obj.image_url}" style="height:55px; max-width:150px" />'
-        return mark_safe(img)
-    def show_edit_link(self, obj):
-        return mark_safe(f'<a href="/admin/{obj._meta.app_label}/{obj._meta.model_name}/{obj.id}/change/">Змінити</a>')
-    show_site_link.short_description     = ("Переглянути на сайті")
-    show_edit_link.short_description   = ("Змінити")    
-    show_delete_link.short_description = ("Видалити")
-    show_image.short_description       = ('Зображення')
-    is_active_on.short_description     = ("Увімкнути")
-    is_active_off.short_description    = ("Вимкнути")
-    # changelist
-    change_list_template = 'core/sortable_import_export_change_list.html'
-    actions = [
-        "is_active_on",
-        "is_active_off",
-    ]
-    actions_on_top = True
-    actions_on_bottom = True 
-    list_per_page = 100
-    search_fields = [
-      'title',
-    ]
-    list_display = [
-        'show_image',
-        'title',
-        'is_active',
-        'show_site_link',
-        'show_delete_link',
-    ]
-    list_display_links = [
-        'show_image',
-        'title',
-    ]
-    list_editable = [
-        'is_active',
-    ]
-    list_filter = [
-      'is_active',
-    ]
-    # changeform
-    formfield_overrides = {
-        models.ImageField:{'widget':AdminImageWidget}
-    }
-    readonly_fields = [
-        'code',
-        'updated',
-        'created',
-    ]
-    save_on_top = True 
-    save_on_bottom = True 
+  pass 
 
 
 

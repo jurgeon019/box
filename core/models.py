@@ -17,8 +17,9 @@ __all__ = [
 
 
 class BaseMixin(models.Model):
-	code            = models.CharField(verbose_name=_("Код"), max_length=255, blank=True, null=True, unique=True)
+	code            = models.SlugField(verbose_name=_("Код"), blank=True, null=True, unique=True, max_length=255, help_text=("Допоміжний"))
 	order           = models.PositiveIntegerField(verbose_name=_("Порядок"), default=0, blank=False, null=False)
+
 	is_active       = models.BooleanField(verbose_name=_("Активність"), default=True, help_text=_("Відображення на сайті"))
 	created         = models.DateTimeField(verbose_name=_("Створено"), default=timezone.now)
 	updated         = models.DateTimeField(verbose_name=_("Оновлено"), auto_now_add=False, auto_now=True, blank=True, null=True)
@@ -29,9 +30,6 @@ class BaseMixin(models.Model):
 	# TODO: розібратись з is_active, related_name, фільтруванням
 	class Meta:
 		abstract = True 
-
-	def save(self, *args, **kwargs):
-		super().save(*args, **kwargs)
 
 	def get_admin_url(self):
 		return get_admin_url(self)
@@ -53,14 +51,18 @@ class AbstractPage(BaseMixin):
 		abstract = True
 	
 	def save(self, *args, **kwargs):
+		from box.core.signals import handle_slug 
 		if not self.meta_title and self.title:
 			self.meta_title = self.title 
+		if not self.alt and self.title:
+			self.alt = self.title 
 		if not self.meta_descr and self.description:
 			self.meta_descr = self.description
+		handle_slug(self)
 		super().save(*args, **kwargs)
-	
+
 	def __str__(self):
-		return f'{self.meta_title}'
+		return f'{self.title}'
 	
 	@property
 	def image_url(self):
@@ -88,4 +90,8 @@ class AbstractPage(BaseMixin):
 			'alt',
 		]
 		return fields 
+	
+	def get_absolute_url(self):
+		return reverse("page", kwargs={"slug": self.slug})
+	
 

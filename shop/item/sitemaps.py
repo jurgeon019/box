@@ -14,8 +14,10 @@ class ItemSitemap(Sitemap):
     def lastmod(self, obj):
         return obj.updated
 
+    def location(self, obj):
+        return obj.get_absolute_url()
 
-class CategorySitemap(Sitemap):
+class ItemCategorySitemap(Sitemap):
     changefreq = 'never'
     priority = 1
     protocol = 'https'
@@ -27,3 +29,5 @@ class CategorySitemap(Sitemap):
     def lastmod(self, obj):
         return obj.updated
 
+    def location(self, obj):
+        return obj.get_absolute_url()
