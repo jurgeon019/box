@@ -10,6 +10,7 @@ except ImportError:
     from django.utils.encoding import force_text as force_unicode 
 from django.utils.translation import ugettext as _
 
+from django.contrib.admin import AdminSite
 
 class SingletonModelAdmin(admin.ModelAdmin):
     object_history_template = "admin/solo/object_history.html"

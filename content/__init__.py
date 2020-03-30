@@ -22,3 +22,52 @@ class PageConfig(AppConfig):
 
 
 default_app_config = 'box.content.PageConfig'
+
+
+
+'''
+AbstractContent(page, code, created, updated)
+  Img (AbstractContent + image, alt)
+  Map (AbstractContent + html)
+  AbstractText (AbstractContent + text )
+    Text
+    AbstractLink (AbstractText + href )
+      Address
+      Link
+      Tel 
+      Mailto
+
+Img
+  page, code, created, updated,
+  image, alt,
+
+Map
+  page, code, created, updated,
+  html,
+
+Text
+  page, code, created, updated,
+  text,
+
+Address
+  page, code, created, updated,
+  text,
+
+
+Link
+  page, code, created, updated,
+  text,
+  href,
+
+
+Tel
+  page, code, created, updated,
+  text,
+  href,
+
+
+Mailto
+  page, code, created, updated,
+  text,
+  href,
+'''

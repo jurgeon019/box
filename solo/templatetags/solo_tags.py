@@ -32,3 +32,5 @@ def get_solo(model_path):
             }
         ))
     return model_class.get_solo()
+
+

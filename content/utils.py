@@ -21,6 +21,10 @@ def get_class(content_type):
         'link':    Link,
         'slider':  Slider,
         'slide':   Slide,
+        'item':          Item,
+        'item_category': ItemCategory,
+        'post':          Post,
+        'post_category': PostCategory,
     }
     return mapper[content_type] 
 
