@@ -1,15 +1,13 @@
 
 from django.urls import path
 
-from . import views
-
+from .views import *
 
 # app_name = 'novaposhta'
 
 
 urlpatterns = [
-    path('refresh/', views.refresh, name='refresh')
-
+    path('np/<action>/<content>/<type>/', np, name='np'),
 ]
 
 
