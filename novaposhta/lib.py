@@ -25,6 +25,7 @@ def search_warehouses(query, limit=None):
     return queryset
 
 
+
 def refresh_warehouses():
 
     api_domain = 'https://api.novaposhta.ua'

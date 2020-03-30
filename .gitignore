@@ -24,6 +24,8 @@ __pycache__/
 **/__pycache__/**
 !**/__pycache__
 *.pyc
+.pyc 
+
 static_root/
 
 node_modules

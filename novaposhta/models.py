@@ -28,3 +28,9 @@ class Warehouse(models.Model):
         verbose_name_plural = _('Warehouses')
 
 
+
+class Settlement(models.Model):
+    pass 
+
+
+
