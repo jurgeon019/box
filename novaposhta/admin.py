@@ -4,7 +4,7 @@ from importlib import import_module
 from django.apps import apps
 from django.contrib import admin
 
-from box.shop.novaposhta.models import Warehouse
+from .models import Warehouse
 
 
 def _get_warehouse_admin_base_class():

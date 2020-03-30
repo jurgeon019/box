@@ -5,8 +5,8 @@ from django.conf import settings
 
 from box.model_search import model_search
 
-from box.shop.novaposhta.settings import NOVA_POSHTA_API_KEY
-from box.shop.novaposhta.models import Warehouse
+from .settings import NOVA_POSHTA_API_KEY
+from .models import Warehouse
 
 
 def search_warehouses(query, limit=None):

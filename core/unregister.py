@@ -71,7 +71,7 @@ admin.site.unregister(OrderConfig)
 admin.site.unregister(Status)
 admin.site.unregister(OrderTag)
 
-from box.shop.liqpay.admin import (
+from box.payment.liqpay.admin import (
     Payment, PaymentAdmin,
 )
 from box.content.admin import (

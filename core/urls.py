@@ -42,7 +42,6 @@ for url in settings.PROJECT_CORE_MULTILINGUAL_URLS:
   multilingual_urls.append(path('', include(url)))
 
 api_urls = [
-  path('', include('box.shop.novaposhta.api.urls')),
   path('', include('box.shop.customer.api.urls')),
   path('', include('box.shop.cart.api.urls')),
   path('', include('box.shop.item.api.urls')),
@@ -51,6 +50,7 @@ api_urls = [
   path('', include('box.custom_auth.api.urls')),
   path('', include('box.custom_admin.api.urls')),
   path('', include('box.contact_form.api.urls')),
+  path('', include('box.novaposhta.api.urls')),
   path('', include('box.content.api.urls')),
   path('', include('box.payment.liqpay.api.urls')),
 ]
@@ -75,7 +75,7 @@ box_urlpatterns = [
   path('testmail/',        testmail, name='testmail'),
   path('test/',          include('box.shop.test_shop.urls')),
   path('', include('box.global_config.urls')),
-  path('', include('box.shop.novaposhta.urls')),
+  path('', include('box.novaposhta.urls')),
   path('', include(api_urls)),
   path('api/', include(api_urls)),
 ]

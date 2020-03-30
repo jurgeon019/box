@@ -1,5 +1,5 @@
 
-from box.shop.novaposhta.lib import search_warehouses
+from ..lib import search_warehouses
 from django.http import JsonResponse
 
 

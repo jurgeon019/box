@@ -53,6 +53,7 @@ box = [
     'box.global_config',
     'box.imp_exp',
     'box.model_search',
+    'box.novaposhta',
 
     'box.payment',
     'box.payment.liqpay',
@@ -68,7 +69,6 @@ box = [
     'box.shop.order',
     'box.shop.cart',
     'box.shop.customer',
-    'box.shop.novaposhta',
 
     
     'box.solo',

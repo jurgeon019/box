@@ -1,7 +1,7 @@
 
 from django.urls import path
 
-from box.shop.novaposhta import views
+from . import views
 
 
 # app_name = 'novaposhta'

@@ -4,11 +4,11 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class NovaPoshtaAppConfig(AppConfig):
-    name = 'box.shop.novaposhta'
+    name = 'box.novaposhta'
     verbose_name = _('Nova poshta')
 
 
-default_app_config = 'box.shop.novaposhta.NovaPoshtaAppConfig'
+default_app_config = 'box.novaposhta.NovaPoshtaAppConfig'
 
 
 
