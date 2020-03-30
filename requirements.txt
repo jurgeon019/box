@@ -22,6 +22,7 @@ django-rosetta
 django-colorfield
 django-admin-sortable
 django-admin-sortable2
+django-admin-rangefilter
 django-taggit
 django-select2
 django-allauth
