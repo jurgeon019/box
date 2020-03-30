@@ -3,6 +3,5 @@ from .views import *
 
 urlpatterns = [
     path('autocomplete/', autocomplete, name='autocomplete'),
-    path('settlements/', settlements, name='settlements'),
-    
+    path('get_areas/', get_areas, name='get_areas'),
 ]
