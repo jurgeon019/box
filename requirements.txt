@@ -10,7 +10,7 @@ xlsxwriter
 google-api-python-client
 python-magic
 
-psycopg2
+# psycopg2
 
 
 # django 
