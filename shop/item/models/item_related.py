@@ -18,7 +18,7 @@ class ItemBrand(AbstractPage):
 
 class ItemImage(BaseMixin):
 	item      = SortableForeignKey(verbose_name=_("Товар"), to="item.Item", on_delete=models.SET_NULL, related_name='images', null=True)
-	image     = models.ImageField(verbose_name=_('Ссилка зображення'), upload_to=item_image_folder, blank=True, null=True, default='shop/items/test_item.jpg')
+	image     = models.ImageField(verbose_name=_('Ссилка зображення'), upload_to=item_image_folder, blank=True, null=True)
 	alt       = models.CharField(verbose_name=_("Альт"), max_length=255, blank=True, null=True)
 
 	def __str__(self):
@@ -30,6 +30,11 @@ class ItemImage(BaseMixin):
 		    'alt',
 		]
 		return fields
+	
+	def image_url(self):
+		image_url = ''
+		if self.image: image_url = self.image.url 
+		return image_url
 
 
 	def save(self, *args, **kwargs):

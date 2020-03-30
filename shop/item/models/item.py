@@ -1,7 +1,8 @@
-from ._imports import * 
-from . import ItemImage, ItemCurrency
-
 from django.utils.translation import gettext_lazy as _
+
+from ._imports import * 
+from . import ItemImage, ItemCurrency, ItemStock, ItemCurrencyRatio
+
 
 
 

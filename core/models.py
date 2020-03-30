@@ -17,9 +17,9 @@ __all__ = [
 
 
 class BaseMixin(models.Model):
-	# code == int, тому що для товара потрібно інкрементування.
-	code            = models.IntegerField(verbose_name=_("Код"),  blank=True, null=True, unique=True)
+	code            = models.SlugField(verbose_name=_("Код"), blank=True, null=True, unique=True, max_length=255, help_text=("Допоміжний"))
 	order           = models.PositiveIntegerField(verbose_name=_("Порядок"), default=0, blank=False, null=False)
+
 	is_active       = models.BooleanField(verbose_name=_("Активність"), default=True, help_text=_("Відображення на сайті"))
 	created         = models.DateTimeField(verbose_name=_("Створено"), default=timezone.now)
 	updated         = models.DateTimeField(verbose_name=_("Оновлено"), auto_now_add=False, auto_now=True, blank=True, null=True)
@@ -31,9 +31,6 @@ class BaseMixin(models.Model):
 	class Meta:
 		abstract = True 
 
-	def save(self, *args, **kwargs):
-		super().save(*args, **kwargs)
-
 	def get_admin_url(self):
 		return get_admin_url(self)
 	
@@ -41,9 +38,6 @@ class BaseMixin(models.Model):
 
 
 class AbstractPage(BaseMixin):
-	# code == slug, тому що для контенту потрібен виклик в шаблоні по "змінній"
-	# UPD: товар наслідується від цього класу, тому має бути інтежер
-	# code       = models.SlugField(verbose_name=_("Код"), max_length=255, blank=False, null=False, unique=True)
 	meta_title = models.TextField(verbose_name=_("Мета-заголовок"),     blank=True, null=True, help_text=_("Заголовок сторінки в браузері, який відображається у видачі пошукових систем"))
 	meta_descr = models.TextField(verbose_name=_("Мета-опис"),          blank=True, null=True, help_text=_("__"))
 	meta_key   = models.TextField(verbose_name=_("Ключові слова"),      blank=True, null=True, help_text=_("Список ключових слів"))
@@ -57,12 +51,16 @@ class AbstractPage(BaseMixin):
 		abstract = True
 	
 	def save(self, *args, **kwargs):
+		from box.core.signals import handle_slug 
 		if not self.meta_title and self.title:
 			self.meta_title = self.title 
+		if not self.alt and self.title:
+			self.alt = self.title 
 		if not self.meta_descr and self.description:
 			self.meta_descr = self.description
+		handle_slug(self)
 		super().save(*args, **kwargs)
-	
+
 	def __str__(self):
 		return f'{self.title}'
 	
@@ -94,6 +92,6 @@ class AbstractPage(BaseMixin):
 		return fields 
 	
 	def get_absolute_url(self):
-		return reverse("page", kwargs={"code": self.code})
+		return reverse("page", kwargs={"slug": self.slug})
 	
 

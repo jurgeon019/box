@@ -36,7 +36,7 @@ multilingual_urls = [
   path('admin+/',          admin_plus.urls),
   path('admin/',           admin.site.urls),
   path('', include('box.content.urls')),
-  path('', include('box.shop.item.urls')),
+  path('', include('box.shop.item.admin.urls')),
 ]
 for url in settings.PROJECT_CORE_MULTILINGUAL_URLS:
   multilingual_urls.append(path('', include(url)))
@@ -86,7 +86,6 @@ urlpatterns = [
   path('', include(third_party_urlpatterns)),
 ]
 for url in settings.PROJECT_CORE_URLS:
-  print(url)
   urlpatterns.append(path('', include(url)))
 
 urlpatterns += i18n_patterns(
@@ -97,5 +96,3 @@ urlpatterns += i18n_patterns(
 if settings.DEBUG == True:
   urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
   urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
-print(urlpatterns)

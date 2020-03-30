@@ -13,12 +13,14 @@ def generate_unique_code(items, code):
 	return code 
 
 
-def generate_unique_slug(items, slug):
+def generate_unique_slug(instance, slug):
+	items   = instance._meta.model.objects.all()
 	origin_slug = slug
 	numb = 1
-	while items.filter(slug=slug).exists():
+	while items.filter(slug=slug).exclude(pk=instance.pk).exists():
 		slug = f'{origin_slug}-{numb}'
 		numb += 1
+	return slug 
 
 
 def trans_slug(instance):
@@ -27,45 +29,44 @@ def trans_slug(instance):
 		slug = slugify(translit(instance.title, reversed=True))
 	except Exception as e:
 		slug = slugify(instance.title)
-	except Exception as e:
-		slug = instance.id
+	# except Exception as e:
+	# 	slug = instance.id
 	return slug 
 
+def handle_slug(instance):
+	if instance.slug:
+		# slug = trans_slug(instance)
+		# slug = trans_slug(instance.slug) # TODO: try it 
+		slug = instance.slug 
+	elif not instance.slug:
+		slug = trans_slug(instance)
+	# if instance.code:
+	# 	code = instance.code
+	# elif not instance.code and instance.id:
+	# 	code = instance.id
+	# else:
+	# 	print('?????????????')
+	# 	raise Exception('dafuk are you doing man?')
+	# instance.code = generate_unique_code(items, code) 
+	instance.slug = generate_unique_slug(instance, slug)
+	return instance
 
-# @receiver(post_save, sender=BaseMixin, dispatch_uid="create_code")
-def handle_code(sender, instance, **kwargs):
+
+
+def page_post_save(sender, instance, **kwargs):
 	created = kwargs['created']
-	items   = instance._meta.model.objects.all()
 	if created:
-		if instance.code:
-			code = instance.code
-		elif not instance.code:
-			code = instance.id
-		instance.code = generate_unique_code(items, code) 
+		instance = handle_slug(instance)
 		instance.save()
-	elif not created:
-		if instance.code:
-			'do nothing, because instance code already exists and it is already unique'
-		elif not instance.code:
-			raise Exception('YOU MUST PROVIDE "code" IN ORDER TO SUCCESSFULLY UPDATE ITEM')
 
-
-def handle_slug(sender, instance, **kwargs):
-	created = kwargs['created']
-	items   = instance._meta.model.objects.all()
-	if created:
-		if instance.slug:
-			# slug = trans_slug(instance)
-			slug = instance.slug 
-		elif not instance.slug:
-			# slug = instance.id 
-			slug = trans_slug(instance)
-		instance.slug = generate_unique_slug(items, slug)
-		instance.save()
-	elif not created:
-		if instance.slug:
-			'do nothing, because instance slug already exists and it is already unique'
-		elif not instance.slug:
-			raise Exception('YOU MUST PROVIDE "slug" IN ORDER TO SUCCESSFULLY UPDATE ITEM')
+	# elif not created:
+	# 	if instance.slug:
+	# 		'do nothing, because instance slug already exists and it is already unique'
+	# 	elif not instance.slug:
+	# 		raise Exception('YOU MUST PROVIDE "slug" IN ORDER TO SUCCESSFULLY UPDATE ITEM')
+	# 	# if instance.code:
+	# 	# 	'do nothing, because instance code already exists and it is already unique'
+	# 	# elif not instance.code:
+	# 	# 	raise Exception('YOU MUST PROVIDE "code" IN ORDER TO SUCCESSFULLY UPDATE ITEM')
 
 

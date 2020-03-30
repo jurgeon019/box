@@ -62,6 +62,11 @@ class OrderTagAdmin(TabbedTranslationAdmin):
   ]
 
 
+from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
+
+
+
+
 class OrderAdmin(admin.ModelAdmin):
     def total_with_coupon(self, obj=None):
         return f'{obj.total_price_with_coupon} {obj.currency}'
@@ -150,6 +155,7 @@ class OrderAdmin(admin.ModelAdmin):
       put_tags_on,
       put_tags_off,
     ]
+    date_hierarchy = 'created'
     show_user.short_description = _('Користувач')
     show_id.short_description = _('ID замовлення')
     items_count.short_description = _('Товари')
@@ -191,8 +197,8 @@ class OrderAdmin(admin.ModelAdmin):
     list_filter = [
         'status',
         'tags',
-        'created',
-        'updated',
+        ('created', DateTimeRangeFilter), 
+        ('updated', DateTimeRangeFilter),
     ]
     fields = [
         # 'user',

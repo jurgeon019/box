@@ -37,6 +37,7 @@ third_party = [
     # 'adminsortable',
     'adminsortable2',
     "rest_framework",
+    "rangefilter",
 ]
 box = [
 

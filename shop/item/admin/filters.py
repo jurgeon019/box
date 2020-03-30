@@ -1,6 +1,7 @@
 
-from mptt.admin import MPTTModelAdmin, TreeRelatedFieldListFilter
+from django.utils.translation import gettext_lazy as _
 
+from mptt.admin import MPTTModelAdmin, TreeRelatedFieldListFilter
 from admin_auto_filters.filters import AutocompleteFilter
 
 

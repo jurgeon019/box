@@ -17,25 +17,21 @@ def generate_unique_slug(klass, field, item, *args, **kwargs):
 	return unique_slug
 
 
-def item_image_folder(instance, filename):
-	ext = filename.split('.')[-1]
+def item_image_folder(instance, full_filename):
+	foldername   = instance.item.slug
+	raw_filename = full_filename.strip().split('.')
+	ext          = raw_filename[-1].strip()
+	filename     = raw_filename[0].strip()
+	filename     = f'{filename}.{ext}'
+	path         = '/'.join(['shop', 'item', foldername, filename])
+	return path 
 
-	# foldername = instance.slug
-	foldername = 'slug'
-
-	# slug = instance.slug
-	slug = 'slug'
-
-	filename = slug + '.' + ext
-
-	path = f"shop/items"
-	path = '/'.join(['shop','items'])
-
-	path = f"{foldername}/{filename}"
-	path = '/'.join([foldername, filename])
-
-	path = f"shop/items/{foldername}/{filename}"
-	path = '/'.join(['shop', 'items', foldername, filename])
-
+def get_image_path(item, full_filename):
+	foldername   = item.slug
+	raw_filename = full_filename.strip().split('.')
+	ext          = raw_filename[-1].strip()
+	filename     = raw_filename[0].strip()
+	filename     = f'{filename}.{ext}'
+	path         = '/'.join(['shop', 'item', foldername, filename])
 	return path 
 

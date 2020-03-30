@@ -5,6 +5,7 @@ from .models import Page
 
 from box.core.utils import get_multilingual_fields
 
+
 class AbstractContentResource(ModelResource):
 
     def get_export_order(self):
@@ -22,14 +23,14 @@ class AbstractContentResource(ModelResource):
 
     def dehydrate_page(self, obj):
         page = None 
-        if obj.page:
-            page = obj.page.code 
+        if obj.page: page = obj.page.code 
         return page 
 
     def before_import_row(self, row, **kwargs):
         if row['page']:
-            row['page'] = Page.objects.get_or_create(code=row['page'])[0].id
-
+            page_code   = row['page']
+            page        = Page.objects.get_or_create(code=page_code)[0]
+            row['page'] = page.id
 
 
 class AbstractTextResource(AbstractContentResource):
