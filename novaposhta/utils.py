@@ -90,19 +90,19 @@ def create_settlements(response):
         area      = item.get('AreaDescription')
         area_uk   = item.get('AreaDescription')
         area_ru   = item.get('AreaDescriptionRu')
+
+
+        langs = dict(settings.LANGUAGES)
         type,_ = Type.objects.get_or_create(
             title      = type,
             title_uk   = type_uk,
-            title_ru   = type_ru,
         )
         area,_ = Area.objects.get_or_create(
             title    = area,
-            title_ru = area_ru,
             title_uk = area_uk,
         )
         region,_ = Region.objects.get_or_create(
             title    = region,
-            title_ru = region_ru,
             title_uk = region_uk,
             area      = area,
         )
@@ -111,11 +111,19 @@ def create_settlements(response):
             longitude = longitude,
             title     = title,
             title_uk  = title_uk,
-            title_ru  = title_ru,
             type      = type,
             region    = region,
         )
-
+        if 'ru' in langs:
+            type.title_ru       = title_ru
+            area.title_ru       = title_ru
+            region.title_ru     = title_ru
+            settlement.title_ru = title_ru
+            type.save()
+            area.save()
+            region.save()
+            settlement.save()
+            
 
 
 
