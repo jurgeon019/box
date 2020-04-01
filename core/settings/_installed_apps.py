@@ -6,7 +6,7 @@ up = [
     'dal',
     'dal_select2',
     'admin_auto_filters',
-    'filebrowser',
+    # 'filebrowser',
     'modeltranslation',
 ]
 django_contrib = [
@@ -49,7 +49,7 @@ box = [
     'box.custom_auth',
     'box.design',
     'box.faq',
-    'box.filemanager',
+    #  'box.filemanager',
     'box.global_config',
     'box.imp_exp',
     'box.model_search',
