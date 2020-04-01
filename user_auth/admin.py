@@ -16,7 +16,7 @@ from django.shortcuts import reverse, render, redirect
 
 from box.shop.customer.models import (Customer,)
 from box.shop.order.admin import (OrderInline,)
-from box.custom_auth.models import BoxUser 
+from box.user_auth.models import BoxUser 
 from box.core.utils import move_to
 from .forms import * 
 from .resources import BoxUserResource

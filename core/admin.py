@@ -6,7 +6,7 @@ from django.contrib.auth.admin import (
     User, UserAdmin,
     Group, GroupAdmin,
 )
-from box.custom_auth.admin import (
+from box.user_auth.admin import (
    BoxUserAdmin,
 )
 admin.site.register(get_user_model(), BoxUserAdmin)

@@ -1,5 +1,5 @@
 from django.db import models
-from box.custom_auth.models import User as BoxUser
+from box.user_auth.models import User as BoxUser
 
 
 class User(BoxUser):

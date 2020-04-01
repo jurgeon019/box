@@ -3,7 +3,7 @@ from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 from .models import *
 
-from box.custom_auth.admin import BoxUserAdmin
+from box.user_auth.admin import BoxUserAdmin
 
 
 

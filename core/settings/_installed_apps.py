@@ -46,7 +46,7 @@ box = [
     'box.contact_form',
     'box.content',
     'box.core',
-    'box.custom_auth',
+    'box.user_auth',
     'box.design',
     'box.faq',
     #  'box.filemanager',
