@@ -14,4 +14,5 @@ MIDDLEWARE = [
     'django.middleware.common.BrokenLinkEmailsMiddleware',
     'box.core.middleware.PutParsingMiddleware',
     'box.core.middleware.JSONParsingMiddleware',
+    'box.core.middleware.DisableCSRF',
 ]

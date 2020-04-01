@@ -4,6 +4,7 @@ from ._box import *
 from ._crispy_forms import * 
 from ._ckeditor import * 
 from ._django import * 
+from ._drf import * 
 from ._email import * 
 from ._installed_apps import * 
 from ._import_export import * 

@@ -4,6 +4,13 @@ from django.utils.deprecation import MiddlewareMixin
 import json
 
 
+
+class DisableCSRF(MiddlewareMixin):
+    def process_request(self, request):
+        setattr(request, '_dont_enforce_csrf_checks', True)
+
+
+
 class PutParsingMiddleware(MiddlewareMixin):
     def process_request(self, request):
         # if request.method == "PUT" and request.content_type != "application/json":
