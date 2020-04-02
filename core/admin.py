@@ -107,21 +107,22 @@ from box.global_config.admin import (
     CatalogueConfig, CatalogueConfigAdmin,
     DesignConfig, DesignConfigAdmin,
     # Translation, TranslationAdmin,
+    Robots, RobotsAdmin,
+    Seo, SeoAdmin,
 )
+
 admin.site.register(SiteConfig, SiteConfigAdmin)
 admin.site.register(NotificationConfig, NotificationConfigAdmin)
 admin.site.register(CatalogueConfig, CatalogueConfigAdmin)
 admin.site.register(DesignConfig, DesignConfigAdmin)
 # admin.site.register(Translation, TranslationAdmin)
+admin.site.register(Robots, RobotsAdmin)
+admin.site.register(Seo, SeoAdmin)
 
 
 from box.seo.admin import (
-    Robots, RobotsAdmin,
-    Seo, SeoAdmin,
     ItemSeo, ItemSeoAdmin,
 )
-admin.site.register(Robots, RobotsAdmin)
-admin.site.register(Seo, SeoAdmin)
 admin.site.register(ItemSeo, ItemSeoAdmin)
 
 from box.imp_exp.admin import (

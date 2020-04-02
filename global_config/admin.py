@@ -17,7 +17,6 @@ class SiteConfigAdmin(SingletonModelAdmin, TabbedTranslationAdmin):
     pass 
 
 
-
 class NotificationConfigAdmin(SingletonModelAdmin):
     class Media:
         js = ('js/des.js'),
@@ -30,6 +29,7 @@ class NotificationConfigAdmin(SingletonModelAdmin):
         models.TextField:{'widget':Textarea(attrs={'cols':'30', 'rows':'1'})}
     }
 
+
 class CatalogueConfigAdmin(SingletonModelAdmin):
     pass 
 
@@ -38,5 +38,21 @@ class DesignConfigAdmin(TabbedTranslationAdmin, SingletonModelAdmin):
     formfield_overrides = {
         models.ImageField:{'widget':AdminImageWidget}
     }
-   
+
+
+class RobotsAdmin(SingletonModelAdmin):
+    pass 
+
+
+class SeoScriptInline(admin.TabularInline):
+    model = SeoScript
+    extra = 0
+    # classes = ['collapse',]
+    exclude = []
+
+
+class SeoAdmin(SingletonModelAdmin):
+    inlines = [
+        SeoScriptInline,
+    ]
 

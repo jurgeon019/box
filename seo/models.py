@@ -3,50 +3,9 @@ from box.solo.models import SingletonModel
 from django.utils.translation import gettext_lazy as _
 
 __all__ = [
-  'Robots',
   'ItemCategorySeo',
   "ItemSeo",
-  "SeoScript",
-  "Seo",
 ]
-
-
-class Robots(SingletonModel):
-  robots_txt = models.TextField(verbose_name=_('robots.txt'), blank=True, null=True)
-
-  def __str__(self):
-    return f'{self.id}'
-
-  class Meta:
-    verbose_name = ('Robots.txt')
-    verbose_name_plural = ('Robots.txt')
-
-
-class SeoScript(models.Model):
-  POSITION_CHOICES = (
-    ("head_top","Після відкриваючого head"),
-    ("head_bottom","Перед закриваючим head"),
-    ("body_top","Після відкриваючого body"),
-    ("body_bottom","Перед закриваючим body"),
-  )
-  setting  = models.ForeignKey(to="seo.Seo", on_delete=models.CASCADE, related_name='scripts',)
-  name     = models.CharField(verbose_name=_("Назва коду"), max_length=255)
-  position = models.CharField(verbose_name=_("Положення коду на сторінці"), max_length=255, choices=POSITION_CHOICES)
-  code     = models.TextField(verbose_name=_("Код для вставлення"))
-
-  def __str__(self):
-    return f'{self.name}, {self.position}, {self.code}'
-
-  class Meta:
-    verbose_name = ('Код')
-    verbose_name_plural = ('Коди')
-
-
-class Seo(SingletonModel):
-  class Meta:
-    verbose_name = ('Лічильники та коди')
-    verbose_name_plural = ('Лічильники та коди')
-
 
 class ItemSeo(models.Model):
   categories       = models.ManyToManyField(verbose_name=_("Категорія"), to="item.ItemCategory",  related_name='item_seos', blank=True)

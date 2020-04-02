@@ -93,22 +93,21 @@ from box.global_config.admin import (
     CatalogueConfig, CatalogueConfigAdmin,
     DesignConfig, DesignConfigAdmin,
     # Translation, TranslationAdmin,
-
+    Robots, RobotsAdmin,
+    Seo, SeoAdmin,
 )
 admin.site.unregister(SiteConfig)
 admin.site.unregister(NotificationConfig)
 admin.site.unregister(CatalogueConfig)
 admin.site.unregister(DesignConfig)
 # admin.site.unregister(Translation)
+admin.site.unregister(Robots)
+admin.site.unregister(Seo)
 
 
 from box.seo.admin import (
-    Robots, RobotsAdmin,
-    Seo, SeoAdmin,
     ItemSeo, ItemSeoAdmin,
 )
-admin.site.unregister(Robots)
-admin.site.unregister(Seo)
 admin.site.unregister(ItemSeo)
 
 

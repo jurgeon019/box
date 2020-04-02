@@ -20,6 +20,9 @@ __all__ = [
   'NotificationConfig',
   'CatalogueConfig',
   'DesignConfig',
+  'Robots',
+  'SeoScript',
+  'Seo',
 ]
 
 from box.payment.liqpay import settings as liqpay_settings
@@ -260,7 +263,6 @@ class CatalogueConfig(SingletonModel):
     verbose_name_plural = _('Налаштування каталогу')
 
 
-
 class DesignConfig(SingletonModel):
 
     logo     = models.ImageField(verbose_name=_("Логотип сайту"), blank=True, null=True, help_text=("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), default='')
@@ -327,4 +329,41 @@ class DesignConfig(SingletonModel):
     class Meta:
         verbose_name = _('Налаштування дизайну')
         verbose_name_plural = verbose_name
+
+
+class Robots(SingletonModel):
+  robots_txt = models.TextField(verbose_name=_('robots.txt'), blank=True, null=True)
+
+  def __str__(self):
+    return f'{self.id}'
+
+  class Meta:
+    verbose_name = _('Robots.txt')
+    verbose_name_plural = _('Robots.txt')
+
+
+class SeoScript(models.Model):
+  POSITION_CHOICES = (
+    ("head_top","Після відкриваючого head"),
+    ("head_bottom","Перед закриваючим head"),
+    ("body_top","Після відкриваючого body"),
+    ("body_bottom","Перед закриваючим body"),
+  )
+  setting  = models.ForeignKey(to="global_config.Seo", on_delete=models.CASCADE, related_name='scripts',)
+  name     = models.CharField(verbose_name=_("Назва коду"), max_length=255)
+  position = models.CharField(verbose_name=_("Положення коду на сторінці"), max_length=255, choices=POSITION_CHOICES)
+  code     = models.TextField(verbose_name=_("Код для вставлення"))
+
+  def __str__(self):
+    return f'{self.name}, {self.position}, {self.code}'
+
+  class Meta:
+    verbose_name = ('Код')
+    verbose_name_plural = ('Коди')
+
+
+class Seo(SingletonModel):
+  class Meta:
+    verbose_name = _('Лічильники та коди')
+    verbose_name_plural = _('Лічильники та коди')
 
