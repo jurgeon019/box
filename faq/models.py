@@ -29,3 +29,6 @@ class Faq(BaseMixin):
             'answer',
         ]
         return fields
+
+# TODO: faq перенести в content. 
+

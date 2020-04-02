@@ -75,3 +75,6 @@ class DesignConfig(SingletonModel):
         verbose_name = _('Налаштування дизайну')
         verbose_name_plural = verbose_name
 
+
+#TODO: перенести в global_config 
+

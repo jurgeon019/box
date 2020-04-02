@@ -72,7 +72,7 @@
   {% block content %}{% endblock content %}
   {% block extra_content %}{% endblock extra_content %}
 
-  {% if request.user.is_staff %}
+  {% if request.user.is_staff and show_admin %}
     {% include 'content/includes/admin_model.html' %}
   {% endif %}
 

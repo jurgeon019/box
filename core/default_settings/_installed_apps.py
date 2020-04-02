@@ -1,7 +1,7 @@
 up = [
     'corsheaders',
     'box.sw_admin',  
-    'admin_tools', 'admin_tools.theming', 'admin_tools.menu', 'admin_tools.dashboard',
+    # 'admin_tools', 'admin_tools.theming', 'admin_tools.menu', 'admin_tools.dashboard',
 
     'dal',
     'dal_select2',
@@ -32,9 +32,7 @@ third_party = [
     'allauth.socialaccount',
     'import_export',
     'rosetta',
-    # 'django_celery_beat',
     'colorfield',
-    # 'adminsortable',
     'adminsortable2',
     "rest_framework",
     "rangefilter",
