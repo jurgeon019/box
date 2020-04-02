@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 
-
+from box.shop.item import settings as item_settings 
 class ItemAdmin(
     BaseAdmin,
     TabbedTranslationAdmin, 
@@ -129,7 +129,7 @@ class ItemAdmin(
         'in_stock',
         'currency',
     ]
-    if settings.MULTIPLE_CATEGORY:
+    if item_settings .MULTIPLE_CATEGORY:
         autocomplete_fields.append('categories')
     else:
         autocomplete_fields.append('category')
@@ -165,7 +165,7 @@ class ItemAdmin(
         'created',
         'updated',
     ]
-    if settings.MULTIPLE_CATEGORY:
+    if item_settings .MULTIPLE_CATEGORY:
         item_fields.insert(2 ,'categories')
     else:
         item_fields.insert(2 ,'category')

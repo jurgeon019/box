@@ -1,7 +1,6 @@
 from django.db import models 
 from django.utils.translation import gettext_lazy as _
-from django.conf import settings 
-
+from box.core import settings as core_settings 
 from box.solo.models import SingletonModel
 from box.content.models import Text
 
@@ -19,7 +18,7 @@ class DesignConfig(SingletonModel):
 
     @property
     def favicon_type(self):
-      name = settings.FAVICON
+      name = core_settings.FAVICON
       if self.favicon:
         name = self.favicon.url
       ext = name.split('.')[-1].strip()
@@ -31,21 +30,21 @@ class DesignConfig(SingletonModel):
   
     @property
     def favicon_url(self):
-      favicon_url = settings.FAVICON
+      favicon_url = core_settings.FAVICON
       if self.favicon:
         favicon_url = self.favicon.url
       return favicon_url
 
     @property
     def og_image_square_url(self):
-      og_image_square_url = settings.OGIMAGE_SQUARE
+      og_image_square_url = core_settings.OGIMAGE_SQUARE
       if self.og_image_square:
         og_image_square_url = self.og_image_square.url
       return og_image_square_url
 
     @property
     def og_image_rectangle_url(self):
-      og_image_rectangle_url = settings.OGIMAGE_RECTANGLE
+      og_image_rectangle_url = core_settings.OGIMAGE_RECTANGLE
       if self.og_image_rectangle:
         og_image_rectangle_url = self.og_image_rectangle.url
       return og_image_rectangle_url

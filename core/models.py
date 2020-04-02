@@ -1,7 +1,7 @@
 from django.db import models 
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone 
-from django.conf import settings
+from box.core import settings as core_settings 
 
 from tinymce import HTMLField
 from adminsortable.models import SortableMixin
@@ -69,7 +69,7 @@ class AbstractPage(BaseMixin):
 		if self.image:
 			url = self.image.url
 		else:
-			url = settings.NO_ITEM_IMAGE
+			url = core_settings.IMAGE_NOT_FOUND
 		return url 
 
 	@property

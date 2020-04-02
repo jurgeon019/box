@@ -6,6 +6,7 @@ from box.shop.item.models import (
 )
 
 from django.conf import settings 
+from box.shop.item import settings as item_settings
 
 
 class ItemCurrencySerializer(serializers.ModelSerializer):
@@ -73,7 +74,7 @@ class ItemSerializer(serializers.ModelSerializer):
   def get_full_url(self, obj):
       return obj.get_absolute_url()
 
-  if settings.MULTIPLE_CATEGORY:
+  if item_settings.MULTIPLE_CATEGORY:
     categories = ItemCategorySerializer(many=True)
   else:
     category = ItemCategorySerializer()

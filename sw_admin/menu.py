@@ -41,7 +41,7 @@ class CustomMenu(Menu):
     #         # 'js/mymenu.js',
     #     )
     template = "admin_tools/menu/menu.html"
-    # template = "custom_admin/menu/menu.html"
+    # template = "sw_admin/menu/menu.html"
     def get_children(self):
         children = [
             items.AppList(

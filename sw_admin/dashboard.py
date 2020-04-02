@@ -177,7 +177,7 @@ class CustomIndexDashboard(Dashboard):
             ),
             modules.RecentActions(
                 title='Django CMS recent actions',
-                include_list=('box.page', 'box.custom_admin',)
+                include_list=('box.page', 'box.sw_admin',)
             ),
         ]
         return children
@@ -196,7 +196,7 @@ class CustomIndexDashboard(Dashboard):
     #     js = ('js/mydashboard.js',)
 
     title = 'Admin'
-    # template = 'custom_admin/index.html'
+    # template = 'sw_admin/index.html'
     # template = 'admin/index.html'
     # columns = 1
 

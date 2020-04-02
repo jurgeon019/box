@@ -3,13 +3,10 @@ from ..models import *
 
 
 
-
-
 class WarehouseSerializer(ModelSerializer):
     class Meta:
         model = Warehouse 
         exclude = []
-
 
 
 class AreaSerializer(ModelSerializer):
@@ -23,7 +20,6 @@ class RegionSerializer(ModelSerializer):
     class Meta:
         model = Region 
         exclude = []
-
 
 
 class SettlementSerializer(ModelSerializer):

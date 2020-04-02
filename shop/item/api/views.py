@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.cache import cache_page
-from django.conf import settings 
+from box.shop.item import settings as item_settings
 
 
 from box.shop.item.models import Item, ItemCategory, ItemReview
@@ -41,7 +41,7 @@ def get_items_in_cart(request, items):
 def filter_category(items, query):
   category = query.get('category')
   if category:
-    if settings.MULTIPLE_CATEGORY:
+    if item_settings.MULTIPLE_CATEGORY:
       cat1 = ItemCategory.objects.all().get(slug=category)
       cat2 = ItemCategory.objects.all().filter(parent__slug=category)
       categories = [
@@ -64,7 +64,7 @@ def paginate(items, query):
   page_number  = query.get('page', 1)
   per_page     = query.get('per_page', CatalogueConfig.get_solo().items_per_page)
   ordering     = query.get('sort', '-created')
-  if not settings.PAGINATE_AJAX:
+  if not item_settings.PAGINATE_AJAX:
     page = items      
   else:
     page = Paginator(items, per_page=per_page).get_page(page_number)

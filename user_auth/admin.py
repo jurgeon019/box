@@ -18,7 +18,6 @@ from box.shop.customer.models import (Customer,)
 from box.shop.order.admin import (OrderInline,)
 from box.user_auth.models import BoxUser 
 from box.core.utils import move_to
-from .forms import * 
 from .resources import BoxUserResource
 
 from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin

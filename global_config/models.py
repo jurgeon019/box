@@ -12,10 +12,11 @@ __all__ = [
   'CatalogueConfig',
 ]
 
+from box.payment.liqpay import settings as liqpay_settings
 
 class SiteConfig(SingletonModel):
-  liqpay_public_key   = models.TextField(_("Публічний ключ лікпею"), blank=False, null=False, default=settings.LIQPAY_PUBLIC_KEY)
-  liqpay_private_key  = models.TextField(_("Приватний ключ лікпею"), blank=False, null=False, default=settings.LIQPAY_PRIVATE_KEY)
+  liqpay_public_key   = models.TextField(_("Публічний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PUBLIC_KEY)
+  liqpay_private_key  = models.TextField(_("Приватний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PRIVATE_KEY)
   # captcha_type_choices = (
   #   ("default","default"),
   #   ("v2","v2"),

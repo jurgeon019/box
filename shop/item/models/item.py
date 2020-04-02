@@ -3,12 +3,12 @@ from django.utils.translation import gettext_lazy as _
 from ._imports import * 
 from . import ItemImage, ItemCurrency, ItemStock, ItemCurrencyRatio
 
-
+from .. import settings as item_settings
 
 
 
 class Item(AbstractPage):
-	if settings.MULTIPLE_CATEGORY:
+	if item_settings.MULTIPLE_CATEGORY:
 		categories   = models.ManyToManyField(verbose_name=_("Категорія"), to='item.ItemCategory', related_name="items", blank=True)    
 	else:
 		category     = TreeForeignKey(verbose_name=_("Категорія"), to='item.ItemCategory', related_name="items", on_delete=models.SET_NULL, blank=True, null=True)    
@@ -68,7 +68,7 @@ class Item(AbstractPage):
 		 
 	def handle_currency(self, *args, **kwargs):
 		if not self.currency:
-			if settings.MULTIPLE_CATEGORY:
+			if item_settings.MULTIPLE_CATEGORY:
 				if self.categories.all().exists():
 					self.currency = self.categories.all().first().currency
 				else:
@@ -197,7 +197,7 @@ class Item(AbstractPage):
 		return str(stars)
 	
 	def set_category(self, categories):
-		if settings.MULTIPLE_CATEGORY:
+		if item_settings.MULTIPLE_CATEGORY:
 			for category in categories:
 				self.categories.add(category)
 		else:

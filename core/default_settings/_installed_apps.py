@@ -1,6 +1,6 @@
 up = [
     'corsheaders',
-    'box.custom_admin',  
+    'box.sw_admin',  
     'admin_tools', 'admin_tools.theming', 'admin_tools.menu', 'admin_tools.dashboard',
 
     'dal',

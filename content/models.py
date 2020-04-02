@@ -3,7 +3,7 @@ from tinymce import HTMLField
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone 
 from django.core.exceptions import ValidationError
-from django.conf import settings 
+from box.core import settings as core_settings
 
 from box.core.models import BaseMixin, AbstractPage
 from .abstract_models import (
@@ -161,13 +161,13 @@ class Slide(BaseMixin):
     
     @property
     def image_url(self):
-        image_url = settings.NO_SLIDER_IMAGE_URL
+        image_url = core_settings.IMAGE_NOT_FOUND
         if self.image:
             image_url = self.image.url
         return image_url 
     
     def get_image_url(self):
-        image_url = settings.NO_SLIDER_IMAGE_URL
+        image_url = core_settings.IMAGE_NOT_FOUND
         if self.image:
             image_url = self.image.url
         return image_url 

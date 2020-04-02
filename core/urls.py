@@ -48,7 +48,7 @@ api_urls = [
   path('', include('box.shop.order.api.urls')),
   path('', include('box.blog.api.urls')),
   path('', include('box.user_auth.api.urls')),
-  path('', include('box.custom_admin.api.urls')),
+  path('', include('box.sw_admin.api.urls')),
   path('', include('box.contact_form.api.urls')),
   path('', include('box.novaposhta.api.urls')),
   path('', include('box.content.api.urls')),
