@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from box.blog.models import PostComment
-from box.shop.item.models import ItemReview 
+from box.sw_shop.item.models import ItemReview 
 
 
 

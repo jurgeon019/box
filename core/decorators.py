@@ -1,7 +1,7 @@
 from functools import wraps
 from django.shortcuts import redirect
-from box.shop.cart.utils import get_cart
-from box.shop.order.models import Order
+from box.sw_shop.cart.utils import get_cart
+from box.sw_shop.order.models import Order
 
 
 def cart_exists(function):

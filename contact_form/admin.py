@@ -47,7 +47,7 @@ class ContactAdmin(admin.ModelAdmin):
 
 
 from box.blog.admin import PostCommentAdmin
-from box.shop.item.admin import ItemReviewAdmin 
+from box.sw_shop.item.admin import ItemReviewAdmin 
 
 
 admin.site.register(Contact, ContactAdmin)

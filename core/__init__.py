@@ -8,7 +8,7 @@ class CoreConfig(apps.AppConfig):
     verbose_name_plural = verbose_name
     # def ready(self):
     #     from .signals import post_save, page_post_save
-    #     from box.shop.item.models import (
+    #     from box.sw_shop.item.models import (
     #         Item, ItemCategory, ItemBrand,  
     #     )
     #     from box.blog.models import (

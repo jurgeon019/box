@@ -1,1 +1,0 @@
-default_app_config = 'box.shop.test_shop.apps.TestShopConfig'

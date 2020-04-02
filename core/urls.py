@@ -10,7 +10,7 @@ from filebrowser.sites import site
 
 from box.core.views import robots, set_lang, testmail
 from box.core.admin import admin_plus
-from box.shop.item.sitemaps import ItemSitemap, ItemCategorySitemap
+from box.sw_shop.item.sitemaps import ItemSitemap, ItemCategorySitemap
 from box.blog.sitemaps import PostSitemap, PostCategorySitemap
 from box.core.sitemaps import StaticSitemap
 
@@ -36,18 +36,18 @@ multilingual_urls = [
   path('admin+/',          admin_plus.urls),
   path('admin/',           admin.site.urls),
   path('', include('box.content.urls')),
-  path('', include('box.shop.item.admin.urls')),
+  path('', include('box.sw_shop.item.admin.urls')),
 ]
 for url in settings.PROJECT_CORE_MULTILINGUAL_URLS:
   multilingual_urls.append(path('', include(url)))
 
 api_urls = [
-  path('', include('box.shop.customer.api.urls')),
-  path('', include('box.shop.cart.api.urls')),
-  path('', include('box.shop.item.api.urls')),
-  path('', include('box.shop.order.api.urls')),
+  path('', include('box.sw_shop.customer.api.urls')),
+  path('', include('box.sw_shop.cart.api.urls')),
+  path('', include('box.sw_shop.item.api.urls')),
+  path('', include('box.sw_shop.order.api.urls')),
   path('', include('box.blog.api.urls')),
-  path('', include('box.user_auth.api.urls')),
+  path('', include('box.sw_auth.api.urls')),
   path('', include('box.sw_admin.api.urls')),
   path('', include('box.contact_form.api.urls')),
   path('', include('box.novaposhta.api.urls')),
@@ -73,7 +73,7 @@ third_party_urlpatterns = [
 
 box_urlpatterns = [
   path('testmail/',        testmail, name='testmail'),
-  path('test/',          include('box.shop.test_shop.urls')),
+  path('test/',          include('box.sw_shop.test_shop.urls')),
   path('', include('box.global_config.urls')),
   path('', include('box.novaposhta.urls')),
   path('', include(api_urls)),

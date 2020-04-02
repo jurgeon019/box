@@ -1,5 +1,5 @@
 from django import forms 
-from box.shop.item.models import ItemCategory 
+from box.sw_shop.item.models import ItemCategory 
 
 
 class ChangeForm(forms.Form):

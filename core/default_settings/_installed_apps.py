@@ -44,7 +44,7 @@ box = [
     'box.contact_form',
     'box.content',
     'box.core',
-    'box.user_auth',
+    'box.sw_auth',
     'box.design',
     'box.faq',
     #  'box.filemanager',
@@ -61,12 +61,12 @@ box = [
 
     'box.seo',
 
-    'box.shop',
-    'box.shop.test_shop',
-    'box.shop.item',
-    'box.shop.order',
-    'box.shop.cart',
-    'box.shop.customer',
+    'box.sw_shop',
+    'box.sw_shop.test_shop',
+    'box.sw_shop.item',
+    'box.sw_shop.order',
+    'box.sw_shop.cart',
+    'box.sw_shop.customer',
 
     
     'box.solo',

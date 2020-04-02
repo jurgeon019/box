@@ -5,7 +5,7 @@ RESPONSE_SUCCESS = 'success'
 RESPONSE_PROGRESS = 'progress'
 RESPONSE_ERROR = 'failure'
 
-Shop         = 'path.to.shop.api'
+Shop         = 'path.to.sw_shop.api'
 Order        = 'path.to.order'
 OrderItem    = 'path.to.orderitem'
 Product      = 'path.to.product'

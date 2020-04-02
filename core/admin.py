@@ -6,7 +6,7 @@ from django.contrib.auth.admin import (
     User, UserAdmin,
     Group, GroupAdmin,
 )
-from box.user_auth.admin import (
+from box.sw_auth.admin import (
    BoxUserAdmin,
 )
 admin.site.register(get_user_model(), BoxUserAdmin)
@@ -21,7 +21,7 @@ admin.site.register(PostCategory, PostCategoryAdmin)
 admin.site.register(PostComment, PostCommentAdmin)
 
 
-from box.shop.item.admin import (
+from box.sw_shop.item.admin import (
     Item, ItemAdmin,
     ItemCategory, ItemCategoryAdmin,
     ItemCurrency, ItemCurrencyAdmin,
@@ -50,15 +50,15 @@ admin.site.register(ItemFeatureValue, ItemFeatureValueAdmin)
 
 
 
-from box.shop.cart.admin import (
+from box.sw_shop.cart.admin import (
     Cart, CartAdmin, 
     CartItem, CartItemAdmin
 )
-from box.shop.customer.admin import (
+from box.sw_shop.customer.admin import (
     Customer, CustomerAdmin,
 )
 admin.site.register(Customer, CustomerAdmin)
-from box.shop.order.admin import (
+from box.sw_shop.order.admin import (
     Status, StatusAdmin,
     Order, OrderAdmin,
     ItemRequest, ItemRequestAdmin,

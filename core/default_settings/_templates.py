@@ -13,8 +13,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
 
-                'box.shop.cart.context_processors.cart_content',
-                'box.shop.item.context_processors.categories',
+                'box.sw_shop.cart.context_processors.cart_content',
+                'box.sw_shop.item.context_processors.categories',
                 'box.core.context_processors.context',
             ],
             'loaders':[

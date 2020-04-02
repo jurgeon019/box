@@ -76,7 +76,7 @@ class CustomMenu(Menu):
             items.ModelList(
                 'Authentication', 
                 # ['django.contrib.auth.*',]
-                ['box.shop.item.*',],
+                ['box.sw_shop.item.*',],
             )
         ]
         return children
