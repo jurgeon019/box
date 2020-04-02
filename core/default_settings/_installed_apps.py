@@ -45,9 +45,6 @@ box = [
     'box.content',
     'box.core',
     'box.sw_auth',
-    'box.design',
-    'box.faq',
-    #  'box.filemanager',
     'box.global_config',
     'box.imp_exp',
     'box.model_search',
@@ -55,18 +52,18 @@ box = [
 
     'box.payment',
     'box.payment.liqpay',
-    'box.payment.privat24',
-    'box.payment.wayforpay',
-    'box.payment.interkassa',
+    # 'box.payment.privat24',
+    # 'box.payment.wayforpay',
+    # 'box.payment.interkassa',
 
     'box.seo',
 
     'box.sw_shop',
-    'box.sw_shop.test_shop',
     'box.sw_shop.item',
     'box.sw_shop.order',
     'box.sw_shop.cart',
     'box.sw_shop.customer',
+    'box.sw_shop.test_shop',
 
     
     'box.solo',

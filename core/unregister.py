@@ -75,19 +75,31 @@ from box.payment.liqpay.admin import (
     Payment, PaymentAdmin,
 )
 from box.content.admin import (
-    Page, PageAdmin,
-    Text, TextAdmin,
+    Page,   PageAdmin,
+    Text,   TextAdmin,
+    Slide,  SlideAdmin,
+    Slider, SliderAdmin,
+    Faq,    FaqAdmin,
 )
 admin.site.unregister(Page)
 admin.site.unregister(Text)
+admin.site.unregister(Slider)
+admin.site.unregister(Slide)
+admin.site.unregister(Faq)
+
 from box.global_config.admin import (
     SiteConfig, SiteConfigAdmin,
     NotificationConfig, NotificationConfigAdmin,
     CatalogueConfig, CatalogueConfigAdmin,
+    DesignConfig, DesignConfigAdmin,
+    # Translation, TranslationAdmin,
+
 )
 admin.site.unregister(SiteConfig)
 admin.site.unregister(NotificationConfig)
 admin.site.unregister(CatalogueConfig)
+admin.site.unregister(DesignConfig)
+# admin.site.unregister(Translation)
 
 
 from box.seo.admin import (
@@ -100,29 +112,10 @@ admin.site.unregister(Seo)
 admin.site.unregister(ItemSeo)
 
 
-from box.faq.admin import (
-    Faq, FaqAdmin,
-)
-admin.site.unregister(Faq)
-
-from box.content.admin import (
-    Slide, SlideAdmin,
-    Slider, SliderAdmin,
-)
-admin.site.unregister(Slider)
-admin.site.unregister(Slide)
-
 from box.imp_exp.admin import (
     ImportLog, ImportLogAdmin
 )
 admin.site.unregister(ImportLog)
-
-from box.design.admin import (
-    DesignConfig, DesignConfigAdmin,
-    # Translation, TranslationAdmin,
-)
-admin.site.unregister(DesignConfig)
-# admin.site.unregister(Translation)
 
 
 

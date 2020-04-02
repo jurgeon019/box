@@ -83,10 +83,12 @@ from box.content.admin import (
     Link,    LinkAdmin,
     Tel,     TelAdmin,
     Mailto,  MailtoAdmin,
-    Slide,  SlideInline,
+    Slide,   SlideInline,
     Slider,  SliderAdmin,
     Slide,   SlideAdmin,
+    Faq,     FaqAdmin,
 )
+
 admin.site.register(Page,    PageAdmin)
 admin.site.register(Map,     MapAdmin)
 admin.site.register(Img,     ImgAdmin)
@@ -97,14 +99,20 @@ admin.site.register(Tel,     TelAdmin)
 admin.site.register(Mailto,  MailtoAdmin)
 admin.site.register(Slide,   SlideAdmin)
 admin.site.register(Slider,  SliderAdmin)
+admin.site.register(Faq, FaqAdmin)
+
 from box.global_config.admin import (
     SiteConfig, SiteConfigAdmin,
     NotificationConfig, NotificationConfigAdmin,
     CatalogueConfig, CatalogueConfigAdmin,
+    DesignConfig, DesignConfigAdmin,
+    # Translation, TranslationAdmin,
 )
 admin.site.register(SiteConfig, SiteConfigAdmin)
 admin.site.register(NotificationConfig, NotificationConfigAdmin)
 admin.site.register(CatalogueConfig, CatalogueConfigAdmin)
+admin.site.register(DesignConfig, DesignConfigAdmin)
+# admin.site.register(Translation, TranslationAdmin)
 
 
 from box.seo.admin import (
@@ -116,23 +124,11 @@ admin.site.register(Robots, RobotsAdmin)
 admin.site.register(Seo, SeoAdmin)
 admin.site.register(ItemSeo, ItemSeoAdmin)
 
-
-from box.faq.admin import (
-    Faq, FaqAdmin,
-)
-admin.site.register(Faq, FaqAdmin)
-
 from box.imp_exp.admin import (
     ImportLog, ImportLogAdmin
 )
 admin.site.register(ImportLog, ImportLogAdmin)
 
-from box.design.admin import (
-    DesignConfig, DesignConfigAdmin,
-    # Translation, TranslationAdmin,
-)
-admin.site.register(DesignConfig, DesignConfigAdmin)
-# admin.site.register(Translation, TranslationAdmin)
 
 
 

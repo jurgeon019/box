@@ -34,7 +34,9 @@ class CatalogueConfigAdmin(SingletonModelAdmin):
     pass 
 
 
-
-
-
+class DesignConfigAdmin(TabbedTranslationAdmin, SingletonModelAdmin):
+    formfield_overrides = {
+        models.ImageField:{'widget':AdminImageWidget}
+    }
+   
 

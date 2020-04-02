@@ -2,10 +2,11 @@ from django.contrib import admin
 from django.forms import Textarea
 from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
+from django.contrib.admin.actions import delete_selected
+
 
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationTabularInline, TranslationStackedInline
 from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
-from adminsortable.admin import SortableAdmin
 from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
 
 
@@ -18,6 +19,10 @@ from .resources import *
 from .filters import *
 from .forms import *
 from .abstract_admin import * 
+
+
+
+
 
 
 class BaseInline(TranslationStackedInline):
@@ -533,3 +538,23 @@ class SlideAdmin(
     formfield_overrides = {
         models.ImageField:{'widget':AdminImageWidget},
     }
+
+
+
+
+class FaqAdmin(
+    BaseAdmin,
+    SortableAdminMixin,
+    TabbedTranslationAdmin,
+    ):
+    list_display = [
+        'name',
+        'is_active',
+    ]
+    list_display_links = [
+        'name',
+    ]
+    list_editable = [
+        'is_active',
+    ]
+
