@@ -8,9 +8,28 @@ from django.conf import settings
 from . import settings as core_settings
 from filebrowser.sites import site
 from box.core.views import robots, set_lang, testmail
-# from box.sw_shop.item.sitemaps import ItemSitemap, ItemCategorySitemap
-# from box.blog.sitemaps import PostSitemap, PostCategorySitemap
+
 from box.core.sitemaps import StaticSitemap
+sitemaps = {
+    'static':  StaticSitemap,
+}
+if 'box.content' in settings.INSTALLED_APPS:
+  from box.content.sitemaps import PageSitemap
+  sitemaps.update({
+    'pages':PageSitemap,
+  })
+if 'box.sw_shop.item' in settings.INSTALLED_APPS:
+  from box.sw_shop.item.sitemaps import ItemSitemap, ItemCategorySitemap
+  sitemaps.update({
+  'items':           ItemSitemap,
+  'item_categories': ItemCategorySitemap,
+  })
+if 'box.blog' in settings.INSTALLED_APPS:
+  from box.blog.sitemaps import PostSitemap, PostCategorySitemap
+  sitemaps.update({
+    'posts':           PostSitemap, 
+    'post_categories': PostCategorySitemap, 
+  })
 
 
 static_urlpatterns = []
@@ -25,19 +44,9 @@ admin.site.index_title = "STARWAY CMS"
 
 handler404 = 'box.core.views.handler_404'
 handler500 = 'box.core.views.handler_500'
-sitemaps = {}
-
-sitemaps = {
-  # 'items':           ItemSitemap,
-  # 'item_categories': ItemCategorySitemap,
-  # 'posts':           PostSitemap, 
-  # 'post_categories': PostCategorySitemap, 
-  'static':          StaticSitemap,
-}
 
 PROJECT_CORE              = [path('', include(url)) for url in core_settings.PROJECT_CORE_URLS]
 PROJECT_CORE_MULTILINGUAL = [path('', include(url)) for url in core_settings.PROJECT_CORE_MULTILINGUAL_URLS]
-
 
 box_apps          = [app for app in settings.INSTALLED_APPS if app.startswith('box.') and not app.startswith('box.core')]
 box               = [path('', include(f'{app}.urls')) for app in box_apps]
