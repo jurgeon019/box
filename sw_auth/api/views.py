@@ -38,7 +38,7 @@ class UserViewSet(viewsets.ModelViewSet):
         # headers = self.get_success_headers(serializer.data)
         # return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         query       = request.data
-        sw_register_(query)
+        _sw_register(query, request)
 
 
 def current_user(request):
@@ -125,9 +125,11 @@ def sw_logout(request):
 
 def sw_register(request):
     query = request.POST or request.GET
-    return _sw_register(query)
+    return _sw_register(query, request)
 
-def _sw_register(query):
+
+def _sw_register(query, request):
+    print(query)
     username    = query['username']
     password    = query['password']
     password2   = query['password2']
