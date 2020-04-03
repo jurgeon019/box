@@ -1,13 +1,11 @@
 from django.urls import path, include 
 from .views import * 
 
-api_urls = [
+urlpatterns = [
     path('warehouses/',  warehouses, name='warehouses'),
     path('areas/',       areas, name='areas'),
     path('regions/',     regions, name='regions'), 
     path('settlements/', settlements, name='settlements'), 
-
-
 
     path('warehouses_list/',        WarehousesList.as_view()),
     path('areas_list/',             AreasList.as_view()),
@@ -19,8 +17,3 @@ api_urls = [
     path('settlement_detail/<pk>/', SettlementDetail.as_view()),
 ]
 
-
-
-urlpatterns = [
-    path('api/', include(api_urls)),
-]

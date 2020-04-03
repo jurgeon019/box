@@ -2,21 +2,11 @@ from django.contrib import admin
 from django.contrib.redirects.models import Redirect
 from django.contrib.sites.models import Site
 
-from box.payment.liqpay.admin import (
-    Payment, PaymentAdmin,
-)
-
-
 ####################################################
 # unregister zone 
 
-try:
-    admin.site.unregister(Redirect)
-    admin.site.unregister(Site)
-    admin.site.unregister(Group)
-except:
-    pass
-
+admin.site.unregister(Redirect)
+admin.site.unregister(Site)
 
 try:
     from django_celery_beat.models import *

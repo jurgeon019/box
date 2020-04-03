@@ -1,8 +1,8 @@
 from django.db import models 
 from django.utils.translation import gettext_lazy as _
 
-from box.blog.models import PostComment
-from box.sw_shop.item.models import ItemReview 
+# from box.blog.models import PostComment
+# from box.sw_shop.item.models import ItemReview 
 
 
 
@@ -23,17 +23,17 @@ class Contact(models.Model):
         verbose_name_plural = verbose_name
 
 
-class ProxyComment(PostComment):
-    class Meta:
-        proxy = True 
-        verbose_name = ("коментар")
-        verbose_name_plural = ("Коментарі до публікацій")
+# class ProxyComment(PostComment):
+#     class Meta:
+#         proxy = True 
+#         verbose_name = ("коментар")
+#         verbose_name_plural = ("Коментарі до публікацій")
 
 
-class ProxyReview(ItemReview):
-    class Meta:
-        proxy = True 
-        verbose_name = ("відгук")
-        verbose_name_plural = ("Відгуки до товарів")
+# class ProxyReview(ItemReview):
+#     class Meta:
+#         proxy = True 
+#         verbose_name = ("відгук")
+#         verbose_name_plural = ("Відгуки до товарів")
 
 

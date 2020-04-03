@@ -14,8 +14,7 @@ from django.contrib.auth.admin import (UserAdmin, GroupAdmin,)
 from django.utils.html import mark_safe 
 from django.shortcuts import reverse, render, redirect
 
-from box.sw_shop.customer.models import (Customer,)
-from box.sw_shop.order.admin import (OrderInline,)
+# from box.sw_shop.order.admin import (OrderInline,)
 from box.core.utils import move_to
 from ..resources import BoxUserResource
 
@@ -66,7 +65,7 @@ class BoxUserAdmin(
         change_group
     ]
     inlines = [
-        OrderInline,
+        # OrderInline,
     ]
     fieldsets = (
         (_('Personal info'), {

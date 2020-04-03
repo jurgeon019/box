@@ -1,7 +1,6 @@
 from django.contrib import admin 
 from django.utils.html import mark_safe 
 from modeltranslation.admin import TabbedTranslationAdmin
-from .models import Contact, ProxyComment, ProxyReview 
 from .filters import IsActiveFilter
 
 
@@ -45,14 +44,14 @@ class ContactAdmin(admin.ModelAdmin):
         'show_link'
     ]
 
-
-from box.blog.admin import PostCommentAdmin
-from box.sw_shop.item.admin import ItemReviewAdmin 
-
-
+from .models import Contact
 admin.site.register(Contact, ContactAdmin)
-admin.site.register(ProxyComment, PostCommentAdmin)
-admin.site.register(ProxyReview, ItemReviewAdmin)
+
+# from box.blog.admin import PostCommentAdmin
+# from box.sw_shop.item.admin import ItemReviewAdmin 
+# from .models import ProxyComment, ProxyReview 
+# admin.site.register(ProxyComment, PostCommentAdmin)
+# admin.site.register(ProxyReview, ItemReviewAdmin)
 
 
 

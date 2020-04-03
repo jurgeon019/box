@@ -1,9 +1,10 @@
-from django.urls import path 
+from django.urls import path, include 
 from .views import * 
 
 
 urlpatterns = [
-    path('<code>/',  page,  name='page'),
+    path('', include('box.content.api.urls')),
+    # path('<code>/',  page,  name='page'),
 ]
 
 

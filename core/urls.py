@@ -5,94 +5,68 @@ from django.contrib.sitemaps.views import sitemap
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
-
+from . import settings as core_settings
 from filebrowser.sites import site
-
 from box.core.views import robots, set_lang, testmail
-from box.core.admin import admin_plus
-from box.sw_shop.item.sitemaps import ItemSitemap, ItemCategorySitemap
-from box.blog.sitemaps import PostSitemap, PostCategorySitemap
+# from box.sw_shop.item.sitemaps import ItemSitemap, ItemCategorySitemap
+# from box.blog.sitemaps import PostSitemap, PostCategorySitemap
 from box.core.sitemaps import StaticSitemap
 
 
-admin.site.site_header = "STARWAY CMS"
-admin.site.site_title = "STARWAY CMS"
-admin.site.index_title = "STARWAY CMS"
+static_urlpatterns = []
 
-sitemaps = {
-  'items':           ItemSitemap,
-  'item_categories': ItemCategorySitemap,
-  'posts':           PostSitemap, 
-  'post_categories': PostCategorySitemap, 
-  'static':          StaticSitemap,
-}
+if settings.DEBUG == True:
+  static_urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+  static_urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+admin.site.site_header = "STARWAY CMS"
+admin.site.site_title  = "STARWAY CMS"
+admin.site.index_title = "STARWAY CMS"
 
 handler404 = 'box.core.views.handler_404'
 handler500 = 'box.core.views.handler_500'
 
-multilingual_urls = [
+sitemaps = {
+  # 'items':           ItemSitemap,
+  # 'item_categories': ItemCategorySitemap,
+  # 'posts':           PostSitemap, 
+  # 'post_categories': PostCategorySitemap, 
+  'static':          StaticSitemap,
+}
+
+PROJECT_CORE              = [path('', include(url)) for url in core_settings.PROJECT_CORE_URLS]
+PROJECT_CORE_MULTILINGUAL = [path('', include(url)) for url in core_settings.PROJECT_CORE_MULTILINGUAL_URLS]
+
+
+box_apps          = [app for app in settings.INSTALLED_APPS if app.startswith('box.') and not app.startswith('box.core')]
+box               = [path('', include(f'{app}.urls')) for app in box_apps]
+box_multilingual  = [path('', include(f'{app}.multilingual_urls')) for app in box_apps]
+
+multilingual = i18n_patterns(
+  path('admin/',    admin.site.urls),
   path('accounts/', include('allauth.urls')),
-  path('rosetta/',         include('rosetta.urls')),
-  path('admin+/',          admin_plus.urls),
-  path('admin/',           admin.site.urls),
-  path('', include('box.content.urls')),
-  path('', include('box.sw_shop.item.admin.urls')),
-]
-for url in settings.PROJECT_CORE_MULTILINGUAL_URLS:
-  multilingual_urls.append(path('', include(url)))
+  path('rosetta/',  include('rosetta.urls')),
+  *box_multilingual,
+  *PROJECT_CORE_MULTILINGUAL,
+  prefix_default_language=core_settings.PREFIX_DEFAULT_LANGUAGE,
+)
 
-api_urls = [
-  path('', include('box.sw_shop.customer.api.urls')),
-  path('', include('box.sw_shop.cart.api.urls')),
-  path('', include('box.sw_shop.item.api.urls')),
-  path('', include('box.sw_shop.order.api.urls')),
-  path('', include('box.blog.api.urls')),
-  path('', include('box.sw_auth.api.urls')),
-  path('', include('box.sw_admin.api.urls')),
-  path('', include('box.contact_form.api.urls')),
-  path('', include('box.novaposhta.api.urls')),
-  path('', include('box.content.api.urls')),
-  path('', include('box.payment.liqpay.api.urls')),
-]
-
-third_party_urlpatterns = [
-  path('admin_tools/',     include('admin_tools.urls')),
-  path('grappelli/',       include('grappelli.urls')),
+urlpatterns = [
+  *static_urlpatterns,
   path('i18n/',            include('django.conf.urls.i18n')),
-  # path('rosetta/',         include('rosetta.urls')),
-  # path('admin+/',          admin_plus.urls),
-  # path('admin/',           admin.site.urls),
-  path('tinymce/',         include('tinymce.urls')),
-  path('filebrowser/',     site.urls),
-  path('ckeditor/',        include('ckeditor_uploader.urls')),
   path('sitemap.xml/',     sitemap, {'sitemaps':sitemaps}),
   path('robots.txt/',      robots,           name='robots'),
   path('set_lang/<lang>/', set_lang,         name="set_lang"),
   path('jsi18n/',          js_cat.as_view(), name='javascript-catalog'),
+  path('admin_tools/',     include('admin_tools.urls')),
+  path('grappelli/',       include('grappelli.urls')),
+  path('tinymce/',         include('tinymce.urls')),
+  path('ckeditor/',        include('ckeditor_uploader.urls')),
+  path('filebrowser/',     site.urls),
+  *box,
+  *PROJECT_CORE,
+  *multilingual,
 ]
 
-box_urlpatterns = [
-  path('testmail/',        testmail, name='testmail'),
-  path('test/',          include('box.sw_shop.test_shop.urls')),
-  path('', include('box.global_config.urls')),
-  path('', include('box.novaposhta.urls')),
-  path('', include(api_urls)),
-  path('api/', include(api_urls)),
-]
 
-urlpatterns = [
-  path('', include(third_party_urlpatterns)),
-  path('', include(box_urlpatterns)),
-  path('', include(third_party_urlpatterns)),
-]
-for url in settings.PROJECT_CORE_URLS:
-  urlpatterns.append(path('', include(url)))
 
-urlpatterns += i18n_patterns(
-  path('', include(multilingual_urls)),
-  prefix_default_language=True,
-)
-
-if settings.DEBUG == True:
-  urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-  urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

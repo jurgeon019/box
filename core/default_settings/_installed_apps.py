@@ -1,4 +1,4 @@
-up = [
+priority_third_party = [
     'corsheaders',
     'box.sw_admin',  
     # 'admin_tools', 'admin_tools.theming', 'admin_tools.menu', 'admin_tools.dashboard',
@@ -35,7 +35,7 @@ third_party = [
     "rest_framework",
     "rangefilter",
 ]
-box = [
+box_default = [
     'box.global_config',
     'box.solo',
     'box.model_search',
@@ -43,26 +43,30 @@ box = [
     'box.sw_auth',
     'box.contact_form',
     'box.core',
-
     'box.content',
-    'box.blog',
-    'box.sw_shop',
+]
+box_shop = [
     'box.sw_shop.item',
     'box.sw_shop.order',
     'box.sw_shop.cart',
     'box.sw_shop.customer',
-    'box.payment',
-    'box.payment.liqpay',
-
 ]
-installed_apps  = [
-    *up,
+box_payment = [
+    'box.payment.liqpay',
+    'box.payment.wayforpay',
+    'box.payment.interkassa',
+]
+box_blog = [
+    'box.blog',
+]
+INSTALLED_APPS  = [
+    *priority_third_party,
     *django_contrib,
     *third_party,
-    *box,
+    *box_default,
+    *box_shop,
+    *box_blog,
+    *box_payment,
 ]
-
-INSTALLED_APPS = installed_apps 
-
 
 

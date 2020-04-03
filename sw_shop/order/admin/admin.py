@@ -4,7 +4,7 @@ from django.shortcuts import reverse, render, redirect
 from django.utils.html import mark_safe
 
 from box.sw_shop.order.models import Order, Status
-from box.payment.liqpay.admin import PaymentInline
+# from box.payment.liqpay.admin import PaymentInline
 from box.sw_shop.cart.admin import CartItemInline
 from box.core.utils import show_admin_link
 from box.solo.admin import SingletonModelAdmin
@@ -164,7 +164,7 @@ class OrderAdmin(admin.ModelAdmin):
     total_without_coupon.short_description = _('Сумма замовлення зі скидкою')
     inlines = [
         CartItemInline,
-        PaymentInline,
+        # PaymentInline,
     ]
     list_display = [
         'show_id',

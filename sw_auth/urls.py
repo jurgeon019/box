@@ -1,7 +1,8 @@
-from django.urls import path 
+from django.urls import path, include 
 from .views import * 
 
 
 urlpatterns = [
-    path('sw_view/', sw_view, name='sw_logout')
+    path('', include('box.sw_auth.api.urls')),
+    path('sw_logout/', sw_logout, name='sw_logout')
 ]
