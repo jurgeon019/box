@@ -25,9 +25,6 @@ class Command(BaseCommand):
   
   def handle(self, *args, **kwargs):
     User = get_user_model()
-    # username = 'admin'
-    # password = 'motto2109'
-    # email    = ''
     username = kwargs['username']
     password = kwargs['password']
     email    = kwargs['email']
@@ -45,13 +42,13 @@ class Command(BaseCommand):
             username=username,
         )
         print(user)
-        # user.set_password(password)
-        # user.email = email
-        # user.save()
-        # print('password has been set')
-        # print(user.username)
-        # print(user.password)
-        # user.save()
+        user.set_password(password)
+        user.email = email
+        user.save()
+        print('password has been set')
+        print(user.username)
+        print(user.password)
+        user.save()
     self.stdout.write(self.style.SUCCESS('Data imported successfully'))
 
 
