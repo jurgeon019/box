@@ -25,6 +25,7 @@ admin.site.index_title = "STARWAY CMS"
 
 handler404 = 'box.core.views.handler_404'
 handler500 = 'box.core.views.handler_500'
+sitemaps = {}
 
 sitemaps = {
   # 'items':           ItemSitemap,
