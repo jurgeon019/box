@@ -17,11 +17,15 @@ from django.shortcuts import reverse, render, redirect
 from box.sw_shop.customer.models import (Customer,)
 from box.sw_shop.order.admin import (OrderInline,)
 from box.core.utils import move_to
-from .resources import BoxUserResource
+from ..resources import BoxUserResource
 
 from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
 
-
+from django.contrib.auth import get_user_model 
+from django.contrib.auth.admin import (
+    User, UserAdmin,
+    Group, GroupAdmin,
+)
 
 class BoxUserAdmin(
     ImportExportActionModelAdmin,

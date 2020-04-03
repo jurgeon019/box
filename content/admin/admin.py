@@ -14,10 +14,10 @@ from box.core.utils import AdminImageWidget, move_to, BaseAdmin
 from box.core.helpers import get_admin_url
 
 
-from .models import *
-from .resources import *
-from .filters import *
-from .forms import *
+from ..models import *
+from ..resources import *
+from ..filters import *
+from ..forms import *
 from .abstract_admin import * 
 
 

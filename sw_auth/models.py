@@ -11,6 +11,7 @@ from django.contrib.auth.models import (
   Permission,
   UserManager,
   UnicodeUsernameValidator, 
+  _user_has_module_perms,
 )
 from django.utils import timezone 
 from django.utils.crypto import get_random_string, salted_hmac

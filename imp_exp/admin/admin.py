@@ -41,6 +41,6 @@ class ExportAdmin(admin.ModelAdmin):
     change_list_template = 'imp_exp/admin/export_change_list.html'
 
 
-admin.site.register(Import, ImportAdmin)
-admin.site.register(Export, ExportAdmin)
+# admin.site.register(Import, ImportAdmin)
+# admin.site.register(Export, ExportAdmin)
 

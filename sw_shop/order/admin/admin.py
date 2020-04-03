@@ -9,9 +9,9 @@ from box.sw_shop.cart.admin import CartItemInline
 from box.core.utils import show_admin_link
 from box.solo.admin import SingletonModelAdmin
 
-from .models import *
-from .filters import * 
-from .forms import * 
+from ..models import *
+from ..filters import * 
+from ..forms import * 
 
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline, TranslationTabularInline
 

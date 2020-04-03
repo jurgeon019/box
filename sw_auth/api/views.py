@@ -15,7 +15,7 @@ from rest_framework import viewsets
 
 
 from .serializers import *
-from ..settings import LOGIN_REDIRECT_URL
+from .. import settings as auth_settings 
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -49,8 +49,8 @@ def current_user(request):
 def sw_login(request):
     query = request.POST or request.GET
     response    = redirect(request.META['HTTP_REFERER'])
-    username    = query['username']
     password    = query['password']
+    username    = query.get('username') or query.get('email')
     remember_me = request.GET.get('remember_me')
 
     if remember_me == "true":
@@ -58,42 +58,30 @@ def sw_login(request):
     else:
         request.session.set_expiry(0)
     
-    user = get_user_model().objects.filter(
+    users = get_user_model().objects.filter(
         Q(username__iexact=username)|
         Q(email__iexact=username)
     ).distinct() 
 
-    if not user.exists() and user.count() != 1:
-        message = 'Такого користувача не існує'
-        print(message)
-        # if request.is_ajax():
-        if True:
-            response = JsonResponse({
-                'message':message,
-                'status':'BAD',
-            })
-        messages.success(request, message)
-        return response
+    if not users.exists() and users.count() != 1:
+        return JsonResponse({
+            'message':_("'Такого користувача не існує'"),
+            'status':'BAD',
+        })
 
-    user = user.first() 
+    user = users.first() 
 
     if not user.check_password(password):
         return JsonResponse({
-            'message':'Неправильний пароль',
+            'message':_('Неправильний пароль'),
             'status':'BAD',
         })
 
     if not user.is_active:
-        message = 'Цей користувач неактивний'
-        print(message)
-        # if request.is_ajax():
-        if True:
-            response = JsonResponse({
-                'message':message,
-                'status':'BAD',
-            })
-        messages.success(request, message)
-        return response
+        return JsonResponse({
+            'message':_('Цей користувач неактивний'),
+            'status':'BAD',
+        })
 
     user = authenticate(username=user.username, password=password)
 
@@ -110,7 +98,7 @@ def sw_login(request):
     return JsonResponse({
         'status':'OK',
         'message':_('Ви увійшли'),
-        'url':reverse(auth_settings.LOGIN_REDIRECT_URL),
+        'url':auth_settings.LOGIN_REDIRECT_URL,
     })
 
 
@@ -130,49 +118,65 @@ def sw_register(request):
 
 def _sw_register(query, request):
     print(query)
-    username    = query['username']
+    # TODO: різні обовязкові поля для різних проектів. 
+    # настройки. auth_settings.IS_EMAIL_REQUIRED, IS_USERNAME_REQUIRED
+
+    # username    = query['username']
+    # email       = query.get('email','')
+    # email2      = query.get('email2','')
+    email       = query['email']
+    username    = query.get('username') or email.split('@')[0]
     password    = query['password']
     password2   = query['password2']
-    email       = query.get('email','')
-    email2      = query.get('email2','')
+    old_password= query.get('old_password')
     first_name  = query.get('first_name','')
     last_name   = query.get('last_name','')
-    phone       = query.get('phone', '')
+    phone_number       = query.get('phone_number', '')
     email_qs    = get_user_model().objects.filter(email=email)
     username_qs = get_user_model().objects.filter(username=username)
 
-    if email and email2 and email != email2:
-        return JsonResponse({
-            'status':'BAD',
-            'message':_('Email must match'),
-        })
+    # if email and email2 and email != email2:
+    #     return JsonResponse({
+    #         'status':'BAD',
+    #         'message':_('Email must match'),
+    #     })
     if password and password2 and password != password2:
         return JsonResponse({
             'status':'BAD',
-            'message':_('Passwords must match'),
+            "error_fields":["password", 'password2'],
+            'message':_('Паролі мусять співпадати'),
         }) 
     if email_qs.exists() and email != '' and username_qs.exists() and username != '':
         return JsonResponse({
             'status':'BAD',
-            'message':_('Email and username has already been used.'),
+            "error_fields":["email", 'username'],
+            'message':_('Ці емайл та логін вже зайняті'),
         }) 
     if email_qs.exists() and email != '':
         return JsonResponse({
             'status':'BAD',
-            'message':_('Email has already been used.'),
+            "error_fields":["email",],
+            'message':_('Цей емайл вже зайнятий'),
         })
     if username_qs.exists() and username != '':
         return JsonResponse({
             'status':'BAD',
-            'message':_('Username has already been used.'),
+            "error_fields":["username",],
+            'message':_('Цей логін вже зайнятий'),
         })
     user = get_user_model().objects.create_user(
         username     = username,
         email        = email, 
         first_name   = first_name, 
         last_name    = last_name, 
-        phone_number = phone,
+        phone_number = phone_number,
     )
+    if old_password and not user.check_password(old_password):
+        return JsonResponse({
+            'message':_('Неправильний старий пароль'),
+            'error_fields':['old_password',],
+            'status':'BAD',
+        })
     user.set_password(password)
     user.is_active = True 
     # user.is_active = False 

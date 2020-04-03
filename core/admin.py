@@ -1,146 +1,21 @@
 from django.contrib import admin
 from django.contrib.redirects.models import Redirect
 from django.contrib.sites.models import Site
-from django.contrib.auth import get_user_model 
-from django.contrib.auth.admin import (
-    User, UserAdmin,
-    Group, GroupAdmin,
-)
-from box.sw_auth.admin import (
-   BoxUserAdmin,
-)
-admin.site.register(get_user_model(), BoxUserAdmin)
-
-from box.blog.admin import (
-    Post, PostAdmin,
-    PostCategory, PostCategoryAdmin,
-    PostComment, PostCommentAdmin,
-)
-admin.site.register(Post, PostAdmin)
-admin.site.register(PostCategory, PostCategoryAdmin)
-admin.site.register(PostComment, PostCommentAdmin)
-
-
-from box.sw_shop.item.admin import (
-    Item, ItemAdmin,
-    ItemCategory, ItemCategoryAdmin,
-    ItemCurrency, ItemCurrencyAdmin,
-    ItemCurrencyRatio, ItemCurrencyRatioAdmin,
-    ItemStock, ItemStockAdmin, 
-    ItemFeatureName, ItemFeatureNameAdmin,
-    ItemMarker, ItemMarkerAdmin,
-    ItemBrand, ItemBrandAdmin,
-    ItemImage, ItemImageAdmin,
-    ItemReview, ItemReviewAdmin,
-    ItemFeature, ItemFeatureAdmin,
-    ItemFeatureValue, ItemFeatureValueAdmin,
-)
-admin.site.register(ItemCurrency, ItemCurrencyAdmin)
-admin.site.register(ItemStock, ItemStockAdmin)
-admin.site.register(ItemCategory, ItemCategoryAdmin)
-admin.site.register(ItemCurrencyRatio, ItemCurrencyRatioAdmin)
-admin.site.register(ItemFeatureName, ItemFeatureNameAdmin)
-admin.site.register(Item, ItemAdmin)
-admin.site.register(ItemImage, ItemImageAdmin)
-admin.site.register(ItemMarker, ItemMarkerAdmin)
-admin.site.register(ItemBrand, ItemBrandAdmin)
-admin.site.register(ItemReview, ItemReviewAdmin)
-admin.site.register(ItemFeature, ItemFeatureAdmin)
-admin.site.register(ItemFeatureValue, ItemFeatureValueAdmin)
-
-
-
-from box.sw_shop.cart.admin import (
-    Cart, CartAdmin, 
-    CartItem, CartItemAdmin
-)
-from box.sw_shop.customer.admin import (
-    Customer, CustomerAdmin,
-)
-admin.site.register(Customer, CustomerAdmin)
-from box.sw_shop.order.admin import (
-    Status, StatusAdmin,
-    Order, OrderAdmin,
-    ItemRequest, ItemRequestAdmin,
-    OrderConfig, OrderConfigAdmin,
-    OrderTag, OrderTagAdmin,
-)
-admin.site.register(Order, OrderAdmin)
-admin.site.register(ItemRequest, ItemRequestAdmin)
-admin.site.register(OrderConfig, OrderConfigAdmin)
-admin.site.register(Status, StatusAdmin)
-admin.site.register(OrderTag, OrderTagAdmin)
 
 from box.payment.liqpay.admin import (
     Payment, PaymentAdmin,
 )
-from box.content.admin import (
-    Page,    PageAdmin,
-    Map,     MapAdmin,
-    Img,     ImgAdmin,
-    Text,    TextAdmin,
-    Address, AddressAdmin,
-    Link,    LinkAdmin,
-    Tel,     TelAdmin,
-    Mailto,  MailtoAdmin,
-    Slide,   SlideInline,
-    Slider,  SliderAdmin,
-    Slide,   SlideAdmin,
-    Faq,     FaqAdmin,
-)
-
-admin.site.register(Page,    PageAdmin)
-admin.site.register(Map,     MapAdmin)
-admin.site.register(Img,     ImgAdmin)
-admin.site.register(Text,    TextAdmin)
-admin.site.register(Address, AddressAdmin)
-admin.site.register(Link,    LinkAdmin)
-admin.site.register(Tel,     TelAdmin)
-admin.site.register(Mailto,  MailtoAdmin)
-admin.site.register(Slide,   SlideAdmin)
-admin.site.register(Slider,  SliderAdmin)
-admin.site.register(Faq, FaqAdmin)
-
-from box.global_config.admin import (
-    SiteConfig, SiteConfigAdmin,
-    NotificationConfig, NotificationConfigAdmin,
-    CatalogueConfig, CatalogueConfigAdmin,
-    DesignConfig, DesignConfigAdmin,
-    # Translation, TranslationAdmin,
-    Robots, RobotsAdmin,
-    Seo, SeoAdmin,
-)
-
-admin.site.register(SiteConfig, SiteConfigAdmin)
-admin.site.register(NotificationConfig, NotificationConfigAdmin)
-admin.site.register(CatalogueConfig, CatalogueConfigAdmin)
-admin.site.register(DesignConfig, DesignConfigAdmin)
-# admin.site.register(Translation, TranslationAdmin)
-admin.site.register(Robots, RobotsAdmin)
-admin.site.register(Seo, SeoAdmin)
-
-
-from box.seo.admin import (
-    ItemSeo, ItemSeoAdmin,
-)
-admin.site.register(ItemSeo, ItemSeoAdmin)
-
-from box.imp_exp.admin import (
-    ImportLog, ImportLogAdmin
-)
-admin.site.register(ImportLog, ImportLogAdmin)
-
-
-
-
 
 
 ####################################################
 # unregister zone 
 
-admin.site.unregister(Redirect)
-admin.site.unregister(Site)
-admin.site.unregister(Group)
+try:
+    admin.site.unregister(Redirect)
+    admin.site.unregister(Site)
+    admin.site.unregister(Group)
+except:
+    pass
 
 
 try:
@@ -177,27 +52,3 @@ except:
     pass
 
 
-
-
-
-
-
-
-####################################################
-# admin plus zone 
-
-
-
-class AdminPlus(admin.AdminSite):
-    site_header = "Site Admin"
-    site_title  = "Site Admin"
-    index_title = "Site Admin"
-
-
-admin_plus = AdminPlus(name='admin_plus')
-admin_plus.register(Redirect)
-admin_plus.register(Site)
-admin_plus.register(User, UserAdmin)
-admin_plus.register(Group, GroupAdmin)
-admin_plus.register(Cart, CartAdmin)
-admin_plus.register(CartItem, CartItemAdmin)

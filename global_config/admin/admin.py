@@ -5,8 +5,8 @@ from django.forms import TextInput, Textarea
 
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline, TranslationTabularInline
 
-from .models import * 
-from .forms import NotificationConfigForm
+from ..models import * 
+from ..forms import NotificationConfigForm
 
 from box.solo.admin import SingletonModelAdmin
 from box.core.utils import AdminImageWidget

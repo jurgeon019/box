@@ -6,7 +6,7 @@ from django.forms import NumberInput, Textarea, TextInput
 
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline
 
-from box.blog.models import *
+from ..models import *
 from box.core.utils import (
     show_admin_link,
     AdminImageWidget, seo, 

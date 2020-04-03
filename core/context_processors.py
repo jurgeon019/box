@@ -1,4 +1,3 @@
-from box.seo.models import *
 from box.global_config.models import *
 from box.core import settings as core_settings 
 
