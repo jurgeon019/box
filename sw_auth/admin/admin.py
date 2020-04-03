@@ -94,7 +94,7 @@ class BoxUserAdmin(
                 'is_active', 
                 'is_staff', 
                 'is_superuser', 
-                'groups', 
+                # 'groups', 
                 'user_permissions'
             ),
             'classes':[
@@ -133,7 +133,7 @@ class BoxUserAdmin(
     autocomplete_fields = [
         # 'groups',
         # 'user_permissions',
-        'group',
+        # 'group',
     ]
     readonly_fields = [
         'date_joined',
@@ -143,7 +143,7 @@ class BoxUserAdmin(
         'full_name',
         'email',
         'date_joined',
-        'group',
+        # 'group',
         'order_count',
         "show_delete_link",
     ]

@@ -6,7 +6,6 @@ from django.core.exceptions import ValidationError
 
 from box.core import settings as core_settings 
 from box.solo.models import SingletonModel
-from box.content.models import Text
 
 from tinymce import HTMLField
 from colorfield.fields import ColorField

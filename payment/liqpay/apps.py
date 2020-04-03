@@ -2,5 +2,5 @@ from django import apps
 
 
 class LiqpayConfig(apps.AppConfig):
-    name = 'box.sw_shop.liqpay'
+    name = 'box.payment.liqpay'
     

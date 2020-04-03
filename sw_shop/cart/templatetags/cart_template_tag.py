@@ -1,6 +1,4 @@
 from django import template
-from box.sw_shop.order.models import Order
-from box.sw_shop.cart.models import CartItem
 from box.sw_shop.cart.utils import get_cart
 
 

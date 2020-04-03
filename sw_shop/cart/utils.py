@@ -1,6 +1,5 @@
-from box.sw_shop.cart.models import Cart, CartItem
 from box.sw_shop.cart.api.serializers import CartItemSerializer
-from django.db.models import Sum
+from box.sw_shop.cart.models import Cart, CartItem
 
 
 def get_cart(request):
@@ -29,3 +28,5 @@ def get_cart_info(request):
   }
 
 
+
+ 

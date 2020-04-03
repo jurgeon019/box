@@ -3,9 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-User = get_user_model()
-
-class Customer(User):
+class Customer(get_user_model()):
     class Meta:
         proxy = True 
         verbose_name = _('покупець')

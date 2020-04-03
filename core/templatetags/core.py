@@ -2,7 +2,7 @@ from typing import Optional, Any, Dict
 
 from django import urls, template
 
-from box.global_config.models import SiteConfig, Robots, SeoScript
+# from box.global_config.models import SiteConfig, Robots, SeoScript
 
 
 register = template.Library()

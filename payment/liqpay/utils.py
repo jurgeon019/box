@@ -2,9 +2,9 @@ from django.shortcuts import redirect
 from django.conf import settings 
 
 from box.global_config.models import SiteConfig
-from box.sw_shop.order.models import Order
-from box.sw_shop.cart.utils import get_cart
-from box.sw_shop.cart.models import CartItem
+# from box.sw_shop.order.models import Order
+# from box.sw_shop.cart.utils import get_cart
+# from box.sw_shop.cart.models import CartItem
 from .forms import PaymentForm
 from .liqpay import LiqPay
 

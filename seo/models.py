@@ -19,7 +19,7 @@ class ItemSeo(models.Model):
     return f"{self.meta_title}"
   
   def save(self, *args, **kwargs):
-    from box.sw_shop.item.models import Item 
+    # from box.sw_shop.item.models import Item 
     meta_title       = self.meta_title
     meta_description = self.meta_description
     meta_keywords    = self.meta_keywords
@@ -57,7 +57,7 @@ class ItemCategorySeo(models.Model):
     return f"{self.meta_title}"
   
   def save(self, *args, **kwargs):
-    from box.sw_shop.item.models import Item 
+    # from box.sw_shop.item.models import Item 
     meta_title       = self.meta_title
     meta_description = self.meta_description
     meta_keywords    = self.meta_keywords

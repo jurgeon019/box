@@ -1,4 +1,3 @@
-from box.sw_shop.cart.models import *
 from box.core.utils import get_sk, get_user
 from box.sw_shop.cart.utils import get_cart
 

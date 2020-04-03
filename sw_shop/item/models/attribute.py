@@ -2,7 +2,7 @@ from ._imports import *
 from django.utils.translation import gettext_lazy as _
 
 
-# варіанти
+# # варіанти
 
 class ItemVariant(BaseMixin):
 	item = models.ForeignKey("item.Item", verbose_name=_("Товар"), on_delete=models.CASCADE)

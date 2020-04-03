@@ -36,13 +36,13 @@ third_party = [
     "rangefilter",
 ]
 box_default = [
+    'box.core',
+    'box.novaposhta',
     'box.global_config',
     'box.solo',
     'box.model_search',
-    'box.novaposhta',
     'box.sw_auth',
     'box.contact_form',
-    'box.core',
     'box.content',
 ]
 box_shop = [
@@ -65,8 +65,8 @@ INSTALLED_APPS  = [
     *third_party,
     *box_default,
     *box_shop,
-    *box_blog,
     *box_payment,
+    *box_blog,
 ]
 
 
