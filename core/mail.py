@@ -3,7 +3,7 @@ from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.urls import reverse 
 
-from box.global_config.models import NotificationConfig
+from box.core.sw_global_config.models import NotificationConfig
 
 
 def box_send_mail(subject=None, message=None, from_email=None, recipient_list=None, fail_silently=False, model=None, *args, **kwargs):

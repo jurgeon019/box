@@ -1,3 +1,12 @@
+'''
+Тут лежать всі загальні компоненти, які необхідні для роботи будь-якого сайту.
+'''
+
+
+
+
+
+
 from django import apps
 from django.utils.translation import gettext_lazy as _
 
@@ -11,7 +20,7 @@ class CoreConfig(apps.AppConfig):
     #     from box.sw_shop.item.models import (
     #         Item, ItemCategory, ItemBrand,  
     #     )
-    #     from box.blog.models import (
+    #     from box.sw_blog.models import (
     #         Post, PostCategory,
     #     )
     #     models = [

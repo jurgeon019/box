@@ -1,4 +1,4 @@
-from box.global_config.models import *
+from box.core.sw_global_config.models import *
 from box.core import settings as core_settings 
 
 def context(request):

@@ -35,35 +35,36 @@ third_party = [
     "rest_framework",
     "rangefilter",
 ]
-box_default = [
+box_core = [
     'box.core',
-    'box.novaposhta',
-    'box.global_config',
-    'box.solo',
-    'box.model_search',
-    'box.sw_auth',
-    'box.contact_form',
-    'box.content',
+    'box.core.sw_novaposhta',
+    'box.core.sw_global_config',
+    'box.core.sw_solo',
+    'box.core.sw_model_search',
+    'box.core.sw_content',
+    'box.core.sw_contact_form',
+    'box.core.sw_auth',
 ]
 box_shop = [
+    'box.shop',
     'box.sw_shop.item',
     'box.sw_shop.order',
     'box.sw_shop.cart',
     'box.sw_shop.customer',
 ]
 box_payment = [
-    'box.payment.liqpay',
-    'box.payment.wayforpay',
-    'box.payment.interkassa',
+    'box.sw_payment.liqpay',
+    'box.sw_payment.wayforpay',
+    'box.sw_payment.interkassa',
 ]
 box_blog = [
-    'box.blog',
+    'box.sw_blog',
 ]
 INSTALLED_APPS  = [
     *priority_third_party,
     *django_contrib,
     *third_party,
-    *box_default,
+    *box_core,
     *box_shop,
     *box_payment,
     *box_blog,

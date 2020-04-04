@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from box.sw_shop.cart.utils import get_cart
 from box.sw_shop.item.models import ItemStock 
-from box.global_config.models import NotificationConfig
+from box.core.sw_global_config.models import NotificationConfig
 from box.core.mail import box_send_mail
 
 from colorfield.fields import ColorField
@@ -181,7 +181,7 @@ class ItemRequest(models.Model):
         verbose_name = 'Заявка на інформацію про товар'
         verbose_name_plural = 'Заявки на інформацію про товар'
 
-from box.solo.models import SingletonModel
+from box.core.sw_solo.models import SingletonModel
 
 class OrderConfig(SingletonModel):
   def __str__(self):

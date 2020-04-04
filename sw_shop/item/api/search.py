@@ -16,7 +16,7 @@ def normalize_query(query_string):
     findterms = re.compile(r'"([^"]+)"|(\S+)').findall
     return [normspace(' ', (t[0] or t[1]).strip()) for t in findterms(query_string)] 
 
-#TODO: переробити на box.model_search 
+#TODO: переробити на box.core.sw_model_search 
 
 
 def get_query(query_string, search_fields):

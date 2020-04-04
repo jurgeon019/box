@@ -3,8 +3,8 @@ from ._django import BASE_DIR
 from django.utils.translation import gettext_lazy as _
 TIME_ZONE = 'UTC' #'Europe/Kiev'
 USE_I18N = True
-USE_L10N = False  
-# USE_L10N = True 
+# USE_L10N = False  
+USE_L10N = True 
 USE_TZ = True
 LANGUAGES = [
     ('uk', _('Українська')),

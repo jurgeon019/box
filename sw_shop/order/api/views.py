@@ -3,7 +3,7 @@ from box.sw_shop.item.models import Item
 from box.sw_shop.cart.utils import get_cart
 from box.sw_shop.cart.models import Cart, CartItem
 from box.core.mail import box_send_mail 
-from box.global_config.models import *
+from box.core.sw_global_config.models import *
 
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, reverse

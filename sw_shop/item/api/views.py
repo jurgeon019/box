@@ -12,7 +12,7 @@ from box.sw_shop.cart.utils import get_cart
 from box.core.utils import get_line
 from box.sw_shop.item.api.search import filter_search
 from box.core.mail import box_send_mail
-from box.global_config.models import NotificationConfig, CatalogueConfig
+from box.core.sw_global_config.models import NotificationConfig, CatalogueConfig
 
 
 def get_items_in_favours(request, items):

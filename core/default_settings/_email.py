@@ -28,6 +28,6 @@ MANAGERS = [
 if MAIL_TYPE == 'from_settings':
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 else:
-    EMAIL_BACKEND = 'box.global_config.backends.ConfiguredEmailBackend'
+    EMAIL_BACKEND = 'box.core.sw_global_config.backends.ConfiguredEmailBackend'
 
 

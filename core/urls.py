@@ -13,8 +13,8 @@ from box.core.sitemaps import StaticSitemap
 sitemaps = {
     'static':  StaticSitemap,
 }
-if 'box.content' in settings.INSTALLED_APPS:
-  from box.content.sitemaps import PageSitemap
+if 'box.core.sw_content' in settings.INSTALLED_APPS:
+  from box.core.sw_content.sitemaps import PageSitemap
   sitemaps.update({
     'pages':PageSitemap,
   })
@@ -24,8 +24,8 @@ if 'box.sw_shop.item' in settings.INSTALLED_APPS:
   'items':           ItemSitemap,
   'item_categories': ItemCategorySitemap,
   })
-if 'box.blog' in settings.INSTALLED_APPS:
-  from box.blog.sitemaps import PostSitemap, PostCategorySitemap
+if 'box.sw_blog' in settings.INSTALLED_APPS:
+  from box.sw_blog.sitemaps import PostSitemap, PostCategorySitemap
   sitemaps.update({
     'posts':           PostSitemap, 
     'post_categories': PostCategorySitemap, 
@@ -48,7 +48,7 @@ handler500 = 'box.core.views.handler_500'
 PROJECT_CORE              = [path('', include(url)) for url in core_settings.PROJECT_CORE_URLS]
 PROJECT_CORE_MULTILINGUAL = [path('', include(url)) for url in core_settings.PROJECT_CORE_MULTILINGUAL_URLS]
 
-box_apps          = [app for app in settings.INSTALLED_APPS if app.startswith('box.') and not app.startswith('box.core')]
+box_apps          = [app for app in settings.INSTALLED_APPS if app.startswith('box.') and  app != 'box.core']
 box               = [path('', include(f'{app}.urls')) for app in box_apps]
 box_multilingual  = [path('', include(f'{app}.multilingual_urls')) for app in box_apps]
 

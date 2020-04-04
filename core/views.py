@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.core.mail import send_mail 
 from django.conf import settings 
 from django.utils import translation
-from box.global_config.models import Robots
+from box.core.sw_global_config.models import Robots
 
 
 def handler_404(request, exception):
