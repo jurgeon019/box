@@ -66,11 +66,10 @@ def sw_login(request):
 
     if not users.exists() and users.count() != 1:
         return JsonResponse({
-            'message':_("'Такого користувача не існує'"),
-            'error_fields':['email'],
-            # 'error_fields':['username', 'email'],
-            # 'username':_("'Такого користувача не існує'"),
-            'email':_("'Такого користувача не існує'"),
+            'error_fields':[
+                'email':_("'Такого користувача не існує'"),
+                # 'username':_("'Такого користувача не існує'"),
+            ],
             'status':'BAD',
         })
 
@@ -78,9 +77,9 @@ def sw_login(request):
 
     if not user.check_password(password):
         return JsonResponse({
-            'message':_('Неправильний пароль'),
-            'error_fields':['password',],
-            'password':_('Неправильний пароль'),
+            'error_fields':[
+                'password':_('Неправильний пароль'),
+            ],
             'status':'BAD',
         })
 
@@ -150,32 +149,32 @@ def _sw_register(query, request):
     if password and password2 and password != password2:
         return JsonResponse({
             'status':'BAD',
-            "error_fields":["password", 'password2'],
-            'message':_('Паролі мусять співпадати'),
-            'password':_('Паролі мусять співпадати'),
-            'password2':_('Паролі мусять співпадати'),
+            "error_fields":[
+                "password":_('Паролі мусять співпадати'),,
+                'password2':_('Паролі мусять співпадати'),,
+            ],
         }) 
     if email_qs.exists() and email != '' and username_qs.exists() and username != '':
         return JsonResponse({
             'status':'BAD',
-            "error_fields":["email", 'username'],
-            'message':_('Ці емайл та логін вже зайняті'),
-            'email':_('Ці емайл та логін вже зайняті'),
-            'username':_('Ці емайл та логін вже зайняті'),
+            "error_fields":[
+                "email":_("Цей емейл вже зайнятий"), 
+                'username': _("Цей логін вже зайнятий"),
+            ],
         }) 
     if email_qs.exists() and email != '':
         return JsonResponse({
             'status':'BAD',
-            "error_fields":["email",],
-            'message':_('Цей емайл вже зайнятий'),
-            'email':_('Цей емайл вже зайнятий'),
+            "error_fields":[
+                "email":_('Цей емайл вже зайнятий'),
+            ],
         })
     if username_qs.exists() and username != '':
         return JsonResponse({
             'status':'BAD',
-            "error_fields":["username",],
-            'message':_('Цей логін вже зайнятий'),
-            'username':_('Цей логін вже зайнятий'),
+            "error_fields":[
+                "username":_('Цей логін вже зайнятий'),
+            ],
         })
     user = get_user_model().objects.create_user(
         username     = username,
@@ -186,9 +185,9 @@ def _sw_register(query, request):
     )
     if old_password and not user.check_password(old_password):
         return JsonResponse({
-            'message':_('Неправильний старий пароль'),
-            'error_fields':['old_password',],
-            'old_password':_('Неправильний старий пароль'),
+            'error_fields':[
+                'old_password':_('Неправильний старий пароль'),
+            ],
             'status':'BAD',
         })
     user.set_password(password)
