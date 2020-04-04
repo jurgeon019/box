@@ -37,6 +37,8 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         exclude = [
             'password',
+            'date_joined',
+            'last_login',
         ]
 
 

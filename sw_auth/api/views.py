@@ -22,12 +22,18 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = get_user_model().objects.all()
     serializer_class = UserSerializer
 
-    def update(self, instance, validated_data):
+    def update(self, request, *args, **kwargs):
+        validated_data = request.data
         if 'password' in validated_data:
             password = validated_data.pop('password')
-            instance.set_password(password)
-        return super().update(instance, validated_data)
-    
+            instance = self.get_object()
+            instance.set_password("babaski")
+            instance.save()
+            # instance.set_password(password)
+        result = super().update(request, *args, **kwargs)
+        # result.data['status'] = 'OK'
+        return result
+
     def create(self, request, *args, **kwargs):
         # https://stackoverflow.com/questions/16857450/how-to-register-users-in-django-rest-framework
         # TODO: розібратись як зробити нормально, так шоб видавались поля які мають бути заповнені, і з валідацією, **validated_data

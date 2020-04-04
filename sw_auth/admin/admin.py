@@ -82,7 +82,7 @@ class BoxUserAdmin(
                 ),
                 (
                 'address',
-                'group',
+                # 'group',
                 ),
             ),
             'classes':[
@@ -144,7 +144,7 @@ class BoxUserAdmin(
         'email',
         'date_joined',
         # 'group',
-        'order_count',
+        # 'order_count',
         "show_delete_link",
     ]
     list_display_links = list_display
