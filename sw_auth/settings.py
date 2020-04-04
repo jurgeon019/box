@@ -1,7 +1,7 @@
 from django.conf import settings 
 
 
-DEFAULT_LOGIN_REDIRECT_URL = 'customer'
+DEFAULT_LOGIN_REDIRECT_URL = '/profile/'
 
 
 
