@@ -72,11 +72,18 @@ urlpatterns = [
   path('grappelli/',       include('grappelli.urls')),
   path('tinymce/',         include('tinymce.urls')),
   path('ckeditor/',        include('ckeditor_uploader.urls')),
+  path('api-auth/',        include('rest_framework.urls', namespace='rest_framework')),
+  path('auth/',            include('djoser.urls')),
+  path('auth/',            include('djoser.urls.authtoken')),
+  path('auth/',            include('djoser.urls.jwt')),
   path('filebrowser/',     site.urls),
   *box,
   *PROJECT_CORE,
   *multilingual,
 ]
+
+import djoser 
+
 
 
 

@@ -13,10 +13,17 @@ python-magic
 # psycopg2
 
 
+# restAPI
+django-rest-framework
+djoser 
+djangorestframework_simplejwt
+social-auth-app-django
+django-oauth-toolkit
+
+
 # django 
 django
 django-cors-headers
-
 django-modeltranslation
 django-rosetta
 django-colorfield
@@ -32,32 +39,16 @@ django-tinymce4-lite
 django-mptt
 django-debug-toolbar
 django-extensions
-django-rest-framework
 django-crispy-forms
 django-import-export
 django-decouple 
 django-autocomplete-light 
-
 django-admin-autocomplete-filter
-
-
 django-celery-beat 
 django-redis
 channels
 channels_redis 
-
-#file 
-django-filer 
-# django-filebrowser
-django-filebrowser-no-grappelli
-django-filemanager
-django-bfm 
-
-
-
-
-
-
+django-contance
 
 # admin-styling 
 django-grappelli 
@@ -69,7 +60,6 @@ django-jet
 # django-material
 #  не зовсім для адмінки 
 # django-bootstrapped
-# ....
 
 
 
@@ -77,10 +67,6 @@ django-jet
 
 
 
-# live settings 
-django-des 
-django-constance
-django-solo
 
 
 

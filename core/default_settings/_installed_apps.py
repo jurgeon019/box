@@ -33,6 +33,8 @@ third_party = [
     'colorfield',
     'adminsortable2',
     "rest_framework",
+    'rest_framework.authtoken',
+    "djoser",
     "rangefilter",
 ]
 box_core = [
