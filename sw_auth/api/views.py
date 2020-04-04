@@ -50,7 +50,8 @@ def sw_login(request):
     query = request.POST or request.GET
     response    = redirect(request.META['HTTP_REFERER'])
     password    = query['password']
-    username    = query.get('username') or query.get('email')
+    username    = query.get('username') or query.get('email').split('@')[0]
+    email       = query.get('email')
     remember_me = request.GET.get('remember_me')
 
     if remember_me == "true":
@@ -60,14 +61,15 @@ def sw_login(request):
     
     users = get_user_model().objects.filter(
         Q(username__iexact=username)|
-        Q(email__iexact=username)
+        Q(email__iexact=email)
     ).distinct() 
 
     if not users.exists() and users.count() != 1:
         return JsonResponse({
             'message':_("'Такого користувача не існує'"),
-            'error_fields':['username', 'email'],
-            'username':_("'Такого користувача не існує'"),
+            'error_fields':['email'],
+            # 'error_fields':['username', 'email'],
+            # 'username':_("'Такого користувача не існує'"),
             'email':_("'Такого користувача не існує'"),
             'status':'BAD',
         })
