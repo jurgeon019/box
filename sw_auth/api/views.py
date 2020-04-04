@@ -67,6 +67,8 @@ def sw_login(request):
         return JsonResponse({
             'message':_("'Такого користувача не існує'"),
             'error_fields':['username', 'email'],
+            'username':_("'Такого користувача не існує'"),
+            'email':_("'Такого користувача не існує'"),
             'status':'BAD',
         })
 
@@ -76,6 +78,7 @@ def sw_login(request):
         return JsonResponse({
             'message':_('Неправильний пароль'),
             'error_fields':['password',],
+            'password':_('Неправильний пароль'),
             'status':'BAD',
         })
 
@@ -147,24 +150,30 @@ def _sw_register(query, request):
             'status':'BAD',
             "error_fields":["password", 'password2'],
             'message':_('Паролі мусять співпадати'),
+            'password':_('Паролі мусять співпадати'),
+            'password2':_('Паролі мусять співпадати'),
         }) 
     if email_qs.exists() and email != '' and username_qs.exists() and username != '':
         return JsonResponse({
             'status':'BAD',
             "error_fields":["email", 'username'],
             'message':_('Ці емайл та логін вже зайняті'),
+            'email':_('Ці емайл та логін вже зайняті'),
+            'username':_('Ці емайл та логін вже зайняті'),
         }) 
     if email_qs.exists() and email != '':
         return JsonResponse({
             'status':'BAD',
             "error_fields":["email",],
             'message':_('Цей емайл вже зайнятий'),
+            'email':_('Цей емайл вже зайнятий'),
         })
     if username_qs.exists() and username != '':
         return JsonResponse({
             'status':'BAD',
             "error_fields":["username",],
             'message':_('Цей логін вже зайнятий'),
+            'username':_('Цей логін вже зайнятий'),
         })
     user = get_user_model().objects.create_user(
         username     = username,
@@ -177,6 +186,7 @@ def _sw_register(query, request):
         return JsonResponse({
             'message':_('Неправильний старий пароль'),
             'error_fields':['old_password',],
+            'old_password':_('Неправильний старий пароль'),
             'status':'BAD',
         })
     user.set_password(password)
