@@ -66,6 +66,7 @@ def sw_login(request):
     if not users.exists() and users.count() != 1:
         return JsonResponse({
             'message':_("'Такого користувача не існує'"),
+            'error_fields':['username', 'email'],
             'status':'BAD',
         })
 
@@ -74,6 +75,7 @@ def sw_login(request):
     if not user.check_password(password):
         return JsonResponse({
             'message':_('Неправильний пароль'),
+            'error_fields':['password',],
             'status':'BAD',
         })
 
