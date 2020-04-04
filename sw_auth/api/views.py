@@ -152,8 +152,8 @@ def _sw_register(query, request):
         return JsonResponse({
             'status':'BAD',
             "error_fields":{
-                "password":_('Паролі мусять співпадати'),
-                'password2':_('Паролі мусять співпадати'),
+                "password":_('Паролі не співпадаюсь'),
+                'password2':_('Паролі не співпадаюсь'),
             }
         }) 
     if email_qs.exists() and email != '' and username_qs.exists() and username != '':
