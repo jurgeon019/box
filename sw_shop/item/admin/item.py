@@ -68,11 +68,6 @@ class ItemAdmin(
     actions = [
         "is_active_on",
         "is_active_off",
-        # 'export_items',
-        'admin_export_items_to_xlsx',
-        "admin_export_items_photoes",
-        "admin_delete_items_photoes",
-        "admin_delete_items_features",
         "change_category",
         "change_brand",
         "add_markers",

@@ -14,16 +14,15 @@ from import_export.widgets import ForeignKeyWidget
 
 
 class ItemCategoryResource(ModelResource):
-    parent = Field(
-        column_name='parent',
-        attribute="parent",
-        widget=ForeignKeyWidget(ItemCategory, field='id')
-    )
+    # parent = Field(
+    #     column_name='parent',
+    #     attribute="parent",
+    #     widget=ForeignKeyWidget(ItemCategory, field='id')
+    # )
 
     class Meta:
         model = ItemCategory 
         exclude = [
-            # 'id',
             'created',
             'updated',
             'order',
@@ -66,7 +65,7 @@ class ItemCategoryResource(ModelResource):
         return fields 
     
     def before_import_row(self, row, **kwargs):
-        self.handle_parent_import(row)
+        # self.handle_parent_import(row)
         self.handle_image_import(row)
     
     def handle_image_import(self, row):
@@ -74,11 +73,12 @@ class ItemCategoryResource(ModelResource):
             image = row.get('image')
             row['image'] = f'shop/category/{image}'
     
-    # def handle_parent_import(self, row):
-    #     if row.get('parent'):
-    #         parent        = row['parent']
-    #         parent        = ItemCategory.objects.get(id=parent)
-    #         row['parent'] = parent.id
+    def handle_parent_import(self, row):
+        if row.get('parent'):
+            parent        = row['parent']
+            print(parent)
+            parent        = ItemCategory.objects.get(id=parent)
+            row['parent'] = parent.id
 
     def dehydrate_parent(self, category):
         parent = None 

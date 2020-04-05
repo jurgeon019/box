@@ -9,3 +9,4 @@ class CustomAuthConfig(apps.AppConfig):
     
     
 default_app_config = 'box.core.sw_auth.CustomAuthConfig'
+

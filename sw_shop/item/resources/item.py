@@ -53,8 +53,8 @@ class ItemResource(ModelResource):
         self.handle_in_stock_import(row)
 
     def after_import_row(self, row, row_result,**kwargs):
-        print("row_result")
-        print(row_result)
+        print("[mark] row ")
+        print(row)
         self.handle_images_import(row)
         self.handle_server_images_import(row)
 

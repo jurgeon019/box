@@ -5,10 +5,13 @@ from .currency import ItemCurrency
 
 
 
-class ItemCategory(AbstractPage, MPTTModel):
-  # TODO: визначити якого хуя з включеним ActiveManager дочірні категорії(subcategories) виводяться не ті шо треба, а всі підряд
-  parent     = TreeForeignKey(verbose_name=_("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
+# class ItemCategory(AbstractPage, MPTTModel):
+  # parent     = TreeForeignKey(verbose_name=_("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
+class ItemCategory(AbstractPage):
+  parent     = models.ForeignKey(verbose_name=_("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
+
   currency   = models.ForeignKey(verbose_name=_("Валюта"), to="item.ItemCurrency", blank=True, null=True, related_name="categories",  on_delete=models.SET_NULL)
+  # TODO: визначити якого хуя з включеним ActiveManager дочірні категорії(subcategories) виводяться не ті шо треба, а всі підряд
 
   class Meta: 
     verbose_name = _('категорія'); 
@@ -17,6 +20,7 @@ class ItemCategory(AbstractPage, MPTTModel):
     ordering = ['order']
   
   def get_absolute_url(self):
+    return 
     return reverse("item_category", kwargs={"slug": self.slug})
 
   @property

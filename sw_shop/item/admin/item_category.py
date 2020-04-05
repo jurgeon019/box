@@ -3,11 +3,16 @@ from django.utils.translation import gettext_lazy as _
 
 
 
-from box.core.utils import ImportExportClonableMixin
+from box.core.utils import *
+# from box.core.utils import ImportExportClonableMixin
 
 class ItemCategoryAdmin(
+    BaseMixin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin, 
     DraggableMPTTAdmin,
-    ImportExportClonableMixin,
+    ClonableModelAdmin, 
+    admin.ModelAdmin,
     ):
     # changelist
     def tree_title(self, obj):
@@ -27,7 +32,7 @@ class ItemCategoryAdmin(
     ]
     mptt_indent_field = "currency"
     list_display = [
-        'tree_actions',
+        # 'tree_actions',
         "show_image",
         # 'indented_title',
         'tree_title',
@@ -40,7 +45,7 @@ class ItemCategoryAdmin(
     ]
     list_display_links = [
         # 'indented_title',
-        'tree_title',
+        # 'tree_title',
     ]
     list_editable = [
         'is_active',
