@@ -32,7 +32,7 @@ class ItemCategoryAdmin(
     ]
     mptt_indent_field = "currency"
     list_display = [
-        # 'tree_actions',
+        'tree_actions',
         "show_image",
         # 'indented_title',
         'tree_title',
@@ -45,7 +45,7 @@ class ItemCategoryAdmin(
     ]
     list_display_links = [
         # 'indented_title',
-        # 'tree_title',
+        'tree_title',
     ]
     list_editable = [
         'is_active',
