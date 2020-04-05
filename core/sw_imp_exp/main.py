@@ -1,4 +1,4 @@
-from box.imp_exp.main import * 
+from box.core.sw_imp_exp.main import * 
 
 from django.http import HttpResponse
 from django.core import serializers

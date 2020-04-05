@@ -48,7 +48,7 @@ box_core = [
     'box.core.sw_auth',
 ]
 box_shop = [
-    'box.sw_shop',
+    # 'box.sw_shop',
     'box.sw_shop.item',
     'box.sw_shop.order',
     'box.sw_shop.cart',

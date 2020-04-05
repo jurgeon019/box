@@ -4,7 +4,7 @@ from django.core.paginator import Paginator
 from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 
-from ..models import Post, PostCategory, PostComment
+from ..models import *
 from .serializers import PostSerializer
 
 from box.core.mail import box_send_mail
