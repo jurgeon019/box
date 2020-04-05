@@ -1,5 +1,5 @@
 from rest_framework import serializers 
-from box.sw_blog.models import * 
+from ..models import * 
 
 
 class ParentCommentSerializer(serializers.ModelSerializer):

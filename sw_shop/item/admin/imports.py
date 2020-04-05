@@ -20,7 +20,6 @@ from box.core.utils import (
 )
 from box.sw_shop.item.models import * 
 from box.sw_shop.cart.models import * 
-from box.imp_exp.main import ExportMixin
 from box.sw_shop.item.models import * 
 from box.sw_shop.cart.models import * 
 

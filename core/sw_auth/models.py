@@ -17,6 +17,8 @@ from django.utils import timezone
 from django.utils.crypto import get_random_string, salted_hmac
 from django.core.mail import send_mail
 
+from django.conf import settings 
+
 
 class AbstractUser(models.Model):
     gender_choices = [
@@ -52,13 +54,14 @@ class AbstractUser(models.Model):
     )
     email        = models.EmailField(
         _('email address'), blank=True)
-    # group        = models.ForeignKey(
-    #     to="customer.CustomerGroup", 
-    #     verbose_name=_("Група"), 
-    #     blank=True, null=True, 
-    #     on_delete=models.SET_NULL, 
-    #     help_text=("Група з купонами на скидку"),
-    # )
+    if 'box.sw_shop.customer' in settings.INSTALLED_APPS:
+        group        = models.ForeignKey(
+            to="customer.CustomerGroup", 
+            verbose_name=_("Група"), 
+            blank=True, null=True, 
+            on_delete=models.SET_NULL, 
+            help_text=("Група з купонами на скидку"),
+        )
     username     = models.CharField(
         _('username'),
         max_length=150,

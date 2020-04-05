@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.conf import settings 
 
 # from box.sw_shop.item.parser.main import *
-from box.imp_exp.main import ExportMixin
+from box.core.sw_imp_exp.main import ExportMixin
 
 from box.sw_shop.item.models import Item, ItemImage
 
