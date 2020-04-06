@@ -53,7 +53,9 @@ class AbstractUser(models.Model):
         max_length=150, blank=True, null=True,
     )
     email        = models.EmailField(
-        _('email address'), blank=True)
+        _('email address'), blank=True,
+        unique=True, 
+    )
     if 'box.sw_shop.customer' in settings.INSTALLED_APPS:
         group        = models.ForeignKey(
             to="customer.CustomerGroup", 
