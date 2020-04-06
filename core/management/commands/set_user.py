@@ -52,11 +52,11 @@ class Command(BaseCommand):
         )
         print(user)
         user.set_password(password)
-        user.email        = email, 
-        user.password     = password,
-        user.phone_number = phone_number,
-        user.first_name   = first_name,
-        user.last_name    = last_name,
+        user.email        = email
+        user.password     = password
+        user.phone_number = phone_number
+        user.first_name   = first_name
+        user.last_name    = last_name
 
         user.save()
         print('password has been set')
