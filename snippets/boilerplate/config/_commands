@@ -1,0 +1,27 @@
+sudo ln -s /home/<username>/projects/<project>/src/config/<project>         /etc/nginx/sites-enabled/
+sudo ln -s /home/<username>/projects/<project>/src/config/<project>.service /etc/systemd/system/
+
+
+
+sudo systemctl enable nginx
+sudo systemctl start nginx
+sudo systemctl restart nginx
+# sudo systemctl status nginx
+
+
+
+sudo systemctl enable <project>
+sudo systemctl start <project>
+sudo systemctl restart <project>
+# sudo systemctl status <project>
+
+
+
+sudo systemctl daemon-reload
+
+
+
+sudo certbot --nginx -d <domain>
+sudo certbot renew --dry-run
+
+

@@ -1,0 +1,19 @@
+server{
+
+    server_name <domain>;
+    listen 80;
+
+
+    location /media {
+        alias /home/<username>/projects/<project>/src/media;
+    }
+
+    location /static {
+        alias /home/<username>/projects/<project>/src/static_root;
+    }
+
+    location / {
+        uwsgi_pass unix:/home/<username>/projects/<project>/src/config/<project>.sock;
+        include /etc/nginx/uwsgi_params;
+    }
+}
