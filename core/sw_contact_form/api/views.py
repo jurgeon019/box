@@ -7,14 +7,13 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 
 from ..models import *
-from .utils import contact_get
+from box.core.mail import box_send_mail
+from box.core.sw_global_config.models import NotificationConfig
 
 
 @csrf_exempt
 def contact(request):
-    if request.method == 'GET':
-        return JsonResponse(contact_get)
-    query    = request.POST 
+    query    = request.POST or request.GET
     name     = query.get('name',    '---')
     email    = query.get('email',   '---')
     phone    = query.get('phone',   '---')
@@ -27,8 +26,6 @@ def contact(request):
         message=message,
         url=url
     )
-    from box.core.mail import box_send_mail
-    from box.core.sw_global_config.models import NotificationConfig
     box_send_mail(
         subject=NotificationConfig.get_solo().get_data('contact')['subject'],
         recipients_list=NotificationConfig.get_solo().get_data('contact')['emails'],
@@ -36,6 +33,7 @@ def contact(request):
     )
     return JsonResponse({
         'status':'OK',
+        # 'url':'/'
         # 'redirect':reverse('index'),
     })
 

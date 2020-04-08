@@ -20,9 +20,11 @@ def box_send_mail(subject=None, message=None, from_email=None, recipient_list=No
   if not from_email:
     from_email = settings.DEFAULT_FROM_EMAIL
   if not recipient_list:
-    recipient_list = settings.DEFAULT_RECIPIENT_LIST
-  recipient_list.extend(NotificationConfig.get_solo().get_data('reverse')['emails'])
-  print(recipient_list)
+    recipient_list = settings.DEFAULT_RECIPIENT_LIST or []
+  # import pdb; pdb.set_trace();
+  emails = NotificationConfig.get_solo().get_data('reverse')['emails']
+  if emails:
+     recipient_list.extend(emails)
   send_mail(
     subject        = subject,
     message        = message,

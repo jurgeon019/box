@@ -47,6 +47,7 @@ def get_resources():
 
 def loader(extention, file_name, action_type, resource_name):
   from tablib import Dataset
+  from tablib.exceptions import UnsupportedFormat
   Resource       = get_resource(resource_name)
   dataset = Dataset()
   if action_type == 'export':
@@ -57,7 +58,7 @@ def loader(extention, file_name, action_type, resource_name):
   elif action_type == 'import':
     with open(file_name, 'r') as f:
       # imported_data = dataset.load(f.read())
-      dataset.load(f.read())
+      dataset.load(f.read(), format=file_name.split('.')[-1])
     result = Resource().import_data(dataset, dry_run=True)
     if not result.has_errors():
       Resource().import_data(dataset, dry_run=False)  

@@ -1,0 +1,15 @@
+[
+    {"model":"item.ItemStock", "pk":1, "fields":{
+        "text":"Є в наявності",
+        "availability":true
+
+    }},
+    {"model":"item.ItemStock", "pk":2, "fields":{
+        "text":"Немає в наявності",
+        "availability":false
+    }},
+    {"model":"item.ItemStock", "pk":3, "fields":{
+        "text":"Обмежена кількість",
+        "availability":false
+    }}
+]

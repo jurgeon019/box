@@ -35,6 +35,8 @@ DATABASES = {
     'default': SQLITE,
 }
 
+# https://stackoverflow.com/questions/47585583/the-number-of-get-post-parameters-exceeded-settings-data-upload-max-number-field
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240 
 
 
 

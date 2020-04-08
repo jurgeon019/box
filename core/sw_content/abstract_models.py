@@ -3,21 +3,29 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone 
 
 from box.core.helpers import get_admin_url
+from box.core.models import BaseMixin
 
+# class AbstractContent(models.Model):
+  # code    = models.SlugField(
+  #   verbose_name=_("Змінна"), max_length=255,
+  #   unique=True, null=False, blank=False, 
+  #   help_text=("Назва змінної, по якій об'єкт буде діставатись у HTML-шаблоні."), 
+  # )
+  # created = models.DateTimeField(
+  #   verbose_name=_("Створено"), default=timezone.now, blank=True, null=True)
+  # updated = models.DateTimeField(verbose_name=_("Оновлено"), auto_now=True,auto_now_add=False)
+  # def get_admin_url(self):
+  #   return get_admin_url(self)
+  # @classmethod
+  # def modeltranslation_fields(self):
+  #   return []
 
-class AbstractContent(models.Model):
+class AbstractContent(BaseMixin):
+
   page    = models.ForeignKey(
     verbose_name=_("Сторінка"), to="sw_content.Page", 
     on_delete=models.SET_NULL, blank=True, null=True,
   )
-  code    = models.SlugField(
-    verbose_name=_("Змінна"), max_length=255,
-    unique=True, null=False, blank=False, 
-    help_text=("Назва змінної, по якій об'єкт буде діставатись у HTML-шаблоні."), 
-  )
-  created = models.DateTimeField(
-    verbose_name=_("Створено"), default=timezone.now, blank=True, null=True)
-  updated = models.DateTimeField(verbose_name=_("Оновлено"), auto_now=True,auto_now_add=False)
 
   class Meta:
     abstract = True 
@@ -25,21 +33,14 @@ class AbstractContent(models.Model):
       '-updated',
     ]
 
-  def get_admin_url(self):
-    return get_admin_url(self)
-  
-  @classmethod
-  def modeltranslation_fields(self):
-    return []
-
   def __str__(self):
     return f'{self.page}, {self.code}'
 
   def save(self, *args, **kwargs):
     if not self.page:
       from .models import Page 
-      page, _= Page.objects.get_or_create(code='general')
-      page.meta_title = 'Загальна сторінка'
+      page = Page.objects.get_or_create(code='general')[0]
+      page.meta_title = _('Загальна сторінка')
       page.save()
       self.page = page
     super().save(*args, **kwargs)

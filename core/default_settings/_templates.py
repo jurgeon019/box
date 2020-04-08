@@ -1,5 +1,7 @@
 import os 
 from ._django import BASE_DIR
+from ._installed_apps import INSTALLED_APPS 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -22,4 +24,20 @@ TEMPLATES = [
         },
     },
 ]
+
+
+if 'box.sw_shop.cart' in INSTALLED_APPS:
+    TEMPLATES[0]['OPTIONS']['context_processors'].extend([
+        'box.sw_shop.cart.context_processors.cart_content',
+    ])
+
+if 'box.sw_shop.item' in INSTALLED_APPS:
+    TEMPLATES[0]['OPTIONS']['context_processors'].extend([
+        # '',
+    ])
+
+if 'box.sw_payment' in INSTALLED_APPS:
+    TEMPLATES[0]['OPTIONS']['context_processors'].extend([
+        # '',
+    ])
 

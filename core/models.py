@@ -17,12 +17,41 @@ __all__ = [
 
 
 class BaseMixin(models.Model):
-	code            = models.SlugField(verbose_name=_("Код"), blank=True, null=True, unique=True, max_length=255, help_text=("Допоміжний"))
-	order           = models.PositiveIntegerField(verbose_name=_("Порядок"), default=0, blank=False, null=False)
-
-	is_active       = models.BooleanField(verbose_name=_("Активність"), default=True, help_text=_("Відображення на сайті"))
-	created         = models.DateTimeField(verbose_name=_("Створено"), default=timezone.now)
-	updated         = models.DateTimeField(verbose_name=_("Оновлено"), auto_now_add=False, auto_now=True, blank=True, null=True)
+	"""
+	У BaseMixin code blank=True, null=True тому що від нього наслідуються об'єкти,
+	у яких коду є опціональним(Item, Post, ItemCategory, PostCategory, AbstractContent і тд.) 
+	"""
+	code            = models.SlugField(
+		verbose_name=_("Код"), 
+		blank=True, null=True,
+		unique=True, 
+		# default=None, 
+		# unique=False, 
+		max_length=255, help_text=("Допоміжний код для виводу в шаблоні")
+	)
+	# def save(self, *args, **kwargs):
+	# 	if self.code:
+	# 		i = 0
+	# 		code = self.code
+	# 		while self._meta.model.objects.all().filter(code=code).exists():
+	# 			code = f'{code}_{i}'
+	# 			print(code)
+	# 			i+=1
+	# 		self.code = code 
+	# 	super().save(*args, **kwargs)
+			
+	order           = models.PositiveIntegerField(
+		verbose_name=_("Порядок"), default=0, blank=False, null=False
+	)
+	is_active       = models.BooleanField(
+		verbose_name=_("Активність"), default=True, help_text=_("Відображення на сайті")
+	)
+	created         = models.DateTimeField(
+		verbose_name=_("Створено"), default=timezone.now
+	)
+	updated         = models.DateTimeField(
+		verbose_name=_("Оновлено"), auto_now_add=False, auto_now=True, blank=True, null=True
+	)
 	
 	objects         = BasicManager()
 	active_objects  = ActiveManager()
@@ -34,7 +63,9 @@ class BaseMixin(models.Model):
 	def get_admin_url(self):
 		return get_admin_url(self)
 	
-
+	@classmethod
+	def modeltranslation_fields(self):
+		return []
 
 
 class AbstractPage(BaseMixin):
@@ -59,6 +90,7 @@ class AbstractPage(BaseMixin):
 		if not self.meta_descr and self.description:
 			self.meta_descr = self.description
 		handle_slug(self)
+		print(self.title, self.code)
 		super().save(*args, **kwargs)
 
 	def __str__(self):

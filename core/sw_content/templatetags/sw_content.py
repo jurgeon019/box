@@ -32,6 +32,39 @@ def render(content_type, code, page_code=None):
     return context['obj']
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @register.tag
 def placeholder1(parser, token):
     nodelist = parser.parse(('endplaceholder1',))

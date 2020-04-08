@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 
 from box.core import settings as core_settings 
 from box.core.sw_solo.models import SingletonModel
+from . import settings as config_settings 
 
 from tinymce import HTMLField
 from colorfield.fields import ColorField
@@ -24,11 +25,12 @@ __all__ = [
   'Seo',
 ]
 
-from box.sw_payment.liqpay import settings as liqpay_settings
 
 class SiteConfig(SingletonModel):
-  liqpay_public_key   = models.TextField(_("Публічний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PUBLIC_KEY)
-  liqpay_private_key  = models.TextField(_("Приватний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PRIVATE_KEY)
+  if 'box.sw_payment.liqpay' in settings.INSTALLED_APPS:
+    from box.sw_payment.liqpay import settings as liqpay_settings
+    liqpay_public_key   = models.TextField(_("Публічний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PUBLIC_KEY)
+    liqpay_private_key  = models.TextField(_("Приватний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PRIVATE_KEY)
   # captcha_type_choices = (
   #   ("default","default"),
   #   ("v2","v2"),
@@ -54,8 +56,7 @@ class SiteConfig(SingletonModel):
 
 class NotificationConfig(SingletonModel):
 
-  default_emails = getattr(settings, 'DEFAULT_RECIPIENTS', ['jurgeon018@gmail.com',])
-  default_emails = ','.join(default_emails)
+  default_emails = ','.join(config_settings.DEFAULT_RECIPIENTS)
 
   admin_mails_language_choices = settings.LANGUAGES
 
@@ -112,11 +113,10 @@ class NotificationConfig(SingletonModel):
     default=default_emails
   )
 
-  reverse_emails_help_text = ('Email-адреси на яку будуть дублюватися всі листи. Перечислити через кому.')
   reverse_emails = models.TextField(
     verbose_name=("Зворотні Email-адреси"),   
-    help_text=reverse_emails_help_text,
-    null=True, blank=True, 
+    help_text=('Email-адреси на яку будуть дублюватися всі листи. Перечислити через кому.'),
+    null=True, blank=True,
   )
 
   sender_name = models.CharField(
@@ -130,16 +130,15 @@ class NotificationConfig(SingletonModel):
     choices=admin_mails_language_choices
   )
 
-
   def get_data(self, field, *args, **kwargs):
     lst = ['order','contact','review','comment','other', 'reverse',]
     if field not in lst:
       raise Exception('поле мусить бути в %s' % lst)
-    
-    emails  = getattr(self, f'{field}_emails').replace(' ', '').split(',')
+    emails  = getattr(self, f'{field}_emails', None)
+    if emails:
+      emails = emails.replace(' ', '').split(',') or []
     subject = getattr(self, f'{field}_subject', None)
     return  {'subject':subject, 'emails':emails}
-
 
   auto_comment_approval = models.BooleanField(verbose_name=_("Автоматичне схвалення коментарів до блогу"), default=True)
   auto_review_approval  = models.BooleanField(verbose_name=_("Автоматичне схвалення відгуків до товару"),  default=True)

@@ -1,0 +1,1 @@
+default_app_config = 'box.sw_shop.test_shop.apps.TestShopConfig'

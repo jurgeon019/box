@@ -11,9 +11,9 @@ api_urls = [
     path('current_user/',    current_user),
     path('users/login/',     sw_login),
     # backward compatibility
-    path('custom_login/',    sw_login),
-    path('custom_logout/',   sw_logout),
-    path('custom_register/', sw_register),
+    path('custom_login/',    sw_login, name='custom_login'),
+    path('custom_logout/',   sw_logout, name='custom_logout'),
+    path('custom_register/', sw_register, name='custom_register'),
 
 ]
 

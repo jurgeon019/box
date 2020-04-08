@@ -12,8 +12,18 @@ from .abstract_models import (
 from .validators import validate_phone_number
 
 class Page(AbstractPage):
-  title = models.CharField(verbose_name=_("Заголовок"), blank=True, null=True, max_length=255, help_text=("Назва сторінки"))
-  code  = models.SlugField(verbose_name=_("Код"), blank=False, null=False, unique=True, max_length=255, help_text=("Код сторінки"))
+  """
+  У Page code blank=False, null=False тому що по цьому коду він викликається у
+  функціях, які рендерять шаблони. 
+  """
+  code  = models.SlugField(
+    verbose_name=_("Код"), blank=False, null=False, 
+    unique=True, max_length=255, help_text=("Код сторінки"),
+  )
+  title = models.CharField(
+    verbose_name=_("Заголовок"), blank=True, null=True, 
+    max_length=255, help_text=("Назва сторінки"),
+  )
 
   class Meta:
     verbose_name        = _("cторінка")
