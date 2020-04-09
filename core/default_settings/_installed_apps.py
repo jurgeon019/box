@@ -1,6 +1,6 @@
 priority_third_party = [
     'corsheaders',
-    'box.sw_admin',  
+    'box.apps.sw_admin',  
     # 'admin_tools', 'admin_tools.theming', 'admin_tools.menu', 'admin_tools.dashboard',
     'dal',
     'dal_select2',
@@ -36,6 +36,10 @@ third_party = [
     'rest_framework.authtoken',
     "djoser",
     "rangefilter",
+    'debug_toolbar',
+    'nested_admin',
+    'nested_inline',
+    # 'robots',
 ]
 box_core = [
     'box.core',
@@ -46,21 +50,21 @@ box_core = [
     'box.core.sw_content',
     'box.core.sw_contact_form',
     'box.core.sw_auth',
+    # 'box.core.sw_robots',
 ]
 box_shop = [
-    # 'box.sw_shop',
-    'box.sw_shop.item',
-    'box.sw_shop.order',
-    'box.sw_shop.cart',
-    'box.sw_shop.customer',
+    'box.apps.sw_shop.item',
+    'box.apps.sw_shop.order',
+    'box.apps.sw_shop.cart',
+    'box.apps.sw_shop.customer',
 ]
 box_payment = [
-    'box.sw_payment.liqpay',
-    'box.sw_payment.wayforpay',
-    'box.sw_payment.interkassa',
+    'box.apps.sw_payment.liqpay',
+    'box.apps.sw_payment.wayforpay',
+    'box.apps.sw_payment.interkassa',
 ]
 box_blog = [
-    'box.sw_blog',
+    'box.apps.sw_blog',
 ]
 INSTALLED_APPS  = [
     *priority_third_party,

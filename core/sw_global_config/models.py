@@ -27,8 +27,8 @@ __all__ = [
 
 
 class SiteConfig(SingletonModel):
-  if 'box.sw_payment.liqpay' in settings.INSTALLED_APPS:
-    from box.sw_payment.liqpay import settings as liqpay_settings
+  if 'box.apps.sw_payment.liqpay' in settings.INSTALLED_APPS:
+    from box.apps.sw_payment.liqpay import settings as liqpay_settings
     liqpay_public_key   = models.TextField(_("Публічний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PUBLIC_KEY)
     liqpay_private_key  = models.TextField(_("Приватний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PRIVATE_KEY)
   # captcha_type_choices = (
@@ -181,13 +181,13 @@ class NotificationConfig(SingletonModel):
 
   use_tls = models.BooleanField(
       verbose_name = _("EMAIL_USE_TLS"),
-      help_text=_(""), 
+      help_text=_(" "), 
       default=settings.EMAIL_USE_TLS,
   )
 
   use_ssl = models.BooleanField(
       verbose_name = _("EMAIL_USE_SSL"),
-      help_text=_(""), 
+      help_text=_(" "), 
       default=settings.EMAIL_USE_SSL,
   )
 

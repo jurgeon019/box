@@ -1,0 +1,1 @@
+default_app_config = 'box.apps.sw_admin.apps.CustomAdminConfig'

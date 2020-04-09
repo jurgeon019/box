@@ -9,7 +9,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .forms import * 
 
-from box.sw_admin.modelclone import ClonableModelAdmin
+from box.apps.sw_admin.modelclone import ClonableModelAdmin
 
 from import_export.admin import *
 from adminsortable2.admin import SortableAdminMixin

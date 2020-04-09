@@ -1,8 +1,8 @@
 from django.db import models 
 from django.utils.translation import gettext_lazy as _
 
-# from box.sw_blog.models import PostComment
-# from box.sw_shop.item.models import ItemReview 
+# from box.apps.sw_blog.models import PostComment
+# from box.apps.sw_shop.item.models import ItemReview 
 
 
 

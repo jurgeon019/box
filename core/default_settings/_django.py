@@ -3,7 +3,9 @@ import ast
 from decouple import config
 import decouple 
 
-
+INTERNAL_IPS = [
+    '127.0.0.1',
+]
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # AUTH_USER_MODEL = 'project.ProjectUser'
 # CSRF_COOKIE_HTTPONLY = False 

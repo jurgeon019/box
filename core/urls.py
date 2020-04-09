@@ -5,6 +5,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
+from django.views.decorators.cache import cache_page
 from . import settings as core_settings
 from filebrowser.sites import site
 from box.core.views import robots, set_lang, testmail
@@ -18,14 +19,14 @@ if 'box.core.sw_content' in settings.INSTALLED_APPS:
   sitemaps.update({
     'pages':PageSitemap,
   })
-if 'box.sw_shop.item' in settings.INSTALLED_APPS:
-  from box.sw_shop.item.sitemaps import ItemSitemap, ItemCategorySitemap
+if 'box.apps.sw_shop.item' in settings.INSTALLED_APPS:
+  from box.apps.sw_shop.item.sitemaps import ItemSitemap, ItemCategorySitemap
   sitemaps.update({
   'items':           ItemSitemap,
   'item_categories': ItemCategorySitemap,
   })
-if 'box.sw_blog' in settings.INSTALLED_APPS:
-  from box.sw_blog.sitemaps import PostSitemap, PostCategorySitemap
+if 'box.apps.sw_blog' in settings.INSTALLED_APPS:
+  from box.apps.sw_blog.sitemaps import PostSitemap, PostCategorySitemap
   sitemaps.update({
     'posts':           PostSitemap, 
     'post_categories': PostCategorySitemap, 
@@ -63,9 +64,11 @@ multilingual = i18n_patterns(
 
 urlpatterns = [
   *static_urlpatterns,
-  path('i18n/',            include('django.conf.urls.i18n')),
-  path('sitemap.xml/',     sitemap, {'sitemaps':sitemaps}),
+  path('sitemap.xml/',     sitemap, {'sitemaps':sitemaps}, name='sitemap'),
   path('robots.txt/',      robots,           name='robots'),
+  # path('sitemap.xml/',     cache_page(60)(sitemap), {'sitemaps': sitemaps}, name='cached-sitemap'),
+  # path('robots.txt/',      include('robots.urls')),
+  path('i18n/',            include('django.conf.urls.i18n')),
   path('set_lang/<lang>/', set_lang,         name="set_lang"),
   path('jsi18n/',          js_cat.as_view(), name='javascript-catalog'),
   path('admin_tools/',     include('admin_tools.urls')),
@@ -77,12 +80,19 @@ urlpatterns = [
   path('auth/',            include('djoser.urls.authtoken')),
   path('auth/',            include('djoser.urls.jwt')),
   path('filebrowser/',     site.urls),
+  path('_nested_admin/',   include('nested_admin.urls')),
   *box,
   *PROJECT_CORE,
   *multilingual,
 ]
 
-import djoser 
+# if settings.DEBUG:
+if core_settings.DJANGO_DEBUG_TOOLBAR_ON:
+    print('sdfsdf')
+    import debug_toolbar
+    urlpatterns.extend([
+        path('__debug__/', include(debug_toolbar.urls)),
+    ])
 
 
 
