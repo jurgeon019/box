@@ -9,11 +9,10 @@ INTERNAL_IPS = [
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # AUTH_USER_MODEL = 'project.ProjectUser'
 # CSRF_COOKIE_HTTPONLY = False 
-# DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240
 ROOT_URLCONF     = 'box.core.urls'
 WSGI_APPLICATION = 'box.core.wsgi.application'
 ALLOWED_HOSTS    = ['*']
-SECRET_KEY       = config('SECRET_KEY') or 'ss'
+SECRET_KEY       = config('SECRET_KEY') or 'fdsadsfjdkasdfdsa'
 DEBUG            = ast.literal_eval(config('DEBUG') or "True")  #python manage.py runserver --insecure # for 404 page
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 STATIC_ROOT      = os.path.join(BASE_DIR, "static_root")
@@ -33,8 +32,12 @@ POSTGRES = {
     'HOST' : '127.0.0.1',
     'PORT' : '5432',
 }
+if config('DB') == 'postgres':
+    default = POSTGRES
+else:
+    default = SQLITE
 DATABASES = {
-    'default': SQLITE,
+    'default': default,
 }
 
 # https://stackoverflow.com/questions/47585583/the-number-of-get-post-parameters-exceeded-settings-data-upload-max-number-field

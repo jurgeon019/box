@@ -17,3 +17,5 @@ MIDDLEWARE = [
     'box.core.middleware.JSONParsingMiddleware',
     'box.core.middleware.DisableCSRF',
 ]
+
+

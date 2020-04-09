@@ -3,9 +3,6 @@ project_domain = agrologistics.com.ua, visatut.in.ua, capitanauto.com
 
 
 
-
-
-
 # 1 етап. Створення юзера, установка ПО
 
 sudo apt-get update && apt-get upgrade

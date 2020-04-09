@@ -1,6 +1,5 @@
 from box.core.default_settings import * 
 
-from box.core.default_settings import * 
 INSTALLED_APPS  = [
     *priority_third_party,
     *django_contrib,
@@ -32,10 +31,10 @@ STATIC_SITEMAP_PAGES = [
     # 'about',
 ]
 PROJECT_CORE_MULTILINGUAL_URLS = [
-    'project.urls',
+    'project.multilingaul_urls',
 ]
 PROJECT_CORE_URLS = [
-    'project.api.urls',
+    'project.urls',
 ]
 ROOT_URLCONF     = 'box.core.urls'
 WSGI_APPLICATION = 'core.wsgi.application'
