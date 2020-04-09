@@ -20,7 +20,7 @@ from django.core.mail import send_mail
 from django.conf import settings 
 
 
-class AbstractUser(models.Model):
+class BoxAbstractUser(models.Model):
     gender_choices = [
       ["u",_("Невідомо")],
       ["m",_("Чоловік")],
@@ -169,7 +169,6 @@ class AbstractUser(models.Model):
         return check_password(raw_password, self.password, setter)
 
     def set_unusable_password(self):
-        # Set a value that will never be a valid hash
         self.password = make_password(None)
 
     def has_usable_password(self):

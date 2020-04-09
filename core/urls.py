@@ -49,7 +49,12 @@ handler500 = 'box.core.views.handler_500'
 PROJECT_CORE              = [path('', include(url)) for url in core_settings.PROJECT_CORE_URLS]
 PROJECT_CORE_MULTILINGUAL = [path('', include(url)) for url in core_settings.PROJECT_CORE_MULTILINGUAL_URLS]
 
-box_apps          = [app for app in settings.INSTALLED_APPS if app.startswith('box.') and  app != 'box.core']
+excluded_apps = [
+  'box.core', 
+  'box.apps.sw_shop', 
+  'box.apps.sw_payment',
+]
+box_apps          = [app for app in settings.INSTALLED_APPS if app.startswith('box.') and  app not in excluded_apps]  #https://stackoverflow.com/questions/4843158/check-if-a-python-list-item-contains-a-string-inside-another-string
 box               = [path('', include(f'{app}.urls')) for app in box_apps]
 box_multilingual  = [path('', include(f'{app}.multilingual_urls')) for app in box_apps]
 

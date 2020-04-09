@@ -23,6 +23,7 @@ from django.utils.html import mark_safe
 
 __all__ = 'ClonableModelAdmin',
 
+
 class ClonableModelAdmin(ModelAdmin):
 
     clone_verbose_name = lazy('Дублювати')

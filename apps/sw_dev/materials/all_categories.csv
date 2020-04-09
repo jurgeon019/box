@@ -1,0 +1,21 @@
+Заголовок,Заголовок_uk,Заголовок_ru,Ссылка,Ссылка_родителя,Изображение,Код
+Оренда спецтехніки,Оренда спецтехніки,Оренда спецтехники,orenda-spetstehnіki,,spec_rent.png,spec_rent
+Перевантажувачі,Перевантажувачі,Перегрузчики,spec_rent_perevant,orenda-spetstehnіki,spec_rent_perevant.png,spec_rent_perevant
+Міні-навантажувачі,Міні-навантажувачі,Мини-нагрузчики,spec_rent_mininavant,orenda-spetstehnіki,spec_rent_mininavant.png,spec_rent_mininavant
+Продаж спецтехніки,Продаж спецтехніки,Продажа спецтехники,prodazh-spetstehnіki,,spec_sell.png,spec_sell
+Екскаватори,Екскаватори,Экскаваторы,spec_sell_ekskavator,prodazh-spetstehnіki,spec_sell_ekskavator.png,spec_sell_ekskavator
+Автовишки,Автовишки,Автовышки,spec_sell_vyshky,prodazh-spetstehnіki,spec_sell_vyshky.png,spec_sell_vyshky
+Екскаватор-навантажувач,Екскаватор-навантажувач,Экскаватор-нагрузчик,spec_sell_ekskavator_navantajuvach,prodazh-spetstehnіki,spec_sell_ekskavator_navantajuvach.png,spec_sell_ekskavator_navantajuvach
+Бульдозери,Бульдозери,Бульдозеры,spec_sell_buldozer,prodazh-spetstehnіki,spec_sell_buldozer.png,spec_sell_buldozer
+запчастини та комплектуючі,запчастини та комплектуючі,Запчасти и комплектующие,parts ,,parts_perkins.png,parts
+запчасти для jcb,Запчастини JCB,Запчасти JCB,zapchasti-dlja-jcb,zapchastini-ta-komplektujuchі,parts_jcb.png,parts_jcb
+Запчастини MANITOU,Запчастини MANITOU,Запчасти MANITOU,parts_manitou,parts ,parts_manitou.png,parts_manitou
+Запчастини PERKINS,Запчастини PERKINS,Запчасти PERKINS,parts_perkins,parts ,parts_perkins.png,parts_perkins
+Запчасти к двигателю Perkins 400,Запчастини до двигуна Perkins 400,Запчасти к двигателю Perkins 400,perkins-400,perkins ,,
+Запчасти к двигателю Perkins 800,Запчастини до двигуна Perkins 800,Запчасти к двигателю Perkins 800,perkins-800,perkins ,,
+Запчасти к двигателю Perkins 1004-1006,Запчастини до двигуна Perkins 1004-1006,Запчасти к двигателю Perkins 1004-1006,perkins-1004-1006 ,perkins ,,
+Запчасти к двигателю Perkins 1104-1106,Запчастини до двигуна Perkins 1104-1106,Запчасти к двигателю Perkins 1104-1106,perkins-1004-1106  ,perkins ,,
+Запчасти к двигателю Perkins 1204-1206,Запчастини до двигуна Perkins 1204-1206,Запчасти к двигателю Perkins 1204-1206,perkins-1204-1206 ,perkins ,,
+Запчасти к двигателю Perkins 1306-1600,Запчастини до двигуна Perkins 1306-1600,Запчасти к двигателю Perkins 1306-1600,perkins-1306-1600 ,perkins ,,
+Запчасти к двигателю Perkins 2200-2500-2800,Запчастини до двигуна Perkins 2200-2500-2800,Запчасти к двигателю Perkins 2200-2500-2800,perkins-2200-2500-2800 ,perkins ,,
+Запчасти к двигателю Perkins 4006-4016,Запчастини до двигуна Perkins 4006-4016,Запчасти к двигателю Perkins 4006-4016,perkins-4006-4016 ,perkins ,,

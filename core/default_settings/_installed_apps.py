@@ -1,7 +1,7 @@
 priority_third_party = [
     'corsheaders',
     'box.apps.sw_admin',  
-    # 'admin_tools', 'admin_tools.theming', 'admin_tools.menu', 'admin_tools.dashboard',
+    'admin_tools', 'admin_tools.theming', 'admin_tools.menu', 'admin_tools.dashboard',
     'dal',
     'dal_select2',
     'admin_auto_filters',
@@ -53,12 +53,14 @@ box_core = [
     # 'box.core.sw_robots',
 ]
 box_shop = [
+    'box.apps.sw_shop',  # !! не забирай це, бо тоді з адмінки пропадуть блочки з django-admin-tools
     'box.apps.sw_shop.item',
     'box.apps.sw_shop.order',
     'box.apps.sw_shop.cart',
     'box.apps.sw_shop.customer',
 ]
 box_payment = [
+    'box.apps.sw_payment',   # !! не забирай це, бо тоді з адмінки пропадуть блочки з django-admin-tools
     'box.apps.sw_payment.liqpay',
     'box.apps.sw_payment.wayforpay',
     'box.apps.sw_payment.interkassa',

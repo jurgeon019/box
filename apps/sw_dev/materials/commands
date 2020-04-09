@@ -1,0 +1,59 @@
+
+
+
+
+
+
+pip install -r box/core/materials/requirements.txt
+. ~/.bashrc 
+
+git add . && git commit -m 'sdfsdf' && git pull  
+git add . && git commit -m 'sdfsdf' && git push 
+
+cd box 
+
+git add . && git commit -m 'sdfsdf' && git pull  
+git add . && git commit -m 'sdfsdf' && git push 
+
+cd ..
+
+git add . && git commit -m 'sdfsdf' && git pull  
+git add . && git commit -m 'sdfsdf' && git push 
+
+cd box 
+
+git add . && git commit -m 'sdfsdf' && git pull  
+git add . && git commit -m 'sdfsdf' && git push 
+
+cd ..
+
+find . -path "*/migrations/*.py" -not -name "__init__.py" -delete
+rm db.sqlite3
+python3 manage.py makemigrations 
+python3 manage.py migrate 
+python3 manage.py set_user admin admin admin   # створити адміна
+python3 manage.py set_site jcbservice.com.ua   # створити доменне імя для сайтмапу
+# python3 manage.py gen_posts             #   створити пости 
+python3 manage.py loaddata page slider item_stock item_currency
+python3 manage.py loader -a=import -f=dev/materials/all_categories.csv -c=category
+python3 manage.py gen_tech              #   створити техніку
+
+########################################################################
+
+python3 manage.py loader  -a=import -c=item_category -f=dev/materials/test.csv
+# python3 manage.py loader  -a=import -c=item_category -f=dev/materials/jcb_with_price.csv
+# python3 manage.py loader  -a=import -c=item_category -f=dev/materials/perkins_with_price.csv
+
+########################################################################
+
+
+python3 manage.py set_jcb_categories 
+python3 manage.py translate_jcb 
+python3 manage.py translate_status
+python3 manage.py loaddata page slider item_stock item_currency status 
+
+
+
+python3 manage.py runserver 127.0.0.1:8000
+
+

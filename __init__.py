@@ -1,19 +1,24 @@
-from django.apps import AppConfig
-from django.utils.translation import gettext_lazy as _
-from django.conf import settings 
+'''
+Інструкція для швидкої розгортки.
+cd projects
+mkdir <project_name> 
+cd <project_name>
+python3 -m venv venv
+source venv/bin/activate
+******* 1 варіант
+mkdir src 
+cd src 
+git clone git@github.com:<username>/<project_name> . 
+******* 2 варіант
+git clone git@github.com:<username>/<project_name> src
+*******
+cd src 
+git clone git@github.com:jurgeon018/boxss 
+cp -rp ./box/project_boilerplate/* . 
+git add . 
+git commit -m 's'
+git push origin master 
+'''
 
 
-class BoxConfig(AppConfig):
-    name = 'box'
-    verbose_name = _('Коробка')
-    verbose_name_plural = verbose_name
-
-
-default_app_config = 'box.BoxConfig'
-
-
-
-# if 'box.shop.item' in settings.INSTALLED_APPS:
-#     from box.shop.item import * 
-# TODO: опреділити, чого воно дає помилку з SECRET_KEY 
 

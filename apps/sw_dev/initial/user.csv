@@ -1,0 +1,2 @@
+id,is_superuser,is_staff,is_active,first_name,username,last_name,email,phone_number,address,birth_date,gender,password
+1,1,1,1,,admin,,admin@aadmin.admin,,,,0,pbkdf2_sha256$180000$Oc7J9wNFL2vD$MtcYYxo5scqyhWytUzVU7My1EDAiJaSwXRqsPjCvq0U=
