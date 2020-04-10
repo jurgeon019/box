@@ -10,6 +10,7 @@ INSTALLED_APPS  = [
     *box_blog,
     'project',
 ]
+AUTH_USER_MODEL = 'project.ProjectUser'
 TEMPLATES[0]['OPTIONS']['context_processors'].extend([
     'project.context_processors.context',
 ])

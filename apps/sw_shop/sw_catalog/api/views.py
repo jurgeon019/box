@@ -15,6 +15,33 @@ from box.core.mail import box_send_mail
 from box.core.sw_global_config.models import NotificationConfig, CatalogueConfig
 
 
+
+from rest_framework.viewsets import ModelViewSet
+from .serializers import * 
+
+
+class ItemViewSet(ModelViewSet):
+  queryset = Item.objects.all().filter(is_active=True)
+  serializer_class = ItemSerializer
+
+
+class ReviewViewSet(ModelViewSet):
+  queryset = ItemReview.objects.all().filter(is_active=True)
+  serializer_class = ItemReviewSerializer
+
+
+
+
+
+
+
+
+
+
+
+# OLD 
+
+
 def get_items_in_favours(request, items):
   items_in_favours = []
   for item in items:

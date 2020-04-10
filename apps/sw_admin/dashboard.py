@@ -28,6 +28,29 @@ class CustomIndexDashboard(DefaultIndexDashboard):
     def init_with_context(self, context):
         # self.columns  = self.get_columns(context)
         site_name = get_admin_site_name(context)
+        if "box.apps.sw_shop" in settings.INSTALLED_APPS:
+            self.children.append(modules.AppList(
+                _('Магазин'),
+                models=('box.apps.sw_shop.*',),
+            ))
+        if "box.apps.sw_dev" in settings.INSTALLED_APPS:
+            print('in!')
+            self.children.append(modules.AppList(
+                _('Розробка'),
+                models=('box.apps.sw_dev.*',),
+            ))
+        if "box.apps.sw_blog" in settings.INSTALLED_APPS:
+            self.children.append(modules.AppList(
+                _('Блог'),
+                models=('box.apps.sw_blog.*',),
+            ))
+        if "box.apps.sw_payment" in settings.INSTALLED_APPS:
+            self.children.append(modules.AppList(
+                _("Оплати"),
+                models=('box.apps.sw_payment.*',),
+            ))
+     
+
         self.children.append(modules.LinkList(
             _('Quick links'),
             layout='inline',
@@ -69,28 +92,6 @@ class CustomIndexDashboard(DefaultIndexDashboard):
             models=('box.core.sw_contact_form.*',),
         ))
 
-        if "box.apps.sw_shop" in settings.INSTALLED_APPS:
-            self.children.append(modules.AppList(
-                _('Магазин'),
-                models=('box.apps.sw_shop.*',),
-            ))
-        if "box.apps.sw_dev" in settings.INSTALLED_APPS:
-            print('in!')
-            self.children.append(modules.AppList(
-                _('Розробка'),
-                models=('box.apps.sw_dev.*',),
-            ))
-        if "box.apps.sw_blog" in settings.INSTALLED_APPS:
-            self.children.append(modules.AppList(
-                _('Блог'),
-                models=('box.apps.sw_blog.*',),
-            ))
-        if "box.apps.sw_payment" in settings.INSTALLED_APPS:
-            self.children.append(modules.AppList(
-                _("Оплати"),
-                models=('box.apps.sw_payment.*',),
-            ))
-     
 
         # self.children.append(modules.AppList(
         #     _("Global"),

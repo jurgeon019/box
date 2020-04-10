@@ -38,7 +38,7 @@ third_party = [
     "rangefilter",
     'debug_toolbar',
     'nested_admin',
-    'nested_inline',
+    # 'nested_inline',
     # 'robots',
 ]
 box_core = [

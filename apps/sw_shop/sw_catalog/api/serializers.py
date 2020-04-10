@@ -11,13 +11,15 @@ class ItemCurrencySerializer(serializers.ModelSerializer):
     model = ItemCurrency
     exclude = []
 
+
 class ItemReviewSerializer(serializers.ModelSerializer):
   created = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
   updated = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", read_only=True)
 
   class Meta:
     model = ItemReview
-    exclude = []
+    exclude = [
+    ]
 
 
 
@@ -67,8 +69,8 @@ class ItemStockSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
   images   = ItemImageSerializer(many=True, read_only=True)
   # features = ItemFeatureSerializer(many=True)
-  full_url = serializers.SerializerMethodField() 
-  def get_full_url(self, obj):
+  absolute_url = serializers.SerializerMethodField() 
+  def get_absolute_url(self, obj):
       return obj.get_absolute_url()
 
   if item_settings.MULTIPLE_CATEGORY:
@@ -80,6 +82,7 @@ class ItemSerializer(serializers.ModelSerializer):
   reviews  = ItemReviewSerializer(many=True)
   currency = ItemCurrencySerializer()
   in_stock = ItemStockSerializer()
+
   class Meta:
     model = Item
     exclude = []
