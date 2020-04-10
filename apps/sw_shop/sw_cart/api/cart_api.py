@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404
 from django.http import JsonResponse, HttpResponse
-from box.apps.sw_shop.sw_item.models import Item
+from box.apps.sw_shop.sw_catalog.models import Item
 from box.apps.sw_shop.sw_cart.models import CartItem
 from box.apps.sw_shop.sw_cart.utils import get_cart, get_cart_info
 

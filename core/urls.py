@@ -19,8 +19,8 @@ if 'box.core.sw_content' in settings.INSTALLED_APPS:
   sitemaps.update({
     'pages':PageSitemap,
   })
-if 'box.apps.sw_shop.sw_item' in settings.INSTALLED_APPS:
-  from box.apps.sw_shop.sw_item.sitemaps import ItemSitemap, ItemCategorySitemap
+if 'box.apps.sw_shop.sw_catalog' in settings.INSTALLED_APPS:
+  from box.apps.sw_shop.sw_catalog.sitemaps import ItemSitemap, ItemCategorySitemap
   sitemaps.update({
   'items':           ItemSitemap,
   'item_categories': ItemCategorySitemap,

@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
 from box.apps.sw_shop.sw_cart.utils import get_cart
-from box.apps.sw_shop.sw_item.models import ItemStock 
+from box.apps.sw_shop.sw_catalog.models import ItemStock 
 from box.core.sw_global_config.models import NotificationConfig
 from box.core.mail import box_send_mail
 
@@ -102,7 +102,7 @@ class ItemRequest(models.Model):
     phone   = models.CharField(verbose_name=_("Телефон"),      max_length=255, blank=True, null=True)
     email   = models.CharField(verbose_name=_("Емайл"),        max_length=255, blank=True, null=True)
     message = models.TextField(verbose_name=_("Повідомлення"), blank=True, null=True)
-    item    = models.ForeignKey(verbose_name=_("Товар"),       blank=True, null=True, on_delete=models.CASCADE, to="sw_item.Item")
+    item    = models.ForeignKey(verbose_name=_("Товар"),       blank=True, null=True, on_delete=models.CASCADE, to="sw_catalog.Item")
     created = models.DateTimeField(verbose_name=_("Створено"), blank=True, null=True, default=timezone.now)
     
     def __str__(self):

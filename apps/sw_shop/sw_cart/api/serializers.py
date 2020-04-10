@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from box.apps.sw_shop.sw_cart.models import CartItem,  FavourItem
-from box.apps.sw_shop.sw_item.api.serializers import ItemSerializer
+from box.apps.sw_shop.sw_catalog.api.serializers import ItemSerializer
 
 
 class CartItemSerializer(serializers.ModelSerializer):

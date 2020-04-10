@@ -3,26 +3,38 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
-from box.apps.sw_shop.sw_item.models import Item, ItemCurrency 
+from box.apps.sw_shop.sw_catalog.models import Item, ItemCurrency 
 
 
-User = get_user_model() 
 
 
 class Cart(models.Model):
-  user    = models.ForeignKey(verbose_name=_("Користувач"), to=User, on_delete=models.SET_NULL, related_name='carts', blank=True, null=True)
-  order   = models.OneToOneField(verbose_name=_("Замовлення"), to="sw_order.Order", blank=True, null=True, on_delete=models.CASCADE, related_name='cart')
-  ordered = models.BooleanField(verbose_name=_("Замовлено"), default=False)
-  created = models.DateTimeField(verbose_name=_('Дата створення'), default=timezone.now)
-  updated = models.DateTimeField(verbose_name=_('Дата оновлення'),  auto_now_add=False, auto_now=True,  blank=True, null=True)
+  user    = models.ForeignKey(
+    verbose_name=_("Користувач"), to=get_user_model() , on_delete=models.SET_NULL, 
+    related_name='carts', blank=True, null=True,
+  )
+  order   = models.OneToOneField(
+    verbose_name=_("Замовлення"), to="sw_order.Order", blank=True, null=True, 
+    on_delete=models.CASCADE, related_name='cart',
+  )
+  ordered = models.BooleanField(
+    verbose_name=_("Замовлено"), default=False,
+  )
+  created = models.DateTimeField(
+    verbose_name=_('Дата створення'), default=timezone.now,
+  )
+  updated = models.DateTimeField(
+    verbose_name=_('Дата оновлення'),  auto_now_add=False, auto_now=True,  
+    blank=True, null=True,
+  )
 
   def __str__(self):
     return f"{self.id}"
-  
+
   class Meta:
-    verbose_name = ('Корзина')
-    verbose_name_plural = ('Корзини')
-  
+    verbose_name = _('Корзина')
+    verbose_name_plural = _('Корзини')
+
   def add_item(self, item_id, quantity):
     try: quantity = int(quantity)
     except: quantity = 1
@@ -105,26 +117,40 @@ class Cart(models.Model):
 
 
 class CartItem(models.Model):
-  ordered  = models.BooleanField( verbose_name=("Замовлено"), default=False)
-  cart     = models.ForeignKey(   to='sw_cart.Cart',   verbose_name=("Корзина"), on_delete=models.CASCADE, blank=True, null=True, related_name="items")
-  order    = models.ForeignKey(   to='sw_order.Order', verbose_name=('Замовлення'),   on_delete=models.CASCADE, blank=True, null=True, related_name="cart_items")
-  item     = models.ForeignKey(   to="sw_item.Item",   verbose_name=('Товар'),   on_delete=models.CASCADE, blank=True, null=True, related_name="cart_items")
-  quantity = models.IntegerField(verbose_name=_('Кількість'), default=1)
-  
+  ordered  = models.BooleanField(
+     verbose_name=("Замовлено"), default=False,
+    )
+  cart     = models.ForeignKey(  
+     to='sw_cart.Cart',   verbose_name=("Корзина"), on_delete=models.CASCADE, blank=True, null=True, related_name="items",
+    )
+  order    = models.ForeignKey(  
+     to='sw_order.Order', verbose_name=('Замовлення'),   on_delete=models.CASCADE, blank=True, null=True, related_name="cart_items",
+    )
+  item     = models.ForeignKey(  
+     to="sw_catalog.Item",   verbose_name=('Товар'),   on_delete=models.CASCADE, blank=True, null=True, related_name="cart_items",
+    )
+  quantity = models.IntegerField(
+    verbose_name=_('Кількість'), default=1,
+  )
   created  = models.DateTimeField(verbose_name=_('Дата создания'),  default=timezone.now)
   updated  = models.DateTimeField(verbose_name=_('Дата обновления'),auto_now_add=False, auto_now=True,  blank=True, null=True)
 
+  # features = models.ManyToManyField(verbose_name=_("Атрибут"), "sw_sw_catalog.ItemAttribute")
+  # options  = models.ManyToManyField(verbose_name=_("Атрибут"), "sw_catalog.ItemOption")
+  
   @property
   def total_price(self):
-    try:
-      item = self.item.price
-      if item:
-        return item * self.quantity
-      else:
-        return None 
-    except:
-      print('Блядь поправ це гімно, відвалюється при покупці в 1 клік')
-      return 1
+    return self.item.price * self.quantity
+    # if self.item and self.item.price
+    # try:
+    #   item = self.item.price
+    #   if item:
+    #     return item * self.quantity
+    #   else:
+    #     return None 
+    # except:
+    #   print('Блядь поправ це гімно, відвалюється при покупці в 1 клік')
+    #   return 1
 
   @property
   def price_per_item(self):
@@ -138,19 +164,38 @@ class CartItem(models.Model):
     return f'{self.item.title}, {self.quantity}, {self.total_price} {self.item.currency}'
 
   class Meta: 
-    verbose_name = ('Товар в корзині')
-    verbose_name_plural = ('Товари в корзині')
+    verbose_name = _('Товар в корзині')
+    verbose_name_plural = _('Товари в корзині')
+
+
+
+class CartItemAttribute(models.Model):
+  cart_item = models.ForeignKey(
+    verbose_name=_("Товар в корзині"), 
+    to="sw_cart.CartItem",
+    on_delete=models.CASCADE,
+  )
+  item_attribute_variant = models.ForeignKey(
+    verbose_name=_("Варіант атрибуту товару"), 
+    to="sw_catalog.ItemAttributeVariant", 
+    on_delete=models.CASCADE,
+  )
+  
+
+
+
+
 
 
 class FavourItem(models.Model):
-  item = models.ForeignKey("sw_item.Item", on_delete=models.CASCADE, verbose_name='Улюблені товари', blank=True, null=True, related_name="favour_items")
+  item = models.ForeignKey("sw_catalog.Item", on_delete=models.CASCADE, verbose_name='Улюблені товари', blank=True, null=True, related_name="favour_items")
   cart = models.ForeignKey('sw_cart.Cart', on_delete=models.CASCADE, verbose_name='Улюблені товари', blank=True, null=True, related_name="favour_items")
   
   def __str__(self):
     return f'{self.item.name},{self.user}'
 
   class Meta:
-    verbose_name=("Улюблений товар")
-    verbose_name_plural=("Улюблені товари")
+    verbose_name=_("Улюблений товар")
+    verbose_name_plural=_("Улюблені товари")
 
 

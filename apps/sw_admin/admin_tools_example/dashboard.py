@@ -139,7 +139,7 @@ class CustomIndexDashboard(Dashboard):
                 children=[
                     modules.AppList(
                         title="Shop",
-                        models=['box.apps.sw_shop.sw_item.models.Item',]
+                        models=['box.apps.sw_shop.sw_catalog.models.Item',]
                     ),
                     modules.AppList(
                         title="Apps",

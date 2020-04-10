@@ -58,7 +58,7 @@ box_delivery = [
 ]
 box_shop = [
     'box.apps.sw_shop',      # !! не забирай це, бо тоді з адмінки пропадуть блочки з django-admin-tools
-    'box.apps.sw_shop.sw_item',
+    'box.apps.sw_shop.sw_catalog',
     'box.apps.sw_shop.sw_order',
     'box.apps.sw_shop.sw_cart',
     'box.apps.sw_shop.sw_customer',

@@ -48,7 +48,7 @@ from .models import Contact
 admin.site.register(Contact, ContactAdmin)
 
 # from box.apps.sw_blog.admin import PostCommentAdmin
-# from box.apps.sw_shop.sw_item.admin import ItemReviewAdmin 
+# from box.apps.sw_shop.sw_catalog.admin import ItemReviewAdmin 
 # from .models import ProxyComment, ProxyReview 
 # admin.site.register(ProxyComment, PostCommentAdmin)
 # admin.site.register(ProxyReview, ItemReviewAdmin)

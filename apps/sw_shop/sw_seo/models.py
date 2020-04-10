@@ -8,7 +8,7 @@ __all__ = [
 ]
 
 class ItemSeo(models.Model):
-  categories       = models.ManyToManyField(verbose_name=_("Категорія"), to="sw_item.ItemCategory",  related_name='item_seos', blank=True)
+  categories       = models.ManyToManyField(verbose_name=_("Категорія"), to="sw_catalog.ItemCategory",  related_name='item_seos', blank=True)
   meta_title       = models.CharField(verbose_name=_("Auto Meta-title"), max_length=255, blank=True, null=True)
   meta_description = models.CharField(verbose_name=_("Auto Meta-description"), max_length=255, blank=True, null=True)
   meta_keywords    = models.CharField(verbose_name=_("Auto Meta-keywords"), max_length=255, blank=True, null=True)
@@ -19,7 +19,7 @@ class ItemSeo(models.Model):
     return f"{self.meta_title}"
   
   def save(self, *args, **kwargs):
-    # from box.apps.sw_shop.sw_item.models import Item 
+    # from box.apps.sw_shop.sw_catalog.models import Item 
     meta_title       = self.meta_title
     meta_description = self.meta_description
     meta_keywords    = self.meta_keywords
@@ -46,7 +46,7 @@ class ItemSeo(models.Model):
 
 
 class ItemCategorySeo(models.Model):
-  categories       = models.ManyToManyField(verbose_name=_("Категорія"), to="sw_item.ItemCategory",  related_name='item_category_seos', blank=True)
+  categories       = models.ManyToManyField(verbose_name=_("Категорія"), to="sw_catalog.ItemCategory",  related_name='item_category_seos', blank=True)
   meta_title       = models.CharField(verbose_name=_("Auto Meta-title"), max_length=255, blank=True, null=True)
   meta_description = models.CharField(verbose_name=_("Auto Meta-description"), max_length=255, blank=True, null=True)
   meta_keywords    = models.CharField(verbose_name=_("Auto Meta-keywords"), max_length=255, blank=True, null=True)
@@ -57,7 +57,7 @@ class ItemCategorySeo(models.Model):
     return f"{self.meta_title}"
   
   def save(self, *args, **kwargs):
-    # from box.apps.sw_shop.sw_item.models import Item 
+    # from box.apps.sw_shop.sw_catalog.models import Item 
     meta_title       = self.meta_title
     meta_description = self.meta_description
     meta_keywords    = self.meta_keywords

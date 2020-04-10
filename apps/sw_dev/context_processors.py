@@ -1,4 +1,4 @@
-from box.apps.sw_shop.sw_item.models import ItemCategory
+from box.apps.sw_shop.sw_catalog.models import ItemCategory
 
 
 def context(request):

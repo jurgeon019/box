@@ -1,0 +1,28 @@
+[
+    {"model":"sw_catalog.ItemCurrency", "pk":1, "fields":{
+        "name":"UAH",
+        "code":"UAH",
+        "is_main":true
+    }},
+    {"model":"sw_catalog.ItemCurrency", "pk":2, "fields":{
+        "name":"USD",
+        "code":"USD"
+    }},
+    {"model":"sw_catalog.ItemCurrency", "pk":3, "fields":{
+        "name":"EUR",
+        "code":"EUR"
+    }},
+
+
+    {"model":"sw_catalog.ItemCurrencyRatio", "pk":1, "fields":{
+        "main":2,
+        "compared":1,
+        "ratio":25
+    }},
+    {"model":"sw_catalog.ItemCurrencyRatio", "pk":2, "fields":{
+        "main":3,
+        "compared":1,
+        "ratio":27
+    }}
+
+]

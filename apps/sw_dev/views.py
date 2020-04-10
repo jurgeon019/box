@@ -3,7 +3,7 @@ from django import forms
 from django.http import HttpResponse 
 
 
-# from box.apps.sw_shop.sw_item.models import *
+# from box.apps.sw_shop.sw_catalog.models import *
 # from box.apps.sw_shop.sw_order.models import * 
 
 

@@ -35,7 +35,7 @@ import time
 import csv 
 import re 
 
-# from box.apps.sw_shop.sw_item.models import *
+# from box.apps.sw_shop.sw_catalog.models import *
 from box.core.sw_content.models import *
 
 __all__ = [
