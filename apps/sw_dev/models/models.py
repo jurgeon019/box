@@ -1,11 +1,8 @@
-
-
 from django.db import models 
 
 from mptt.fields import TreeForeignKey
 from mptt.models import MPTTModel
 from django.utils.translation import gettext_lazy as _
-
 
 
 class Category(MPTTModel):
@@ -16,8 +13,7 @@ class Category(MPTTModel):
         return self.title
 
 
-
-class Product(models.Model):
+class Item(models.Model):
     category = TreeForeignKey(Category, on_delete=models.CASCADE)
     title    = models.CharField(max_length=255)
 
@@ -25,80 +21,97 @@ class Product(models.Model):
         return self.title
 
 
+# Variants
 
 
+class ItemVariant(models.Model):
+    item = models.ForeignKey('sw_dev.Item', on_delete=models.CASCADE)
 
-class ProductAttribute(models.Model):
+
+# Options 
+
+
+class ItemOption(models.Model):
+    product = models.ForeignKey("sw_dev.Item",             on_delete=models.CASCADE)
+    name    = models.ForeignKey('sw_dev.ItemOptionName',  on_delete=models.CASCADE)
+    price   = models.DecimalField(max_digits=9, decimal_places=7)
+    help_text = models.TextField()
+
     def __str__(self):
         return f'{self.name}'
-    product = models.ForeignKey("dev.Product", verbose_name=_(""), on_delete=models.CASCADE)
-    name = models.ForeignKey(to='dev.ProductAttributeName', max_length=50, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ['name', 'product']
 
 
-class ProductAttributeName(models.Model):
+class ItemOptionName(models.Model):
+    name    = models.CharField(max_length=255)
+
+
+
+# Features
+
+
+class ItemFeature(models.Model):
+    product = models.ForeignKey("sw_dev.Item",             on_delete=models.CASCADE)
+    name    = models.ForeignKey('sw_dev.ItemFeatureName',  on_delete=models.CASCADE)
+    value   = models.ForeignKey('sw_dev.ItemFeatureValue', on_delete=models.CASCADE)
+
     def __str__(self):
         return f'{self.name}'
-    name = models.CharField(_("name"), max_length=50)
 
 
+class ItemFeatureValue(models.Model):
+    value     = models.CharField(max_length=50)
+    price     = models.DecimalField(max_digits=9, decimal_places=7)
+    help_text = models.TextField()
 
-class ProductAttributeValue(models.Model):
+    def __str__(self):
+        return f'{self.name}'
+
+
+class ItemFeatureName(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return f'{self.name}'
+
+
+# Attriburtes
+
+
+class ItemAttribute(models.Model):
+    def __str__(self):
+        return f'{self.name}'
+    product = models.ForeignKey("sw_dev.Item", verbose_name=_(""), on_delete=models.CASCADE)
+    name = models.ForeignKey(to='sw_dev.ItemAttributeName', on_delete=models.CASCADE)
+
+
+class ItemAttributeName(models.Model):
+    def __str__(self):
+        return f'{self.name}'
+    name = models.CharField(max_length=50)
+
+
+class ItemAttributeValue(models.Model):
+    attribute = models.ForeignKey("sw_dev.ItemAttribute", verbose_name=_(""), on_delete=models.CASCADE)
+    # value = models.CharField(max_length=50)
+    value = models.ForeignKey('sw_dev.ItemAttributeValueValue', on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=9, decimal_places=7)
+    help_text = models.TextField()
+
     def __str__(self):
         return f'{self.value}'
-    attribute = models.ForeignKey("dev.ProductAttribute", verbose_name=_(""), on_delete=models.CASCADE)
-    # value = models.CharField(_("Value"), max_length=50)
-    value = models.ForeignKey('dev.ProductAttributeValueValue', on_delete=models.CASCADE)
 
 
-class ProductAttributeValueValue(models.Model):
+class ItemAttributeValueValue(models.Model):
     def __str__(self):
         return f'{self.value}'
-    value = models.CharField(_("Value"), max_length=50)
+    value = models.CharField(max_length=50)
+    code  = models.SlugField()
+    price = models.DecimalField(max_digits=9, decimal_places=7)
+    help_text = models.TextField()
 
 
 
-
-# from django.conf import settings 
-
-
-# class Item(models.Model):
-#    name = models.CharField('name', max_length=164)
-
-
-# class Attr(models.Model):
-#    name = models.CharField('name', max_length=164)
-#    item = models.ForeignKey(Item, on_delete=models.CASCADE,)
-
-
-# class Value(models.Model):
-#    name = models.CharField('name', max_length=164)
-#    attr = models.ForeignKey(Attr, on_delete=models.CASCADE,)
-
-
-
-# from django.contrib import admin
-# from nested_admin import NestedModelAdmin, NestedStackedInline, NestedTabularInline
-# from .models import *
-
-
-# class ValueInline(NestedTabularInline):
-#    model = Value
-#    extra = 1
-
-
-# class AttrInline(NestedStackedInline):
-#    model = Attr
-#    extra = 1
-#    inlines = [
-#        ValueInline, 
-#     ]
-
-
-# class ItemAdmin(NestedModelAdmin):
-#    inlines = [
-#        AttrInline,
-#     ]
-
-
-# admin.site.register(Item, ItemAdmin)
 

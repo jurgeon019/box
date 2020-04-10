@@ -59,34 +59,35 @@ class CustomIndexDashboard(DefaultIndexDashboard):
         # і приховувати. Підсказка: django.apps.apps.get_model + django.conf.INTSALLED_APPS
 
         self.children.append(modules.AppList(
-            _("Core"),
+            _("Налаштування"),
             models=('box.core.*',),
             exclude=('box.core.sw_contact_form.*',),
         ))
 
         self.children.append(modules.AppList(
-            _("Contact form"),
+            _("Зворотній звязок"),
             models=('box.core.sw_contact_form.*',),
         ))
 
         if "box.apps.sw_shop" in settings.INSTALLED_APPS:
             self.children.append(modules.AppList(
-                _('Shop'),
+                _('Магазин'),
                 models=('box.apps.sw_shop.*',),
             ))
         if "box.apps.sw_dev" in settings.INSTALLED_APPS:
+            print('in!')
             self.children.append(modules.AppList(
-                _('DEVELOPEMENT'),
+                _('Розробка'),
                 models=('box.apps.sw_dev.*',),
             ))
         if "box.apps.sw_blog" in settings.INSTALLED_APPS:
             self.children.append(modules.AppList(
-                _('Blog'),
+                _('Блог'),
                 models=('box.apps.sw_blog.*',),
             ))
         if "box.apps.sw_payment" in settings.INSTALLED_APPS:
             self.children.append(modules.AppList(
-                _("Payment"),
+                _("Оплати"),
                 models=('box.apps.sw_payment.*',),
             ))
      

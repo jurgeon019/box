@@ -1,0 +1,12 @@
+[
+    {"model":"sw_item.ItemMarker", "pk":1, "fields":{
+        "text":"Новий"
+    }},
+    {"model":"sw_item.ItemMarker", "pk":2, "fields":{
+        "text":"Акція"
+    }},
+    {"model":"sw_item.ItemMarker", "pk":3, "fields":{
+        "text":"Старий"
+    }}
+]
+

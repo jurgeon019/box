@@ -1,10 +1,11 @@
 from django.db import models 
 
-
+from django.conf import settings 
 
 
 class Payment(models.Model):
-  order               = models.OneToOneField(verbose_name='Замовлення',to='order.Order', on_delete=models.CASCADE, blank=True, null=True)
+  if 'box.apps.sw_shop.sw_order' in settings.INSTALLED_APPS:
+    order               = models.OneToOneField(verbose_name='Замовлення',to='sw_order.Order', on_delete=models.CASCADE, blank=True, null=True)
   timestamp           = models.DateTimeField(verbose_name='Час',auto_now_add=True, blank=True, null=True)
   status              = models.CharField(verbose_name='Статус', max_length=255, blank=True, null=True)
   ip                  = models.CharField(verbose_name='ІР', max_length=255, blank=True, null=True)

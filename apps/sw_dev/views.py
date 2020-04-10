@@ -3,20 +3,20 @@ from django import forms
 from django.http import HttpResponse 
 
 
-from box.apps.sw_shop.item.models import *
-from box.apps.sw_shop.order.models import * 
+# from box.apps.sw_shop.sw_item.models import *
+# from box.apps.sw_shop.sw_order.models import * 
 
 
-class OrderForm(forms.ModelForm):
-    class Meta:
-        model = Order
-        exclude = [
-            'user',
-            'ordered',
-            'status',
-            'total_price',
-            'cart',
-        ]
+# class OrderForm(forms.ModelForm):
+#     class Meta:
+#         model = Order
+#         exclude = [
+#             'user',
+#             'ordered',
+#             'status',
+#             'total_price',
+#             'cart',
+#         ]
 
 
 def shop(request):
@@ -43,7 +43,7 @@ def category(request, slug):
 
 
 def order(request):
-    form = OrderForm(request.POST or None)
+    # form = OrderForm(request.POST or None)
     return render(request, 'test_shop/order.html', locals())
 
 

@@ -2,8 +2,8 @@
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
 from import_export.fields import Field
-from .models import *
-# Category, Product 
+from ..models import *
+# Category, Item 
 from mptt import models 
     # https://github.com/django-import-export/django-import-export/issues/577
     # https://stackoverflow.com/questions/25670553/adding-foreignkey-widget-to-django-import-export
@@ -41,9 +41,10 @@ class CategoryResource(ModelResource):
         print(row)
         print()
 
-class ProductResource(ModelResource):
+
+class ItemResource(ModelResource):
     class Meta:
-        model = Product
+        model = Item
         exclude = [
             
         ]

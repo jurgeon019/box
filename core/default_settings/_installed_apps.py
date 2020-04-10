@@ -43,21 +43,25 @@ third_party = [
 ]
 box_core = [
     'box.core',
-    'box.core.sw_novaposhta',
     'box.core.sw_global_config',
     'box.core.sw_solo',
     'box.core.sw_model_search',
     'box.core.sw_content',
     'box.core.sw_contact_form',
     'box.core.sw_auth',
-    # 'box.core.sw_robots',
+    # 'box.core.sw_robots',s
+]
+box_delivery = [
+    'box.apps.sw_delivery',
+    'box.apps.sw_delivery.sw_novaposhta',
+    'box.apps.sw_delivery.sw_delivery_auto',
 ]
 box_shop = [
-    'box.apps.sw_shop',  # !! не забирай це, бо тоді з адмінки пропадуть блочки з django-admin-tools
-    'box.apps.sw_shop.item',
-    'box.apps.sw_shop.order',
-    'box.apps.sw_shop.cart',
-    'box.apps.sw_shop.customer',
+    'box.apps.sw_shop',      # !! не забирай це, бо тоді з адмінки пропадуть блочки з django-admin-tools
+    'box.apps.sw_shop.sw_item',
+    'box.apps.sw_shop.sw_order',
+    'box.apps.sw_shop.sw_cart',
+    'box.apps.sw_shop.sw_customer',
 ]
 box_payment = [
     'box.apps.sw_payment',   # !! не забирай це, бо тоді з адмінки пропадуть блочки з django-admin-tools
@@ -73,6 +77,7 @@ INSTALLED_APPS  = [
     *django_contrib,
     *third_party,
     *box_core,
+    *box_delivery,
     *box_shop,
     *box_payment,
     *box_blog,

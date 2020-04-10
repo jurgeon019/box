@@ -1,0 +1,11 @@
+[
+    {"model":"sw_order.Status", "pk":1, "fields":{
+        "name":"Прийнятий в обробку"
+    }},
+    {"model":"sw_order.Status", "pk":2, "fields":{
+        "name":"Обробляється"
+    }},
+    {"model":"sw_order.Status", "pk":3, "fields":{
+        "name":"Завершений"
+    }}
+]

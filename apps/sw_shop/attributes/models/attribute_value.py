@@ -43,7 +43,7 @@ class AttributeValue(models.Model):
 
     entry = models.ForeignKey(
         # ATTRIBUTES_ENTRY_MODEL,
-        to='item.Item',
+        to="sw_item.Item",
         related_name='attr_values',
         on_delete=models.CASCADE,
     )

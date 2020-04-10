@@ -102,3 +102,6 @@ class LiqPay(object):
 
     def decode_data_from_str(self, data):
         return json.loads(base64.b64decode(data).decode('utf-8'))
+
+
+

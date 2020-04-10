@@ -1,0 +1,1 @@
+# https://api.sat.ua/study/hs/api/v1.0/main/json/getRsp?language=uk

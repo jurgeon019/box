@@ -28,8 +28,8 @@ def get_class(content_type):
         'slider':  Slider,
         'slide':   Slide,
     }
-    if 'box.apps.sw_shop.item' in settings.INSTALLED_APPS:
-        from box.apps.sw_shop.item.models import Item, ItemCategory
+    if 'box.apps.sw_shop.sw_item' in settings.INSTALLED_APPS:
+        from box.apps.sw_shop.sw_item.models import Item, ItemCategory
         mapper.update({
             'item':          Item,
             'item_category': ItemCategory,

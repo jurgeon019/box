@@ -44,7 +44,7 @@ class Attribute(OrderedModel):
 
     categories = models.ManyToManyField(
         # ATTRIBUTES_CATEGORY_MODEL,
-        'item.ItemCategory',
+        'sw_item.ItemCategory',
         related_name='attributes',
         blank=True,
         verbose_name=_("Categories"),

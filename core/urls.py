@@ -19,8 +19,8 @@ if 'box.core.sw_content' in settings.INSTALLED_APPS:
   sitemaps.update({
     'pages':PageSitemap,
   })
-if 'box.apps.sw_shop.item' in settings.INSTALLED_APPS:
-  from box.apps.sw_shop.item.sitemaps import ItemSitemap, ItemCategorySitemap
+if 'box.apps.sw_shop.sw_item' in settings.INSTALLED_APPS:
+  from box.apps.sw_shop.sw_item.sitemaps import ItemSitemap, ItemCategorySitemap
   sitemaps.update({
   'items':           ItemSitemap,
   'item_categories': ItemCategorySitemap,
@@ -53,6 +53,7 @@ excluded_apps = [
   'box.core', 
   'box.apps.sw_shop', 
   'box.apps.sw_payment',
+  'box.apps.sw_delivery',
 ]
 box_apps          = [app for app in settings.INSTALLED_APPS if app.startswith('box.') and  app not in excluded_apps]  #https://stackoverflow.com/questions/4843158/check-if-a-python-list-item-contains-a-string-inside-another-string
 box               = [path('', include(f'{app}.urls')) for app in box_apps]
