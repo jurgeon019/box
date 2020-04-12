@@ -1,7 +1,16 @@
-from ._imports import * 
 from django.utils.translation import gettext_lazy as _
+# from ._imports import * 
+from django.db import models 
+from box.core.models import AbstractPage, BaseMixin
+from adminsortable.admin import SortableAdmin, NonSortableParentAdmin, SortableStackedInline
+from adminsortable.fields import SortableForeignKey
+from ..utils import generate_unique_slug, item_image_folder
+from django.contrib.auth import get_user_model
+from django.conf import settings 
+from box.core import settings as core_settings
 
 
+User = get_user_model()
 
 
 class ItemUnit(models.Model):
@@ -39,9 +48,18 @@ class ItemBrand(AbstractPage):
 
 
 class ItemImage(BaseMixin):
-	item      = SortableForeignKey(verbose_name=_("Товар"), to="sw_catalog.Item", on_delete=models.SET_NULL, related_name='images', null=True)
-	image     = models.ImageField(verbose_name=_('Ссилка зображення'), upload_to=item_image_folder, blank=True, null=True)
-	alt       = models.CharField(verbose_name=_("Альт"), max_length=255, blank=True, null=True)
+	item      = SortableForeignKey(
+		verbose_name=_("Товар"), to="sw_catalog.Item", 
+		on_delete=models.SET_NULL, 
+		related_name='images', null=True,
+	)
+	image     = models.ImageField(
+		verbose_name=_('Ссилка зображення'), upload_to=item_image_folder, 
+		blank=True, null=True,
+	)
+	alt       = models.CharField(
+		verbose_name=_("Альт"), max_length=255, blank=True, null=True,
+	)
 
 	def __str__(self):
 		return "%s" % self.image
@@ -54,7 +72,6 @@ class ItemImage(BaseMixin):
 		return fields
 	
 	def image_url(self):
-		from box.core import settings as core_settings
 		image_url = core_settings.IMAGE_NOT_FOUND
 		if self.image: image_url = self.image.url 
 		return image_url

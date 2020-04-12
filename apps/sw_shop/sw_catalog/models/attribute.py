@@ -13,8 +13,8 @@ class AttributeCategory(models.Model):
         return f'{self.name}'
 
     class Meta:
-        verbose_name = _('категорія атрибуту')
-        verbose_name_plural = _('категорії атрибуту')
+        verbose_name = _('категорія атрибутів')
+        verbose_name_plural = _('категорії атрибутів')
     @classmethod
     def modeltranslation_fields(cls):
         return ['name']
@@ -75,8 +75,8 @@ class AttributeVariantValue(models.Model):
     def __str__(self):
         return f'{self.value}'
     class Meta:
-        verbose_name = _('значення варіанту атрибуту')
-        verbose_name_plural = _('значення варіанту атрибутів')
+        verbose_name = _('значення варіантів атрибутів')
+        verbose_name_plural = _('значення варіантів атрибутів')
     @classmethod
     def modeltranslation_fields(cls):
         return ['value']
@@ -134,31 +134,29 @@ class ItemAttributeVariant(AttributeVariant):
 # Item Category 
 
 class ItemCategoryAttribute(ObjAttribute):
-    item_category = models.ForeignKey(
-        verbose_name=_("Категорія"), to="sw_catalog.ItemCategory", 
-        on_delete=models.CASCADE, related_name='item_category_attributes',
+    # item_category = models.ForeignKey(
+    #     verbose_name=_("Категорія"), to="sw_catalog.ItemCategory", 
+    #     on_delete=models.CASCADE, related_name='item_category_attributes',
+    # )
+    item_categories = models.ManyToManyField(
+        verbose_name=_("Категорія"), 
+        to="sw_catalog.ItemCategory", 
+        related_name='item_category_attributes',
     )
-
+    variants = models.ManyToManyField(
+        verbose_name=_("Варіанти атрибутів товарів"), 
+        to="sw_catalog.ItemCategoryAttributeVariant", 
+        related_name='item_category_attributes',
+    )
     class Meta:
         verbose_name = _("атрибут категорій товарів")
         verbose_name_plural = _("атрибути категорій товарів")
-        unique_together = [
-            'item_category',
-            'attribute',
-        ]
-
 
 
 class ItemCategoryAttributeVariant(AttributeVariant):
-    item_category_attribute = models.ForeignKey(
-        to="sw_catalog.ItemCategoryAttribute", verbose_name=_("Атрибут товару"), on_delete=models.CASCADE,
-        related_name='variants',
-    )
-    def __str__(self):
-        return f'{self.value}'
     class Meta:
-        verbose_name = _('варіант значення атрибуту товару')
-        verbose_name_plural = _('варіанти значеннь атрибутів товару')
+        verbose_name = _('варіант атрибутів категорій товарів')
+        verbose_name_plural = _('варіанти атрибутів категорій товарів')
 
 
 

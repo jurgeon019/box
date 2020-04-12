@@ -4,26 +4,13 @@ python3 manage.py makemigrations
 python3 manage.py migrate 
 python3 manage.py set_user admin admin jurgeon018@gmail.com +380994506703 andrew mendela 
 
-python3 manage.py loader -e=csv -a=import -f=initial/content/address.csv       -r=AddressResource  
-#python3 manage.py loader -e=csv -a=import -f=initial/design.csv        -r=DesignResource  
-python3 manage.py loaddata design 
-python3 manage.py loader -e=csv -a=import -f=initial/content/img.csv         -r=ImgResource  
-python3 manage.py loader -e=csv -a=import -f=initial/content/link.csv          -r=LinkResource  
-python3 manage.py loader -e=csv -a=import -f=initial/content/mailto.csv        -r=MailtoResource  
-python3 manage.py loader -e=csv -a=import -f=initial/content/map.csv           -r=MapResource  
-python3 manage.py loader -e=csv -a=import -f=initial/content/page.csv          -r=PageResource 
-python3 manage.py loader -e=csv -a=import -f=initial/content/slide.csv         -r=SlideResource  
-python3 manage.py loader -e=csv -a=import -f=initial/content/slider.csv        -r=SliderResource  
-python3 manage.py loader -e=csv -a=import -f=initial/content/tel.csv           -r=TelResource  
-python3 manage.py loader -e=csv -a=import -f=initial/content/text.csv          -r=TextResource  
 
-# python3 manage.py loader -e=csv -a=import -f=initial/user.csv        -r=BoxUserResource  
 
-python3 manage.py loader -e=csv -a=import -f=initial/shop/item_currency.csv -r=ItemCurrencyResource  
-python3 manage.py loader -e=csv -a=import -f=initial/shop/item_category.csv -r=ItemCategoryResource  
-#python3 manage.py loader -e=csv -a=import -f=initial/shop/item_marker.csv   -r=ItemMarkerResource  
-#python3 manage.py loader -e=csv -a=import -f=initial/shop/item_feature.csv  -r=ItemFeatureResource  
-python3 manage.py loader -e=csv -a=import -f=initial/shop/item.csv          -r=ItemResource  
+
+
+   
+     
+            
 
 
 

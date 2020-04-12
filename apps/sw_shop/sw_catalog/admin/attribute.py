@@ -149,7 +149,12 @@ class ItemAttributeVariantAdmin(nested_admin.NestedModelAdmin):
     ]
 
 
-class AttributeAdmin(TabbedTranslationAdmin):
+class AttributeAdmin(
+    TabbedTranslationAdmin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+    ):
+    resource_class = AttributeResource
     # TODO: change category. проміжний action.
     search_fields = [
         'name'

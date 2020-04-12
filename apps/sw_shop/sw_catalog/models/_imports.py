@@ -14,7 +14,6 @@ from django.db.models.signals import post_save, pre_save
 
 from tinymce import HTMLField
 from transliterate import translit, get_available_language_codes#, slugify
-from transliterate import translit
 from adminsortable.fields import SortableForeignKey
 # from mptt.models import MPTTModel, TreeForeignKey
 from adminsortable.admin import SortableAdmin, NonSortableParentAdmin, SortableStackedInline

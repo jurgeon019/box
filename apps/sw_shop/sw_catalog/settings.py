@@ -1,11 +1,10 @@
 from django.conf import settings 
 
-DEFAULT_MULTIPLE_CATEGORY = False
-MULTIPLE_CATEGORY  = getattr(settings, 'MULTIPLE_CATEGORY', DEFAULT_MULTIPLE_CATEGORY) 
+def get(a, b):
+    return getattr(settings, a, b) 
 
-DEFAULT_ITEM_SEARCH_FIELDS = ['code',]
-ITEM_SEARCH_FIELDS = getattr(settings, 'ITEM_SEARCH_FIELDS', DEFAULT_ITEM_SEARCH_FIELDS) 
-
-DEFAULT_ITEM_URL_NAME = "item"
-ITEM_URL_NAME = getattr(settings, 'ITEM_URL_NAME', DEFAULT_ITEM_URL_NAME)
+MULTIPLE_CATEGORY  = get('MULTIPLE_CATEGORY', False) 
+ITEM_SEARCH_FIELDS = get('ITEM_SEARCH_FIELDS', ['code',]) 
+ITEM_URL_NAME      = get('ITEM_URL_NAME', "item")
+ITEM_MEDIA_PATH    = get('ITEM_MEDIA_PATH',  '/')
 

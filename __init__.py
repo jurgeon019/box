@@ -14,14 +14,15 @@ git clone git@github.com:<username>/<project_name> .
 
 ******* 2 варіант
 git clone git@github.com:<username>/<project_name> src
+cd src 
 *******
 
-cd src 
-git clone git@github.com:jurgeon018/boxss 
-cp -rp ./box/project_boilerplate/* . 
+git clone git@github.com:jurgeon018/box
+cp -rp ./box/core/project_boilerplate/* . 
 git add . 
 git commit -m 's'
 git push origin master 
+pip install -r ./box/core/requirements.txt
 '''
 
 

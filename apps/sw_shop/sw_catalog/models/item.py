@@ -14,34 +14,52 @@ from box.core.models import AbstractPage
 class Item(AbstractPage):
 	if item_settings.MULTIPLE_CATEGORY:
 		categories   = models.ManyToManyField(
-			verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', related_name="items", blank=True)    
+			verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', 
+			related_name="items", blank=True,
+		)    
 	else:
 		category     = TreeForeignKey(
-			verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', related_name="items", on_delete=models.SET_NULL, blank=True, null=True)    
+			verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', 
+			related_name="items", on_delete=models.SET_NULL, 
+			blank=True, null=True,
+		)    
 	markers      = models.ManyToManyField(
-		verbose_name=_("Маркери"), to='sw_catalog.ItemMarker', related_name='items', blank=True)
+		verbose_name=_("Маркери"), to='sw_catalog.ItemMarker', 
+		related_name='items', blank=True,
+	)
 	similars     = models.ManyToManyField(
-		verbose_name=_("Супутні товари"), to="self", related_name="similars_set", blank=True, default=None)
+		verbose_name=_("Супутні товари"), to="self", 
+		related_name="similars_set", blank=True, default=None,
+	)
 	manufacturer = models.ForeignKey(
-		verbose_name=_("Виробник"), to="sw_catalog.ItemManufacturer", blank=True, null=True, on_delete=models.SET_NULL, related_name='items')
+		verbose_name=_("Виробник"), to="sw_catalog.ItemManufacturer", 
+		blank=True, null=True, on_delete=models.SET_NULL, related_name='items',
+	)
 	brand        = models.ForeignKey(
-		verbose_name=_("Бренд"), to='sw_catalog.ItemBrand', related_name='items', on_delete=models.SET_NULL, null=True, blank=True)
+		verbose_name=_("Бренд"), to='sw_catalog.ItemBrand', related_name='items',
+		on_delete=models.SET_NULL, null=True, blank=True,
+	)
 	in_stock     = models.ForeignKey(
-		verbose_name=_("Наявність"), to="sw_catalog.ItemStock", on_delete=models.SET_NULL, blank=True, null=True, 
+		verbose_name=_("Наявність"), to="sw_catalog.ItemStock", 
+		on_delete=models.SET_NULL, blank=True, null=True, 
 		help_text=' ',
 	)
 	currency     = models.ForeignKey(
-		verbose_name=_("Валюта"),    to="sw_catalog.ItemCurrency",     related_name="items", on_delete=models.SET_NULL, help_text=("Якщо залишити порожнім, то буде встановлена валюта категорії, у якій знаходиться товар"), blank=True, null=True)
+		verbose_name=_("Валюта"),    to="sw_catalog.ItemCurrency",     
+		related_name="items", on_delete=models.SET_NULL, blank=True, null=True,
+	)
 	# old_price    = models.DecimalField(
 	# verbose_name=_("Стара ціна"), max_digits=10, decimal_places=2, default=0)
 	# price        = models.DecimalField(
 	# verbose_name=_("Нова ціна"),  max_digits=10, decimal_places=2, default=0)
 	# TODO: rest_framework.serializers.ModelSerializer чогось не серіалізує DecimalField
 	old_price    = models.FloatField(
-		verbose_name=_("Стара ціна"), blank=True, null=True)
-	new_price    = models.FloatField(
-		verbose_name=_("Актуальна ціна"), blank=True, null=True)
-	discount     = models.FloatField(
+		verbose_name=_("Стара ціна"), blank=True, null=True,
+	)
+	new_price = models.FloatField(
+		verbose_name=_("Актуальна ціна"), blank=True, null=True,
+	)
+	discount = models.FloatField(
 		verbose_name=_("Скидка"), blank=True, null=True, default=0,
 		validators=[MinValueValidator(0), MaxValueValidator(100)],
 	)
@@ -49,7 +67,7 @@ class Item(AbstractPage):
 		verbose_name=_("Одиниці вимірювання"), blank=True, null=True,
 		to='sw_catalog.ItemUnit', on_delete=models.SET_NULL,
 	)
-	amount       = models.PositiveIntegerField(
+	amount = models.PositiveIntegerField(
 		verbose_name=_("Кількість"), blank=True, null=True, default=None, 
 		help_text=_('0 - товар відсутній. Порожнє поле - необмежена кількість.'),
 	)
@@ -61,10 +79,6 @@ class Item(AbstractPage):
 
 	def __str__(self):
 		return f"{self.title}, {self.slug}"
-
-	# @classmethod
-	# def modeltranslation_fields(self):
-	# 	return super().modeltranslation_fields() + ['units',]
 
 	def save(self, *args, **kwargs):
 		# self.handle_currency(*args, **kwargs)
@@ -112,11 +126,6 @@ class Item(AbstractPage):
 	@property
 	def is_in_stock(self):
 		return bool(self.amount)
-		if self.amount == 0:
-			is_in_stock = False
-		else:
-			is_in_stock = True 
-		return is_in_stock
 	
 	def main_img(self):
 		return ItemImage.objects.filter(item=self).first()
