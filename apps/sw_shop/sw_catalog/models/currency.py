@@ -3,21 +3,21 @@ from django.utils.translation import gettext_lazy as _
 
 
 class ItemCurrency(models.Model):
-	name = models.CharField(
-		verbose_name=_("Назва"), max_length=255, blank=True, null=True, 
-		help_text=_("Наприклад: гривня, долар, рубль, євро")
-	)
-	symbol = models.CharField(
-		verbose_name=_("Символ"), max_length=255, blank=False, null=False, 
-		help_text=_("Наприклад: грн., дол., $, руб., Є. Буде відображатись біля ціни в товарі."),
-	)
+	# name = models.CharField(
+	# 	verbose_name=_("Назва"), max_length=255, blank=True, null=True, 
+	# 	help_text=_("Наприклад: гривня, долар, рубль, євро")
+	# )
+	# symbol = models.CharField(
+	# 	verbose_name=_("Символ"), max_length=255, blank=False, null=False, 
+	# 	help_text=_("Наприклад: грн., дол., $, руб., Є. Буде відображатись біля ціни в товарі."),
+	# )
 	code = models.SlugField(
 		verbose_name=_("Код ІSO"), max_length=255, unique=True, blank=False, null=False, 
 		help_text=_("Наприклад: UAH, USD, RUB, EUR")
 	)
 	rate = models.DecimalField(
 		verbose_name=_("Курс"), max_digits=9, decimal_places=7, blank=False, null=True, 
-		help_text=_("__")
+		help_text=_(" ")
 	)
 	is_main = models.BooleanField(
 		verbose_name=_("Головна"), default=False,
@@ -32,20 +32,18 @@ class ItemCurrency(models.Model):
 	@classmethod
 	def modeltranslation_fields(cls):
 		fields = [
-			'symbol',
 		]
 		return fields
 
 	def get_admin_url(self):
 		return get_admin_url(self)
 
-
 	def save(self, *args, **kwargs):
-		if self.code:
-			if not self.symbol:
-				self.symbol = self.code 
-			if not self.name:
-				self.name = self.code
+		# if self.code:
+		# 	if not self.symbol:
+		# 		self.symbol = self.code 
+		# 	if not self.name:
+		# 		self.name = self.code
 		# currencies = ItemCurrency.objects.all()
 		# old_main_rate = currencies.get(is_main=True).rate
 		# currencies.update(is_main=False)
@@ -85,21 +83,4 @@ class ItemCurrency(models.Model):
 
 		'''
 		super().save(*args, **kwargs)
-
-
-
-
-
-class ItemCurrencyRatio(models.Model):
-	main     = models.ForeignKey(verbose_name=_("Головна валюта"),     to="sw_catalog.ItemCurrency", on_delete=models.CASCADE, related_name="ratio_main")
-	compared = models.ForeignKey(verbose_name=_("Порівнювана валюта"), to="sw_catalog.ItemCurrency", on_delete=models.CASCADE, related_name="ratio_compared")
-	ratio    = models.FloatField(verbose_name=_("Співвідношення"), help_text=(f"Скільки одиниць порівнюваної валюти міститься в 1 одиниці головної валюти"))
-
-	class Meta: 
-		verbose_name = _('Співвідношення валют'); 
-		verbose_name_plural = _('Співвідношення валют')
-		unique_together = ('main','compared')
-
-	def __str__(self):
-		return f"{self.main}, {self.compared}"
 

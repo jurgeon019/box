@@ -184,3 +184,7 @@ document.addEventListener('DOMContentLoaded', function(){
     $('.add_item_to_cart_button').on('click', add_cart_item)
 })
 
+
+
+
+

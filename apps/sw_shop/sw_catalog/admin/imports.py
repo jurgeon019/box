@@ -12,6 +12,7 @@ from django.utils.safestring import mark_safe
 from django.urls import path 
 from django.conf import settings
 from django.forms import TextInput, Textarea, NumberInput
+from django.utils.translation import gettext_lazy as _
 
 
 from box.core.utils import (
@@ -34,6 +35,6 @@ from import_export.admin import ImportExportActionModelAdmin, ImportExportModelA
 
 from .filters import * 
 from .views import * 
-from .inlines import * 
+from .item_inlines import * 
 from ..resources import * 
 

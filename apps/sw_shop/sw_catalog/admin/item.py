@@ -1,22 +1,51 @@
-# from .imports import * 
+from django.conf import settings
+from django.forms import TextInput, Textarea, NumberInput
+from django.contrib import admin 
+from django.shortcuts import reverse 
+from django.utils.safestring import mark_safe
+from django.urls import path 
+from django.contrib import admin 
+from django.conf import settings
+from django.forms import TextInput, Textarea, NumberInput
+from django.shortcuts import reverse 
+from django.utils.safestring import mark_safe
+from django.urls import path 
+from django.conf import settings
+from django.forms import TextInput, Textarea, NumberInput
 from django.utils.translation import gettext_lazy as _
-from .attribute import ItemAttributeInline
-from box.apps.sw_shop.sw_catalog import settings as item_settings 
-from box.core.utils import BaseAdmin
-from nested_admin import NestedModelAdmin
-from modeltranslation.admin import TabbedTranslationAdmin
+
+from box.core.utils import (
+    AdminImageWidget, show_admin_link, move_to, BaseAdmin,
+    seo, base_main_info
+)
+from box.apps.sw_shop.sw_catalog.models import * 
+from box.apps.sw_shop.sw_cart.models import * 
+from box.apps.sw_shop.sw_catalog.models import * 
+from box.apps.sw_shop.sw_cart.models import * 
+
+
+
+from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
+from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin, TreeRelatedFieldListFilter
+from modeltranslation.admin import *
+from dal import autocomplete
+from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
+
 
 from .filters import * 
 from .views import * 
-from .inlines import * 
+from .item_inlines import * 
+from .attribute import * 
 from ..resources import * 
+
+import nested_admin
 
 
 
 class ItemAdmin(
     BaseAdmin,
     TabbedTranslationAdmin, 
-    NestedModelAdmin,
+    nested_admin.NestedModelAdmin,
     ): 
     # changeform
     # change_form_template = 'item_change_form.html'
@@ -28,6 +57,7 @@ class ItemAdmin(
         'brand',
         'in_stock',
         'currency',
+        'unit',
     ]
     if item_settings .MULTIPLE_CATEGORY:
         autocomplete_fields.append('categories')
@@ -38,7 +68,7 @@ class ItemAdmin(
         # "code": ("title",),
     }
     inlines = [
-        # ItemImageInline,
+        ItemImageInline,
         ItemAttributeInline,
         # ItemReviewInline, 
     ]  
@@ -50,31 +80,44 @@ class ItemAdmin(
         "markers",   # TODO: Додаються всі маркери
         # "similars",   # TODO: : Додаються всі товари
         (
-        'old_price',
-        'new_price',
-        ),
-        (
-        "units",
+        "unit",
         'amount',
         ),
+        (
+        'new_price',
+        'discount',
+        'old_price',
+        ),
         'is_active',
-        'description',
+        # 'description',
         'image',
-        'code',
-        'created',
-        'updated',
+        # 'code',
+        # 'created',
+        # 'updated',
     ]
     if item_settings .MULTIPLE_CATEGORY:
         item_fields.insert(2 ,'categories')
     else:
         item_fields.insert(2 ,'category')
     fieldsets = [
-        [('ОСНОВНА ІНФОРМАЦІЯ'), {
-            'fields':item_fields
+        [_("ОПИС"), {
+            'fields':[
+                'description',
+                'created',
+                'updated',
+            ],
+            'classes':[
+                'collapse',
+            ],
         }],
         seo,
+        [_('ОСНОВНА ІНФОРМАЦІЯ'), {
+            'fields':item_fields
+        }],
     ]    
     # changelist  
+    # TODO: Проміжна дія: встановити всім вибраним товарам валюту їхньої категорії
+    # TODO: Проміжна дія: встановити всім вибраним товарам характеристики їхньої категорії
     # change_list_template = 'item_change_list.html'
     search_fields = [
         'title',
@@ -88,7 +131,7 @@ class ItemAdmin(
         BrandFilter,
     ]
     list_display = [
-        'image',
+        # 'image',
         # 'category',
         # 'id',
         # "order",
@@ -114,7 +157,7 @@ class ItemAdmin(
         'is_active',
     ]
     list_display_links = [
-        'order',
+        # 'order',
         'title',
     ]
     def change_category(self, request, queryset):

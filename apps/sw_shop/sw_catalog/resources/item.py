@@ -16,7 +16,7 @@ class ItemResource(ModelResource):
     class Meta:
         model = Item 
         exclude = [
-            'code',
+            # 'code',
             'created',
             'updated',
             'order',
@@ -30,7 +30,7 @@ class ItemResource(ModelResource):
     images        = Field(column_name=_('images') )
     server_images = Field(column_name=_('server_images') )
     
-    features  = Field(column_name=_('features') )
+    # features  = Field(column_name=_('features') )
     # reviews  = Field(column_name=_('reviews') )
     # variants = Field(column_name=_('variants') )
     # options  = Field(column_name=_('options') )
@@ -79,7 +79,7 @@ class ItemResource(ModelResource):
             "brand",
             "in_stock",
             'amount',
-            'units',
+            'unit',
             # "markers",
             # "similars",
             # "reviews",

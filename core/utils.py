@@ -201,7 +201,7 @@ class BaseAdmin(
   BaseMixin,
   ImportExportActionModelAdmin,
   ImportExportModelAdmin, 
-  SortableAdminMixin, 
+  # SortableAdminMixin, 
   ClonableModelAdmin, 
   admin.ModelAdmin,
   ):

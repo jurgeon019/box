@@ -1,13 +1,63 @@
-from .imports import * 
-import nested_admin 
+from django.conf import settings
+from django.forms import TextInput, Textarea, NumberInput
+from django.contrib import admin 
+from django.shortcuts import reverse 
+from django.utils.safestring import mark_safe
+from django.urls import path 
+from django.contrib import admin 
+from django.conf import settings
+from django.forms import TextInput, Textarea, NumberInput
+from django.shortcuts import reverse 
+from django.utils.safestring import mark_safe
+from django.urls import path 
+from django.conf import settings
+from django.forms import TextInput, Textarea, NumberInput
+
+
+from box.core.utils import (
+    AdminImageWidget, show_admin_link, move_to, BaseAdmin,
+    seo, base_main_info
+)
+from box.apps.sw_shop.sw_catalog.models import * 
+from box.apps.sw_shop.sw_cart.models import * 
+from box.apps.sw_shop.sw_catalog.models import * 
+from box.apps.sw_shop.sw_cart.models import * 
+
+
+
+from adminsortable2.admin import SortableAdminMixin, SortableInlineAdminMixin
+from mptt.admin import MPTTModelAdmin, DraggableMPTTAdmin, TreeRelatedFieldListFilter
+from modeltranslation.admin import *
+from dal import autocomplete
+from import_export.admin import ImportExportActionModelAdmin, ImportExportModelAdmin
+
+
+from .filters import * 
+from .views import * 
+from .item_inlines import * 
+from ..resources import * 
+
+
+
+
+class ItemUnitAdmin(TabbedTranslationAdmin):
+    list_display = [
+        'id',
+        'name',
+    ]
+    list_display_links = list_display
+    search_fields = [
+        'name',
+    ]
 
 
 class ItemImageAdmin(
     # nested_admin.NestedTabularInline,
-    BaseAdmin, SortableAdminMixin,
+    BaseAdmin, 
+    SortableAdminMixin,
     ):
-    # def get_model_perms(self, request):
-    #     return {}
+    def get_model_perms(self, request):
+        return {}
 
     def show_item(self, obj):
         return show_admin_link(obj=obj, obj_attr='item', obj_name='title')
@@ -41,13 +91,13 @@ class ItemCurrencyAdmin(
     ]
     list_filter = []
     list_display = [
-        'name',
+        # 'name',
         'code',
         'rate',
         'is_main',
     ]
     list_display_links = [
-        'name',
+        # 'name',
         'code',
     ]
     list_editable = [
@@ -65,24 +115,10 @@ class ItemCurrencyAdmin(
         # models.DecimalField: {'widget': NumberInput(attrs={"style":"width:70px"})}
     }
     search_fields = [
-        'name',
+        # 'name',
         'code',
     ]
 
-
-class ItemCurrencyRatioAdmin(admin.ModelAdmin):
-    list_display_links = [
-        'id',
-        'main',
-        'compared',
-        'ratio',
-    ]
-    list_display = [
-        'id',
-        'main',
-        'compared',
-        'ratio',
-    ]
 
 
 class ItemStockAdmin(TabbedTranslationAdmin):
@@ -98,8 +134,20 @@ class ItemStockAdmin(TabbedTranslationAdmin):
     list_display_links = [
         'id',
         'text',
-
     ] 
+    fields = [
+        # ''
+    ]
+    readonly_fields = [
+        'created',
+        'updated',
+        # 'code',
+    ]
+    exclude = [
+        'code',
+        'order',
+        "colour",
+    ]
     list_editable = [
         'availability',
     ]

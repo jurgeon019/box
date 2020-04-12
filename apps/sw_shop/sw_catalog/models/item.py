@@ -1,42 +1,58 @@
 from django.utils.translation import gettext_lazy as _
 from django.db import models 
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.urls import reverse 
 
 from mptt.models import MPTTModel, TreeForeignKey
 
-# from ._imports import * 
-from . import ItemImage, ItemCurrency, ItemStock, ItemCurrencyRatio
+from . import ItemImage, ItemCurrency, ItemStock
 from .. import settings as item_settings
 
 from box.core.models import AbstractPage
 
 
-class ItemPrice(models.Model):
-	item  = models.ForeignKey("sw_catalog.Item", verbose_name=_("Товар"), on_delete=models.CASCADE)
-	#https://stackoverflow.com/questions/10539026/how-to-create-a-django-floatfield-with-maximum-and-minimum-limits
-	price = models.DecimalField(_("Ціна"), max_digits=5, decimal_places=2, null=True, blank=True) 
-
-
 class Item(AbstractPage):
 	if item_settings.MULTIPLE_CATEGORY:
-		categories   = models.ManyToManyField(verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', related_name="items", blank=True)    
+		categories   = models.ManyToManyField(
+			verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', related_name="items", blank=True)    
 	else:
-		category     = TreeForeignKey(verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', related_name="items", on_delete=models.SET_NULL, blank=True, null=True)    
-	markers      = models.ManyToManyField(verbose_name=_("Маркери"), to='sw_catalog.ItemMarker', related_name='items', blank=True)
-	similars     = models.ManyToManyField(verbose_name=_("Супутні товари"), to="self", related_name="similars_set", blank=True, default=None)
-	manufacturer = models.ForeignKey(verbose_name=_("Виробник"), to="sw_catalog.ItemManufacturer", blank=True, null=True, on_delete=models.SET_NULL, related_name='items')
-	brand        = models.ForeignKey(verbose_name=_("Бренд"), to='sw_catalog.ItemBrand', related_name='items', on_delete=models.SET_NULL, null=True, blank=True)
-	in_stock     = models.ForeignKey(verbose_name=_("Наявність"), to="sw_catalog.ItemStock", on_delete=models.SET_NULL, blank=True, null=True, help_text='"Кількість" в пріорітеті над "наявністю"')
-	currency     = models.ForeignKey(verbose_name=_("Валюта"),    to="sw_catalog.ItemCurrency",     related_name="items", on_delete=models.SET_NULL, help_text=("Якщо залишити порожнім, то буде встановлена валюта категорії, у якій знаходиться товар"), blank=True, null=True)
-	# old_price    = models.DecimalField(verbose_name=_("Стара ціна"), max_digits=10, decimal_places=2, default=0)
-	# price        = models.DecimalField(verbose_name=_("Нова ціна"),  max_digits=10, decimal_places=2, default=0)
+		category     = TreeForeignKey(
+			verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', related_name="items", on_delete=models.SET_NULL, blank=True, null=True)    
+	markers      = models.ManyToManyField(
+		verbose_name=_("Маркери"), to='sw_catalog.ItemMarker', related_name='items', blank=True)
+	similars     = models.ManyToManyField(
+		verbose_name=_("Супутні товари"), to="self", related_name="similars_set", blank=True, default=None)
+	manufacturer = models.ForeignKey(
+		verbose_name=_("Виробник"), to="sw_catalog.ItemManufacturer", blank=True, null=True, on_delete=models.SET_NULL, related_name='items')
+	brand        = models.ForeignKey(
+		verbose_name=_("Бренд"), to='sw_catalog.ItemBrand', related_name='items', on_delete=models.SET_NULL, null=True, blank=True)
+	in_stock     = models.ForeignKey(
+		verbose_name=_("Наявність"), to="sw_catalog.ItemStock", on_delete=models.SET_NULL, blank=True, null=True, 
+		help_text=' ',
+	)
+	currency     = models.ForeignKey(
+		verbose_name=_("Валюта"),    to="sw_catalog.ItemCurrency",     related_name="items", on_delete=models.SET_NULL, help_text=("Якщо залишити порожнім, то буде встановлена валюта категорії, у якій знаходиться товар"), blank=True, null=True)
+	# old_price    = models.DecimalField(
+	# verbose_name=_("Стара ціна"), max_digits=10, decimal_places=2, default=0)
+	# price        = models.DecimalField(
+	# verbose_name=_("Нова ціна"),  max_digits=10, decimal_places=2, default=0)
 	# TODO: rest_framework.serializers.ModelSerializer чогось не серіалізує DecimalField
-	discount     = models.FloatField(_("Скидка"), validators=[MinValueValidator(0), MaxValueValidator(100)])
-	old_price    = models.FloatField(verbose_name=_("Стара ціна"), blank=True, null=True)
-	new_price    = models.FloatField(verbose_name=_("Актуальна ціна"), blank=True, null=True)
-	units        = models.CharField(verbose_name=_("Одиниці вимірювання"), blank=True, null=True, max_length=255)
-	amount       = models.PositiveIntegerField(verbose_name=_("Кількість"), blank=True, null=True, default=None, help_text='"Кількість" в пріорітеті над "наявністю"')
-	# rating       = models.FloatField(verbose_name=_("Рейтинг"),)
+	old_price    = models.FloatField(
+		verbose_name=_("Стара ціна"), blank=True, null=True)
+	new_price    = models.FloatField(
+		verbose_name=_("Актуальна ціна"), blank=True, null=True)
+	discount     = models.FloatField(
+		verbose_name=_("Скидка"), blank=True, null=True, default=0,
+		validators=[MinValueValidator(0), MaxValueValidator(100)],
+	)
+	unit  = models.ForeignKey(
+		verbose_name=_("Одиниці вимірювання"), blank=True, null=True,
+		to='sw_catalog.ItemUnit', on_delete=models.SET_NULL,
+	)
+	amount       = models.PositiveIntegerField(
+		verbose_name=_("Кількість"), blank=True, null=True, default=None, 
+		help_text=_('0 - товар відсутній. Порожнє поле - необмежена кількість.'),
+	)
 
 	class Meta: 
 		verbose_name = _('товар'); 
@@ -45,6 +61,10 @@ class Item(AbstractPage):
 
 	def __str__(self):
 		return f"{self.title}, {self.slug}"
+
+	# @classmethod
+	# def modeltranslation_fields(self):
+	# 	return super().modeltranslation_fields() + ['units',]
 
 	def save(self, *args, **kwargs):
 		# self.handle_currency(*args, **kwargs)
@@ -61,25 +81,6 @@ class Item(AbstractPage):
 			if unavailable_stocks.exists():
 				self.in_stock = unavailable_stocks.first()
 	
-	# def handle_currency(self, *args, **kwargs):
-	# 	if not self.currency:
-	# 		if item_settings.MULTIPLE_CATEGORY:
-	# 			if self.categories.all().exists():
-	# 				self.currency = self.categories.all().first().currency
-	# 			else:
-	# 				try:
-	# 					self.currency = ItemCurrency.objects.get(is_main=True)
-	# 				except:
-	# 					self.currency = ItemCurrency.objects.all().first()
-	# 		else:
-	# 			if self.category:
-	# 				self.currency = self.category.currency
-	# 			else:
-	# 				try:
-	# 					self.currency = ItemCurrency.objects.get(is_main=True)
-	# 				except:
-	# 					self.currency = ItemCurrency.objects.all().first()
-
 	def resize_image(self, image):
 		if image:
 			width  = 400
@@ -101,7 +102,12 @@ class Item(AbstractPage):
 			)
 
 	def get_absolute_url(self):
-		return reverse(item_settings.ITEM_URL_NAME, kwargs={"slug": self.slug})
+		from django.urls.exceptions import NoReverseMatch
+		try:
+			return reverse(item_settings.ITEM_URL_NAME, kwargs={"slug": self.slug})
+		except NoReverseMatch as e:
+			print('e:', e)
+			return 
 
 	@property
 	def is_in_stock(self):
@@ -123,41 +129,6 @@ class Item(AbstractPage):
 			price = self.old_price
 		else:
 			return 0
-		
-		# return price 
-		# !!!!!!!!!!!!
-		main_currency = ItemCurrency.objects.get(is_main=True)
-		current_currency = self.currency
-		# current_currency = self.category.currency
-		# print('--------')
-		if current_currency != main_currency:
-
-
-			ratio = ItemCurrencyRatio.objects.filter(
-				main=main_currency,
-				compared=current_currency,
-			)
-			if ratio.exists():
-				# print('main_currency: ', main_currency)
-				ratio = ratio.first().ratio
-				# print('\n')
-				price = price / ratio
-
-
-			ratio = ItemCurrencyRatio.objects.filter(
-				main=current_currency,
-				compared=main_currency,
-			)
-			if ratio.exists():
-				# print('current_currency: ', current_currency)
-				ratio = ratio.first().ratio
-				price = price * ratio
-		# print('price: ', price)
-		# print('self.currency: ', self.currency)
-		# print('self.price.new_price: ', self.new_price)
-		# print('self.price.old_price: ', self.old_price)
-		# print('__________')
-		print(price)
 		return price 
 
 	@property
@@ -200,10 +171,6 @@ class Item(AbstractPage):
 			self.category = categories[-1]
 		self.save()
 
-	def get_categories(self, ):
-
-		return categories 
-	
 	def in_cart(self, request):
 		from box.apps.sw_shop.sw_cart.models import CartItem
 		from box.apps.sw_shop.sw_cart.utils import get_cart

@@ -2,6 +2,28 @@ from ._imports import *
 from django.utils.translation import gettext_lazy as _
 
 
+
+
+class ItemUnit(models.Model):
+	name = models.CharField(
+		verbose_name=_("Назва"), unique=True, max_length=255,
+	)
+
+	def __str__(self):
+		return f'{self.name}'
+	
+	@classmethod
+	def modeltranslation_fields(self):
+		return [
+			'name',
+		]
+	
+	class Meta:
+		verbose_name = _("одиниця вимірювання")
+		verbose_name_plural = _("одиниці вимірювання")
+
+
+
 class ItemBrand(AbstractPage):
 
 	def get_absolute_url(self):
@@ -113,16 +135,17 @@ class ItemStock(BaseMixin):
 		('o', "orange"),
 		('r', "red"),
 	)
-	text         = models.CharField(verbose_name=_('Наявність'), max_length=255, unique=True)
-	availability = models.NullBooleanField(verbose_name=_('Можливість покупки'), default=True, null=True)
+	text         = models.CharField(verbose_name=_('Текст'), max_length=255, unique=True)
+	availability = models.BooleanField(verbose_name=_('Можливість покупки'), default=True)
+	# availability = models.NullBooleanField(verbose_name=_('Можливість покупки'), default=True, null=True)
 	colour       = models.CharField(verbose_name=_('Колір'), choices=STOCK_COLOR_CHOICES, max_length=255, default=1)
-	
+
 	def __str__(self):
 		return f"{self.text}"
 	
 	class Meta:
-		verbose_name = _('Статус наявності')
-		verbose_name_plural = _('Статуси наявності')
+		verbose_name = _('статус наявності')
+		verbose_name_plural = _('статуси наявності')
 
 	@classmethod
 	def modeltranslation_fields(cls):

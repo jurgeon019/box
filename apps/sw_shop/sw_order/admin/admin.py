@@ -81,6 +81,7 @@ class OrderAdmin(admin.ModelAdmin):
       return obj.cart_items.all().count()
     def delete(self, obj):
       return mark_safe(f'<a href="/admin/order/order/{obj.id}/delete" style="color:red" >x</a>')
+    # TODO: проміжні дії переробити на фукнцію
     def change_status(self, request, queryset):
       form = None 
       if 'apply' in request.POST:
