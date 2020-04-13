@@ -1,7 +1,7 @@
 from django import template
 from django.utils.translation import ugettext as _
 
-from solo import settings as solo_settings
+from .. import settings as solo_settings
 
 try:
     from django.apps import apps

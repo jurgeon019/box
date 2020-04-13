@@ -39,6 +39,16 @@ from ..resources import *
 
 
 
+class ItemManufacturerAdmin(
+    TabbedTranslationAdmin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+    ):
+    resource_class = ItemManufacturerResource
+    search_fields = [
+        'name'
+    ]
+
 
 class ItemUnitAdmin(TabbedTranslationAdmin):
     list_display = [

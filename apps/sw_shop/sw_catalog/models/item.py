@@ -22,7 +22,7 @@ class Item(AbstractPage):
 			verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', 
 			related_name="items", on_delete=models.SET_NULL, 
 			blank=True, null=True,
-		)    
+		)
 	markers      = models.ManyToManyField(
 		verbose_name=_("Маркери"), to='sw_catalog.ItemMarker', 
 		related_name='items', blank=True,

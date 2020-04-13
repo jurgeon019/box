@@ -8,6 +8,7 @@ from .attribute import *
 admin.site.register(ItemCurrency, ItemCurrencyAdmin)
 admin.site.register(ItemStock, ItemStockAdmin)
 admin.site.register(ItemCategory, ItemCategoryAdmin)
+admin.site.register(ItemManufacturer, ItemManufacturerAdmin)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(ItemImage, ItemImageAdmin)
 admin.site.register(ItemMarker, ItemMarkerAdmin)

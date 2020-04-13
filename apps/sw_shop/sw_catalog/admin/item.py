@@ -52,8 +52,9 @@ class ItemAdmin(
     # form = ItemForm
     resource_class = ItemResource
     autocomplete_fields = [
-        # 'similars',
+        'similars',
         'markers',
+        'manufacturer',
         'brand',
         'in_stock',
         'currency',
@@ -78,7 +79,9 @@ class ItemAdmin(
         'in_stock',
         'currency',
         "markers",   # TODO: Додаються всі маркери
-        # "similars",   # TODO: : Додаються всі товари
+        "similars",   # TODO: : Додаються всі товари
+        "manufacturer",
+
         (
         "unit",
         'amount',
