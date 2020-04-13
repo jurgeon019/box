@@ -175,13 +175,16 @@ class CartItemAttribute(models.Model):
     to="sw_cart.CartItem",
     on_delete=models.CASCADE,
   )
-  item_attribute_variant = models.ForeignKey(
-    verbose_name=_("Варіант атрибуту товару"), 
-    to="sw_catalog.ItemAttributeVariant", 
+  attribute_name = models.ForeignKey(
+    to="sw_catalog.Attribute",
     on_delete=models.CASCADE,
+    verbose_name=_("Атрибут"),
   )
-  
-
+  value = models.ForeignKey(
+    to="sw_catalog.AttributeVariantValue",
+    on_delete=models.CASCADE,
+    verbose_name=_("Значення")
+  )
 
 
 

@@ -22,7 +22,7 @@ def get_resource(name):
     for resource in resources:
         if resource.__name__ == name:
             return resource 
-    raise Exception("Resource not found")
+    raise Exception(f"Resource '{name}' not found")
             
 
 def get_resources():

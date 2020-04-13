@@ -27,12 +27,12 @@ class ItemCurrencyResource(ModelResource):
     def get_export_order(self):
         multilingual_fields = get_multilingual_fields(self._meta.model)
         order = [
-            "name",
-            "symbol",
+            # "name",
+            # "symbol",
             "code",
             "rate",
             "is_main",
-            *multilingual_fields['symbol'],
+            # *multilingual_fields['symbol'],
         ]
         return order 
 

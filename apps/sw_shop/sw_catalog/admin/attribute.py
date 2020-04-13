@@ -39,6 +39,12 @@ from .item_inlines import *
 from ..resources import * 
 
 
+class AttrBaseMixin(
+    TabbedTranslationAdmin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+    ):
+    pass 
 
 class ItemAttributeVariantInline(nested_admin.NestedTabularInline):
     autocomplete_fields = [
@@ -68,9 +74,14 @@ class ItemAttributeInline(nested_admin.NestedTabularInline):
     inlines = [ItemAttributeVariantInline]
 
 
-class ItemAttributeAdmin(nested_admin.NestedModelAdmin):
+class ItemAttributeAdmin(
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+    nested_admin.NestedModelAdmin,
+    ):
     class Media:
         pass
+    resource_class = ItemAttributeResource
     inlines = [
         ItemAttributeVariantInline,
     ]
@@ -104,7 +115,8 @@ class ItemAttributeAdmin(nested_admin.NestedModelAdmin):
     ]
 
 
-class AttributeCategoryAdmin(TabbedTranslationAdmin):
+class AttributeCategoryAdmin(AttrBaseMixin):
+    resource_class = AttributeCategoryResource
     search_fields = [
         'name',
     ] 
@@ -121,11 +133,15 @@ class AttributeCategoryAdmin(TabbedTranslationAdmin):
     save_on_top = True 
 
 
-class ItemAttributeVariantAdmin(nested_admin.NestedModelAdmin):
+class ItemAttributeVariantAdmin(
+    AttrBaseMixin,
+    nested_admin.NestedModelAdmin,
+    ):
     class Media:
         pass
-    def get_model_perms(self, request):
-        return {}
+    # def get_model_perms(self, request):
+    #     return {}
+    resource_class = ItemAttributeVariantResource
     autocomplete_fields = [
         'item_attribute',
         'value',
@@ -149,11 +165,7 @@ class ItemAttributeVariantAdmin(nested_admin.NestedModelAdmin):
     ]
 
 
-class AttributeAdmin(
-    TabbedTranslationAdmin,
-    ImportExportActionModelAdmin,
-    ImportExportModelAdmin,
-    ):
+class AttributeAdmin(AttrBaseMixin):
     resource_class = AttributeResource
     # TODO: change category. проміжний action.
     search_fields = [
@@ -164,7 +176,6 @@ class AttributeAdmin(
     ]
     list_display = [
         'id',
-        
         'category',
         'name',
     ]
@@ -181,7 +192,8 @@ class AttributeAdmin(
     ]
 
 
-class AttributeVariantValueAdmin(TabbedTranslationAdmin):
+class AttributeVariantValueAdmin(AttrBaseMixin):
+    resource_class = AttributeVariantValueResource
     list_display = [
         'id',
         'value',
