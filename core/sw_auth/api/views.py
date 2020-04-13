@@ -25,11 +25,13 @@ class UserViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         validated_data = request.data
         if 'password' in validated_data:
-            password = validated_data.pop('password')
+            # password = validated_data.pop('password')
+            password = validated_data.get('password')
+            print(password)
             instance = self.get_object()
-            instance.set_password("babaski")
+            # instance.set_password("babaski")
+            instance.set_password(password)
             instance.save()
-            # instance.set_password(password)
         result = super().update(request, *args, **kwargs)
         # result.data['status'] = 'OK'
         return result
