@@ -36,13 +36,14 @@ class Command(BaseCommand):
         if initial_import_commands_filename:
             items = [dct for dct in map(dict, csv.DictReader(open(initial_import_commands_filename)))] 
             for item in items:
-                print("item:")
-                print(item)
+                print("\n item:\n", item)
+                print("\n kwargs:\n", kwargs)
                 load           = item['load']
-                file_name      = kwargs['file_name']
-                extention      = kwargs['extention']
-                action_type    = kwargs['action_type']
-                resource_name  = kwargs['resource_name']
+                file_name      = item['file_name']
+                extention      = item['extention']
+                action_type    = item['action_type']
+                resource_name  = item['resource_name']
+                print(resource_name)
                 if bool(int(load)):
                     result = loader(extention, file_name, action_type, resource_name)
                     if result:

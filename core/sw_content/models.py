@@ -68,10 +68,7 @@ class Img(AbstractContent):
 
   @property
   def image_url(self):
-    image_url = '' 
-    if self.image:
-      image_url = self.image.url 
-    return image_url
+    return self.image.url if self.image else ''
 
 
 class Text(AbstractText):

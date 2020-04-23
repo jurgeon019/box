@@ -20,8 +20,14 @@ def placeholder(content_type, code, page_code=None):
 @register.simple_tag
 def render(content_type, code, page_code=None):
     '''
+    {% load sw_content %}
     {% render 'image' 'img_jpg_1' as img_jpg_1 %}
+    {% render 'image' 'img_jpg_1' 'about' as img_jpg_1 %}
 
+    {{img_jpg_1.image_url}}
+    
+    {{img_jpg_1.alt}}
+    
     {{img_jpg_1.text}}
     
     {{img_jpg_1.href}}
