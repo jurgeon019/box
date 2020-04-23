@@ -1,4 +1,4 @@
-ROBOTS_USE_SITEMAP = False
+# ROBOTS_USE_SITEMAP = False
 # ROBOTS_SITEMAP_URLS = [
 #     'http://www.example.com/sitemap.xml',
 # ]

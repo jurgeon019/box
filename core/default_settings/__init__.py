@@ -3,6 +3,7 @@ from ._auth import *
 from ._crispy_forms import * 
 from ._ckeditor import * 
 from ._corsheaders import * 
+from ._database import * 
 from ._debug import * 
 from ._django import * 
 from ._drf import * 
