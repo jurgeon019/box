@@ -18,8 +18,8 @@
     <meta name="description" content="{{page.meta_descr}}"/>
     <meta name="keywords" content="{{page.meta_key}}" />
 
-    <link rel="stylesheet" href="/static/content/editor.css">
     {% if request.user.is_staff %}
+    <link rel="stylesheet" href="/static/content/editor.css">
     {% endif %}
     
     {% block hreflang %}
@@ -69,7 +69,10 @@
   
 
   {% block header %}{% endblock header %} 
-  {% block content %}{% endblock content %}
+  {% block outer_content%}
+    {% block content %}
+    {% endblock content %}
+  {% endblock outer_content%}
   {% block extra_content %}{% endblock extra_content %}
 
   {% if request.user.is_staff and show_admin %}
