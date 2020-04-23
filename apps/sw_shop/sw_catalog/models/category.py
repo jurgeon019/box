@@ -6,7 +6,9 @@ from django.db import models
 
 from .currency import ItemCurrency
 from mptt.models import MPTTModel, TreeForeignKey
-
+from .. import settings as catalog_settings 
+from django.utils.text import slugify
+from transliterate import translit
 
 class ItemCategory(AbstractPage, MPTTModel):
   parent     = TreeForeignKey(verbose_name=_("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
@@ -19,10 +21,8 @@ class ItemCategory(AbstractPage, MPTTModel):
     ordering = ['order']
 
   def get_absolute_url(self):
-    try:
-      return reverse("item_category", kwargs={"slug": self.slug})
-    except:
-      return 
+    return reverse(catalog_settings.ITEM_CATEGORY_URL_NAME, kwargs={"slug": self.slug})
+ 
 
   
   def __str__(self):     

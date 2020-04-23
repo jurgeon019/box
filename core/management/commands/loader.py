@@ -39,10 +39,10 @@ class Command(BaseCommand):
                 print("item:")
                 print(item)
                 load           = item['load']
-                extention      = item['extention']
-                file_name      = item['file_name']
-                action_type    = item['action_type']
-                resource_name  = item['resource_name']
+                file_name      = kwargs['file_name']
+                extention      = kwargs['extention']
+                action_type    = kwargs['action_type']
+                resource_name  = kwargs['resource_name']
                 if bool(int(load)):
                     result = loader(extention, file_name, action_type, resource_name)
                     if result:
@@ -50,10 +50,16 @@ class Command(BaseCommand):
                     else:
                         self.stdout.write(self.style.ERROR('DATA HAVENT IMPORTED'))
         elif not initial_import_commands_filename:
-            extention      = kwargs['extention']
             file_name      = kwargs['file_name']
-            action_type    = kwargs['action_type']
-            resource_name  = kwargs['resource_name']
+            extention      = kwargs.get('extention')
+            action_type    = kwargs.get('action_type')
+            resource_name  = kwargs.get('resource_name')
+            if not extention:
+                extention = 'csv'
+            if not action_type:
+                action_type = 'import'
+            if not resource_name:
+                resource_name = f"{file_name.split('/')[-1].split('.')[0]}Resource"
             result = loader(extention, file_name, action_type, resource_name)
             if result:
                 self.stdout.write(self.style.SUCCESS('Data imported successfully'))

@@ -51,11 +51,13 @@ def loader(extention, file_name, action_type, resource_name):
   Resource       = get_resource(resource_name)
   dataset = Dataset()
   if action_type == 'export':
+    
     data   = getattr(Resource().export(), extention)
     with open(file_name, 'w') as f:
       f.write(data)
     return True 
   elif action_type == 'import':
+    
     with open(file_name, 'r') as f:
       # imported_data = dataset.load(f.read())
       dataset.load(f.read(), format=file_name.split('.')[-1])
@@ -64,7 +66,11 @@ def loader(extention, file_name, action_type, resource_name):
       Resource().import_data(dataset, dry_run=False)  
       return True 
     else:
-      print('RESULT HAS ERRORS')
+      for error in result.row_errors():
+        row = error[0]
+        error = error[1][0]
+        print(error.traceback)
+        print(f"ERROR IN {row} LINE:", error.error)
       return False 
 
 
