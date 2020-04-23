@@ -27,7 +27,7 @@ class BaseMixin(models.Model):
 		unique=True, 
 		# default=None, 
 		# unique=False, 
-		max_length=255, help_text=("Допоміжний код для виводу в шаблоні")
+		max_length=255, help_text=("Kод для виводу в шаблоні")
 	)
 	# def save(self, *args, **kwargs):
 	# 	if self.code:
