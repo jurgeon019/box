@@ -78,3 +78,50 @@ class AbstractLink(AbstractText):
   class Meta:
       abstract = True 
 
+
+
+class UnrealContent(BaseMixin):
+  TYPE_CHOICES = (
+    ("map",     "map"),
+    ("img",     "img"),
+    ("tiny",    "tiny"),
+    ("plain",   "plain"),
+    ("address", "address"),
+    ("tel",     "tel"),
+    ("mailto",  "mailto"),
+    ("link",    "link"),
+  )
+  # TODO: 1 clean метод для того шоб не можна було ввести одночасно 2 поля 
+  # TODO: 2 джаваскріпт у адмінці, який буде приховувати ненужні поля 
+  # в залежності від вибору типу контенту
+
+  type    = models.CharField(
+    verbose_name=_("Тип контенту"), max_length=255, 
+    choices=TYPE_CHOICES,
+  )
+  page    = models.ForeignKey(
+    verbose_name=_("Сторінка"), to="sw_content.Page", 
+    on_delete=models.SET_NULL, blank=True, null=True,
+  )
+  text  = models.TextField(
+    verbose_name=_("Текст"), 
+    null=False, blank=False, 
+  )
+  href = models.CharField(
+    verbose_name=_("Посилання"), max_length=255,
+    blank=False, null=False,
+  )
+  html = models.TextField(
+    verbose_name=_("iframe"), 
+    blank=False, null=False,
+  )
+  image   = models.ImageField(
+    verbose_name=_("Картинка"), upload_to="page/", null=True, blank=True, 
+  )
+  alt     = models.CharField(
+    verbose_name=_("Альт"), blank=True, null=True, max_length=255,
+  )
+  class Meta:
+    ordering = [
+      '-updated',
+    ]

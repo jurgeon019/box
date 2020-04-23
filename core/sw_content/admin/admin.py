@@ -32,10 +32,12 @@ class BaseInline(TranslationStackedInline):
         'collapse',
     ]
     exclude = [
+        "order",
         'created',
         'updated',
     ]
     readonly_fields = [
+        "page",
         'code',
     ]
     formfield_overrides = {
@@ -115,8 +117,8 @@ class PageAdmin(
         'meta_title',
     ]
     exclude = [
+        "order",
         'image',
-        'order',
         'alt',
         'title',
         'description',
@@ -142,6 +144,7 @@ class MapAdmin(AbstractContentAdmin):
         'created',
     ]
     readonly_fields = [
+        "page",
         'code',
         'updated',
         'created',
@@ -194,6 +197,7 @@ class ImgAdmin(AbstractContentAdmin):
         'alt',
     ]
     readonly_fields = [
+        "page",
         'code',
         'updated',
         'created',
@@ -231,9 +235,14 @@ class TextAdmin(AbstractTextAdmin):
         TextIsNoneFilter
     ]
     readonly_fields = [
+        "page",
         'code',
         'updated',
         'created',
+    ]
+    exclude = [
+        'order',
+        'is_active',
     ]
 
 
@@ -245,6 +254,7 @@ class AddressAdmin(AbstractTextAdmin):
     ]
     list_per_page = 20
     readonly_fields = [
+        "page",
         'code',
         'updated',
         'created',
@@ -282,7 +292,12 @@ class LinkAdmin(AbstractLinkAdmin):
         'href',
     ]
     list_per_page = 20
+    exclude = [
+        'order',
+        'is_active',
+    ]
     readonly_fields = [
+        "page",
         'code',
         'created',
         'updated',
@@ -332,6 +347,7 @@ class TelAdmin(AbstractLinkAdmin):
         'href',
     ]
     readonly_fields = [
+        "page",
         'code',
         'created',
         'updated',
@@ -349,6 +365,7 @@ class MailtoAdmin(AbstractLinkAdmin):
     resource_class = MailtoResource 
     list_per_page = 20
     readonly_fields = [
+        "page",
         'code',
         'created',
         'updated',
@@ -390,10 +407,10 @@ class SlideInline(
     model = Slide
     extra = 0 
     exclude = [
+        "order",
         'created',
         'updated',
         'page',
-        'order',
         'text',
         'title',
         'alt',
@@ -402,6 +419,7 @@ class SlideInline(
         'is_active',
     ]
     readonly_fields = [
+        "page",
         # 'code',
     ]
     classes = [
@@ -446,6 +464,7 @@ class SliderAdmin(
         'code',
     ]
     readonly_fields = [
+        "page",
         'created',
         'updated',
         'code',
