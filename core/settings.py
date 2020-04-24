@@ -1,6 +1,7 @@
 from django.conf import settings 
 
 
+MENDELA_EDITOR            = False 
 DEFAULT_FAVICON           = '/static/core/favicon/favicon.ico'
 DEFAULT_OGIMAGE_SQUARE    = '/static/core/ogimages/ogimage.png'
 DEFAULT_OGIMAGE_RECTANGLE = '/static/core/ogimages/ogimage.png'

@@ -18,8 +18,10 @@
     <meta name="description" content="{{page.meta_descr}}"/>
     <meta name="keywords" content="{{page.meta_key}}" />
 
+    {% if MENDELA_EDITOR %}
     {% if request.user.is_staff %}
     <link rel="stylesheet" href="/static/content/editor.css">
+    {% endif %}
     {% endif %}
     
     {% block hreflang %}
@@ -79,9 +81,12 @@
     {% include 'content/includes/admin_model.html' %}
   {% endif %}
 
+  {% if MENDELA_EDITOR %}
   {% if request.user.is_staff %}
     <script src="/static/content/editor.js"></script>
   {% endif %}
+  {% endif %}
+
   {% block js_cat %}
   <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
   {% endblock js_cat %}
