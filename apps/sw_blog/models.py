@@ -17,12 +17,8 @@ class Post(AbstractPage):
   content    = HTMLField(verbose_name=_("Контент"), blank=False, null=True)
   category   = models.ForeignKey(verbose_name=_("Категорія"), to="sw_blog.PostCategory", blank=True, null=True, on_delete=models.CASCADE)
   author     = models.ForeignKey(verbose_name=_("Автор"), to=User, on_delete=models.CASCADE, blank=True, null=True)
-  # recomended = models.ManyToManyField(verbose_name=_("Рекомендовані товари"), to="sw_catalog.Item", blank=True, null=True)
 
   def save(self, *args, **kwargs):
-    # print(self.recomended.all())
-    # print(self.recomended.all().count())
-    # TODO: при збереженні в рекомендованих товарах появляються всі товари
     if not self.slug:
       if self.title:
         title = slugify(self.title)
@@ -30,9 +26,11 @@ class Post(AbstractPage):
     super().save(*args, **kwargs)
 
   class Meta:
-    verbose_name = ('Публікація')
-    verbose_name_plural = ('Публікації')
-    ordering = ['order']
+    verbose_name = _('Публікація')
+    verbose_name_plural = _('Публікації')
+    ordering = [
+      '-order'
+    ]
 
   def get_absolute_url(self):
       return reverse("post", kwargs={"slug": self.slug})
@@ -41,8 +39,8 @@ class Post(AbstractPage):
 class PostCategory(AbstractPage):
 
   class Meta:
-    verbose_name = ('Категорія')
-    verbose_name_plural = ('Категорії')
+    verbose_name = _('Категорія')
+    verbose_name_plural = _('Категорії')
     ordering = ['order']
 
   def get_absolute_url(self):

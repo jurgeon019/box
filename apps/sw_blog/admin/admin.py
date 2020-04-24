@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.html import mark_safe
 from django.db import models 
 from django.forms import NumberInput, Textarea, TextInput
-
+from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline
 
 from ..models import *
@@ -79,10 +79,10 @@ class PostAdmin(
       return show_admin_link(obj, obj_attr='category', obj_name='title')
 
     def show_image(self, obj):
-        return mark_safe(f"<img src='{obj.get_image_url()}' width='150px' height='auto'/>")
+        return mark_safe(f"<img src='{obj.image_url}' width='150px' height='auto'/>")
 
-    show_category.short_description = ("Категорія")
-    show_image.short_description = ("Зображення")
+    show_category.short_description = _("Категорія")
+    show_image.short_description    = _("Зображення")
   
     prepopulated_fields = {
         'slug':('title',),
@@ -90,7 +90,6 @@ class PostAdmin(
     autocomplete_fields = [
         'author',
         'category',
-        # "recomended",
     ]
     inlines = [
         CommentInline,
@@ -115,7 +114,7 @@ class PostAdmin(
         'show_category',
         'is_active',
         "show_site_link",
-        'delete',
+        'show_delete_link',
     ]
     list_editable = [
         'is_active',

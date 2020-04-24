@@ -98,10 +98,9 @@ class AbstractPage(BaseMixin):
 	
 	@property
 	def image_url(self):
+		url = core_settings.IMAGE_NOT_FOUND
 		if self.image:
 			url = self.image.url
-		else:
-			url = core_settings.IMAGE_NOT_FOUND
 		return url 
 
 	@property

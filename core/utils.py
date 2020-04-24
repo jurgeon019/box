@@ -14,6 +14,24 @@ from box.apps.sw_admin.modelclone import ClonableModelAdmin
 from import_export.admin import *
 from adminsortable2.admin import SortableAdminMixin
 
+from django.core.paginator import Paginator 
+
+
+def paginate(request, klass):
+    query        = request.GET
+    page_number  = query.get('page_number', 1)
+    per_page     = query.get('per_page', 16)
+    page         = Paginator(klass.objects.all(), per_page=per_page).get_page(page_number)
+    is_paginated = page.has_other_pages()
+    current_page = page.number
+    last_page    = page.paginator.num_pages
+    has_prev     = page.has_previous()
+    has_next     = page.has_next()
+    next_page    = page.next_page_number() if has_next else ''
+    prev_page    = page.previous_page_number() if has_prev else ''
+    pages_list   = page.paginator.page_range
+    pages_list   = list(pages_list)
+    return locals()
 
 
 
