@@ -1,2 +1,30 @@
 Code -> Preference -> Setting
 files.exclude
+
+
+
+file -> preferences -> user snippets -> new global snippet 
+{
+	"Print to console": {
+		"scope": "javascript,typescript,html",
+		"prefix": "log",
+		"body": [
+			"console.log('$1');",
+			"$2"
+		],
+		"description": "Log output to console"
+	},
+	"Render placeholder":{
+		"scope":"html,django-html",
+		"prefix":"render",
+		"body": [
+			"{% render 'content_type' 'content_code' 'page_code' as content_code %}",
+			"data-admin_url=\"{{content_code.get_admin_url}}\"",
+			"class=\"db_content\"",
+			"{{content_code.field}}"
+		],
+		"description": "Render static content in django template"
+	}
+}
+
+
