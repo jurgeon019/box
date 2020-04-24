@@ -70,6 +70,7 @@ class ItemSerializer(serializers.ModelSerializer):
   images   = ItemImageSerializer(many=True, read_only=True)
   # features = ItemFeatureSerializer(many=True)
   absolute_url = serializers.SerializerMethodField() 
+  
   def get_absolute_url(self, obj):
       return obj.get_absolute_url()
 
@@ -85,5 +86,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
   class Meta:
     model = Item
-    exclude = []
+    exclude = [
+      'similars',
+    ]
 

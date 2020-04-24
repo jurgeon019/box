@@ -15,14 +15,37 @@ from box.core.mail import box_send_mail
 from box.core.sw_global_config.models import NotificationConfig, CatalogueConfig
 
 
-
+from rest_framework import generics 
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from .serializers import * 
+from .paginators import * 
+
+
+
 
 
 class ItemViewSet(ModelViewSet):
   queryset = Item.objects.all().filter(is_active=True)
   serializer_class = ItemSerializer
+  pagination_class = StandardPageNumberPagination
+
+
+class ItemList(generics.ListCreateAPIView):
+  queryset = Item.objects.all()
+  serializer_class = ItemSerializer
+  pagination_class = StandardPageNumberPagination
+
+
+class ItemDetail(generics.RetrieveUpdateDestroyAPIView):
+  queryset = Item.objects.all()
+  serializer_class = ItemSerializer
+  pagination_class = StandardPageNumberPagination
+
+
+
+
+
 
 
 class ReviewViewSet(ModelViewSet):
@@ -88,6 +111,7 @@ def filter_category(items, query):
 
 
 def paginate(items, query):
+  response     = {}
   page_number  = query.get('page', 1)
   per_page     = query.get('per_page', CatalogueConfig.get_solo().items_per_page)
   ordering     = query.get('sort', '-created')
