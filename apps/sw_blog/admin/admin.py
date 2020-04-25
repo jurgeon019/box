@@ -25,6 +25,12 @@ class PostInline(TranslationStackedInline):
 
 from box.core.utils import BaseAdmin , seo 
 
+
+class PostMarkerAdmin(admin.ModelAdmin):
+    search_fields = [
+        'name',
+    ]
+
 class PostCategoryAdmin(BaseAdmin, TabbedTranslationAdmin):
     # changeform 
     fieldsets = (
@@ -90,6 +96,7 @@ class PostAdmin(
     autocomplete_fields = [
         'author',
         'category',
+        'markers',
     ]
     inlines = [
         CommentInline,
@@ -101,7 +108,7 @@ class PostAdmin(
                 'content',
                 'category',
                 'author',
-                # 'recomended',
+                'markers',
                 'image',
             ),
         }),

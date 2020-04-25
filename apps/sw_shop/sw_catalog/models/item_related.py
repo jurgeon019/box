@@ -13,6 +13,34 @@ from box.core import settings as core_settings
 User = get_user_model()
 
 
+class ItemLabel(models.Model):
+	text  = models.CharField(verbose_name=_('Текст'), max_length=255)
+	
+	@classmethod
+	def modeltranslation_fields(cls): return ['text']
+
+	def __str__(self): return f"{self.text}"
+
+	class Meta:
+		verbose_name = _('мітка товарів')
+		verbose_name_plural = _('мітки товарів')
+
+
+class ItemMarker(models.Model):
+	name  = models.CharField(verbose_name=_('Назва'), max_length=255)
+	code  = models.SlugField(
+		verbose_name=_("Код"), unique=True
+	)
+	def __str__(self): return f"{self.name}"
+
+	@classmethod
+	def modeltranslation_fields(cls): return ['name']
+
+	class Meta:
+		verbose_name = _('маркер товарів')
+		verbose_name_plural = _('маркери товарів')
+
+
 class ItemUnit(models.Model):
 	name = models.CharField(
 		verbose_name=_("Назва"), unique=True, max_length=255,
@@ -88,25 +116,6 @@ class ItemImage(BaseMixin):
 		verbose_name_plural = _('Зображення товару'); 
 		ordering = ['order',]
 
-
-class ItemMarker(BaseMixin):
-	text  = models.CharField(verbose_name=_('Текст'), max_length=255)
-
-	def __str__(self):
-		return f"{self.text}"
-	
-	@classmethod
-	def modeltranslation_fields(cls):
-		fields = [
-			'text',
-		]
-		return fields
-
-
-	class Meta:
-		verbose_name = _('Маркер')
-		verbose_name_plural = _('Маркери')
-		ordering = ['order']
 
 
 class ItemManufacturer(BaseMixin):

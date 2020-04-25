@@ -167,14 +167,21 @@ class ItemStockAdmin(TabbedTranslationAdmin):
 
 
 class ItemMarkerAdmin(TabbedTranslationAdmin):
-    # def get_model_perms(self, request):
-    #     return {}
+    def has_add_permission(self, request):
+        return False 
+    
     search_fields = [
         'text',
     ]
     fields = [
         'text',
     ]
+
+class ItemLabelAdmin(TabbedTranslationAdmin):
+    search_fields = [
+        'text',
+    ]
+   
 
 
 class ItemBrandAdmin(BaseAdmin, SortableAdminMixin, TabbedTranslationAdmin):

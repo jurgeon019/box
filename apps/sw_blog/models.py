@@ -13,7 +13,27 @@ User = get_user_model()
 
 
 
+class PostMarker(models.Model):
+  name = models.CharField(
+    verbose_name=_("Назва"),
+    max_length=255, unique=True,
+  )
+
+  code = models.SlugField(
+    verbose_name=_("Код"), 
+    unique=True,
+  )
+
+  def __str__(self):
+    return f'{self.code}'
+
+  class Meta:
+    verbose_name = _("маркер публікацій")
+    verbose_name_plural = _("маркери публікацій")
+
+
 class Post(AbstractPage):
+  markers    = models.ManyToManyField(to="sw_blog.PostMarker", verbose_name=_("Маркери"), blank=True)
   content    = HTMLField(verbose_name=_("Контент"), blank=False, null=True)
   category   = models.ForeignKey(verbose_name=_("Категорія"), to="sw_blog.PostCategory", blank=True, null=True, on_delete=models.CASCADE)
   author     = models.ForeignKey(verbose_name=_("Автор"), to=User, on_delete=models.CASCADE, blank=True, null=True)
