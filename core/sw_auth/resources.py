@@ -42,13 +42,3 @@ class BoxUserResource(ModelResource):
             'id',
         ]
         return import_id_fields
-
-    # def dehydrate_page(self, obj):
-    #     page = None 
-    #     if obj.page:
-    #         page = obj.page.code 
-    #     return page 
-
-    # def before_import_row(self, row, **kwargs):
-    #     if row['page']:
-    #         row['page'] = Page.objects.get_or_create(code=row['page'])[0].id

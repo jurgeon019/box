@@ -26,10 +26,8 @@ def robots(request):
 def set_lang(request, lang=None):
   translation.activate(lang)
   request.session[translation.LANGUAGE_SESSION_KEY] = lang
-  # url = request.META.get('HTTP_REFERER', '/')#.split('/')
-  # print(url)
+  # referer = request.META.get('HTTP_REFERER', '/uk/')
   referer = request.META['HTTP_REFERER']
-  print("referer: ", referer, '.')
   url = referer.split('/')
   url[3] = lang
   url = '/'.join(url)

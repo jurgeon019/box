@@ -23,13 +23,31 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
     def update(self, request, *args, **kwargs):
-        validated_data = request.data
-        if 'password' in validated_data:
-            password = validated_data.pop('password')
-            instance = self.get_object()
-            instance.set_password("babaski")
-            instance.save()
-            # instance.set_password(password)
+        user     = self.get_object()
+        if 'password' in request.data \
+        and 'password2' in request.data \
+        and 'old_password' in request.data:
+            password     = request.data.pop('password')
+            password2    = request.data.pop('password2')
+            old_password = request.data.pop('old_password')
+            if password and password2 and password != password2:
+                return JsonResponse({
+                    'status':'BAD',
+                    "error_fields":{
+                        "password":_('Паролі не співпадаюсь'),
+                        'password2':_('Паролі не співпадаюсь'),
+                    }
+                }) 
+            if old_password and not user.check_password(old_password):
+                return JsonResponse({
+                    'error_fields':{
+                        'old_password':_('Неправильний старий пароль'),
+                    },
+                    'status':'BAD',
+                })
+            # user.set_password("babaski")
+            user.set_password(password)
+            user.save()
         result = super().update(request, *args, **kwargs)
         # result.data['status'] = 'OK'
         return result
@@ -73,7 +91,6 @@ def sw_login(request):
     if not users.exists() and users.count() != 1:
         return JsonResponse({
             'error_fields':{
-
                 'email':_("'Такого користувача не існує'"),
                 # 'username':_("'Такого користувача не існує'"),
             },
@@ -85,7 +102,6 @@ def sw_login(request):
     if not user.check_password(password):
         return JsonResponse({
             'error_fields':{
-
                 'password':_('Неправильний пароль'),
             },
             'status':'BAD',
