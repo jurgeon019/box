@@ -14,6 +14,7 @@ from box.core.sw_global_config.models import NotificationConfig
 @csrf_exempt
 def contact(request):
     query    = request.POST or request.GET
+    print(query)
     name     = query.get('name',    '---')
     email    = query.get('email',   '---')
     phone    = query.get('phone',   '---')
