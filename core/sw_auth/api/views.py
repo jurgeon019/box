@@ -62,16 +62,96 @@ class UserViewSet(viewsets.ModelViewSet):
         # headers = self.get_success_headers(serializer.data)
         # return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         query       = request.data
-        _sw_register(query, request)
+        print(query)
+        # TODO: різні обовязкові поля для різних проектів. 
+        # настройки. auth_settings.IS_EMAIL_REQUIRED, IS_USERNAME_REQUIRED
+
+        # username    = query['username']
+        # email       = query.get('email','')
+        # email2      = query.get('email2','')
+        email       = query['email']
+        username    = query.get('username') or email.split('@')[0]
+        password    = query['password']
+        password2   = query['password2']
+        old_password= query.get('old_password')
+        first_name  = query.get('first_name','')
+        last_name   = query.get('last_name','')
+        phone_number       = query.get('phone_number', '')
+        email_qs    = get_user_model().objects.filter(email=email)
+        username_qs = get_user_model().objects.filter(username=username)
+
+        # if email and email2 and email != email2:
+        #     return JsonResponse({
+        #         'status':'BAD',
+        #         'message':_('Email must match'),
+        #     })
+        if password and password2 and password != password2:
+            return JsonResponse({
+                'status':'BAD',
+                "error_fields":{
+                    "password":_('Паролі не співпадаюсь'),
+                    'password2':_('Паролі не співпадаюсь'),
+                }
+            }) 
+        if email_qs.exists() and email != '' and username_qs.exists() and username != '':
+            return JsonResponse({
+                'status':'BAD',
+                "error_fields":{
+
+                    "email":_("Цей емейл вже зайнятий"), 
+                    'username': _("Цей логін вже зайнятий"),
+                },
+            }) 
+        if email_qs.exists() and email != '':
+            return JsonResponse({
+                'status':'BAD',
+                "error_fields":{
+                    "email":_('Цей емайл вже зайнятий'),
+                },
+            })
+        if username_qs.exists() and username != '':
+            return JsonResponse({
+                'status':'BAD',
+                "error_fields":{
+
+                    "username":_('Цей логін вже зайнятий'),
+                },
+            })
+        user = get_user_model().objects.create_user(
+            username     = username,
+            email        = email, 
+            first_name   = first_name, 
+            last_name    = last_name, 
+            phone_number = phone_number,
+        )
+        if old_password and not user.check_password(old_password):
+            return JsonResponse({
+                'error_fields':{
+                    'old_password':_('Неправильний старий пароль'),
+                },
+                'status':'BAD',
+            })
+        user.set_password(password)
+        user.is_active = True 
+        # user.is_active = False 
+        # TODO: custom email confirmation 
+        user.save() 
+        new_user = authenticate(username=user.username, password=password)
+        login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+        return JsonResponse({
+            'status':'OK',
+            'url':request.META.get('HTTP_REFERER', '/'),
+        })
 
 
-def current_user(request):
+def current_user_info(request):
     return JsonResponse(UserSerializer(request.user, many=False).data, safe=False)
 
 
 @csrf_exempt 
 def sw_login(request):
     query = request.POST or request.GET
+    print(query)
     response    = redirect(request.META['HTTP_REFERER'])
     password    = query['password']
     username    = query.get('username') or query.get('email').split('@')[0]
@@ -140,90 +220,3 @@ def sw_logout(request):
         'url':request.META.get('HTTP_REFERER', '/'),
     })
 
-
-def sw_register(request):
-    query = request.POST or request.GET
-    return _sw_register(query, request)
-
-
-def _sw_register(query, request):
-    print(query)
-    # TODO: різні обовязкові поля для різних проектів. 
-    # настройки. auth_settings.IS_EMAIL_REQUIRED, IS_USERNAME_REQUIRED
-
-    # username    = query['username']
-    # email       = query.get('email','')
-    # email2      = query.get('email2','')
-    email       = query['email']
-    username    = query.get('username') or email.split('@')[0]
-    password    = query['password']
-    password2   = query['password2']
-    old_password= query.get('old_password')
-    first_name  = query.get('first_name','')
-    last_name   = query.get('last_name','')
-    phone_number       = query.get('phone_number', '')
-    email_qs    = get_user_model().objects.filter(email=email)
-    username_qs = get_user_model().objects.filter(username=username)
-
-    # if email and email2 and email != email2:
-    #     return JsonResponse({
-    #         'status':'BAD',
-    #         'message':_('Email must match'),
-    #     })
-    if password and password2 and password != password2:
-        return JsonResponse({
-            'status':'BAD',
-            "error_fields":{
-                "password":_('Паролі не співпадаюсь'),
-                'password2':_('Паролі не співпадаюсь'),
-            }
-        }) 
-    if email_qs.exists() and email != '' and username_qs.exists() and username != '':
-        return JsonResponse({
-            'status':'BAD',
-            "error_fields":{
-
-                "email":_("Цей емейл вже зайнятий"), 
-                'username': _("Цей логін вже зайнятий"),
-            },
-        }) 
-    if email_qs.exists() and email != '':
-        return JsonResponse({
-            'status':'BAD',
-            "error_fields":{
-                "email":_('Цей емайл вже зайнятий'),
-            },
-        })
-    if username_qs.exists() and username != '':
-        return JsonResponse({
-            'status':'BAD',
-            "error_fields":{
-
-                "username":_('Цей логін вже зайнятий'),
-            },
-        })
-    user = get_user_model().objects.create_user(
-        username     = username,
-        email        = email, 
-        first_name   = first_name, 
-        last_name    = last_name, 
-        phone_number = phone_number,
-    )
-    if old_password and not user.check_password(old_password):
-        return JsonResponse({
-            'error_fields':{
-                'old_password':_('Неправильний старий пароль'),
-            },
-            'status':'BAD',
-        })
-    user.set_password(password)
-    user.is_active = True 
-    # user.is_active = False 
-    # TODO: custom email confirmation 
-    user.save() 
-    new_user = authenticate(username=user.username, password=password)
-    login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-    return JsonResponse({
-        'status':'OK',
-        'url':request.META.get('HTTP_REFERER', '/'),
-    })
