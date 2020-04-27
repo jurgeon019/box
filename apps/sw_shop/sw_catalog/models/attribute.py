@@ -2,6 +2,41 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+'''
+AttributeCategory
+    name = charfield 
+
+Attribute
+    name     = charfield 
+    category = fk to AttributeCategory
+
+AttributeVariantValue
+    value = textfield
+
+ItemAttribute(ObjAttribute)
+    item       = fk to Item 
+    *is_option = boolean*
+    *attribute = fk to Attribute*
+
+ItemAttributeVariant(AttributeVariant)
+    item_attribute = fk to ItemAttribute
+    *value         = fk to AttributeVariantValue*
+    *price         = decimalfield*
+    *description   = textfield*
+
+
+
+
+ObjAttribute __abstract__ 
+    is_option = boolean
+    attribute = fk to Attribute
+
+AttributeVariant __abstract__ 
+    value       = fk to AttributeVariantValue
+    price       = decimalfield
+    description = textfield
+'''
+
 class AttributeCategory(models.Model):
     name   = models.CharField(
         verbose_name=_("Назва"), max_length=255, unique=True
@@ -182,40 +217,3 @@ class ItemCategoryAttributeVariant(AttributeVariant):
 
 
 
-
-
-
-'''
-AttributeCategory
-    name = charfield 
-
-Attribute
-    name     = charfield 
-    category = fk to AttributeCategory
-
-AttributeVariantValue
-    value = textfield
-
-ItemAttribute(ObjAttribute)
-    item       = fk to Item 
-    *is_option = boolean*
-    *attribute = fk to Attribute*
-
-ItemAttributeVariant(AttributeVariant)
-    item_attribute = fk to ItemAttribute
-    *value         = fk to AttributeVariantValue*
-    *price         = decimalfield*
-    *description   = textfield*
-
-
-
-
-ObjAttribute __abstract__ 
-    is_option = boolean
-    attribute = fk to Attribute
-
-AttributeVariant __abstract__ 
-    value       = fk to AttributeVariantValue
-    price       = decimalfield
-    description = textfield
-'''

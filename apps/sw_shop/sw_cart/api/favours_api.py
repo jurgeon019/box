@@ -13,7 +13,9 @@ from .serializers import *
 @csrf_exempt
 def add_favour(request):
   query = request.POST or request.GET
-  item_id = query.get('item_id')
+  print("query", query)
+  item_id = query['item_id']
+
   cart = get_cart(request)
   favour, created = FavourItem.objects.get_or_create(
     cart=cart,

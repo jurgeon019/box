@@ -24,6 +24,14 @@ class ItemMarkerResource(ModelResource):
         if row.get('code') == '':
             row['code'] = None
 
+class ItemLabelResource(ModelResource):
+    class Meta:
+        model = ItemLabel
+        exclude = []
+    def before_import_row(self, row, **kwargs):
+        if row.get('code') == '':
+            row['code'] = None
+
 class ItemStockResource(ModelResource):
     class Meta:
         model = ItemStock

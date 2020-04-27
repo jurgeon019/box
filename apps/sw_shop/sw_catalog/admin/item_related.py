@@ -50,7 +50,11 @@ class ItemManufacturerAdmin(
     ]
 
 
-class ItemUnitAdmin(TabbedTranslationAdmin):
+class ItemUnitAdmin(
+    TabbedTranslationAdmin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+    ):
     list_display = [
         'id',
         'name',
@@ -65,6 +69,8 @@ class ItemImageAdmin(
     # nested_admin.NestedTabularInline,
     BaseAdmin, 
     SortableAdminMixin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
     ):
     def get_model_perms(self, request):
         return {}
@@ -131,7 +137,10 @@ class ItemCurrencyAdmin(
 
 
 
-class ItemStockAdmin(TabbedTranslationAdmin):
+class ItemStockAdmin(TabbedTranslationAdmin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+    ):
     def get_model_perms(self, request):
         return {}
 
@@ -166,25 +175,37 @@ class ItemStockAdmin(TabbedTranslationAdmin):
     ]
 
 
-class ItemMarkerAdmin(TabbedTranslationAdmin):
+class ItemMarkerAdmin(
+    TabbedTranslationAdmin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+    ):
     def has_add_permission(self, request):
         return False 
     
     search_fields = [
-        'text',
+        'name',
     ]
     fields = [
-        'text',
+        'name',
     ]
 
-class ItemLabelAdmin(TabbedTranslationAdmin):
+class ItemLabelAdmin(
+    TabbedTranslationAdmin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+    ):
     search_fields = [
         'text',
     ]
    
 
 
-class ItemBrandAdmin(BaseAdmin, SortableAdminMixin, TabbedTranslationAdmin):
+class ItemBrandAdmin(BaseAdmin, SortableAdminMixin, 
+    TabbedTranslationAdmin,
+    ImportExportActionModelAdmin,
+    ImportExportModelAdmin,
+):
     # change_form
     fieldsets = [
         base_main_info,

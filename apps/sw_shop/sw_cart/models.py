@@ -112,7 +112,7 @@ class Cart(models.Model):
     currency = None 
     currencies = ItemCurrency.objects.filter(is_main=True)
     if currencies.exists():
-      currency = currencies.first().name
+      currency = currencies.first().code
     return currency
 
 
