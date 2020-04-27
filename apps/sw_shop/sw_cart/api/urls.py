@@ -1,8 +1,15 @@
-from django.urls import path
+from django.urls import path, include 
 from .cart_api import *
 from .favours_api import *
+from .views import * 
 
-urlpatterns = [
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register('cart_items', CartItemViewSet)
+
+
+old_urlpatterns = [
   path('get_cart_items/',         get_cart_items,          name='get_cart_items'),
   path('add_cart_item/',          add_cart_item,           name='add_cart_item'),
   path('remove_cart_item/',       remove_cart_item,        name='remove_cart_item'),
@@ -20,3 +27,10 @@ urlpatterns = [
   path('add_favour_by_like/',     add_favour_by_like,      name='add_favour_by_like'),
   path('remove_favour_by_like/',  remove_favour_by_like,   name='remove_favour_by_like'),
 ]
+
+urlpatterns = [
+  path('', include(old_urlpatterns)), 
+  path('', include(router.urls)),
+]
+
+

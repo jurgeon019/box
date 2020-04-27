@@ -12,6 +12,9 @@ from box.core.models import AbstractPage
 
 
 class Item(AbstractPage):
+# class Item(models.Model):
+
+
 	if item_settings.MULTIPLE_CATEGORY:
 		categories   = models.ManyToManyField(
 			verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', 

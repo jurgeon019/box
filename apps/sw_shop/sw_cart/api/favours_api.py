@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from box.core.utils import get_sk, get_user
 from box.apps.sw_shop.sw_catalog.models import *
+from box.apps.sw_shop.sw_cart.utils import get_cart
 
 from .serializers import *
 
@@ -11,7 +12,9 @@ from .serializers import *
 # FAVOURS
 @csrf_exempt
 def add_favour(request):
-  item_id = request.POST.get('item_id', '')
+  query = request.POST or request.GET
+  item_id = query.get('item_id')
+  cart = get_cart(request)
   favour, created = FavourItem.objects.get_or_create(
     cart=cart,
     item=Item.objects.get(pk=int(item_id))
@@ -21,7 +24,8 @@ def add_favour(request):
 
 @csrf_exempt
 def remove_favour(request):
-  id = request.POST['id']
+  query = request.POST or request.GET
+  id = query['id']
   favour_item = FavourItem.objects.get(
     sk=get_sk(request),
     id=id,

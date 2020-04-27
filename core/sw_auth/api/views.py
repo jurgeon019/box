@@ -27,9 +27,9 @@ class UserViewSet(viewsets.ModelViewSet):
         if 'password' in request.data \
         and 'password2' in request.data \
         and 'old_password' in request.data:
-            password     = request.data.pop('password')
-            password2    = request.data.pop('password2')
-            old_password = request.data.pop('old_password')
+            password     = request.data.get('password')
+            password2    = request.data.get('password2')
+            old_password = request.data.get('old_password')
             if password and password2 and password != password2:
                 return JsonResponse({
                     'status':'BAD',
@@ -45,11 +45,13 @@ class UserViewSet(viewsets.ModelViewSet):
                     },
                     'status':'BAD',
                 })
-            # user.set_password("babaski")
-            user.set_password(password)
-            user.save()
+            if password:
+                # import pdb; pdb.set_trace()
+                print('new password in update user',password)
+                user.set_password(password)
+                user.save()
         result = super().update(request, *args, **kwargs)
-        # result.data['status'] = 'OK'
+        result.data['status'] = 'OK'
         return result
 
     def create(self, request, *args, **kwargs):
@@ -180,6 +182,8 @@ def sw_login(request):
     user = users.first() 
 
     if not user.check_password(password):
+        print('sdf',password)
+        print(user.check_password('sdfsdf'))
         return JsonResponse({
             'error_fields':{
                 'password':_('Неправильний пароль'),

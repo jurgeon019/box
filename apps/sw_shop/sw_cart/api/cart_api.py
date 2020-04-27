@@ -6,7 +6,6 @@ from box.apps.sw_shop.sw_cart.models import CartItem
 from box.apps.sw_shop.sw_cart.utils import get_cart, get_cart_info
 
 
-
 @csrf_exempt
 def get_cart_items(request):
   return JsonResponse(get_cart_info(request))
@@ -14,8 +13,8 @@ def get_cart_items(request):
 
 @csrf_exempt
 def add_cart_item(request):
-  cart = get_cart(request)
-  query = request.POST or request.GET
+  cart     = get_cart(request)
+  query    = request.POST or request.GET
   quantity = query.get('quantity', 1)
   item_id  = query['item_id']
   cart.add_item(item_id, quantity)
@@ -24,8 +23,8 @@ def add_cart_item(request):
 
 @csrf_exempt
 def remove_cart_item(request):
-  cart = get_cart(request)
-  query = request.POST or request.GET
+  cart         = get_cart(request)
+  query        = request.POST or request.GET
   cart_item_id = query['cart_item_id']
   cart.remove_cart_item(cart_item_id)
   return JsonResponse(get_cart_info(request))
@@ -55,8 +54,8 @@ def change_cart_item_amount(request):
 
 @csrf_exempt
 def change_item_amount(request):
-  cart = get_cart(request)
-  query = request.POST or request.GET
+  cart      = get_cart(request)
+  query     = request.POST or request.GET
   item_id   = query['item_id']
   quantity  = query['quantity']
   cart_item = cart.change_item_amount(item_id, quantity)

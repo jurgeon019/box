@@ -2,37 +2,13 @@ from django.shortcuts import redirect
 from django.conf import settings 
 
 from box.core.sw_global_config.models import SiteConfig
-# from box.apps.sw_shop.sw_order.models import Order
-# from box.apps.sw_shop.sw_cart.utils import get_cart
-# from box.apps.sw_shop.sw_cart.models import CartItem
 from .forms import PaymentForm
 from .liqpay import LiqPay
 
 
 
-def get_liqpay_context(request):
-  config = SiteConfig.get_solo()
-
-  cart   = get_cart(request)
-  order  = Order.objects.get(
-    cart=cart,
-    ordered=False,
-  )
-  order_id = order.id
-  total_price = 0
-  for cart_item in CartItem.objects.filter(ordered=False, cart=cart):
-    total_price += cart_item.total_price
-  
-  params = {
-      'action': 'pay',
-      'amount': float(total_price),
-      'currency': 'UAH',
-      'description': str(order.comments),
-      'order_id': str(order.id),
-      'version': '3',
-      'sandbox': 1, # sandbox mode, set to 1 to enable it
-      'server_url': f'{site}pay_callback/', # url to callback view
-  }
+def get_liqpay_context(params): 
+  config    = SiteConfig.get_solo()
   liqpay    = LiqPay(config.liqpay_public_key, config.liqpay_private_key)
   signature = liqpay.cnb_signature(params)
   data      = liqpay.cnb_data(params)
@@ -40,13 +16,6 @@ def get_liqpay_context(request):
 
 
 def get_response(request):
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print(request.POST)
-  print("request.POST")
   config = SiteConfig.get_solo()
   liqpay    = LiqPay(config.liqpay_public_key, config.liqpay_private_key)
   data      = request.POST.get('data')
@@ -61,6 +30,7 @@ def get_response(request):
 
 
 def create_payment(response, request):
+  # TODO: Забрати звідси все що звязано з магазином 
   status   = response.get('status', '')
   order_id = response.get('order_id', '')
   print(status, order_id)

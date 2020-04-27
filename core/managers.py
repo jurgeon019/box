@@ -10,7 +10,7 @@ __all__ = [
 
 
 class BasicManager(models.Manager):
-	use_for_related_fields = True
+	# use_for_related_fields = True
 	def all(self):
 		return super().get_queryset().order_by('order')
 

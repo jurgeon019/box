@@ -6,8 +6,8 @@ from box.core import settings as core_settings
 from tinymce import HTMLField
 from adminsortable.models import SortableMixin
 
-from .managers import *
-
+from .managers import BasicManager, ActiveManager
+from django.db.models.manager import BaseManager
 from box.core.helpers import get_admin_url
 
 __all__ = [
@@ -53,7 +53,11 @@ class BaseMixin(models.Model):
 		verbose_name=_("Оновлено"), auto_now_add=False, auto_now=True, blank=True, null=True
 	)
 	
-	objects         = BasicManager()
+	# TODO: розібратись чого BasicManager ламає поведінку ManyToManyField to="self"
+	
+	# objects         = BasicManager()
+	objects         = models.Manager()
+	ordered_objects = BasicManager()
 	active_objects  = ActiveManager()
 
 	# TODO: розібратись з is_active, related_name, фільтруванням
