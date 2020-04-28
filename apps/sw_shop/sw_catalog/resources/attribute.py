@@ -7,6 +7,10 @@ class AttributeResource(ModelResource):
     class Meta:
         model = Attribute
         exclude =  []
+    def before_import_row(self, row, **kwargs):
+        if row.get('code') == '':
+            row['code'] = None 
+
 
 
 class AttributeCategoryResource(ModelResource):
@@ -25,10 +29,14 @@ class AttributeVariantValueResource(ModelResource):
     class Meta:
         model = AttributeVariantValue
         exclude =  []
-        import_id_fields = [
-            'id',
-            'value',
-        ]
+        # import_id_fields = [
+        #     'id',
+        #     'code',
+        #     'value',
+        # ]
+    def before_import_row(self, row, **kwargs):
+        if row.get('code') == '':
+            row['code'] = None 
 
 
 class ItemAttributeResource(ModelResource):

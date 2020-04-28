@@ -1,5 +1,5 @@
 from import_export.resources import ModelResource
-from ..models.item_related import * 
+from ..models import * 
 
 class ItemManufacturerResource(ModelResource):
     class Meta:
@@ -62,7 +62,9 @@ class ItemImageResource(ModelResource):
         #     row['image'] = image
         
     def dehydrate_item(self, image):
-        item = image.item.id
+        item = None 
+        if image.item:
+            item = image.item.id
         return item 
 
     # def dehydrate_image(self, image):

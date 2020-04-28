@@ -59,6 +59,9 @@ class AttributeCategory(models.Model):
 
 
 class Attribute(models.Model):
+    code = models.SlugField(
+        verbose_name=_("Код"), max_length=255, unique=True, blank=True, null=True
+    )
     name = models.CharField(
         verbose_name=_("Назва"), max_length=50, 
     )
@@ -90,6 +93,9 @@ class Attribute(models.Model):
 
 
 class AttributeVariantValue(models.Model):
+    code = models.SlugField(
+        verbose_name=_("Код"), max_length=255, unique=True, blank=True, null=True
+    )
     value = models.CharField(
         verbose_name=_("Значення"), max_length=255, unique=True,
     )

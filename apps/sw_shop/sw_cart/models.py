@@ -195,7 +195,7 @@ class FavourItem(models.Model):
   cart = models.ForeignKey('sw_cart.Cart', on_delete=models.CASCADE, verbose_name='Улюблені товари', blank=True, null=True, related_name="favour_items")
   
   def __str__(self):
-    return f'{self.item.name},{self.user}'
+    return f'{self.item.title}'
 
   class Meta:
     verbose_name=_("Улюблений товар")

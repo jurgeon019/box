@@ -88,7 +88,9 @@ def loader(extention, file_name, action_type, resource_name):
         row = error[0]
         error = error[1][0]
         print(error.traceback)
-        print(f"ERROR IN {row} LINE:", error.error)
+        print(f"ERROR IN {row} LINE IN FILE {file_name}:", error.error)
+        raise Exception(error.error)
+
       return False 
 
 
