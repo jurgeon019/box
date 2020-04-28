@@ -20,11 +20,7 @@ class OrderViewSet(ModelViewSet):
 
 
 
-
-
-
-
-
+from django.utils.translation import gettext_lazy as _
 
 
 
@@ -34,17 +30,19 @@ class OrderViewSet(ModelViewSet):
 
 @csrf_exempt
 def order_items(request):
-  name         = request.POST.get('name', "---")
-  email        = request.POST.get('email', "---")
-  phone        = request.POST.get('phone', "---")
-  address      = request.POST.get('address', "---")
+  query        = request.POST or request.GET
+  print(query)
+  # import pdb; pdb.set_trace()
+  name         = query.get('name', "---")
+  email        = query.get('email', "---")
+  phone        = query.get('phone', "---")
+  address      = query.get('address', "---")
+  comments     = query.get('comments', "---")
 
-  payment_opt  = request.POST.get('payment', "---")
-  delivery_opt = request.POST.get('delivery_opt', "---")
-  comments     = request.POST.get('comments', "---")
+  payment_opt  = query.get('payment', "---")
+  delivery_opt = query.get('delivery_opt', "---")
 
   order        = Order.objects.create(
-
     name         = name,
     email        = email,
     phone        = phone,
@@ -56,14 +54,13 @@ def order_items(request):
   cart        = get_cart(request)
   cart.order  = order
   cart.save()
-  print('CART 2', cart.id)
-  print('ORDER 2', order.id)
-
-
   if payment_opt == 'liqpay':
+    order.payment_opt = _("З передоплатою")
+    order.save()
     url = reverse('payment')
     return JsonResponse({"url":url})
   else:
+    order.payment_opt = _("Без предоплати")
     order.make_order(request)
     url = reverse('thank_you')
     return JsonResponse({"url":url})

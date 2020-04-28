@@ -27,7 +27,7 @@ def remove_favour(request):
   query = request.POST or request.GET
   id = query['id']
   favour_item = FavourItem.objects.get(
-    sk=get_sk(request),
+    cart=get_cart(request),
     id=id,
   )
   item_id = favour_item.item.id

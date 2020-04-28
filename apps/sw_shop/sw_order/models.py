@@ -74,7 +74,7 @@ class Order(models.Model):
           else:
             item.in_stock = None 
         else:
-          item.amount -= quantity 
+          item.amount -= cart_item.quantity 
       item.save()
       cart_item.save()
     cart.ordered = True
