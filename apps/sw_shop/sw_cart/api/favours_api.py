@@ -12,11 +12,9 @@ from .serializers import *
 # FAVOURS
 @csrf_exempt
 def add_favour(request):
-  query = request.POST or request.GET
-  print("query", query)
+  query   = request.POST or request.GET
   item_id = query['item_id']
-
-  cart = get_cart(request)
+  cart    = get_cart(request)
   favour, created = FavourItem.objects.get_or_create(
     cart=cart,
     item=Item.objects.get(pk=int(item_id))
@@ -39,7 +37,8 @@ def remove_favour(request):
 
 @csrf_exempt
 def add_favour_by_like(request):
-  item_id = request.POST.get('item_id', '')
+  query           = request.POST or request.GET
+  item_id         = query['item_id']
   favour, created = FavourItem.objects.get_or_create(
     sk=get_sk(request), 
     item=Item.objects.get(pk=int(item_id))

@@ -1,0 +1,74 @@
+# django 
+django
+django-cors-headers
+django-modeltranslation
+django-rosetta
+django-colorfield
+django-admin-sortable
+django-admin-sortable2
+django-admin-rangefilter
+django-taggit
+django-select2
+django-allauth
+django-ckeditor
+django-filter
+django-tinymce4-lite 
+django-mptt
+django-debug-toolbar
+django-extensions
+django-crispy-forms
+django-import-export
+django-decouple 
+django-autocomplete-light 
+django-admin-autocomplete-filter
+django-celery-beat 
+django-redis
+channels
+channels_redis 
+# django-constance
+django-debug-toolbar
+django-nested-admin
+django-nested-inline
+
+# psycopg2
+
+# restAPI
+django-rest-framework
+djoser 
+djangorestframework_simplejwt
+social-auth-app-django
+django-oauth-toolkit
+
+# admin-styling 
+django-grappelli 
+django-admin-tools 
+django-jet 
+# django-suit 
+# https://github.com/darklow/django-suit/tarball/develop
+# помилки лізуть з всіх дир
+# django-material
+#  не зовсім для адмінки 
+# django-bootstrapped
+
+
+
+
+
+
+
+
+
+
+
+
+# python
+celery 
+redis 
+Pillow 
+transliterate 
+pandas 
+bs4 
+selenium 
+xlsxwriter
+google-api-python-client
+python-magic
