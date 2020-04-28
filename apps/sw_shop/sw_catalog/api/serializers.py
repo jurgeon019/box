@@ -70,9 +70,13 @@ class ItemSerializer(serializers.ModelSerializer):
   images   = ItemImageSerializer(many=True, read_only=True)
   # features = ItemFeatureSerializer(many=True)
   absolute_url = serializers.SerializerMethodField() 
+  image_url = serializers.SerializerMethodField() 
   
   def get_absolute_url(self, obj):
       return obj.get_absolute_url()
+  
+  def get_image_url(self, obj):
+    return obj.image_url
 
   if item_settings.MULTIPLE_CATEGORY:
     categories = ItemCategorySerializer(many=True)

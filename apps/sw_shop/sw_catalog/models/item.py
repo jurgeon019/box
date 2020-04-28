@@ -9,12 +9,10 @@ from . import ItemImage, ItemCurrency, ItemStock
 from .. import settings as item_settings
 
 from box.core.models import AbstractPage
+from PIL import Image 
 
 
 class Item(AbstractPage):
-# class Item(models.Model):
-
-
 	if item_settings.MULTIPLE_CATEGORY:
 		categories   = models.ManyToManyField(
 			verbose_name=_("Категорія"), to='sw_catalog.ItemCategory', 
@@ -36,10 +34,12 @@ class Item(AbstractPage):
 	)
 	manufacturer = models.ForeignKey(
 		verbose_name=_("Виробник"), to="sw_catalog.ItemManufacturer", 
-		blank=True, null=True, on_delete=models.SET_NULL, related_name='items',
+		blank=True, null=True, on_delete=models.SET_NULL, 
+		related_name='items',
 	)
 	brand        = models.ForeignKey(
-		verbose_name=_("Бренд"), to='sw_catalog.ItemBrand', related_name='items',
+		verbose_name=_("Бренд"), to='sw_catalog.ItemBrand', 
+		related_name='items',
 		on_delete=models.SET_NULL, null=True, blank=True,
 	)
 	in_stock     = models.ForeignKey(
