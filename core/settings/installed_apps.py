@@ -2,6 +2,7 @@ INSTALLED_APPS = [
     'box.wpadmin',
     'box.custom_admin',
     'filebrowser',
+    'admin_auto_filters',
     'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',

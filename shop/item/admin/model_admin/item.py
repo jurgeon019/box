@@ -18,6 +18,14 @@ from ...views import *
 
 CURRENT_DOMEN = settings.CURRENT_DOMEN
 
+from admin_auto_filters.filters import AutocompleteFilter
+
+
+class CategoryFilter(AutocompleteFilter):
+    title = 'категорією' 
+    field_name = 'category' 
+
+
 def get_fieldsets():
     seo_fields = [
         'slug',
@@ -108,7 +116,8 @@ class ItemAdmin(TabbedTranslationAdmin, ExportMixin):
     list_filter = [
         "in_stock",
         "is_active", 
-        "category",
+        # "category",
+        CategoryFilter,
     ]
     list_display = [
         'id',

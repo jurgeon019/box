@@ -18,6 +18,9 @@ from ..inlines import *
 
 
 class ItemCategoryAdmin(TabbedTranslationAdmin, ExportMixin):
+    def has_delete_permission(self, request, obj=None):
+        return False 
+        return True 	
     inlines = [
         ItemInline,
         ItemCategoryInline,
