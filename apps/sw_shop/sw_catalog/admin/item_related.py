@@ -182,11 +182,17 @@ class ItemMarkerAdmin(
     ):
     def has_add_permission(self, request):
         return False 
+    def has_delete_permission(self, request, obj=None):
+        return False 
     
     search_fields = [
         'name',
     ]
+    readonly_fields = [
+        'code'
+    ]
     fields = [
+        'code',
         'name',
     ]
 
@@ -195,10 +201,21 @@ class ItemLabelAdmin(
     ImportExportActionModelAdmin,
     ImportExportModelAdmin,
     ):
+    def has_add_permission(self, request):
+        return False 
+    def has_delete_permission(self, request, obj=None):
+        return False 
+
     search_fields = [
         'text',
     ]
-   
+    readonly_fields = [
+        'code'
+    ]
+    fields = [
+        'text',
+        'code',
+    ]
 
 
 class ItemBrandAdmin(BaseAdmin, SortableAdminMixin, 

@@ -10,15 +10,15 @@ from box.core.utils import show_admin_link
 from box.core.sw_solo.admin import SingletonModelAdmin
 
 from ..models import *
-from ..filters import * 
-from ..forms import * 
+from .filters import * 
+from .forms import * 
 
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline, TranslationTabularInline
 
 
 class OrderInline(admin.TabularInline):
     def show_link(self, obj):
-        return mark_safe(f'<a href="/admin/order/order/{obj.id}/change">Замовлення № {obj.id}</a>')
+        return mark_safe(f'<a href="/admin/sw_order/order/{obj.id}/change">Замовлення № {obj.id}</a>')
     show_link.short_description = _("Ссилка")
     model = Order 
     extra = 0
@@ -76,11 +76,11 @@ class OrderAdmin(admin.ModelAdmin):
       link = show_admin_link(obj, obj_attr='user', obj_name='username', option='change')
       return link
     def show_id(self, obj):
-      return mark_safe(f'<a href="/admin/order/order/{obj.id}/change" >Замовлення № {obj.id}</a>')
+      return mark_safe(f'<a href="/admin/sw_order/order/{obj.id}/change" >Замовлення № {obj.id}</a>')
     def items_count(self, obj):
       return obj.cart_items.all().count()
     def delete(self, obj):
-      return mark_safe(f'<a href="/admin/order/order/{obj.id}/delete" style="color:red" >x</a>')
+      return mark_safe(f'<a href="/admin/sw_order/order/{obj.id}/delete" style="color:red" >x</a>')
     # TODO: проміжні дії переробити на фукнцію
     def change_status(self, request, queryset):
       form = None 

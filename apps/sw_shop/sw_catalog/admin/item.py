@@ -54,6 +54,7 @@ class ItemAdmin(
     autocomplete_fields = [
         'similars',
         'markers',
+        'labels',
         'manufacturer',
         'brand',
         'in_stock',
@@ -78,10 +79,10 @@ class ItemAdmin(
         "brand",
         'in_stock',
         'currency',
-        "markers",   # TODO: Додаються всі маркери
-        "similars",   # TODO: : Додаються всі товари
+        "markers",   
+        "labels",   
+        "similars",   
         "manufacturer",
-
         (
         "unit",
         'amount',

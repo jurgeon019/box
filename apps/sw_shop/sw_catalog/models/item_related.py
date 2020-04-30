@@ -14,8 +14,13 @@ User = get_user_model()
 
 
 class ItemLabel(models.Model):
-	text  = models.CharField(verbose_name=_('Текст'), max_length=255)
-	
+	text  = models.CharField(
+		verbose_name=_('Текст'), max_length=255
+	)
+	code  = models.SlugField(
+		verbose_name=_("Код"), unique=True, null=True, blank=True
+	)
+
 	@classmethod
 	def modeltranslation_fields(cls): return ['text']
 
@@ -27,9 +32,11 @@ class ItemLabel(models.Model):
 
 
 class ItemMarker(models.Model):
-	name  = models.CharField(verbose_name=_('Назва'), max_length=255)
+	name  = models.CharField(
+		verbose_name=_('Назва'), max_length=255
+	)
 	code  = models.SlugField(
-		verbose_name=_("Код"), unique=True
+		verbose_name=_("Код"), unique=True, null=True, blank=True
 	)
 	def __str__(self): return f"{self.name}"
 
@@ -56,8 +63,8 @@ class ItemUnit(models.Model):
 		]
 	
 	class Meta:
-		verbose_name = _("одиниця вимірювання")
-		verbose_name_plural = _("одиниці вимірювання")
+		verbose_name = _("одиниця вимірювання товарів")
+		verbose_name_plural = _("одиниці вимірювання товарів")
 
 
 
@@ -112,8 +119,8 @@ class ItemImage(BaseMixin):
 		# img.save(self.image.path)
 
 	class Meta: 
-		verbose_name = _('Зображення товару'); 
-		verbose_name_plural = _('Зображення товару'); 
+		verbose_name = _('зображення товару'); 
+		verbose_name_plural = _('зображення товару'); 
 		ordering = ['order',]
 
 
@@ -132,8 +139,8 @@ class ItemManufacturer(BaseMixin):
 		return f"{self.name}"
 	
 	class Meta:
-		verbose_name = _('Виробник')
-		verbose_name_plural = _('Виробники')
+		verbose_name = _('виробник товарів')
+		verbose_name_plural = _('виробники товарів')
 		ordering = ['order']
 
 

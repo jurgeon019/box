@@ -11,7 +11,6 @@ from box.core.mail import box_send_mail
 
 from colorfield.fields import ColorField
 
-from .managers import * 
 
 User = get_user_model()
 
@@ -32,7 +31,6 @@ class Order(models.Model):
   status      = models.ForeignKey(verbose_name=_('Статус'),  on_delete=models.CASCADE, to="sw_order.Status", blank=False, null=True) 
   tags        = models.ManyToManyField(verbose_name=_("Мітки"), blank=True, to="sw_order.OrderTag")
   coupon      = models.ForeignKey(verbose_name=_("Купон"), blank=True, null=True, to='sw_customer.Coupon', on_delete=models.SET_NULL)
-  objects     = OrderManager()
   is_active   = models.BooleanField(verbose_name=_("Активність"), default=True, help_text=_("Замість видалення цей флаг проставляється в False"))
   created     = models.DateTimeField(verbose_name=_('Дата замовлення'), default=timezone.now)
   updated     = models.DateTimeField(verbose_name=_('Дата оновлення'), auto_now_add=False, auto_now=True,  blank=True, null=True)
@@ -87,18 +85,17 @@ class Order(models.Model):
       self.save()
       cart.user  = request.user
       cart.save()
-
+  
   def make_order(self, request):
     cart = get_cart(request)
-    cart.ordered = True
-    cart.order = self 
-    cart.save()
+    self.handle_user(request)
+    self.handle_amount(request)
+    self.total_price = self.cart.total_price
     self.ordered = True
     self.save()
-    self.handle_amount(request)
-    self.handle_user(request)
-    self.total_price = self.cart.total_price
-    self.save()
+    cart.order = self 
+    cart.ordered = True
+    cart.save()
     config = NotificationConfig.get_solo()
     data = config.get_data('order')
     box_send_mail(

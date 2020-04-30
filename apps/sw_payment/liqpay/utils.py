@@ -31,6 +31,8 @@ def get_response(request):
 
 def create_payment(response, request):
   # TODO: Забрати звідси все що звязано з магазином 
+  from box.apps.sw_shop.sw_order.models import Order 
+  # from box.apps.sw_payment. sw_shop.sw_order.models import Order 
   status   = response.get('status', '')
   order_id = response.get('order_id', '')
   print(status, order_id)

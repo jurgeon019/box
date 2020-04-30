@@ -28,6 +28,10 @@ class Item(AbstractPage):
 		verbose_name=_("Маркери"), to='sw_catalog.ItemMarker', 
 		related_name='items', blank=True,
 	)
+	labels      = models.ManyToManyField(
+		verbose_name=_("Мітки"), to='sw_catalog.ItemLabel', 
+		related_name='items', blank=True,
+	)
 	similars     = models.ManyToManyField(
 		verbose_name=_("Супутні товари"), to="self", 
 		related_name="similars_set", blank=True, default=None,

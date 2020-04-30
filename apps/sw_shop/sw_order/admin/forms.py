@@ -1,5 +1,5 @@
 from django import forms 
-from .models import Status, OrderTag
+from ..models import Status, OrderTag
 
 
 class ChangeStatusForm(forms.Form):

@@ -31,7 +31,6 @@ from django.utils.translation import gettext_lazy as _
 @csrf_exempt
 def order_items(request):
   query        = request.POST or request.GET
-  print(query)
   # import pdb; pdb.set_trace()
   name         = query.get('name', "---")
   email        = query.get('email', "---")
