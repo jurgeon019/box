@@ -63,7 +63,7 @@
 
 </head>
 <body>
-  <input type="hidden" name="current_language" value="{{LANGUAGE_CODE}}">
+  <input type="hidden" id='current_language' name="current_language" value="{{LANGUAGE_CODE}}">
   {% block body_top_scripts %}
     {% for script in seo.scripts.all %}
       {% if script.position == 'body_top' %}
