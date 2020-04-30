@@ -39,7 +39,7 @@ def order_items(request):
   address      = query.get('address', "---")
   comments     = query.get('comments', "---")
 
-  payment_opt  = query.get('payment', "---")
+  payment_opt  = query.get('payment_opt', "---")
   delivery_opt = query.get('delivery_opt', "---")
 
   order        = Order.objects.create(

@@ -22,10 +22,41 @@ from .serializers import *
 from .paginators import * 
 
 
+def get_items_in_favours(request, items):
+  items_in_favours = []
+  for item in items:
+    cart = get_cart(request)
+    # if cart.favour_items.all().exists():
+    if cart.favour_items.filter(item=item).exists():
+      items_in_favours.append(item.id)
+  return items_in_favours
+
+
+def get_items_in_cart(request, items):
+  items_in_cart = []
+  for item in items:
+    cart = get_cart(request)
+    # if cart.cart_items.all().exists():
+    if cart.items.filter(item=item).exists():
+      items_in_cart.append(item.id)
+  return items_in_cart
+
+
 class ItemList(generics.ListCreateAPIView):
   queryset = Item.objects.all()
   serializer_class = ItemListSerializer
   pagination_class = StandardPageNumberPagination
+  
+  def list(self, request, *args, **kwargs):
+    queryset = self.filter_queryset(self.get_queryset())
+
+    page = self.paginate_queryset(queryset)
+    if page is not None:
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
+    serializer = self.get_serializer(queryset, many=True)
+    return Response(serializer.data)
 
   def get_queryset(self):
     '''
@@ -37,14 +68,14 @@ class ItemList(generics.ListCreateAPIView):
     '''
     queryset     = super().get_queryset()
     data         = self.request.query_params
-    print(data)
     category_id  = data.get('category_id', None)
     category_ids = data.get('category_ids', None)
     max_price    = data.get('max_price', None)
     min_price    = data.get('min_price', None)
     is_discount  = data.get('is_discount', None)
     ordering     = data.get('ordering', None)
-          
+    # TODO: добавити сюда пошук по modelsearch,  get_items_in_favours, get_items_in_cart
+
     if category_id is not None:
       queryset = queryset.filter(category__id=category_id)
     if category_ids is not None:
@@ -91,26 +122,6 @@ class ReviewViewSet(ModelViewSet):
 
 
 # OLD 
-
-
-def get_items_in_favours(request, items):
-  items_in_favours = []
-  for item in items:
-    cart = get_cart(request)
-    # if cart.favour_items.all().exists():
-    if cart.favour_items.filter(item=item).exists():
-      items_in_favours.append(item.id)
-  return items_in_favours
-
-
-def get_items_in_cart(request, items):
-  items_in_cart = []
-  for item in items:
-    cart = get_cart(request)
-    # if cart.cart_items.all().exists():
-    if cart.items.filter(item=item).exists():
-      items_in_cart.append(item.id)
-  return items_in_cart
 
 
 

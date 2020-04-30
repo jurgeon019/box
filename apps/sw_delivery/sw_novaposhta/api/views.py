@@ -5,6 +5,7 @@ from rest_framework.pagination import BasePagination, LimitOffsetPagination, Pag
 
 from .serializers import *
 
+from box.core.sw_model_search.lib import model_search
 
 
 class StandardPageNumberPagination(PageNumberPagination):
@@ -31,7 +32,16 @@ class StandardCursorPagination(CursorPagination):
 class WarehousesList(generics.ListCreateAPIView):
     serializer_class = WarehouseSerializer 
     queryset = Warehouse.objects.all() 
-    # pagination_class = StandardPageNumberPagination
+    pagination_class = StandardPageNumberPagination
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        data     = self.request.query_params
+        query    = data['query']
+        query    = query.capitalize()
+        queryset = model_search(
+            query, Warehouse.objects.all(), ['address', ],
+        )
+        return queryset
 
 
 class WarehouseDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -51,11 +61,17 @@ class AreaDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Area.objects.all() 
 
 
-
 class RegionsList(generics.ListCreateAPIView):
     serializer_class = RegionSerializer 
     queryset = Region.objects.all() 
     pagination_class = StandardPageNumberPagination
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        data     = self.request.query_params
+        query    = data.get('area_id')
+        if area_id:
+            queryset = queryset.filter(area__id=area_id)
+        return queryset
 
 
 class RegionDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -63,69 +79,21 @@ class RegionDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Region.objects.all() 
 
 
-
 class SettlementsList(generics.ListCreateAPIView):
     serializer_class = SettlementSerializer 
     queryset = Settlement.objects.all() 
     pagination_class = StandardPageNumberPagination
-
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        data     = self.request.query_params
+        region_id    = data.get('region_id')
+        if region_id:
+            queryset = queryset.filter(region__id=region_id)
+        return queryset
 
 class SettlementDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SettlementSerializer 
     queryset = Settlement.objects.all() 
-
-
-
-from box.core.sw_model_search.lib import model_search
-
-
-def warehouses(request):
-    query = request.GET.get('query')
-    limit = request.GET.get('limit')
-    if not query:
-        return JsonResponse([], safe=False)
-    query = query.capitalize()
-    queryset = model_search(
-        query, Warehouse.objects.all(), ['address', ],
-    )
-    if limit is not None:
-        queryset =  queryset[:limit]
-    warehouses = [warehouse.full_name for warehouse in queryset]
-    return JsonResponse({
-        'query': query,
-        'warehouses': warehouses
-    })
-
-
-def areas(request):
-    areas = Area.objects.all()
-    areas = AreaSerializer(areas, many=True)
-    return JsonResponse({
-        'areas':areas.data
-    })
-
-
-def regions(request):
-    query   = request.POST or request.GET
-    area_id = query.get('area_id') 
-    regions = Region.objects.all()
-    if area_id:
-        regions = regions.filter(area__id=area_id)
-    regions = RegionSerializer(regions, many=True)
-    return JsonResponse({
-        'regions':regions.data
-    })
-
-def settlements(request):
-    query       = request.POST or request.GET 
-    region_id   = query.get('region_id')
-    settlements = Settlement.objects.all()
-    if region_id:
-        settlements = settlements.filter(region__id=region_id)
-    settlements = SettlementSerializer(settlements, many=True)
-    return JsonResponse({
-        'settlements':settlements.data
-    })
 
 
 
