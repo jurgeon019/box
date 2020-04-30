@@ -2,7 +2,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from box.core.utils import get_sk, get_user
+from box.core.utils import get_user
 from box.apps.sw_shop.sw_catalog.models import *
 from box.apps.sw_shop.sw_cart.utils import get_cart
 
@@ -40,7 +40,7 @@ def add_favour_by_like(request):
   query           = request.POST or request.GET
   item_id         = query['item_id']
   favour, created = FavourItem.objects.get_or_create(
-    sk=get_sk(request), 
+    cart=get_cart(request), 
     item=Item.objects.get(pk=int(item_id))
   )
   return HttpResponse()
@@ -50,7 +50,7 @@ def add_favour_by_like(request):
 def remove_favour_by_like(request):
   item_id = request.POST.get('item_id', '')
   FavourItem.objects.get(
-    sk=get_sk(request), 
+    cart=get_cart(request), 
     item=Item.objects.get(pk=int(item_id))
   ).delete()
   return HttpResponse()
@@ -58,10 +58,12 @@ def remove_favour_by_like(request):
 
 @csrf_exempt
 def add_favour_to_cart(request):
-  id = request.POST['id']
-  favour_id = request.POST['favour_id']
+  query = request.POST or request.GET
+  print("query:", query)
+  id = query['id']
+  favour_id = query['favour_id']
   cart_item, created = CartItem.objects.get_or_create(
-    sk=get_sk(request),
+    cart=get_cart(request),
     item=Item.objects.get(id=id),
     ordered=False,
   )
@@ -76,10 +78,10 @@ def add_favour_to_cart(request):
 
 @csrf_exempt
 def add_favours_to_cart(request):
-  favours = FavourItem.objects.filter(sk=get_sk(request))
+  favours = FavourItem.objects.filter(cart=get_cart(request))
   for favour in favours:
     cart_item, created = CartItem.objects.get_or_create(
-      sk=get_sk(request),
+      cart=get_cart(request),
       item=Item.objects.get(id=favour.item.id),
       ordered=False,
     )
@@ -93,14 +95,14 @@ def add_favours_to_cart(request):
 
 @csrf_exempt
 def get_favours_amount(request):
-  favours = FavourItem.objects.filter(sk=get_sk(request))
+  favours = FavourItem.objects.filter(cart=get_cart(request))
   return HttpResponse(favours.count())
 
 
 @csrf_exempt
 def get_favours(request):
   favours = FavourItem.objects.filter(
-    sk=get_sk(request),
+    cart=get_cart(request),
   )
   serializer = FavourItemSerializer(favours, many=True)
   response = {
