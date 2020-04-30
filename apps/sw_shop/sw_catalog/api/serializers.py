@@ -22,25 +22,6 @@ class ItemReviewSerializer(serializers.ModelSerializer):
     ]
 
 
-
-# class ItemFeatureSerializer(serializers.ModelSerializer):
-#   class Meta:
-#     model = ItemFeature
-    
-#     exclude = [
-#       # 'item',
-#     ]
-
-
-# class ItemFeatureCategorySerializer(serializers.ModelSerializer):
-#   features = ItemFeatureSerializer(many=True)
-#   class Meta:
-#     model = ItemFeatureCategory
-#     exclude = [
-      
-#     ]
-
-
 class ItemImageSerializer(serializers.ModelSerializer):
   class Meta:
     model = ItemImage
@@ -66,7 +47,7 @@ class ItemStockSerializer(serializers.ModelSerializer):
     model = ItemStock 
     exclude = []
 
-class ItemSerializer(serializers.ModelSerializer):
+class ItemDetailSerializer(serializers.ModelSerializer):
   images   = ItemImageSerializer(many=True, read_only=True)
   # features = ItemFeatureSerializer(many=True)
   absolute_url = serializers.SerializerMethodField() 
@@ -74,7 +55,7 @@ class ItemSerializer(serializers.ModelSerializer):
   
   def get_absolute_url(self, obj):
       return obj.get_absolute_url()
-  
+
   def get_image_url(self, obj):
     return obj.image_url
 
@@ -92,5 +73,59 @@ class ItemSerializer(serializers.ModelSerializer):
     model = Item
     exclude = [
       'similars',
+      'images',
     ]
+
+from django.conf import settings
+from modeltranslation.manager import get_translatable_fields_for_model
+from rest_framework import serializers
+
+
+
+class ItemListSerializer(serializers.ModelSerializer):
+  price    = serializers.ReadOnlyField()
+  currency = ItemCurrencySerializer()
+  in_stock = ItemStockSerializer()
+
+  absolute_url = serializers.SerializerMethodField() 
+  def get_absolute_url(self, obj):
+      return obj.get_absolute_url()
+
+  image_url = serializers.SerializerMethodField() 
+  def get_image_url(self, obj):
+    return obj.image_url
+
+  class Meta:
+    model = Item
+    exclude = [
+    ]
+
+  def get_field_names(self, declared_fields, info):
+    fields = super().get_field_names(declared_fields, info)
+    trans_fields = get_translatable_fields_for_model(self.Meta.model)
+    all_fields = []
+
+
+    requested_langs = []
+    if 'request' in self.context:
+      lang_param = self.context['request'].query_params.get('lang', None)
+      print("lang_param:", lang_param)
+      requested_langs = lang_param.split(',') if lang_param else []
+      print("requested_langs:", requested_langs)
+
+    for f in fields:
+      if f not in trans_fields:
+          all_fields.append(f)
+      else:
+          for l in settings.LANGUAGES:
+              if not requested_langs or l[0] in requested_langs:
+                  all_fields.append("{}_{}".format(f, l[0]))
+    print("all_fields:", all_fields)
+    print()
+    print("fields:", fields)
+    print()
+    print("trans_fields:", trans_fields)
+    print()
+
+    return all_fields
 

@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from box.apps.sw_shop.sw_cart.models import CartItem,  FavourItem
-from box.apps.sw_shop.sw_catalog.api.serializers import ItemSerializer
+from box.apps.sw_shop.sw_catalog.api.serializers import ItemDetailSerializer
 
 
 class CartItemSerializer(serializers.ModelSerializer):
-  item        = ItemSerializer(read_only=True)
+  item        = ItemDetailSerializer(read_only=True)
   total_price = serializers.ReadOnlyField()
   currency    = serializers.ReadOnlyField()
   class Meta:
@@ -13,7 +13,7 @@ class CartItemSerializer(serializers.ModelSerializer):
 
 
 class FavourItemSerializer(serializers.ModelSerializer):
-  item = ItemSerializer()
+  item = ItemDetailSerializer(read_only=True)
   class Meta:
     model = FavourItem
     exclude = []

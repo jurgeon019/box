@@ -7,7 +7,7 @@ from box.apps.sw_shop.sw_catalog import settings as item_settings
 
 
 from box.apps.sw_shop.sw_catalog.models import Item, ItemCategory, ItemReview
-from box.apps.sw_shop.sw_catalog.api.serializers import ItemSerializer, ItemReviewSerializer
+from box.apps.sw_shop.sw_catalog.api.serializers import ItemDetailSerializer, ItemReviewSerializer
 from box.apps.sw_shop.sw_cart.utils import get_cart
 from box.core.utils import get_line
 from box.apps.sw_shop.sw_catalog.api.search import filter_search
@@ -22,29 +22,20 @@ from .serializers import *
 from .paginators import * 
 
 
-
-
-
-class ItemViewSet(ModelViewSet):
-  queryset = Item.objects.all().filter(is_active=True)
-  serializer_class = ItemSerializer
-  pagination_class = StandardPageNumberPagination
-
-
 class ItemList(generics.ListCreateAPIView):
   queryset = Item.objects.all()
-  serializer_class = ItemSerializer
+  serializer_class = ItemListSerializer
   pagination_class = StandardPageNumberPagination
+  def get_queryset(self):
+      return Item.objects.all()
+      # return super().get_queryset()
+  
 
 
 class ItemDetail(generics.RetrieveUpdateDestroyAPIView):
   queryset = Item.objects.all()
-  serializer_class = ItemSerializer
+  serializer_class = ItemDetailSerializer
   pagination_class = StandardPageNumberPagination
-
-
-
-
 
 
 
@@ -142,7 +133,7 @@ def paginate(items, query):
       'has_next':        has_next,
     })
 
-  page_items = ItemSerializer(page, many=True, read_only=True).data
+  page_items = ItemDetailSerializer(page, many=True, read_only=True).data
   response = {
     'paginated_items': page_items,
   }
@@ -166,7 +157,7 @@ def get_items(request):
 
   # items_in_favours = get_items_in_favours(request, items)
   # items_in_cart    = get_items_in_cart(request, items)
-  # json_items   = ItemSerializer(items, many=True, read_only=True).data
+  # json_items   = ItemDetailSerializer(items, many=True, read_only=True).data
   # TODO: кешування. Коли на сайті 1000+ товарів, то вони серіалізуються 10 сеукнд
   response.update({
     # 'items_in_favours':items_in_favours,
@@ -213,12 +204,10 @@ def create_review(request):
 
 @csrf_exempt
 def get_item(request):
-  query = request.POST
-  query = request.GET
+  query   = request.POST or request.GET
   item_id = query.get('item_id', 1)
-  # item = Item.objects.get(id=item_id)
   item = Item.objects.get(id=item_id)
-  item = ItemSerializer(item).data
+  item = ItemDetailSerializer(item).data
   response = item
   return JsonResponse(response)
 
