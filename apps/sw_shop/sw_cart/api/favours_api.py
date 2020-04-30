@@ -48,7 +48,10 @@ def remove_favour(request):
 
 @csrf_exempt
 def remove_favour_by_like(request):
-  item_id = request.POST.get('item_id', '')
+  '''
+
+  '''
+  item_id = request.POST['item_id']
   FavourItem.objects.get(
     cart=get_cart(request), 
     item=Item.objects.get(pk=int(item_id))
