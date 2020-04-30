@@ -37,12 +37,15 @@ class ItemList(generics.ListCreateAPIView):
     '''
     queryset     = super().get_queryset()
     data         = self.request.query_params
+    category_id  = data.get('category_id', None)
     category_ids = data.get('category_ids', None)
     max_price    = data.get('max_price', None)
     min_price    = data.get('min_price', None)
     is_discount  = data.get('is_discount', None)
     ordering     = data.get('ordering', None)
           
+    if category_id is not None:
+      queryset = queryset.filter(category__id=category_id)
     if category_ids is not None:
       queryset = queryset.filter(category__id__in=[category_ids])
     if max_price is not None:
