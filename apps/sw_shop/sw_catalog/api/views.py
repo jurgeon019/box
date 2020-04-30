@@ -26,10 +26,37 @@ class ItemList(generics.ListCreateAPIView):
   queryset = Item.objects.all()
   serializer_class = ItemListSerializer
   pagination_class = StandardPageNumberPagination
+
   def get_queryset(self):
-      return Item.objects.all()
-      # return super().get_queryset()
-  
+    '''
+    :category_ids: айді категорІЙ(МАССИВ З ЦИФРАМИ)
+    :max_price: максимальна ціна(цифра)
+    :min_price: мінімальна ціна(цифра)
+    :is_discount: true|false
+    :ordering: -new_price | new_price 
+    '''
+    queryset     = super().get_queryset()
+    data         = self.request.query_params
+    category_ids = data.get('category_ids', None)
+    max_price    = data.get('max_price', None)
+    min_price    = data.get('min_price', None)
+    is_discount  = data.get('is_discount', None)
+    ordering     = data.get('ordering', None)
+          
+    if category_ids is not None:
+      queryset = queryset.filter(category__id__in=[category_ids])
+    if max_price is not None:
+      queryset = queryset.filter(new_price__lte=max_price)
+    if min_price is not None:
+      queryset = queryset.filter(new_price__gte=min_price)
+    if is_discount is not None:
+      queryset = queryset.filter(discount__isnull=False)
+      # TODO: після переробки валют і цін глянути сюда
+      # queryset = queryset.filter(old_price__isnull=False)
+    if ordering is not None:
+      queryset = queryset.order_by(ordering)
+    return queryset
+
 
 
 class ItemDetail(generics.RetrieveUpdateDestroyAPIView):
