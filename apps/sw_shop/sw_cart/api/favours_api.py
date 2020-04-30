@@ -12,6 +12,8 @@ from .serializers import *
 # FAVOURS
 @csrf_exempt
 def add_favour(request):
+  '''
+  '''
   query           = request.POST or request.GET
   item_id         = query['item_id']
   favour, created = FavourItem.objects.get_or_create(
@@ -22,20 +24,13 @@ def add_favour(request):
 
 
 
-# @csrf_exempt
-# def add_favour_by_like(request):
-#   query           = request.POST or request.GET
-#   item_id         = query['item_id']
-#   favour, created = FavourItem.objects.get_or_create(
-#     cart=get_cart(request),
-#     item=Item.objects.get(pk=int(item_id))
-#   )
-#   return HttpResponse()
-
-
 
 @csrf_exempt
 def remove_favour(request):
+  '''
+  Removes item from favours by clicking on trach bucket button on favours page 
+  :favour_id: favour id
+  '''
   query = request.POST or request.GET
   favour_id = query['favour_id']
   favour_item = FavourItem.objects.get(
@@ -49,9 +44,11 @@ def remove_favour(request):
 @csrf_exempt
 def remove_favour_by_like(request):
   '''
-
+  Removes item from favours by clicking on heart-button on item card 
+  :item_id: item id
   '''
-  item_id = request.POST['item_id']
+  query   = request.POST or request.GET
+  item_id = query['item_id']
   FavourItem.objects.get(
     cart=get_cart(request), 
     item=Item.objects.get(pk=int(item_id))
@@ -61,18 +58,17 @@ def remove_favour_by_like(request):
 
 @csrf_exempt
 def add_favour_to_cart(request):
-  query = request.POST or request.GET
-  print("query:", query)
-  id = query['id']
-  favour_id = query['favour_id']
-  cart_item, created = CartItem.objects.get_or_create(
+  query        = request.POST or request.GET
+  item_id      = query['item_id']
+  favour_id    = query['favour_id']
+  cart_item, _ = CartItem.objects.get_or_create(
     cart=get_cart(request),
-    item=Item.objects.get(id=id),
+    item=Item.objects.get(id=item_id),
     ordered=False,
   )
   quantity = 1
-  if created: cart_item.quantity = int(quantity)
-  if not created: cart_item.quantity += int(quantity)
+  if _: cart_item.quantity = int(quantity)
+  if not _: cart_item.quantity += int(quantity)
   cart_item.save()
   favouritem = FavourItem.objects.get(id=favour_id)
   favouritem.delete()
