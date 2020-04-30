@@ -49,12 +49,13 @@ box_core = [
     'box.core.sw_content',
     'box.core.sw_contact_form',
     'box.core.sw_auth',
-    # 'box.core.sw_robots',s
+    # 'box.core.sw_robots',
 ]
 box_delivery = [
     'box.apps.sw_delivery',
     'box.apps.sw_delivery.sw_novaposhta',
     'box.apps.sw_delivery.sw_delivery_auto',
+    'box.apps.sw_delivery.sw_sat',
 ]
 box_shop = [
     'box.apps.sw_shop',      # !! не забирай це, бо тоді з адмінки пропадуть блочки з django-admin-tools

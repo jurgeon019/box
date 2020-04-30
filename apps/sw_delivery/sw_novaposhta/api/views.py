@@ -31,7 +31,7 @@ class StandardCursorPagination(CursorPagination):
 class WarehousesList(generics.ListCreateAPIView):
     serializer_class = WarehouseSerializer 
     queryset = Warehouse.objects.all() 
-    pagination_class = StandardPageNumberPagination
+    # pagination_class = StandardPageNumberPagination
 
 
 class WarehouseDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -76,14 +76,14 @@ class SettlementDetail(generics.RetrieveUpdateDestroyAPIView):
 
 
 
-
+from box.core.sw_model_search.lib import model_search
 
 
 def warehouses(request):
     query = request.GET.get('query')
     limit = request.GET.get('limit')
     if not query:
-        return []
+        return JsonResponse([], safe=False)
     query = query.capitalize()
     queryset = model_search(
         query, Warehouse.objects.all(), ['address', ],
