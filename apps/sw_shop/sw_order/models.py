@@ -3,6 +3,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
+from box.apps.sw_shop.sw_cart.models import CartItem
 from box.apps.sw_shop.sw_cart.utils import get_cart
 from box.apps.sw_shop.sw_catalog.models import ItemStock 
 from box.core.sw_global_config.models import NotificationConfig
@@ -53,15 +54,15 @@ class Order(models.Model):
   @property
   def currency(self):
     return self.cart.currency
-
-  def make_order(self, request):
+  
+  def handle_amount(self, request):
     order = self
-    order.ordered = True
-    order.save()
     cart = get_cart(request)
-    # cart.items.all().update(ordered=True, order=order)
-    unavailable_stocks = ItemStock.objects.filter(availability=False)
-    for cart_item in cart.items.all():
+    # unavailable_stocks = ItemStock.objects.filter(availability=False)
+    unavailable_stock = ItemStock.objects.filter(availability=False).first()
+    
+    # for cart_item in cart.items.all():
+    for cart_item in CartItem.objects.filter(cart=cart):
       cart_item.ordered = True
       cart_item.order = order
       item = cart_item.item 
@@ -69,23 +70,33 @@ class Order(models.Model):
         if item.amount < cart_item.quantity:
           cart_item.quantity = item.amount 
           item.amount = 0 
-          if unavailable_stocks.exists():
-            item.in_stock = unavailable_stocks.first()
-          else:
-            item.in_stock = None 
+          # if unavailable_stocks.exists():
+          #   item.in_stock = unavailable_stocks.first()
+          # else:
+          #   item.in_stock = None 
+          item.in_stock = unavailable_stock
         else:
           item.amount -= cart_item.quantity 
       item.save()
       cart_item.save()
-    cart.ordered = True
-    cart.order = order 
-    cart.save()
 
+  def handle_user(self, request):
+    cart = get_cart(request)
     if request.user.is_authenticated:
-      order.user = request.user 
+      self.user = request.user 
+      self.save()
       cart.user  = request.user
-      order.save()
       cart.save()
+
+  def make_order(self, request):
+    cart = get_cart(request)
+    cart.ordered = True
+    cart.order = self 
+    cart.save()
+    self.ordered = True
+    self.save()
+    self.handle_amount(request)
+    self.handle_user(request)
     self.total_price = self.cart.total_price
     self.save()
     config = NotificationConfig.get_solo()
@@ -93,7 +104,7 @@ class Order(models.Model):
     box_send_mail(
       subject=data['subject'],
       recipient_list=data['emails'],
-      model=order
+      model=self
     )
 
 

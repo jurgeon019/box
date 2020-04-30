@@ -12,39 +12,39 @@ from .serializers import *
 # FAVOURS
 @csrf_exempt
 def add_favour(request):
-  query   = request.POST or request.GET
-  item_id = query['item_id']
-  cart    = get_cart(request)
+  query           = request.POST or request.GET
+  item_id         = query['item_id']
   favour, created = FavourItem.objects.get_or_create(
-    cart=cart,
+    cart=get_cart(request),
     item=Item.objects.get(pk=int(item_id))
   )
   return HttpResponse()
+
+
+
+# @csrf_exempt
+# def add_favour_by_like(request):
+#   query           = request.POST or request.GET
+#   item_id         = query['item_id']
+#   favour, created = FavourItem.objects.get_or_create(
+#     cart=get_cart(request),
+#     item=Item.objects.get(pk=int(item_id))
+#   )
+#   return HttpResponse()
+
 
 
 @csrf_exempt
 def remove_favour(request):
   query = request.POST or request.GET
-  id = query['id']
+  favour_id = query['favour_id']
   favour_item = FavourItem.objects.get(
     cart=get_cart(request),
-    id=id,
+    id=favour_id,
   )
   item_id = favour_item.item.id
   favour_item.delete()
   return HttpResponse(item_id)
-
-
-@csrf_exempt
-def add_favour_by_like(request):
-  query           = request.POST or request.GET
-  item_id         = query['item_id']
-  favour, created = FavourItem.objects.get_or_create(
-    cart=get_cart(request), 
-    item=Item.objects.get(pk=int(item_id))
-  )
-  return HttpResponse()
-
 
 @csrf_exempt
 def remove_favour_by_like(request):

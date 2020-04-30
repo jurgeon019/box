@@ -66,43 +66,39 @@ def order_items(request):
     return JsonResponse({"url":url})
 
 
-
 @csrf_exempt
 def order_request(request):
-    print(request.POST)
-    name    = request.POST.get('name', '---')
-    email   = request.POST.get('email', '---')
-    phone   = request.POST.get('phone', '---')
-    address = request.POST.get('address', '---')
-    item_id = request.POST.get('product_id', '---')
-    payment = 'Покупка в 1 клік(при покупці в 1 клік оплати немає)'
+    query    = request.POST
+    name     = query.get('name', '---')
+    email    = query.get('email', '---')
+    phone    = query.get('phone', '---')
+    address  = query.get('address', '---')
+    comments = query.get('comments', '---')
+    item_id  = query['product_id']
+    payment  = _('Покупка в 1 клік')
+    delivery = _('Покупка в 1 клік')
+    print(query)
 
     cart = get_cart(request)
-    
+
     cart_item = CartItem.objects.create(
       cart=cart,
+      item = Item.objects.get(id=item_id),
     )
-    cart_item.item = Item.objects.get(id=item_id)
-    cart_item.save()
-    cart.items.add(cart_item)
-
     order = Order.objects.create(
       name    = name,    
       email   = email,   
       phone   = phone,   
       address = address,
+      delivery_opt = delivery,
       payment_opt = payment,
+      cart = cart,
     )
-    order.cart = cart
-    order.save()
     order.make_order(request)
     return JsonResponse({
       'status':'OK',
       'url':reverse('thank_you'),
     })
-  
-
-
 
 
 @csrf_exempt
@@ -132,5 +128,7 @@ def item_info(request):
   return JsonResponse({
     'status':'OK',
   })
+
+
 
 

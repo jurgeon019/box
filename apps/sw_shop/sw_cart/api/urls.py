@@ -24,7 +24,7 @@ old_urlpatterns = [
   path('remove_favour/',          remove_favour,           name='remove_favour'),
   path('add_favour_to_cart/',     add_favour_to_cart,      name='add_favour_to_cart'),
   path('add_favours_to_cart/',    add_favours_to_cart,     name='add_favours_to_cart'),
-  path('add_favour_by_like/',     add_favour_by_like,      name='add_favour_by_like'),
+  # path('add_favour_by_like/',     add_favour_by_like,      name='add_favour_by_like'),
   path('remove_favour_by_like/',  remove_favour_by_like,   name='remove_favour_by_like'),
 ]
 

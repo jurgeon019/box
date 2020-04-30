@@ -127,7 +127,11 @@ class CartItem(models.Model):
      to='sw_order.Order', verbose_name=('Замовлення'),   on_delete=models.CASCADE, blank=True, null=True, related_name="cart_items",
     )
   item     = models.ForeignKey(  
-     to="sw_catalog.Item",   verbose_name=('Товар'),   on_delete=models.CASCADE, blank=True, null=True, related_name="cart_items",
+     to="sw_catalog.Item",   verbose_name=('Товар'),   
+     on_delete=models.CASCADE, 
+     blank=False, null=False, 
+    #  blank=True, null=True, 
+     related_name="cart_items",
     )
   quantity = models.IntegerField(
     verbose_name=_('Кількість'), default=1,
