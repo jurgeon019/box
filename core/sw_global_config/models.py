@@ -104,7 +104,8 @@ class Seo(SingletonModel):
     ("noindex, follow",  "noindex, follow"),
   )
   robots = models.CharField(
-    verbose_name=_("Meta Robots"), max_length=255, choices=ROBOTS_VARS, default=2
+    verbose_name=_("Meta Robots"), max_length=255, 
+    choices=ROBOTS_VARS, default="noindex, nofollow"
   )
   class Meta:
     verbose_name = _('Лічильники та коди')
