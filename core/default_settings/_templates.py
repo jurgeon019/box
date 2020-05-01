@@ -25,19 +25,8 @@ TEMPLATES = [
     },
 ]
 
-
-if 'box.apps.sw_shop.sw_cart' in INSTALLED_APPS:
-    TEMPLATES[0]['OPTIONS']['context_processors'].extend([
-        'box.apps.sw_shop.sw_cart.context_processors.cart_content',
-    ])
-
-if 'box.apps.sw_shop.sw_catalog' in INSTALLED_APPS:
-    TEMPLATES[0]['OPTIONS']['context_processors'].extend([
-        # 'box.sw_shot.item.context_processors.context',
-    ])
-
-if 'box.apps.sw_payment' in INSTALLED_APPS:
-    TEMPLATES[0]['OPTIONS']['context_processors'].extend([
-        # '',
-    ])
-
+# TODO: move into faina 
+# if 'box.apps.sw_shop.sw_cart' in INSTALLED_APPS:
+#     TEMPLATES[0]['OPTIONS']['context_processors'].extend([
+#         'box.apps.sw_shop.sw_cart.context_processors.cart_content',
+#     ])
