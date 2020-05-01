@@ -9,7 +9,7 @@ from .models import NotificationConfig
 from .helpers import get_configuration_admin_url
 
 subject = getattr(settings, 'DES_TEST_SUBJECT', _("Test Email"))
-text_template = getattr(settings, 'DES_TEST_TEXT_TEMPLATE', "des/test_email.txt")
+text_template = getattr(settings, 'DES_TEST_TEXT_TEMPLATE', "sw_global_config/des/test_email.txt")
 html_template = getattr(settings, 'DES_TEST_HTML_TEMPLATE', None)
 
 message_text = loader.render_to_string(text_template)

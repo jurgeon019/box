@@ -1,18 +1,14 @@
 from django.utils.translation import gettext_lazy as _
 from django.db import models 
 from django.conf import settings 
-from box.core.sw_solo.models import SingletonModel 
 from django.core.exceptions import ValidationError
 
 from box.core import settings as core_settings 
 from box.core.sw_solo.models import SingletonModel
-from . import settings as config_settings 
+from . import settings as sw_global_config_settings 
 
 from tinymce import HTMLField
 from colorfield.fields import ColorField
-
-
-
 
 
 __all__ = [
@@ -26,29 +22,105 @@ __all__ = [
 ]
 
 
+class DesignConfig(SingletonModel):
+    favicon  = models.ImageField(
+      verbose_name=_("Фавікон сайту"), blank=True, null=True, upload_to='favicon', 
+      help_text=("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), 
+      default=sw_global_config_settings.FAVICON
+    )
+    og_image_square    = models.ImageField(
+      verbose_name=_("og:image квадрат"),     
+      blank=True, null=True, upload_to='ogimage',
+      default=sw_global_config_settings.OGIMAGE_SQUARE,
+    )
+    og_image_rectangle = models.ImageField(
+      verbose_name=_("og:image прямокутник"), 
+      blank=True, null=True, upload_to='ogimage',
+      default=sw_global_config_settings.OGIMAGE_RECTANGLE,
+    )
+
+    @property
+    def favicon_type(self):
+      name = self.favicon.url
+      ext = name.split('.')[-1].strip()
+      if ext == 'png':
+        favicon_type = 'image/png'
+      elif ext == 'ico':
+        favicon_type = 'x-icon'
+      return favicon_type
+
+    @classmethod
+    def modeltranslation_fields(cls):        
+        fields = [
+            'og_image_square',
+            'og_image_rectangle',
+        ]
+        return fields
+  
+    def __str__(self):
+        return f"{self.id}"
+
+    class Meta:
+        verbose_name = _('Налаштування дизайну')
+        verbose_name_plural = verbose_name
+
+
+class Robots(SingletonModel):
+  robots_txt = models.TextField(verbose_name=_('robots.txt'), blank=True, null=True)
+
+  def __str__(self):
+    return f'{self.id}'
+
+  class Meta:
+    verbose_name = _('Robots.txt')
+    verbose_name_plural = _('Robots.txt')
+
+
+class SeoScript(models.Model):
+  POSITION_CHOICES = (
+    ("head_top","Після відкриваючого head"),
+    ("head_bottom","Перед закриваючим head"),
+    ("body_top","Після відкриваючого body"),
+    ("body_bottom","Перед закриваючим body"),
+  )
+  setting  = models.ForeignKey(to="sw_global_config.Seo", on_delete=models.CASCADE, related_name='scripts',)
+  name     = models.CharField(verbose_name=_("Назва коду"), max_length=255)
+  position = models.CharField(verbose_name=_("Положення коду на сторінці"), max_length=255, choices=POSITION_CHOICES)
+  code     = models.TextField(verbose_name=_("Код для вставлення"))
+
+  def __str__(self):
+    return f'{self.name}, {self.position}, {self.code}'
+
+  class Meta:
+    verbose_name = ('Код')
+    verbose_name_plural = ('Коди')
+
+
+class Seo(SingletonModel):
+  class Meta:
+    verbose_name = _('Лічильники та коди')
+    verbose_name_plural = _('Лічильники та коди')
+
+
 class SiteConfig(SingletonModel):
   if 'box.apps.sw_payment.liqpay' in settings.INSTALLED_APPS:
     from box.apps.sw_payment.liqpay import settings as liqpay_settings
-    liqpay_public_key   = models.TextField(_("Публічний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PUBLIC_KEY)
-    liqpay_private_key  = models.TextField(_("Приватний ключ лікпею"), blank=False, null=False, default=liqpay_settings.LIQPAY_PRIVATE_KEY)
-  # captcha_type_choices = (
-  #   ("default","default"),
-  #   ("v2","v2"),
-  #   ("v3","v3"),
-  #   ("invisible","invisible"),
-  # )
-  # captcha_type        = models.CharField(_("Тип капчі"), blank=False, null=False, max_length=100, choices=captcha_type_choices, default=0)
-  # captcha_v2_public   = models.TextField(_("Ключ"), blank=False, null=False, default=settings.CAPTCHA_V2_PUBLIC)
-  # captcha_v2_secret   = models.TextField(_("Приватний ключ"), blank=False, null=False, default=settings.CAPTCHA_V2_SECRET)
-  # captcha_v3_public   = models.TextField(_("Ключ"), blank=False, null=False, default=settings.CAPTCHA_V3_PUBLIC)
-  # captcha_v3_secret   = models.TextField(_("Приватний ключ"), blank=False, null=False, default=settings.CAPTCHA_V3_SECRET)
-  # captcha_v3_humanity = models.PositiveIntegerField(_("Людяність"), blank=False, null=False, default=0.5)
+    liqpay_public_key   = models.TextField(
+      _("Публічний ключ лікпею"), blank=False, 
+      null=False, default=liqpay_settings.LIQPAY_PUBLIC_KEY,
+    )
+    liqpay_private_key  = models.TextField(
+      _("Приватний ключ лікпею"), blank=False, 
+      null=False, default=liqpay_settings.LIQPAY_PRIVATE_KEY,
+    )
+  # TODO: captcha 
   
   @classmethod
   def modeltranslation_fields(cls):
       fields = [
       ]
       return fields
+  
   class Meta:
     verbose_name        = _('Налаштування сайту')
     verbose_name_plural = _('Налаштування сайту')
@@ -56,7 +128,7 @@ class SiteConfig(SingletonModel):
 
 class NotificationConfig(SingletonModel):
 
-  default_emails = ','.join(config_settings.DEFAULT_RECIPIENTS)
+  default_emails = ','.join(sw_global_config_settings.RECIPIENTS)
 
   admin_mails_language_choices = settings.LANGUAGES
 
@@ -80,7 +152,6 @@ class NotificationConfig(SingletonModel):
     blank=False, null=False, 
     default='Отримано коментар до блогу',
   )
-
 
   order_emails  = models.TextField(
     verbose_name=("замовлення"),
@@ -261,107 +332,4 @@ class CatalogueConfig(SingletonModel):
     verbose_name_plural = _('Налаштування каталогу')
 
 
-class DesignConfig(SingletonModel):
-
-    logo     = models.ImageField(verbose_name=_("Логотип сайту"), blank=True, null=True, help_text=("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), default='')
-    favicon  = models.ImageField(verbose_name=_("Фавікон сайту"), blank=True, null=True, upload_to='favicon', help_text=("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), default='') 
-    og_image_square    = models.ImageField(verbose_name=_("og:image квадрат"),     blank=True, null=True, upload_to='ogimage')
-    og_image_rectangle = models.ImageField(verbose_name=_("og:image прямокутник"), blank=True, null=True, upload_to='ogimage')
-
-
-    @property
-    def favicon_type(self):
-      name = core_settings.FAVICON
-      if self.favicon:
-        name = self.favicon.url
-      ext = name.split('.')[-1].strip()
-      if ext == 'png':
-        favicon_type = 'image/png'
-      elif ext == 'ico':
-        favicon_type = 'x-icon'
-      return favicon_type
-  
-    @property
-    def favicon_url(self):
-      favicon_url = core_settings.FAVICON
-      if self.favicon:
-        favicon_url = self.favicon.url
-      return favicon_url
-
-    @property
-    def og_image_square_url(self):
-      og_image_square_url = core_settings.OGIMAGE_SQUARE
-      if self.og_image_square:
-        og_image_square_url = self.og_image_square.url
-      return og_image_square_url
-
-    @property
-    def og_image_rectangle_url(self):
-      og_image_rectangle_url = core_settings.OGIMAGE_RECTANGLE
-      if self.og_image_rectangle:
-        og_image_rectangle_url = self.og_image_rectangle.url
-      return og_image_rectangle_url
-
-    # colour_buttons                = ColorField(verbose_name=_("Колір кнопок"), blank=True, null=True)
-    # colour_buttons_text           = ColorField(verbose_name=_("Колір тексту на кнопках"), blank=True, null=True)
-    # colour_buttons_hover          = ColorField(verbose_name=_("Колір кнопок по наведенню"), blank=True, null=True)
-    # colour_buttons_text_hover     = ColorField(verbose_name=_("Колір тексту на кнопках по наведенню"), blank=True, null=True)
-    # colour_main                   = ColorField(verbose_name=_("Основний корпоративний колір"), blank=True, null=True)
-    # colour_additional             = ColorField(verbose_name=_("Додатковий корпоративний колір"), blank=True, null=True)
-    # colour_main_background        = ColorField(verbose_name=_("Колір тексту на основному корпоративному фоні"), blank=True, null=True)
-    # colour_additional_background  = ColorField(verbose_name=_("Колір тексту на додатковому корпоративному фоні"), blank=True, null=True)
-    # colour_background             = ColorField(verbose_name=_("Колір фону сайту"), blank=True, null=True)
-
-    @classmethod
-    def modeltranslation_fields(cls):        
-        fields = [
-            'logo',
-            'og_image_square',
-            'og_image_rectangle',
-        ]
-        return fields
-  
-    def __str__(self):
-        return f"{self.id}"
-
-    class Meta:
-        verbose_name = _('Налаштування дизайну')
-        verbose_name_plural = verbose_name
-
-
-class Robots(SingletonModel):
-  robots_txt = models.TextField(verbose_name=_('robots.txt'), blank=True, null=True)
-
-  def __str__(self):
-    return f'{self.id}'
-
-  class Meta:
-    verbose_name = _('Robots.txt')
-    verbose_name_plural = _('Robots.txt')
-
-
-class SeoScript(models.Model):
-  POSITION_CHOICES = (
-    ("head_top","Після відкриваючого head"),
-    ("head_bottom","Перед закриваючим head"),
-    ("body_top","Після відкриваючого body"),
-    ("body_bottom","Перед закриваючим body"),
-  )
-  setting  = models.ForeignKey(to="sw_global_config.Seo", on_delete=models.CASCADE, related_name='scripts',)
-  name     = models.CharField(verbose_name=_("Назва коду"), max_length=255)
-  position = models.CharField(verbose_name=_("Положення коду на сторінці"), max_length=255, choices=POSITION_CHOICES)
-  code     = models.TextField(verbose_name=_("Код для вставлення"))
-
-  def __str__(self):
-    return f'{self.name}, {self.position}, {self.code}'
-
-  class Meta:
-    verbose_name = ('Код')
-    verbose_name_plural = ('Коди')
-
-
-class Seo(SingletonModel):
-  class Meta:
-    verbose_name = _('Лічильники та коди')
-    verbose_name_plural = _('Лічильники та коди')
 

@@ -19,12 +19,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{page.meta_descr}}"/>
     <meta name="keywords" content="{{page.meta_key}}" />
-
-    {% if MENDELA_EDITOR %}
-    {% if request.user.is_staff %}
-    <link rel="stylesheet" href="/static/content/editor.css">
-    {% endif %}
-    {% endif %}
     
     {% block hreflang %}
       {% for language_code, language_name in LANGUAGES %}
@@ -40,12 +34,12 @@
     {% endblock hreflang %}
     
     {% block favicon %}
-      <link rel="icon" href="{{design.favicon_url}}" type="{{design.favicon_type}}" />
+      <link rel="icon" href="{{design.favicon.url}}" type="{{design.favicon_type}}" />
     {% endblock favicon %}
     {% block ogimage %}
-      <meta property="og:image" content="{{design.og_image_square_url}}" />
-      <meta property="og:image" content="{{design.og_image_rectangle_url}}" />
-      <meta property="og:image" content="{{design.og_image_square_url}}" />
+      <meta property="og:image" content="{{design.og_image_square.url}}" />
+      <meta property="og:image" content="{{design.og_image_rectangle.url}}" />
+      <meta property="og:image" content="{{design.og_image_square.url}}" />
     {% endblock ogimage %}
 
     {% block styles %}{% endblock styles%}

@@ -5,8 +5,8 @@ from django.forms import TextInput, Textarea
 
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline, TranslationTabularInline
 
-from ..models import * 
-from ..forms import NotificationConfigForm
+from .models import * 
+from .forms import NotificationConfigForm
 
 from box.core.sw_solo.admin import SingletonModelAdmin
 from box.core.utils import AdminImageWidget
@@ -24,7 +24,7 @@ class NotificationConfigAdmin(SingletonModelAdmin):
             'all': ('css/des.css',)
         }
     form = NotificationConfigForm
-    change_form_template = 'des/change_form.html'
+    change_form_template = 'sw_global_config/des/change_form.html'
     formfield_overrides = {
         models.TextField:{'widget':Textarea(attrs={'cols':'30', 'rows':'1'})}
     }
@@ -47,7 +47,6 @@ class RobotsAdmin(SingletonModelAdmin):
 class SeoScriptInline(admin.TabularInline):
     model = SeoScript
     extra = 0
-    # classes = ['collapse',]
     exclude = []
 
 
@@ -55,4 +54,12 @@ class SeoAdmin(SingletonModelAdmin):
     inlines = [
         SeoScriptInline,
     ]
+
+admin.site.register(SiteConfig, SiteConfigAdmin)
+admin.site.register(NotificationConfig, NotificationConfigAdmin)
+admin.site.register(CatalogueConfig, CatalogueConfigAdmin)
+admin.site.register(DesignConfig, DesignConfigAdmin)
+# admin.site.register(Translation, TranslationAdmin)
+admin.site.register(Robots, RobotsAdmin)
+admin.site.register(Seo, SeoAdmin)
 

@@ -78,7 +78,7 @@ class AbstractPage(BaseMixin):
 	meta_key   = models.TextField(verbose_name=_("Ключові слова"),      blank=True, null=True, help_text=_("Список ключових слів"))
 	slug       = models.SlugField(verbose_name=_("Посилання"),          max_length=255, null=True, blank=False, unique=True)
 	alt        = models.CharField(verbose_name=_("Альт до картинки"),   blank=True, null=True, max_length=255)
-	image      = models.ImageField(verbose_name=_("Картинка"), blank=True, null=True, upload_to='shop/category')
+	image      = models.ImageField(verbose_name=_("Картинка"),          blank=True, null=True)
 	title      = models.CharField(verbose_name=_("Назва"),              blank=False, null=False, max_length=255, )
 	description= HTMLField(verbose_name=_("Опис"), blank=True, null=True)
 

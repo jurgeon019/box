@@ -8,6 +8,5 @@ def context(request):
     catalogue  = CatalogueConfig.get_solo()
     show_admin = core_settings.SHOW_ADMIN 
     image_not_found = core_settings.IMAGE_NOT_FOUND
-    MENDELA_EDITOR = core_settings.MENDELA_EDITOR
     return locals()
 
