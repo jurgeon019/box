@@ -6,14 +6,26 @@ from django.conf.urls.static import static
 from django.conf.urls.i18n import i18n_patterns
 from django.conf import settings
 from django.views.decorators.cache import cache_page
+
 from . import settings as core_settings
 from filebrowser.sites import site
 from box.core.views import robots, set_lang, testmail
-
 from box.core.sitemaps import StaticSitemap
+
+from importlib import import_module
+
 sitemaps = {
     'static':  StaticSitemap,
 }
+for project_name, path_name in settings.SITEMAP_PATHS.items():
+  p, m      = path_name.rsplit('.', 1)
+  mod       = import_module(p)
+  met       = getattr(mod, m)
+  print(met)
+  # path_name = import_module(path_name)
+  sitemaps.update({
+    project_name:met
+  })
 if 'box.core.sw_content' in settings.INSTALLED_APPS:
   from box.core.sw_content.sitemaps import PageSitemap
   sitemaps.update({
@@ -31,7 +43,6 @@ if 'box.apps.sw_blog' in settings.INSTALLED_APPS:
     'posts':           PostSitemap, 
     'post_categories': PostCategorySitemap, 
   })
-
 
 static_urlpatterns = []
 

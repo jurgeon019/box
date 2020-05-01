@@ -97,6 +97,15 @@ class SeoScript(models.Model):
 
 
 class Seo(SingletonModel):
+  ROBOTS_VARS = (
+    ("index, nofollow",  "index, nofollow"),
+    ("index, follow",    "index, follow"),
+    ("noindex, nofollow","noindex, nofollow"),
+    ("noindex, follow",  "noindex, follow"),
+  )
+  robots = models.CharField(
+    verbose_name=_("Meta Robots"), max_length=255, choices=ROBOTS_VARS, default=2
+  )
   class Meta:
     verbose_name = _('Лічильники та коди')
     verbose_name_plural = _('Лічильники та коди')

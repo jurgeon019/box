@@ -19,6 +19,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{page.meta_descr}}"/>
     <meta name="keywords" content="{{page.meta_key}}" />
+    {% if seo.robots %}
+    <meta name="robots" content="{{seo.robots}}" />
+    {% endif %}
     
     {% block hreflang %}
       {% for language_code, language_name in LANGUAGES %}
@@ -66,7 +69,6 @@
     {% endfor %}
   {% endblock body_top_scripts %}
   
-
   {% block header %}{% endblock header %} 
   {% block outer_content%}
     {% block content %}
@@ -74,22 +76,11 @@
   {% endblock outer_content%}
   {% block extra_content %}{% endblock extra_content %}
 
-  {% if request.user.is_staff and show_admin %}
-    {% include 'content/includes/admin_model.html' %}
-  {% endif %}
-
-  {% if MENDELA_EDITOR %}
-  {% if request.user.is_staff %}
-    <script src="/static/content/editor.js"></script>
-  {% endif %}
-  {% endif %}
-
   {% block js_cat %}
   <script type="text/javascript" src="{% url 'javascript-catalog' %}"></script>
   {% endblock js_cat %}
   {% block scripts %}{% endblock scripts%}
   {% block extra_scripts %}{% endblock extra_scripts%}
-
 
   {% block body_bottom_scripts %}
     {% for script in seo.scripts.all %}
