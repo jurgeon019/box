@@ -51,7 +51,7 @@ def get_resources():
 
     resources = []
     for appname in settings.INSTALLED_APPS:
-        if appname.startswith('box.'):
+        # if appname.startswith('box.'):
             try:
                 module = import_module(appname+'.resources') 
                 for name, obj in inspect.getmembers(module):
