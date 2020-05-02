@@ -18,14 +18,17 @@ sitemaps = {
     'static':  StaticSitemap,
 }
 for project_name, path_name in settings.SITEMAP_PATHS.items():
-  p, m      = path_name.rsplit('.', 1)
-  mod       = import_module(p)
-  met       = getattr(mod, m)
-  print(met)
-  # path_name = import_module(path_name)
-  sitemaps.update({
-    project_name:met
-  })
+  try:
+    p, m      = path_name.rsplit('.', 1)
+    mod       = import_module(p)
+    met       = getattr(mod, m)
+    print(met)
+    # path_name = import_module(path_name)
+    sitemaps.update({
+      project_name:met
+    })
+  except:
+    pass
 if 'box.core.sw_content' in settings.INSTALLED_APPS:
   from box.core.sw_content.sitemaps import PageSitemap
   sitemaps.update({
