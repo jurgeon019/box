@@ -65,7 +65,7 @@ def get_resources():
 
 def loader(extention, file_name, action_type, resource_name):
   from tablib import Dataset
-  from tablib.exceptions import UnsupportedFormat
+  # from tablib.exceptions import UnsupportedFormat
   Resource       = get_resource(resource_name)
   dataset = Dataset()
   if action_type == 'export':
