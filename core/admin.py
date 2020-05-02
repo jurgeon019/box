@@ -7,9 +7,20 @@ from django.contrib.auth.models import User
 # unregister zone 
 
 
-admin.site.unregister(Redirect)
-admin.site.unregister(Site)
-admin.site.unregister(User)
+
+try:
+    admin.site.unregister(Redirect)
+except:
+    pass 
+try:
+    admin.site.unregister(User)
+except:
+    pass 
+try:
+    admin.site.unregister(Site)
+except:
+    pass 
+
 
 try:
     from django_celery_beat.models import *
@@ -45,3 +56,8 @@ except:
     pass
 
 
+try:
+    from rest_framework.authtoken.admin import Token
+    admin.site.unregister(Token)
+except:
+    pass 

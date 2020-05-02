@@ -84,12 +84,22 @@ class CustomIndexDashboard(DefaultIndexDashboard):
         self.children.append(modules.AppList(
             _("Налаштування"),
             models=('box.core.*',),
-            exclude=('box.core.sw_contact_form.*',),
+            exclude=(
+                'box.core.sw_contact_form.*',
+                'box.core.sw_content.*',
+            ),
         ))
-
+        
         self.children.append(modules.AppList(
             _("Зворотній звязок"),
             models=('box.core.sw_contact_form.*',),
+        ))
+
+
+
+        self.children.append(modules.AppList(
+            _("Контент"),
+            models=('box.core.sw_content.*',),
         ))
 
 
@@ -107,7 +117,7 @@ class CustomIndexDashboard(DefaultIndexDashboard):
 
 
 
-        self.children.append(modules.RecentActions(_('Recent Actions'), 5))
+        # self.children.append(modules.RecentActions(_('Recent Actions'), 5))
 
         # append a feed module
         # self.children.append(modules.Feed(
@@ -116,31 +126,31 @@ class CustomIndexDashboard(DefaultIndexDashboard):
         #     limit=5
         # ))
 
-        self.children.append(modules.LinkList(
-            _('Support'),
-            children=[
-                {
-                    'title': _("Сайт розробників"),
-                    "url": "https://starwayua.com",
-                    'external': True,
-                },
-                {
-                    'title': _('Django documentation'),
-                    'url': 'http://docs.djangoproject.com/',
-                    'external': True,
-                },
-                {
-                    'title': _('Django "django-users" mailing list'),
-                    'url': 'http://groups.google.com/group/django-users',
-                    'external': True,
-                },
-                {
-                    'title': _('Django irc channel'),
-                    'url': 'irc://irc.freenode.net/django',
-                    'external': True,
-                },
-            ]
-        ))
+        # self.children.append(modules.LinkList(
+        #     _('Support'),
+        #     children=[
+        #         {
+        #             'title': _("Сайт розробників"),
+        #             "url": "https://starwayua.com",
+        #             'external': True,
+        #         },
+        #         {
+        #             'title': _('Django documentation'),
+        #             'url': 'http://docs.djangoproject.com/',
+        #             'external': True,
+        #         },
+        #         {
+        #             'title': _('Django "django-users" mailing list'),
+        #             'url': 'http://groups.google.com/group/django-users',
+        #             'external': True,
+        #         },
+        #         {
+        #             'title': _('Django irc channel'),
+        #             'url': 'irc://irc.freenode.net/django',
+        #             'external': True,
+        #         },
+        #     ]
+        # ))
 
 
 class CustomAppIndexDashboard(DefaultAppIndexDashboard):
@@ -157,4 +167,6 @@ class CustomAppIndexDashboard(DefaultAppIndexDashboard):
                 limit=5
             )
         ]
+
+
 
