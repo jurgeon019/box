@@ -65,9 +65,10 @@ class OrderTagAdmin(TabbedTranslationAdmin):
 from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
 
 
+import nested_admin
 
 
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(nested_admin.NestedModelAdmin):
     def total_with_coupon(self, obj=None):
         return f'{obj.total_price_with_coupon} {obj.currency}'
     def total_without_coupon(self, obj=None):
@@ -161,7 +162,7 @@ class OrderAdmin(admin.ModelAdmin):
     show_id.short_description = _('ID замовлення')
     items_count.short_description = _('Товари')
     
-    total_with_coupon.short_description = _('Сумма замовлення без скидкою')
+    total_with_coupon.short_description = _('Сумма замовлення без скидки')
     total_without_coupon.short_description = _('Сумма замовлення зі скидкою')
     inlines = [
         CartItemInline,

@@ -97,12 +97,14 @@ class Order(models.Model):
     cart.ordered = True
     cart.save()
     config = GlobalConfig.get_solo()
-    data = config.get_data('order')
-    box_send_mail(
-      subject=data['subject'],
-      recipient_list=data['emails'],
-      model=self
-    )
+    # se
+    # data = config.get_data('order')
+
+    # box_send_mail(
+    #   subject=data['subject'],
+    #   recipient_list=data['emails'],
+    #   model=self
+    # )
 
 
 class ItemRequest(models.Model):
