@@ -8,11 +8,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 from ..models import *
 from box.core.mail import box_send_mail
-from box.core.sw_global_config.models import NotificationConfig
+from box.core.sw_global_config.models import GlobalConfig
 
 
 @csrf_exempt
-def contact(request):
+def sw_contact(request):
     query    = request.POST or request.GET
     print(query)
     name     = query.get('name',    '---')
@@ -28,8 +28,8 @@ def contact(request):
         url=url
     )
     box_send_mail(
-        subject=NotificationConfig.get_solo().get_data('contact')['subject'],
-        recipients_list=NotificationConfig.get_solo().get_data('contact')['emails'],
+        subject=GlobalConfig.get_solo().get_data('contact')['subject'],
+        recipients_list=GlobalConfig.get_solo().get_data('contact')['emails'],
         model=model,
     )
     return JsonResponse({

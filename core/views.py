@@ -3,7 +3,7 @@ from django.http import JsonResponse, HttpResponse
 from django.core.mail import send_mail 
 from django.conf import settings 
 from django.utils import translation
-from box.core.sw_global_config.models import Robots
+from box.core.sw_global_config.models import GlobalConfig
 
 
 def handler_404(request, exception):
@@ -15,7 +15,7 @@ def handler_500(request):
 
 
 def robots(request):
-  robots = Robots.get_solo().robots_txt
+  robots = GlobalConfig.get_solo().robots_txt
   if robots:
     response = HttpResponse(robots)
   else:

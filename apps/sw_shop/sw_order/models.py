@@ -6,7 +6,7 @@ from django.utils import timezone
 from box.apps.sw_shop.sw_cart.models import CartItem
 from box.apps.sw_shop.sw_cart.utils import get_cart
 from box.apps.sw_shop.sw_catalog.models import ItemStock 
-from box.core.sw_global_config.models import NotificationConfig
+from box.core.sw_global_config.models import GlobalConfig
 from box.core.mail import box_send_mail
 
 from colorfield.fields import ColorField
@@ -96,7 +96,7 @@ class Order(models.Model):
     cart.order = self 
     cart.ordered = True
     cart.save()
-    config = NotificationConfig.get_solo()
+    config = GlobalConfig.get_solo()
     data = config.get_data('order')
     box_send_mail(
       subject=data['subject'],

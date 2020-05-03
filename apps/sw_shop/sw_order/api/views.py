@@ -122,7 +122,7 @@ def item_info(request):
   box_send_mail(
     model=item_request, 
     subject=('Було отримано заявку на інформацію про товар'),
-    recipient_list=NotificationConfig.objects.get_solo().get_data('other')['emails'],
+    recipient_list=GlobalConfig.objects.get_solo().get_data('other')['emails'],
   )
   return JsonResponse({
     'status':'OK',

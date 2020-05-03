@@ -2,6 +2,7 @@ from .item_related import *
 from .item import * 
 from .item_category import * 
 from .attribute import * 
+from .config import * 
 
 
 
@@ -16,3 +17,4 @@ admin.site.register(ItemLabel, ItemLabelAdmin)
 admin.site.register(ItemBrand, ItemBrandAdmin)
 admin.site.register(ItemUnit, ItemUnitAdmin)
 admin.site.register(ItemReview, ItemReviewAdmin)
+admin.site.register(CatalogueConfig, CatalogueConfigAdmin)

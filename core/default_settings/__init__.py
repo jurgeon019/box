@@ -1,5 +1,6 @@
 from ._admin_toolbar import * 
 from ._auth import * 
+from ._box import * 
 from ._crispy_forms import * 
 from ._ckeditor import * 
 from ._corsheaders import * 

@@ -1,9 +1,9 @@
-from .models import NotificationConfig
+from .models import GlobalConfig
 from django.urls import reverse
 
 
 def get_configuration_admin_url():
-    meta = NotificationConfig._meta
+    meta = GlobalConfig._meta
     return reverse('admin:{}_{}_change'.format(
         meta.app_label, meta.model_name
     ))

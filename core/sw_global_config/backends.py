@@ -1,5 +1,5 @@
 from django.core.mail.backends.smtp import EmailBackend
-from .models import NotificationConfig
+from .models import GlobalConfig
 
 
 class ConfiguredEmailBackend(EmailBackend):
@@ -8,7 +8,7 @@ class ConfiguredEmailBackend(EmailBackend):
                  ssl_keyfile=None, ssl_certfile=None,
                  **kwargs):
 
-        configuration = NotificationConfig.get_solo()
+        configuration = GlobalConfig.get_solo()
 
         super().__init__(
              host          = configuration.host          if host          is None else host,
