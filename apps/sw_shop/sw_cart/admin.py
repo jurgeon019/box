@@ -1,5 +1,7 @@
 from django.contrib import admin 
-from box.apps.sw_shop.sw_cart.models import Cart, CartItem, FavourItem
+from box.apps.sw_shop.sw_cart.models import (
+  Cart, CartItem, FavourItem, CartItemAttribute
+)
 from django.utils.html import format_html, mark_safe
 from django.urls import reverse
 
@@ -119,3 +121,13 @@ class FavourItemAdmin(admin.ModelAdmin):
     ]
     class Meta:
         model = FavourItem
+
+
+class CartItemAttributeAdmin(admin.ModelAdmin):
+  pass 
+
+
+
+admin.site.register(Cart, CartAdmin)
+admin.site.register(CartItem, CartItemAdmin)
+admin.site.register(CartItemAttribute, CartItemAttributeAdmin)

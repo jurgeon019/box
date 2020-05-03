@@ -3,7 +3,9 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
-from box.apps.sw_shop.sw_catalog.models import Item, ItemCurrency 
+from box.apps.sw_shop.sw_catalog.models import (
+  Item, ItemCurrency, Attribute, AttributeVariantValue
+)
 
 
 
@@ -35,7 +37,7 @@ class Cart(models.Model):
     verbose_name = _('Корзина')
     verbose_name_plural = _('Корзини')
 
-  def add_item(self, item_id, quantity):
+  def add_item(self, item_id, quantity, attributes=[]):
     try: quantity = int(quantity)
     except: quantity = 1
     item = Item.objects.get(pk=int(item_id))
@@ -45,10 +47,20 @@ class Cart(models.Model):
     )
     if created:
       cart_item.quantity = int(quantity)
-    if not created:
+    elif not created:
       cart_item.quantity += int(quantity)
     cart_item.save()
-  
+
+    CartItemAttribute.objects.filter(cart_item=cart_item).delete()
+    for attribute in attributes:
+      attribute_id = attribute['attribute_id']
+      value_id     = attribute['value_id']
+      CartItemAttribute.objects.create(
+        cart_item=cart_item,
+        value=AttributeVariantValue.objects.get(id=value_id),
+        attribute_name=Attribute.objects.get(id=attribute_id),
+      )
+
   def change_cart_item_amount(self, cart_item_id, quantity):
     try: quantity = int(quantity)
     except: quantity = 1
@@ -190,6 +202,12 @@ class CartItemAttribute(models.Model):
     verbose_name=_("Значення")
   )
 
+  class Meta: 
+    verbose_name = _('вибраний атрибут у товара в корзині')
+    verbose_name_plural = _('вибрані атрибути у товарів в корзині')
+  
+  def __str__(self):
+    return f'{self.cart_item.item.title}, {self.attribute_name.name}:{self.value.value}'
 
 
 
