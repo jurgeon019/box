@@ -10,7 +10,7 @@ from .forms import GlobalConfigForm
 
 from box.core.sw_solo.admin import SingletonModelAdmin
 from box.core.utils import AdminImageWidget
-
+from import_export.admin import ImportExportModelAdmin
 
 
 class SeoScriptInline(admin.TabularInline):
@@ -19,7 +19,11 @@ class SeoScriptInline(admin.TabularInline):
     exclude = []
 
 
-class GlobalConfigAdmin(SingletonModelAdmin,TabbedTranslationAdmin):
+class GlobalConfigAdmin(
+    SingletonModelAdmin,
+    TabbedTranslationAdmin,
+    ImportExportModelAdmin,
+    ):
     class Media:
         js = ('js/des.js'),
         css = {
