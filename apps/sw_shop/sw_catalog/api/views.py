@@ -76,6 +76,7 @@ class ItemList(generics.ListCreateAPIView):
     min_price    = data.get('min_price', None)
     is_discount  = data.get('is_discount', None)
     ordering     = data.get('ordering', None)
+
     # TODO: добавити сюда пошук по modelsearch,  get_items_in_favours, get_items_in_cart
 
     if category_id is not None:
