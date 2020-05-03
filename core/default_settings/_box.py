@@ -1,0 +1,2 @@
+SITEMAP_PATHS = {
+}

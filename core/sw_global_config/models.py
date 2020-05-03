@@ -125,7 +125,7 @@ class GlobalConfig(SingletonModel):
       return f"{self.id}"
 
   class Meta:
-      verbose_name = _('Налаштування дизайну')
+      verbose_name = _('Глобальні налаштування')
       verbose_name_plural = verbose_name
 
 
