@@ -77,6 +77,9 @@ class ItemList(generics.ListCreateAPIView):
     is_discount  = data.get('is_discount', None)
     ordering     = data.get('ordering', None)
     attributes   = data.get('attributes', [])
+    import json 
+    attributes   = json.loads(attributes)
+    print(attributes)
     # TODO: добавити сюда пошук по modelsearch,  get_items_in_favours, get_items_in_cart
 
     if category_id is not None:
@@ -100,22 +103,19 @@ class ItemList(generics.ListCreateAPIView):
     if ordering is not None:
       queryset = queryset.order_by(ordering)
     for attribute in attributes:
-      # глобальний атрибут, у якої було вибрано якісь значення
-      attribute = Attribute.objects.get(id=attribute['attribute_id'])
-      # вибрані значення у глобального атрибута(attribute)
-      values = AttributeValue.objects.filter(id__in=attribute['value_ids'])
-      # атрибути товарів у яких глобальний атрибут - вибраний атрибут(attribute)
-      item_attributes = ItemAttribute.objects.filter(attribute=attribute)
-      # значення атрибутів товарів у яких глобальни
-      item_attribute_values = ItemAttributeValue.objects.filter(
-        item_attribute__in=item_attributes,
-        value__in=values,
-      )
-      item_attribute_value_ids = item_attribute_values.values_list('item_attribute', flat=True)
-      item_ids = ItemAttribute.objects.filter(
-        id__in=item_attribute_value_ids,
-      ).values_list('item', flat=True)
-      queryset = queryset.filter(id__in=item_ids)
+      if attribute['value_ids']:
+        values = AttributeValue.objects.filter(id__in=attribute['value_ids'])
+        attribute = Attribute.objects.get(id=attribute['attribute_id'])
+        item_attributes = ItemAttribute.objects.filter(attribute=attribute)
+        item_attribute_values = ItemAttributeValue.objects.filter(
+          item_attribute__in=item_attributes,
+          value__in=values,
+        )
+        item_attribute_value_ids = item_attribute_values.values_list('item_attribute', flat=True)
+        item_ids = ItemAttribute.objects.filter(
+          id__in=item_attribute_value_ids,
+        ).values_list('item', flat=True)
+        queryset = queryset.filter(id__in=item_ids)
     return queryset
 
 
