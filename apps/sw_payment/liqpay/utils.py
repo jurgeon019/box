@@ -1,14 +1,14 @@
 from django.shortcuts import redirect
 from django.conf import settings 
 
-from box.core.sw_global_config.models import SiteConfig
+from box.apps.sw_payment.liqpay.models import LiqpayConfig
 from .forms import PaymentForm
 from .liqpay import LiqPay
 
 
 
 def get_liqpay_context(params): 
-  config    = SiteConfig.get_solo()
+  config    = LiqpayConfig.get_solo()
   liqpay    = LiqPay(config.liqpay_public_key, config.liqpay_private_key)
   signature = liqpay.cnb_signature(params)
   data      = liqpay.cnb_data(params)
@@ -16,7 +16,7 @@ def get_liqpay_context(params):
 
 
 def get_response(request):
-  config = SiteConfig.get_solo()
+  config = LiqpayConfig.get_solo()
   liqpay    = LiqPay(config.liqpay_public_key, config.liqpay_private_key)
   data      = request.POST.get('data')
   signature = request.POST.get('signature')

@@ -12,7 +12,8 @@ from box.apps.sw_shop.sw_cart.utils import get_cart
 from box.core.utils import get_line
 from box.apps.sw_shop.sw_catalog.api.search import filter_search
 from box.core.mail import box_send_mail
-from box.core.sw_global_config.models import GlobalConfig, CatalogueConfig
+from box.core.sw_global_config.models import GlobalConfig
+from box.apps.sw_shop.sw_catalog.models import CatalogueConfig
 
 
 from rest_framework import generics 

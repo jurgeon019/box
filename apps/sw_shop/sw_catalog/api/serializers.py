@@ -73,7 +73,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
     model = Item
     exclude = [
       'similars',
-      'images',
+      # 'images',
     ]
 
 from django.conf import settings
