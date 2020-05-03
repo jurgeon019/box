@@ -56,11 +56,15 @@ def check_if_item_with_attributes_is_in_cart(request):
   return Response 
 
 
+
+
+# old 
+
 @csrf_exempt
 def get_cart_items(request):
   return JsonResponse(get_cart_info(request))
 
-
+import json 
 @api_view(['GET','POST'])
 def add_cart_item(request):
   # query      = request.data 
@@ -69,7 +73,8 @@ def add_cart_item(request):
   print("query::",query)
   quantity   = query.get('quantity', 1)
   item_id    = query['item_id']
-  attributes = query.get('attributes', [])
+  attributes = json.loads(query.get('attributes', []))
+  print(attributes)
   cart.add_item(item_id, quantity, attributes)
   return JsonResponse(get_cart_info(request))
 
