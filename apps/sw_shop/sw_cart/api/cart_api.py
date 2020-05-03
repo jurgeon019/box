@@ -63,8 +63,10 @@ def get_cart_items(request):
 
 @api_view(['GET','POST'])
 def add_cart_item(request):
+  # query      = request.data 
+  query      = request.POST or request.GET
   cart       = get_cart(request)
-  query      = request.data
+  print("query::",query)
   quantity   = query.get('quantity', 1)
   item_id    = query['item_id']
   attributes = query.get('attributes', [])
