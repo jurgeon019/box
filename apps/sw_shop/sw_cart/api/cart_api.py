@@ -70,11 +70,11 @@ def add_cart_item(request):
   # query      = request.data 
   query      = request.POST or request.GET
   cart       = get_cart(request)
-  print("query::",query)
+  # print("query::",query)
   quantity   = query.get('quantity', 1)
   item_id    = query['item_id']
   attributes = json.loads(query.get('attributes', []))
-  print(attributes)
+  # print(attributes)
   cart.add_item(item_id, quantity, attributes)
   return JsonResponse(get_cart_info(request))
 

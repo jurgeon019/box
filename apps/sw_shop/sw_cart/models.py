@@ -37,30 +37,70 @@ class Cart(models.Model):
     verbose_name = _('Корзина')
     verbose_name_plural = _('Корзини')
 
+  def create_cart_item_attributes(self, cart_item, attributes):
+    CartItemAttribute.objects.filter(cart_item=cart_item).delete()
+    for attribute in attributes:
+      CartItemAttribute.objects.create(
+        cart_item=cart_item,
+        value=AttributeVariantValue.objects.get(id=attribute['value_id']),
+        attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
+      )
+
+  def get_cart_item_attributes(self, item, attribute):
+      cart_item_attributes = CartItemAttribute.objects.filter(
+        cart_item__item=item,
+        attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
+        value=AttributeVariantValue.objects.get(id=attribute['value_id']),
+      )
+      return cart_item_attributes
+    
+  # def get_cart_item_with_attributes(self, item, attributes):
+  #   cart_item = CartItem.objects.filter(item=item, cart=self)
+  #   for attribute in attributes:
+  # TODO:get_cart_item_with_attributes
+  #   return cart_item
+
+
   def add_item(self, item_id, quantity, attributes=[]):
+    """
+    товар 1 з розміром 1 i кольором 1 додається в корзину 
+    в корзині товар з розміром 1 і кольором 1 
+    товар 1 з розміром 1 і кольором 2 додається в корзину 
+    перевіряється чи немає товара в корзині з такими ж характеристиками
+    якщо є то створюється новий товар 
+    якщо нє то додається кількість 
+
+    як перевірити шо в корзині є товар з такими ж характеристиками?
+    """
     try: quantity = int(quantity)
     except: quantity = 1
     item = Item.objects.get(pk=int(item_id))
-    cart_item, created = CartItem.objects.get_or_create(
-      cart=self,
-      item=item,
-    )
-    if created:
-      cart_item.quantity = int(quantity)
-    elif not created:
-      cart_item.quantity += int(quantity)
-    cart_item.save()
 
-    CartItemAttribute.objects.filter(cart_item=cart_item).delete()
+    # cart_item, created = CartItem.objects.get_or_create(
+    #   cart=self,
+    #   item=item,
+    # )
+    # if created:
+    #   cart_item.quantity = int(quantity)
+    # elif not created:
+    #   cart_item.quantity += int(quantity)
+    # cart_item.save()
+    print(quantity)
     for attribute in attributes:
-      attribute_id = attribute['attribute_id']
-      value_id     = attribute['value_id']
-      CartItemAttribute.objects.create(
-        cart_item=cart_item,
-        value=AttributeVariantValue.objects.get(id=value_id),
-        attribute_name=Attribute.objects.get(id=attribute_id),
-      )
+      cart_item_attributes = self.get_cart_item_attributes(item, attribute)
+      if not cart_item_attributes.exists():
+        cart_item = CartItem.objects.create(item=item, cart=self)
+        cart_item.quantity=quantity
+        cart_item.save()
+        self.create_cart_item_attributes(cart_item, attributes)
+        break 
+      # else:
+      #   # TODO: get_cart_item_with_attributes
+      #   cart_item = get_cart_item_with_attributes(item=item)
+      #   cart_item.quantity += int(quantity)
+      #   cart_item.save()
 
+      
   def change_cart_item_amount(self, cart_item_id, quantity):
     try: quantity = int(quantity)
     except: quantity = 1
