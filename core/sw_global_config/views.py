@@ -5,7 +5,7 @@ from django.template import loader
 from django.conf import settings
 from django.core.mail import send_mail
 from django.utils.translation import ugettext as _
-from .models import NotificationConfig
+from .models import GlobalConfig
 from .helpers import get_configuration_admin_url
 
 subject = getattr(settings, 'DES_TEST_SUBJECT', _("Test Email"))
@@ -24,7 +24,7 @@ def send_test_email(request):
         return HttpResponseNotFound()
 
     email = request.POST.get('email', None)
-    config = NotificationConfig.get_solo()
+    config = GlobalConfig.get_solo()
     print(email)
 
     if email:

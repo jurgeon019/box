@@ -26,3 +26,26 @@ class Payment(models.Model):
     verbose_name = 'Оплата'
     verbose_name_plural = 'Оплати' 
 
+
+
+
+class LiqpayConfig(SingletonModel):
+  from box.apps.sw_payment.liqpay import settings as liqpay_settings
+  liqpay_public_key   = models.TextField(
+    _("Публічний ключ лікпею"), blank=False, 
+    null=False, default=liqpay_settings.LIQPAY_PUBLIC_KEY,
+  )
+  liqpay_private_key  = models.TextField(
+    _("Приватний ключ лікпею"), blank=False, 
+    null=False, default=liqpay_settings.LIQPAY_PRIVATE_KEY,
+  )
+  
+  @classmethod
+  def modeltranslation_fields(cls):
+      fields = [
+      ]
+      return fields
+  
+  class Meta:
+    verbose_name        = _('Налаштування оплати')
+    verbose_name_plural = _('Налаштування оплати')

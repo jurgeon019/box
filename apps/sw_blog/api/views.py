@@ -8,7 +8,7 @@ from ..models import *
 from .serializers import PostSerializer
 
 from box.core.mail import box_send_mail
-from box.core.sw_global_config.models import NotificationConfig, CatalogueConfig
+from box.core.sw_global_config.models import GlobalConfig, CatalogueConfig
 
 def filter_search(posts, query):
     search = query.get('q')
@@ -89,7 +89,7 @@ def search_posts(request):
 @csrf_exempt
 def create_comment(request):
     # TODO: фукнція не дороблена.
-    config = NotificationConfig.get_solo()
+    config = GlobalConfig.get_solo()
     query   = request.POST or request.GET
     post_id = query.get('post_id')
     text    = query.get('text')

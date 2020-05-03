@@ -9,5 +9,5 @@ OGIMAGE_SQUARE                 = get(
     'OGIMAGE_SQUARE', 'ogimage/square.png')
 OGIMAGE_RECTANGLE              = get(
     'OGIMAGE_RECTANGLE', 'ogimage/rectangle.png')
-RECIPIENTS = get('RECIPIENTS', ['jurgeon018@gmail.com',])
+# RECIPIENTS = get('RECIPIENTS', ['jurgeon018@gmail.com',])
 

@@ -1,10 +1,10 @@
 from django.forms import ModelForm, PasswordInput
-from .models import NotificationConfig
+from .models import GlobalConfig
 
 
-class NotificationConfigForm(ModelForm):
+class GlobalConfigForm(ModelForm):
     class Meta:
-        model = NotificationConfig
+        model = GlobalConfig
         exclude = []
         widgets = {
             "password": PasswordInput(render_value=True),

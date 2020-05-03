@@ -12,7 +12,7 @@ from box.apps.sw_shop.sw_cart.utils import get_cart
 from box.core.utils import get_line
 from box.apps.sw_shop.sw_catalog.api.search import filter_search
 from box.core.mail import box_send_mail
-from box.core.sw_global_config.models import NotificationConfig, CatalogueConfig
+from box.core.sw_global_config.models import GlobalConfig, CatalogueConfig
 
 
 from rest_framework import generics 
@@ -230,7 +230,7 @@ def create_review(request):
       name=name,
       rating=rating,
     )
-    if NotificationConfig.get_solo().auto_review_approval:
+    if GlobalConfig.get_solo().auto_review_approval:
       review.is_active = True 
       review.save()
     json_review = ItemReviewSerializer(review).data
@@ -243,8 +243,8 @@ def create_review(request):
       "is_active":review.is_active,
     }
     box_send_mail(
-      subject=NotificationConfig.get_colo().get_data('review')['subject'],
-      recipient_list=NotificationConfig.get_colo().get_data('review')['emails'],
+      subject=GlobalConfig.get_colo().get_data('review')['subject'],
+      recipient_list=GlobalConfig.get_colo().get_data('review')['emails'],
       model=review,
     )
     return JsonResponse(response)

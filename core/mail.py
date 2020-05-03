@@ -3,7 +3,7 @@ from django.contrib.sites.models import Site
 from django.core.mail import send_mail
 from django.urls import reverse 
 
-from box.core.sw_global_config.models import NotificationConfig
+from box.core.sw_global_config.models import GlobalConfig
 
 
 def box_send_mail(subject=None, message=None, from_email=None, recipient_list=None, fail_silently=False, model=None, *args, **kwargs):
@@ -22,7 +22,7 @@ def box_send_mail(subject=None, message=None, from_email=None, recipient_list=No
   if not recipient_list:
     recipient_list = settings.DEFAULT_RECIPIENT_LIST or []
   # import pdb; pdb.set_trace();
-  emails = NotificationConfig.get_solo().get_data('reverse')['emails']
+  emails = GlobalConfig.get_solo().get_data('reverse')['emails']
   if emails:
      recipient_list.extend(emails)
   send_mail(

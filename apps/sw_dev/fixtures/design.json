@@ -1,5 +1,5 @@
 [
-    {"model":"sw_global_config.DesignConfig", "pk":1, "fields":{
+    {"model":"sw_global_config.GlobalConfig", "pk":1, "fields":{
             "favicon":"favicon/favicon.ico",
             "og_image_square":"ogimage/square.png",
             "og_image_square_uk":"ogimage/square_uk.png",
