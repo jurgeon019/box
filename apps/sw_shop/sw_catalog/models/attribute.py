@@ -59,15 +59,17 @@ class Attribute(models.Model):
 
 class AttributeValue(models.Model):
     code = models.SlugField(
-        verbose_name=_("Код"), max_length=255, unique=True, blank=True, null=True
+        verbose_name=_("Код"), max_length=255, unique=True, 
+        blank=True, null=True,
     )
     attribute = models.ForeignKey(
-        verbose_name=_("Атрибут"), to="sw_catalog.Attribute", on_delete=models.SET_NULL,
-        blank=True, null=True,
+        verbose_name=_("Атрибут"), to="sw_catalog.Attribute", 
+        on_delete=models.SET_NULL, blank=True, null=True,
     )
     value = models.CharField(
         verbose_name=_("Значення"), max_length=255, unique=True,
     )
+
     def __str__(self):
         return f'{self.value}'
     
@@ -145,42 +147,3 @@ class ItemAttributeValue(models.Model):
         verbose_name_plural = _('значення атрибутів товарів')
 
 
-
-
-
-
-
-'''
-AttributeCategory
-    name = charfield 
-
-Attribute
-    name     = charfield 
-    category = fk to AttributeCategory
-
-AttributeValue
-    value = textfield
-
-ItemAttribute(ObjAttribute)
-    item       = fk to Item 
-    *is_option = boolean*
-    *attribute = fk to Attribute*
-
-ItemAttributeVariant(AttributeVariant)
-    item_attribute = fk to ItemAttribute
-    *value         = fk to AttributeValue*
-    *price         = decimalfield*
-    *description   = textfield*
-
-
-
-
-ObjAttribute __abstract__ 
-    is_option = boolean
-    attribute = fk to Attribute
-
-AttributeVariant __abstract__ 
-    value       = fk to AttributeValue
-    price       = decimalfield
-    description = textfield
-'''
