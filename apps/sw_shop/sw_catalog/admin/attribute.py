@@ -46,7 +46,7 @@ class AttrBaseMixin(
     ):
     pass 
 
-class ItemAttributeVariantInline(nested_admin.NestedTabularInline):
+class ItemAttributeValueInline(nested_admin.NestedTabularInline):
     autocomplete_fields = [
         'value'
     ]
@@ -55,7 +55,7 @@ class ItemAttributeVariantInline(nested_admin.NestedTabularInline):
         'collapse',
     ]
     # sortable_field_name = "attribute"
-    model = ItemAttributeVariant
+    model = ItemAttributeValue
     formfield_overrides = {
         models.TextField:{'widget':forms.Textarea(attrs={'cols':'35', 'rows':'1'})}
     }
@@ -71,7 +71,7 @@ class ItemAttributeInline(nested_admin.NestedTabularInline):
     ]
     # sortable_field_name = "product"
     model = ItemAttribute
-    inlines = [ItemAttributeVariantInline]
+    inlines = [ItemAttributeValueInline]
 
 
 class ItemAttributeAdmin(
@@ -83,7 +83,7 @@ class ItemAttributeAdmin(
         pass
     resource_class = ItemAttributeResource
     inlines = [
-        ItemAttributeVariantInline,
+        ItemAttributeValueInline,
     ]
     autocomplete_fields = [
         'item',
@@ -133,7 +133,7 @@ class AttributeCategoryAdmin(AttrBaseMixin):
     save_on_top = True 
 
 
-class ItemAttributeVariantAdmin(
+class ItemAttributeValueAdmin(
     AttrBaseMixin,
     nested_admin.NestedModelAdmin,
     ):
@@ -141,7 +141,7 @@ class ItemAttributeVariantAdmin(
         pass
     # def get_model_perms(self, request):
     #     return {}
-    resource_class = ItemAttributeVariantResource
+    resource_class = ItemAttributeValueResource
     autocomplete_fields = [
         'item_attribute',
         'value',
@@ -196,7 +196,7 @@ class AttributeAdmin(AttrBaseMixin):
     ]
 from django.contrib import messages
 
-class AttributeVariantValueAdmin(AttrBaseMixin):
+class AttributeValueAdmin(AttrBaseMixin):
 #     actions = ["delete_selected"]
 #     actions = []
 #     def delete_selected(self, request, queryset):
@@ -207,7 +207,7 @@ class AttributeVariantValueAdmin(AttrBaseMixin):
         has_permission = None  
         if request.POST and request.POST.get('action') == 'delete_selected':
             for pk in request.POST.getlist('_selected_action'):
-                if AttributeVariantValue.objects.get(pk=pk).code:
+                if AttributeValue.objects.get(pk=pk).code:
                     # messages.add_message(request, messages.ERROR, (
                     #     "Атрибути, у яких є код захищені від видалення."
                     # ))
@@ -224,7 +224,7 @@ class AttributeVariantValueAdmin(AttrBaseMixin):
             if obj.code:
                 return False 
         return True
-    resource_class = AttributeVariantValueResource
+    resource_class = AttributeValueResource
     readonly_fields = [
         'code',
     ]
@@ -246,8 +246,8 @@ class AttributeVariantValueAdmin(AttrBaseMixin):
 
 
 admin.site.register(ItemAttribute, ItemAttributeAdmin)
-admin.site.register(ItemAttributeVariant, ItemAttributeVariantAdmin)
-admin.site.register(AttributeVariantValue, AttributeVariantValueAdmin)
+admin.site.register(ItemAttributeValue, ItemAttributeValueAdmin)
+admin.site.register(AttributeValue, AttributeValueAdmin)
 admin.site.register(Attribute, AttributeAdmin)
 admin.site.register(AttributeCategory, AttributeCategoryAdmin)
 

@@ -2,41 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-'''
-AttributeCategory
-    name = charfield 
-
-Attribute
-    name     = charfield 
-    category = fk to AttributeCategory
-
-AttributeVariantValue
-    value = textfield
-
-ItemAttribute(ObjAttribute)
-    item       = fk to Item 
-    *is_option = boolean*
-    *attribute = fk to Attribute*
-
-ItemAttributeVariant(AttributeVariant)
-    item_attribute = fk to ItemAttribute
-    *value         = fk to AttributeVariantValue*
-    *price         = decimalfield*
-    *description   = textfield*
-
-
-
-
-ObjAttribute __abstract__ 
-    is_option = boolean
-    attribute = fk to Attribute
-
-AttributeVariant __abstract__ 
-    value       = fk to AttributeVariantValue
-    price       = decimalfield
-    description = textfield
-'''
-
 class AttributeCategory(models.Model):
     name   = models.CharField(
         verbose_name=_("Назва"), max_length=255, unique=True
@@ -92,9 +57,13 @@ class Attribute(models.Model):
         return ['name']
 
 
-class AttributeVariantValue(models.Model):
+class AttributeValue(models.Model):
     code = models.SlugField(
         verbose_name=_("Код"), max_length=255, unique=True, blank=True, null=True
+    )
+    attribute = models.ForeignKey(
+        verbose_name=_("Атрибут"), to="sw_catalog.Attribute", on_delete=models.SET_NULL,
+        blank=True, null=True,
     )
     value = models.CharField(
         verbose_name=_("Значення"), max_length=255, unique=True,
@@ -108,18 +77,51 @@ class AttributeVariantValue(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        verbose_name = _('значення варіантів атрибутів')
-        verbose_name_plural = _('значення варіантів атрибутів')
+        verbose_name = _('значення атрибуту')
+        verbose_name_plural = _('значення атрибутів')
 
     @classmethod
     def modeltranslation_fields(cls):
         return ['value']
 
 
-class AttributeVariant(models.Model):
+class ItemAttribute(models.Model):
+    item = models.ForeignKey(
+        verbose_name=_("Товар"), to="sw_catalog.Item", 
+        on_delete=models.CASCADE, related_name='item_attributes',
+    )
+    attribute = models.ForeignKey(
+        verbose_name=_("Атрибут"), to='sw_catalog.Attribute', 
+        on_delete=models.CASCADE,
+    )
+    is_option = models.BooleanField(
+        verbose_name=_("Опція?"), default=False
+    )
+
+    @property
+    def has_multiple_values(self):
+        return self.values.all().count() > 1
+
+    def __str__(self):
+        return f'{self.attribute.name}'
+
+    class Meta:
+        verbose_name = _("атрибут товару")
+        verbose_name_plural = _("атрибути товарів")
+        unique_together = [
+            'item',
+            'attribute',
+        ]
+
+
+class ItemAttributeValue(models.Model):
+    item_attribute = models.ForeignKey(
+        to="sw_catalog.ItemAttribute", verbose_name=_("Атрибут товару"), on_delete=models.CASCADE,
+        related_name='variants',
+    )
     value = models.ForeignKey(
         verbose_name=_("Значення"), 
-        to='sw_catalog.AttributeVariantValue', 
+        to='sw_catalog.AttributeValue', 
         on_delete=models.CASCADE,
         # unique=True,
     )
@@ -137,89 +139,48 @@ class AttributeVariant(models.Model):
     def __str__(self):
         return f'{self.value}'
 
-    class Meta:
-        abstract = True 
-
-
-class ObjAttribute(models.Model):
-    is_option = models.BooleanField(
-        verbose_name=_("Опція?"), default=False
-    )
-    attribute = models.ForeignKey(
-        verbose_name=_("Атрибут"), to='sw_catalog.Attribute', 
-        on_delete=models.CASCADE,
-    )
-
-    @property
-    def has_multiple_values(self):
-        return self.values.all().count() > 1
-
-    def __str__(self):
-        return f'{self.attribute.name}'
 
     class Meta:
-        abstract = True 
-
-
-# Item 
-
-
-class ItemAttribute(ObjAttribute):
-    item = models.ForeignKey(
-        verbose_name=_("Товар"), to="sw_catalog.Item", 
-        on_delete=models.CASCADE, related_name='item_attributes',
-    )
-
-    class Meta:
-        verbose_name = _("атрибут товарів")
-        verbose_name_plural = _("атрибути товарів")
-        unique_together = [
-            'item',
-            'attribute',
-        ]
-
-
-class ItemAttributeVariant(AttributeVariant):
-    item_attribute = models.ForeignKey(
-        to="sw_catalog.ItemAttribute", verbose_name=_("Атрибут товару"), on_delete=models.CASCADE,
-        related_name='variants',
-    )
-
-    class Meta:
-        verbose_name = _('варіант значення атрибуту товару')
-        verbose_name_plural = _('варіанти значеннь атрибутів товару')
+        verbose_name = _('значення атрибутів товарів')
+        verbose_name_plural = _('значення атрибутів товарів')
 
 
 
 
 
-# Item Category 
-
-class ItemCategoryAttribute(ObjAttribute):
-    # item_category = models.ForeignKey(
-    #     verbose_name=_("Категорія"), to="sw_catalog.ItemCategory", 
-    #     on_delete=models.CASCADE, related_name='item_category_attributes',
-    # )
-    item_categories = models.ManyToManyField(
-        verbose_name=_("Категорія"), 
-        to="sw_catalog.ItemCategory", 
-        related_name='item_category_attributes',
-    )
-    variants = models.ManyToManyField(
-        verbose_name=_("Варіанти атрибутів товарів"), 
-        to="sw_catalog.ItemCategoryAttributeVariant", 
-        related_name='item_category_attributes',
-    )
-    class Meta:
-        verbose_name = _("атрибут категорій товарів")
-        verbose_name_plural = _("атрибути категорій товарів")
 
 
-class ItemCategoryAttributeVariant(AttributeVariant):
-    class Meta:
-        verbose_name = _('варіант атрибутів категорій товарів')
-        verbose_name_plural = _('варіанти атрибутів категорій товарів')
+'''
+AttributeCategory
+    name = charfield 
+
+Attribute
+    name     = charfield 
+    category = fk to AttributeCategory
+
+AttributeValue
+    value = textfield
+
+ItemAttribute(ObjAttribute)
+    item       = fk to Item 
+    *is_option = boolean*
+    *attribute = fk to Attribute*
+
+ItemAttributeVariant(AttributeVariant)
+    item_attribute = fk to ItemAttribute
+    *value         = fk to AttributeValue*
+    *price         = decimalfield*
+    *description   = textfield*
 
 
 
 
+ObjAttribute __abstract__ 
+    is_option = boolean
+    attribute = fk to Attribute
+
+AttributeVariant __abstract__ 
+    value       = fk to AttributeValue
+    price       = decimalfield
+    description = textfield
+'''

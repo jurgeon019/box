@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 from box.apps.sw_shop.sw_catalog.models import (
-  Item, ItemCurrency, Attribute, AttributeVariantValue
+  Item, ItemCurrency, Attribute, AttributeValue
 )
 
 
@@ -42,7 +42,7 @@ class Cart(models.Model):
     for attribute in attributes:
       CartItemAttribute.objects.create(
         cart_item=cart_item,
-        value=AttributeVariantValue.objects.get(id=attribute['value_id']),
+        value=AttributeValue.objects.get(id=attribute['value_id']),
         attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
       )
 
@@ -50,7 +50,7 @@ class Cart(models.Model):
       cart_item_attributes = CartItemAttribute.objects.filter(
         cart_item__item=item,
         attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
-        value=AttributeVariantValue.objects.get(id=attribute['value_id']),
+        value=AttributeValue.objects.get(id=attribute['value_id']),
       )
       return cart_item_attributes
     
@@ -237,7 +237,7 @@ class CartItemAttribute(models.Model):
     verbose_name=_("Атрибут"),
   )
   value = models.ForeignKey(
-    to="sw_catalog.AttributeVariantValue",
+    to="sw_catalog.AttributeValue",
     on_delete=models.CASCADE,
     verbose_name=_("Значення")
   )

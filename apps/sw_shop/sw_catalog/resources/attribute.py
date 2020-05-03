@@ -19,15 +19,15 @@ class AttributeCategoryResource(ModelResource):
         exclude =  []
 
 
-class ItemAttributeVariantResource(ModelResource):
+class ItemAttributeValueResource(ModelResource):
     class Meta:
-        model = ItemAttributeVariant
+        model = ItemAttributeValue
         exclude =  []
 
 
-class AttributeVariantValueResource(ModelResource):
+class AttributeValueResource(ModelResource):
     class Meta:
-        model = AttributeVariantValue
+        model = AttributeValue
         exclude =  []
         # import_id_fields = [
         #     'id',
@@ -64,7 +64,7 @@ class ItemAttributeResource(ModelResource):
     #         value_names = value_names.split(';;\n')
     #         for value in value_names:
     #             value = value.strip().lower()
-    #             v = ItemAttributeVariant.objects.get_or_create(
+    #             v = ItemAttributeValue.objects.get_or_create(
     #                 value__value=value,
     #                 item_attribute=row['id'],
     #             )[0]

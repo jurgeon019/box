@@ -2,7 +2,7 @@ from django import template
 from box.apps.sw_shop.sw_cart.utils import get_cart
 from box.apps.sw_shop.sw_cart.models import CartItemAttribute
 from box.apps.sw_shop.sw_catalog.models import (
-    ItemAttributeVariant, ItemAttribute, Attribute,
+    ItemAttributeValue, ItemAttribute, Attribute,
 )
 
 

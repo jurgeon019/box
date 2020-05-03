@@ -66,6 +66,7 @@ class ItemList(generics.ListCreateAPIView):
     :min_price: мінімальна ціна(цифра)
     :is_discount: true|false
     :ordering: -new_price | new_price 
+    :attributes: 
     '''
     queryset     = super().get_queryset()
     data         = self.request.query_params
