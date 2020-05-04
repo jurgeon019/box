@@ -44,18 +44,16 @@ def get_class(content_type):
 
 
 
-def get_context(content_type, code, page_code=None):
-    # if content_type in ['item','item_category','post','post_category']:
-    #     obj = get_class(content_type).objects.get(code=code)
-    # else:
-    #     obj = get_class(content_type).objects.get_or_create(code=code)[0]
+def get_context(content_code, content_type='plain', page_code=None):
     klass = get_class(content_type)
     # klass.objects.all().delete()
-    obj = klass.objects.get_or_create(code=code)[0]
+    obj = klass.objects.get_or_create(code=content_code)[0]
     if content_type == 'slider':
         obj = Slide.objects.all().filter(slider=obj)
-    set_page(obj=obj, page_code=page_code)
+    # set_page(obj=obj, page_code=page_code)
     context = {
         'obj':obj,
     }
     return context 
+
+
