@@ -8,7 +8,7 @@ from box.apps.sw_shop.sw_catalog import settings as item_settings
 
 class ItemCurrencySerializer(serializers.ModelSerializer):
   class Meta:
-    model = ItemCurrency
+    model = Currency
     exclude = []
 
 

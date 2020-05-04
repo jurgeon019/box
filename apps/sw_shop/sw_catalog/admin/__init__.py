@@ -6,7 +6,7 @@ from .config import *
 
 
 
-admin.site.register(ItemCurrency, ItemCurrencyAdmin)
+admin.site.register(Currency, ItemCurrencyAdmin)
 admin.site.register(ItemStock, ItemStockAdmin)
 admin.site.register(ItemCategory, ItemCategoryAdmin)
 admin.site.register(ItemManufacturer, ItemManufacturerAdmin)

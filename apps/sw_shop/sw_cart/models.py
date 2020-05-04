@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 from box.apps.sw_shop.sw_catalog.models import (
-  Item, ItemCurrency, Attribute, AttributeValue
+  Item, Currency, Attribute, AttributeValue
 )
 
 
@@ -162,7 +162,7 @@ class Cart(models.Model):
   @property
   def currency(self):
     currency = None 
-    currencies = ItemCurrency.objects.filter(is_main=True)
+    currencies = Currency.objects.filter(is_main=True)
     if currencies.exists():
       currency = currencies.first().code
     return currency

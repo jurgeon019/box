@@ -107,13 +107,12 @@ class ItemList(generics.ListCreateAPIView):
         values = AttributeValue.objects.filter(id__in=attribute['value_ids'])
         attribute = Attribute.objects.get(id=attribute['attribute_id'])
         item_attributes = ItemAttribute.objects.filter(attribute=attribute)
-        item_attribute_values = ItemAttributeValue.objects.filter(
+        item_attribute_ids = ItemAttributeValue.objects.filter(
           item_attribute__in=item_attributes,
           value__in=values,
-        )
-        item_attribute_value_ids = item_attribute_values.values_list('item_attribute', flat=True)
+        ).values_list('item_attribute_id', flat=True)
         item_ids = ItemAttribute.objects.filter(
-          id__in=item_attribute_value_ids,
+          id__in=item_attribute_ids,
         ).values_list('item', flat=True)
         queryset = queryset.filter(id__in=item_ids)
     return queryset

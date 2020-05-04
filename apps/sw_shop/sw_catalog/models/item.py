@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
 
-from . import ItemImage, ItemCurrency, ItemStock
+from . import ItemImage, Currency, ItemStock
 from .. import settings as item_settings
 
 from box.core.models import AbstractPage
@@ -52,7 +52,7 @@ class Item(AbstractPage):
 		help_text=' ',
 	)
 	currency     = models.ForeignKey(
-		verbose_name=_("Валюта"),    to="sw_catalog.ItemCurrency",     
+		verbose_name=_("Валюта"),    to="sw_catalog.Currency",     
 		related_name="items", on_delete=models.SET_NULL, blank=True, null=True,
 	)
 	# old_price    = models.DecimalField(

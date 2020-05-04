@@ -14,7 +14,7 @@ from box.core.utils import get_multilingual_fields
 class ItemCurrencyResource(ModelResource):
     
     class Meta:
-        model = ItemCurrency
+        model = Currency
         exclude = [
             'id',
             # 'code',

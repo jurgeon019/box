@@ -28,7 +28,7 @@ class Attribute(models.Model):
         verbose_name=_("Код"), max_length=255, unique=True, blank=True, null=True
     )
     name = models.CharField(
-        verbose_name=_("Назва"), max_length=50, 
+        verbose_name=_("Назва"), max_length=50, unique=True, 
     )
     category = models.ForeignKey(
         verbose_name=_("Категорія"), to="sw_catalog.AttributeCategory", 
@@ -105,7 +105,10 @@ class ItemAttribute(models.Model):
         return self.values.all().count() > 1
 
     def __str__(self):
-        return f'{self.attribute.name}'
+        try:
+            return f'{self.attribute.name}'
+        except:
+            return f'{self.id}'
 
     class Meta:
         verbose_name = _("атрибут товару")
@@ -129,6 +132,9 @@ class ItemAttributeValue(models.Model):
     )
     price = models.DecimalField(
         verbose_name=_("Ціна"), max_digits=9, decimal_places=2, default=0,
+    )
+    currency = models.ForeignKey(
+        verbose_name=_("Валюта"), to="sw_catalog.Currency", on_delete=models.CASCADE
     )
     description = models.TextField(
         verbose_name=_("Опис"), blank=True, null=True, 

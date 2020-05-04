@@ -46,7 +46,7 @@ class ItemResource(ModelResource):
 
     def before_import_row(self, row, **kwargs):
         # self.handle_markers_import(row)
-        # self.handle_labels_import(row)
+        self.handle_labels_import(row)
         # self.handle_similars_import(row)
         self.handle_category_import(row)
         self.handle_manufacturer_import(row)
@@ -54,10 +54,10 @@ class ItemResource(ModelResource):
         self.handle_currency_import(row)
         self.handle_in_stock_import(row)
 
-    def after_import_row(self, row, row_result,**kwargs):
-        self.handle_images_import(row)
-        self.handle_server_images_import(row)
-        self.handle_similars_import(row)
+    # def after_import_row(self, row, row_result,**kwargs):
+    #     self.handle_images_import(row)
+    #     self.handle_server_images_import(row)
+    #     self.handle_similars_import(row)
 
 
     def get_export_order(self):
@@ -124,7 +124,7 @@ class ItemResource(ModelResource):
     def handle_currency_import(self, row):
         if row.get('currency'):
             currency_code   = row['currency']
-            currency, _     = ItemCurrency.objects.get_or_create(code=currency_code)
+            currency, _     = Currency.objects.get_or_create(code=currency_code)
             row['currency'] = currency.id
 
     def dehydrate_currency(self, item):
@@ -158,8 +158,8 @@ class ItemResource(ModelResource):
         from box.apps.sw_shop.sw_catalog.utils.utils import get_image_path
         if row.get('images'):
             image_names = row['images'].split(',')
-            print("image_names")
-            print(image_names)
+            # print("image_names")
+            # print(image_names)
             images = []
             # images = [ ItemImage.objects.get_or_create(image=f'shop/item/{image_name.strip()}')[0].id for image_name in image_names]
             item = Item.objects.get(id=row['id'])
@@ -221,9 +221,14 @@ class ItemResource(ModelResource):
     #     return markers
 
     def handle_labels_import(self, row):
+        # print(row)
         if row.get('labels'):
             labels = []
-            for label_text in row['labels'].split(','):
+            try:
+                label_texts = row['labels'].split(',')
+            except:
+                label_texts = [row['labels']]
+            for label_text in label_texts:
                 print("label_text::", label_text)
                 label, _ = ItemLabel.objects.get_or_create(
                     text__iexact=label_text.strip().lower()

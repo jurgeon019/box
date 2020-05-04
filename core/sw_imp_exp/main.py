@@ -1214,7 +1214,7 @@ class ImportMixin(Parser):
   def handle_currency(self, item, new_item, *args, **kwargs):
     currency    = item.get('Валюта','')
     if currency:
-      new_item.currency, _ = ItemCurrency.objects.get_or_create(name=currency)
+      new_item.currency, _ = Currency.objects.get_or_create(name=currency)
     return new_item 
 
 
@@ -1231,7 +1231,7 @@ class ImportMixin(Parser):
     if '€' in price_netto:
       new_item.old_price   = float(price_netto.replace('€', '').strip().replace(',','.').replace(' ', ''))
       new_item.new_price   = float(price_brutto.replace('€', '').strip().replace(',','.').replace(' ', ''))
-      new_item.currency, _ = ItemCurrency.objects.get_or_create(name='EUR')
+      new_item.currency, _ = Currency.objects.get_or_create(name='EUR')
     elif 'грн' in price_netto:
       price_netto          = price_netto.replace(' ', '').replace('грн.', '').strip().replace(',','.').replace(' ', '')
       price_brutto         = price_brutto.replace(' ', '').replace('грн.', '').strip().replace(',','.').replace(' ', '')
@@ -1239,7 +1239,7 @@ class ImportMixin(Parser):
       price_brutto         = price_brutto.replace('\xa0', '').replace(' ', '')
       new_item.old_price   = float(price_netto)
       new_item.new_price   = float(price_brutto)
-      new_item.currency, _ = ItemCurrency.objects.get_or_create(name='UAH')
+      new_item.currency, _ = Currency.objects.get_or_create(name='UAH')
     elif 'Цену уточняйте' in price_netto:
       new_item.old_price   = None 
       new_item.new_price   = None 
@@ -1362,7 +1362,7 @@ class ImportMixin(Parser):
 
 
 
-      # currency = ItemCurrency.objects.get()
+      # currency = Currency.objects.get()
 
 
       item.meta_title  = meta_title

@@ -21,7 +21,7 @@ class ItemCategoryResource(ModelResource):
     currency = Field(
         column_name='currency',
         attribute="currency",
-        widget=ForeignKeyWidget(ItemCurrency, field='code')
+        widget=ForeignKeyWidget(Currency, field='code')
     )
     class Meta:
         model = ItemCategory 

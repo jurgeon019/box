@@ -2,7 +2,7 @@ from ._imports import *
 from django.utils.translation import gettext_lazy as _
 
 
-class ItemCurrency(models.Model):
+class Currency(models.Model):
 	# name = models.CharField(
 	# 	verbose_name=_("Назва"), max_length=255, blank=True, null=True, 
 	# 	help_text=_("Наприклад: гривня, долар, рубль, євро")
@@ -44,7 +44,7 @@ class ItemCurrency(models.Model):
 		# 		self.symbol = self.code 
 		# 	if not self.name:
 		# 		self.name = self.code
-		# currencies = ItemCurrency.objects.all()
+		# currencies = Currency.objects.all()
 		# old_main_rate = currencies.get(is_main=True).rate
 		# currencies.update(is_main=False)
 		# if self.is_main:
