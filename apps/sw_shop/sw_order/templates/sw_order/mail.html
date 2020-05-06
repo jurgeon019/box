@@ -13,7 +13,7 @@
 
 Товари:
 {% for cart_item in cart_items %}
-{{cart_item.item.title}}
+{{cart_item.item.title}}  {{cart_item.quantity}} {{cart_item.item.units}}
 {% if cart_item.get_attributes.exists %}
 Атрибути:
     {% for attribute in cart_item.get_attributes %}

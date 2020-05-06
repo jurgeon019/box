@@ -79,7 +79,7 @@ def order_request(request):
     print(query)
 
     cart = get_cart(request)
-
+    
     cart_item = CartItem.objects.create(
       cart=cart,
       item = Item.objects.get(id=item_id),

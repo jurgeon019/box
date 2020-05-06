@@ -59,7 +59,7 @@ class Cart(models.Model):
   #   return cart_item
 
 
-  def add_item(self, item_id, quantity, attributes=[]):
+  def add_item(self, item_id, quantity, attributes=None):
     """
     товар 1 з розміром 1 i кольором 1 додається в корзину 
     в корзині товар з розміром 1 і кольором 1 
@@ -74,30 +74,32 @@ class Cart(models.Model):
     except: quantity = 1
     item = Item.objects.get(pk=int(item_id))
 
-    # cart_item, created = CartItem.objects.get_or_create(
-    #   cart=self,
-    #   item=item,
-    # )
-    # if created:
-    #   cart_item.quantity = int(quantity)
-    # elif not created:
-    #   cart_item.quantity += int(quantity)
-    # cart_item.save()
 
     # print(quantity)
-    for attribute in attributes:
-      cart_item_attributes = self.get_cart_item_attributes(item, attribute)
-      if not cart_item_attributes.exists():
-        cart_item = CartItem.objects.create(item=item, cart=self)
-        cart_item.quantity=quantity
-        cart_item.save()
-        self.create_cart_item_attributes(cart_item, attributes)
-        break 
-      # else:
-      #   # TODO: get_cart_item_with_attributes
-      #   cart_item = get_cart_item_with_attributes(item=item)
-      #   cart_item.quantity += int(quantity)
-      #   cart_item.save()
+    if attributes:
+      for attribute in attributes:
+        cart_item_attributes = self.get_cart_item_attributes(item, attribute)
+        if not cart_item_attributes.exists():
+          cart_item = CartItem.objects.create(item=item, cart=self)
+          cart_item.quantity=quantity
+          cart_item.save()
+          self.create_cart_item_attributes(cart_item, attributes)
+          break 
+        # else:
+        #   # TODO: get_cart_item_with_attributes
+        #   cart_item = get_cart_item_with_attributes(item=item)
+        #   cart_item.quantity += int(quantity)
+        #   cart_item.save()
+    else:
+      cart_item, created = CartItem.objects.get_or_create(
+        cart=self,
+        item=item,
+      )
+      if created:
+        cart_item.quantity = int(quantity)
+      elif not created:
+        cart_item.quantity += int(quantity)
+      cart_item.save()
 
       
   def change_cart_item_amount(self, cart_item_id, quantity):
@@ -224,7 +226,7 @@ class CartItem(models.Model):
   # options  = models.ManyToManyField(verbose_name=_("Атрибут"), "sw_catalog.ItemOption")
   
   def get_attributes(self):
-    return CartItemAttribute.objects.filter(cart=self)
+    return CartItemAttribute.objects.filter(cart_item=self)
 
   @property
   def total_price(self):

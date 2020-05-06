@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 from box.apps.sw_shop.sw_catalog.models import (
-  Item, ItemImage, ItemCategory, ItemFeature
+  Item, ItemImage, ItemCategory, Attribute, AttributeValue, ItemAttribute, ItemAttributeValue
 )
 import random
 import datetime 
@@ -12,25 +12,30 @@ import csv
 
 class Command(BaseCommand):
   def handle(self, *args, **kwargs):
-    amount = ItemCategory.objects.all().count()
-    last_item = Item.objects.all().last()
-    if last_item:
-      i = last_item.id + 1
-    else:
-      i = 0
-    while True:
-      i += 1
-      s = f'product_{i}'
-      item, _ = Item.objects.get_or_create(
-          slug=s,
-      )
-      ItemImage.objects.create(
-        item=item
-      )
-      item.title = s
-      item.category = ItemCategory.objects.get(id=random.randint(1, amount))
-      # item.images.add(item_image)
-      item.description = s+'sdsfsssssssssssssssssssssssssssssssssssssssssssssssssssssssssssdfsdsf'
+    attributes = Attribute.objects.all().exclude(id__in=range(1,5))
+    attribute_values = AttributeValue.objects.all().exclude(id__in=range(1,17))
+    for i in range(1, 4):
+      attribute, _ = Attribute.objects.get_or_create(name=f'атрибут {i}')
+
+    for i in range(1, 10):
+      value, _ = AttributeValue.objects.get_or_create(value=f'значення {i}')
+
+    for i in range(1, 100):
+      item, _  = Item.objects.get_or_create(title=f'товар {i}')
+      item.category = random.choice(ItemCategory.objects.all()) 
+      for j in range(1, 2):
+        item_attribute, _ = ItemAttribute.objects.get_or_create(
+          item=item,
+          attribute=random.choice(attributes),
+        )
+        for k in range(1, 4):
+          ItemAttributeValue.objects.get_or_create(
+            item_attribute=item_attribute,
+            value=random.choice(attribute_values), 
+          )
       item.save()
-    self.stdout.write(self.style.SUCCESS('Data imported successfully'))
+      print(item)
+
+
+
 

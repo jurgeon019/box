@@ -202,28 +202,28 @@ class AttributeValueAdmin(AttrBaseMixin):
 #     def delete_selected(self, request, queryset):
 #         queryset = queryset.exclude(code__isnull=False)
 #         actions.delete_selected(self, request, queryset)
-    def has_delete_permission(self, request, obj=None):
-    # https://stackoverflow.com/questions/38127581/django-admin-has-delete-permission-ignored-for-delete-action
-        has_permission = None  
-        if request.POST and request.POST.get('action') == 'delete_selected':
-            for pk in request.POST.getlist('_selected_action'):
-                if AttributeValue.objects.get(pk=pk).code:
-                    # messages.add_message(request, messages.ERROR, (
-                    #     "Атрибути, у яких є код захищені від видалення."
-                    # ))
-                    return False
-                else: 
-                    return True
-        if obj:
-            if obj.code:
-                return False 
-            else:
-                return True 
+    # def has_delete_permission(self, request, obj=None):
+    # # https://stackoverflow.com/questions/38127581/django-admin-has-delete-permission-ignored-for-delete-action
+    #     has_permission = None  
+    #     if request.POST and request.POST.get('action') == 'delete_selected':
+    #         for pk in request.POST.getlist('_selected_action'):
+    #             if AttributeValue.objects.get(pk=pk).code:
+    #                 # messages.add_message(request, messages.ERROR, (
+    #                 #     "Атрибути, у яких є код захищені від видалення."
+    #                 # ))
+    #                 return False
+    #             else: 
+    #                 return True
+    #     if obj:
+    #         if obj.code:
+    #             return False 
+    #         else:
+    #             return True 
 
-        if obj:
-            if obj.code:
-                return False 
-        return True
+    #     if obj:
+    #         if obj.code:
+    #             return False 
+    #     return True
     resource_class = AttributeValueResource
     readonly_fields = [
         'code',
