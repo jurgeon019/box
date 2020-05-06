@@ -58,6 +58,7 @@ class Attribute(models.Model):
         item_attribute_value_ids = ItemAttributeValue.objects.filter(
             item_attribute__in=item_attributes.filter(attribute=self),
         ).values_list('value_id', flat=True).distinct()
+        print("sdfsdf:",item_attribute_value_ids.query)
         return AttributeValue.objects.filter(id__in=item_attribute_value_ids) 
 
     @classmethod
