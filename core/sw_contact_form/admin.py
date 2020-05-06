@@ -2,8 +2,25 @@ from django.contrib import admin
 from django.utils.html import mark_safe 
 from modeltranslation.admin import TabbedTranslationAdmin
 from .filters import IsActiveFilter
+from .models import *
+from box.core.sw_solo.admin import SingletonModelAdmin
+from .resources import * 
 
 
+class ContactRecipientEmailInline(admin.TabularInline):
+    extra = 0 
+    model = ContactRecipientEmail
+    exclude = []
+
+
+@admin.register(ContactConfig)
+class ContactConfigAdmin(SingletonModelAdmin):
+    inlines = [
+        ContactRecipientEmailInline,
+    ]
+
+
+@admin.register(Contact)
 class ContactAdmin(admin.ModelAdmin):
     def show_link(self, obj):
         return mark_safe(f"<a href='{obj.url}'>{obj.url}</a>")
@@ -43,19 +60,5 @@ class ContactAdmin(admin.ModelAdmin):
     readonly_fields = [
         'show_link'
     ]
-
-from .models import Contact
-admin.site.register(Contact, ContactAdmin)
-
-# from box.apps.sw_blog.admin import PostCommentAdmin
-# from box.apps.sw_shop.sw_catalog.admin import ItemReviewAdmin 
-# from .models import ProxyComment, ProxyReview 
-# admin.site.register(ProxyComment, PostCommentAdmin)
-# admin.site.register(ProxyReview, ItemReviewAdmin)
-
-
-
-
-
 
 

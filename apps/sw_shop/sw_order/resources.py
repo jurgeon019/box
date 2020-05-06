@@ -1,5 +1,5 @@
 from import_export.resources import ModelResource
-from .models import OrderStatus, OrderConfig
+from .models import * 
 
 
 class OrderStatusResource(ModelResource):
@@ -12,4 +12,11 @@ class OrderConfigResource(ModelResource):
     class Meta:
         model = OrderConfig 
         exclude = []
+
+
+class OrderRecipientEmailResource(ModelResource):
+    class Meta:
+        model = OrderRecipientEmail
+        exclude =  []
+
 

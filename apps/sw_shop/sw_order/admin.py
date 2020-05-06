@@ -265,17 +265,22 @@ class ItemRequestAdmin(admin.ModelAdmin):
     ]
 
 
-class StatusInline(TranslationTabularInline):
+class OrderStatusInline(TranslationTabularInline):
     extra = 0 
     model = OrderStatus
      
+class OrderRecipientEmailInline(admin.TabularInline):
+  model = OrderRecipientEmail
+  exclude = []
+  extra = 0
+
+
 
 class OrderConfigAdmin(SingletonModelAdmin):
   inlines = [
-    StatusInline
+    OrderStatusInline,
+    OrderRecipientEmailInline
   ]
-
-
 
 admin.site.register(Order, OrderAdmin)
 admin.site.register(ItemRequest, ItemRequestAdmin)

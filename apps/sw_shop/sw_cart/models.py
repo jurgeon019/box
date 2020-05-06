@@ -8,8 +8,6 @@ from box.apps.sw_shop.sw_catalog.models import (
 )
 
 
-
-
 class Cart(models.Model):
   user    = models.ForeignKey(
     verbose_name=_("Користувач"), to=get_user_model() , on_delete=models.SET_NULL, 
@@ -85,7 +83,8 @@ class Cart(models.Model):
     # elif not created:
     #   cart_item.quantity += int(quantity)
     # cart_item.save()
-    print(quantity)
+
+    # print(quantity)
     for attribute in attributes:
       cart_item_attributes = self.get_cart_item_attributes(item, attribute)
       if not cart_item_attributes.exists():
@@ -168,6 +167,36 @@ class Cart(models.Model):
     return currency
 
 
+class CartItemAttribute(models.Model):
+  cart_item = models.ForeignKey(
+    verbose_name=_("Товар в корзині"), 
+    to="sw_cart.CartItem",
+    on_delete=models.CASCADE,
+    related_name='attributes',
+  )
+  attribute_name = models.ForeignKey(
+    to="sw_catalog.Attribute",
+    on_delete=models.CASCADE,
+    verbose_name=_("Атрибут"),
+  )
+  value = models.ForeignKey(
+    to="sw_catalog.AttributeValue",
+    on_delete=models.CASCADE,
+    verbose_name=_("Значення")
+  )
+  # price = models.FloatField(
+  #   verbose_name=_("")
+  # )
+
+  class Meta: 
+    verbose_name = _('вибраний атрибут у товара в корзині')
+    verbose_name_plural = _('вибрані атрибути у товарів в корзині')
+  
+  def __str__(self):
+    return f'{self.cart_item.item.title}, {self.attribute_name.name}:{self.value.value}'
+
+
+
 class CartItem(models.Model):
   ordered  = models.BooleanField(
      verbose_name=("Замовлено"), default=False,
@@ -194,6 +223,9 @@ class CartItem(models.Model):
   # features = models.ManyToManyField(verbose_name=_("Атрибут"), "sw_sw_catalog.ItemAttribute")
   # options  = models.ManyToManyField(verbose_name=_("Атрибут"), "sw_catalog.ItemOption")
   
+  def get_attributes(self):
+    return CartItemAttribute.objects.filter(cart=self)
+
   @property
   def total_price(self):
     return self.item.price * self.quantity
@@ -224,34 +256,6 @@ class CartItem(models.Model):
     verbose_name_plural = _('Товари в корзині')
 
 
-
-class CartItemAttribute(models.Model):
-  cart_item = models.ForeignKey(
-    verbose_name=_("Товар в корзині"), 
-    to="sw_cart.CartItem",
-    on_delete=models.CASCADE,
-  )
-  attribute_name = models.ForeignKey(
-    to="sw_catalog.Attribute",
-    on_delete=models.CASCADE,
-    verbose_name=_("Атрибут"),
-  )
-  value = models.ForeignKey(
-    to="sw_catalog.AttributeValue",
-    on_delete=models.CASCADE,
-    verbose_name=_("Значення")
-  )
-
-  class Meta: 
-    verbose_name = _('вибраний атрибут у товара в корзині')
-    verbose_name_plural = _('вибрані атрибути у товарів в корзині')
-  
-  def __str__(self):
-    return f'{self.cart_item.item.title}, {self.attribute_name.name}:{self.value.value}'
-
-
-
-
 class FavourItem(models.Model):
   item = models.ForeignKey("sw_catalog.Item", on_delete=models.CASCADE, verbose_name='Улюблені товари', blank=True, null=True, related_name="favour_items")
   cart = models.ForeignKey('sw_cart.Cart', on_delete=models.CASCADE, verbose_name='Улюблені товари', blank=True, null=True, related_name="favour_items")
@@ -262,5 +266,7 @@ class FavourItem(models.Model):
   class Meta:
     verbose_name=_("Улюблений товар")
     verbose_name_plural=_("Улюблені товари")
+
+
 
 

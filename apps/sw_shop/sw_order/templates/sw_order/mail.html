@@ -1,0 +1,25 @@
+
+
+
+Імя: {{model.name}}
+Емейл: {{model.email}}
+Телефон: {{model.phone}}
+Адреса: {{model.address}}
+Коментарі: {{model.comments}}
+Спосіб оплати: {{model.payment_opt}}
+Спосіб доставки: {{model.delivery_opt}}
+Завершено: {{model.ordered}}
+Сплачено: {{model.paid}}
+
+Товари:
+{% for cart_item in cart_items %}
+{{cart_item.item.title}}
+{% if cart_item.get_attributes.exists %}
+Атрибути:
+    {% for attribute in cart_item.get_attributes %}
+        {{attribute.attribute_name.name}}: {{attribute.value.value}}
+    {% endfor %}
+{% endif %}
+{% endfor %}
+
+

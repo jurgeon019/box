@@ -9,6 +9,7 @@ from . import settings as sw_global_config_settings
 
 from tinymce import HTMLField
 from colorfield.fields import ColorField
+from box.core.models import AbstractRecipientEmail
 
 
 
@@ -129,23 +130,12 @@ class GlobalConfig(SingletonModel):
       verbose_name_plural = verbose_name
 
 
-class GlobalRecipientEmail(models.Model):
+
+class GlobalRecipientEmail(AbstractRecipientEmail):
   config = models.ForeignKey(
     verbose_name=_("Глобальні налаштування"), to="sw_global_config.GlobalConfig", 
     on_delete=models.CASCADE, related_name='emails'
   )
-  email = models.EmailField(verbose_name=_("Емайл"), max_length=255)
-  is_active = models.BooleanField(verbose_name=_("Активність"), default=True)
-  
-  @classmethod
-  def get_recipient_list(self):
-    return GlobalRecipientEmail.objects.filter(
-      is_active=True
-    ).values_list('email', flat=True)
-  
-  def __str__(self):
-    return f'{self.email}, {self.is_active}' 
-
   class Meta:
       verbose_name = _('емейл для всіх сповіщень')
       verbose_name_plural = _("емейли для всіх сповіщень")

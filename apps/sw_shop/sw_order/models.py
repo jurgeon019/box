@@ -9,11 +9,51 @@ from box.apps.sw_shop.sw_cart.utils import get_cart
 from box.apps.sw_shop.sw_catalog.models import ItemStock 
 from box.core.sw_global_config.models import GlobalConfig
 from box.core.mail import box_send_mail
-
+from box.core.models import AbstractRecipientEmail
 from colorfield.fields import ColorField
 
 
 User = get_user_model()
+
+
+class OrderConfig(SingletonModel):
+
+  def __str__(self):
+    return f'{self.id}'
+
+  class Meta:
+    verbose_name = _("Налаштування замовленя")
+    verbose_name_plural = verbose_name
+    
+
+class OrderRecipientEmail(AbstractRecipientEmail):
+  config = models.ForeignKey(
+    verbose_name=_("Налаштування"),to="sw_order.OrderConfig", 
+    on_delete=models.CASCADE, related_name='emails',
+  )
+  class Meta:
+      verbose_name = _('емейл для сповіщень про замовлення')
+      verbose_name_plural = _("емейли для сповіщень про замовлення")
+
+
+class OrderStatus(models.Model):
+  # action_choices = (
+  #   (True,_("Списувати товар")),
+  #   (False,_("Не списувати товар")),
+  # )
+  # action = models.BooleanField(verbose_name=_("Дія над товаром"), choices=action_choices, default=0)
+  color  = ColorField(verbose_name=_("Колір"), blank=False, null=False)
+  name   = models.CharField(verbose_name=_("Назва"), max_length=255, blank=False, null=False)
+  config = models.ForeignKey(to='sw_order.OrderConfig', null=True, blank=True, on_delete=models.CASCADE)
+  
+  def __str__(self): return f"{self.name}"
+  
+  @classmethod 
+  def modeltranslation_fields(cls): return ['name'] 
+
+  class Meta: 
+    verbose_name = _('статус замовленнь')
+    verbose_name_plural = _('cтатуси замовленнь')
 
 
 class Order(models.Model):
@@ -40,7 +80,6 @@ class Order(models.Model):
   )
   payment_opt = models.CharField(
     verbose_name=_("Спосіб оплати"), blank=True, null=True, max_length=255, 
-    help_text=' '
   )
   delivery_opt= models.CharField(
     verbose_name=_("Спосіб доставки"), blank=True, null=True, max_length=255
@@ -67,7 +106,7 @@ class Order(models.Model):
   )
   is_active   = models.BooleanField(
     verbose_name=_("Активність"), default=True, 
-    help_text=_("Замість видалення цей флаг проставляється в False")
+    help_text=_("Замість видалення замовлення потрібно виключити це поле")
   )
   created     = models.DateTimeField(
     verbose_name=_('Дата замовлення'), default=timezone.now
@@ -81,10 +120,32 @@ class Order(models.Model):
     verbose_name = _('замовлення')
     verbose_name_plural = _('замовлення')
   
+  def make_order(self, request):
+    cart = get_cart(request)
+    self.handle_user(request)
+    self.handle_amount(request)
+    self.total_price = self.cart.total_price
+    self.ordered = True
+    self.save()
+    cart.order = self 
+    cart.ordered = True
+    cart.save()
+    cart_items = CartItem.objects.filter(cart=cart)
+    context = {'cart_items':cart_items}
+    box_send_mail(
+      subject      = f'Отримано замовлення товарів # {self.id}',
+      template     = 'sw_order/mail.html', 
+      config       = OrderConfig, 
+      email_config = OrderRecipientEmail, 
+      model        = self, 
+      fail_silently= False,
+      context      = context,
+    )
+
   def save(self, *args, **kwargs):
     if not self.status:
-      if Status.objects.all().exists():
-        self.status = Status.objects.all().first()
+      if OrderStatus.objects.all().exists():
+        self.status = OrderStatus.objects.all().first()
     super().save(*args, **kwargs)
 
   def __str__(self):
@@ -100,7 +161,6 @@ class Order(models.Model):
     # unavailable_stocks = ItemStock.objects.filter(availability=False)
     unavailable_stock = ItemStock.objects.filter(availability=False).first()
     
-    # for cart_item in cart.items.all():
     for cart_item in CartItem.objects.filter(cart=cart):
       cart_item.ordered = True
       cart_item.order = order
@@ -127,25 +187,6 @@ class Order(models.Model):
       cart.user  = request.user
       cart.save()
   
-  def make_order(self, request):
-    cart = get_cart(request)
-    self.handle_user(request)
-    self.handle_amount(request)
-    self.total_price = self.cart.total_price
-    self.ordered = True
-    self.save()
-    cart.order = self 
-    cart.ordered = True
-    cart.save()
-    config = GlobalConfig.get_solo()
-    # se
-    # data = config.get_data('order')
-
-    # box_send_mail(
-    #   subject=data['subject'],
-    #   recipient_list=data['emails'],
-    #   model=self
-    # )
 
 
 class Payment(models.Model):
@@ -169,8 +210,6 @@ class Payment(models.Model):
     verbose_name_plural = _('замовлення')
 
 
-
-
 class ItemRequest(models.Model):
     name    = models.CharField(verbose_name=_("Ім'я"),         max_length=255, blank=True, null=True)
     phone   = models.CharField(verbose_name=_("Телефон"),      max_length=255, blank=True, null=True)
@@ -186,34 +225,5 @@ class ItemRequest(models.Model):
         verbose_name = _('Заявка на інформацію про товар')
         verbose_name_plural = _('Заявки на інформацію про товар')
 
-
-class OrderConfig(SingletonModel):
-
-  def __str__(self):
-    return f'{self.id}'
-
-  class Meta:
-    verbose_name = _("Налаштування замовленя")
-    verbose_name_plural = verbose_name
-    
-
-class OrderStatus(models.Model):
-  # action_choices = (
-  #   (True,_("Списувати товар")),
-  #   (False,_("Не списувати товар")),
-  # )
-  # action = models.BooleanField(verbose_name=_("Дія над товаром"), choices=action_choices, default=0)
-  color  = ColorField(verbose_name=_("Колір"), blank=False, null=False)
-  name   = models.CharField(verbose_name=_("Назва"), max_length=255, blank=False, null=False)
-  config = models.ForeignKey(to='sw_order.OrderConfig', null=True, blank=True, on_delete=models.CASCADE)
-  
-  def __str__(self): return f"{self.name}"
-  
-  @classmethod 
-  def modeltranslation_fields(cls): return ['name'] 
-
-  class Meta: 
-    verbose_name = _('статус замовленнь')
-    verbose_name_plural = _('cтатуси замовленнь')
 
 

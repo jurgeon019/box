@@ -1,6 +1,26 @@
 from django.db import models 
 from django.utils.translation import gettext_lazy as _
 
+from box.core.models import AbstractRecipientEmail
+
+from box.core.sw_solo.models  import SingletonModel
+
+
+class ContactConfig(SingletonModel):
+    class Meta:
+        verbose_name=_("Налаштування зворотнього звязку")
+        verbose_name_plural = verbose_name
+
+
+class ContactRecipientEmail(AbstractRecipientEmail):
+    config = models.ForeignKey(
+        to="sw_contact_form.ContactConfig", related_name=_("emails"), 
+        on_delete=models.CASCADE,
+    )
+
+    class Meta:
+        verbose_name = _("емейл для сповіщень про контактні форми")
+        verbose_name_plural = _("емейли для сповіщень про контактні форми")
 
 
 class Contact(models.Model):
