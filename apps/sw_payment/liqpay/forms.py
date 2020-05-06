@@ -1,11 +1,8 @@
 from django import forms 
-from .models import Payment
+from .models import LiqpayTransaction
 
 
-class PaymentForm(forms.ModelForm):
+class LiqpayTransactionForm(forms.ModelForm):
   class Meta:
-      model = Payment
-      exclude = [
-          'order',
-          'timestamp',
-      ]
+      model = LiqpayTransaction
+      exclude = []

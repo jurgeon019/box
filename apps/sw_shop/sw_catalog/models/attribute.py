@@ -134,7 +134,7 @@ class ItemAttributeValue(models.Model):
         verbose_name=_("Ціна"), max_digits=9, decimal_places=2, default=0,
     )
     currency = models.ForeignKey(
-        verbose_name=_("Валюта"), to="sw_catalog.Currency", on_delete=models.CASCADE
+        verbose_name=_("Валюта"), to="sw_currency.Currency", on_delete=models.CASCADE
     )
     description = models.TextField(
         verbose_name=_("Опис"), blank=True, null=True, 

@@ -5,8 +5,11 @@ from django.db import models
 from django.forms import NumberInput, Textarea, TextInput
 from django.utils.translation import gettext_lazy as _
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline
+from box.core.utils import BaseAdmin , seo 
+from adminsortable.admin import SortableAdmin
+from box.core.utils import BaseAdmin
 
-from ..models import *
+from .models import *
 from box.core.utils import (
     show_admin_link,
     AdminImageWidget, seo, 
@@ -22,14 +25,6 @@ class PostInline(TranslationStackedInline):
     model = Post
     extra = 0
     classes = ['collapse']
-
-from box.core.utils import BaseAdmin , seo 
-
-
-class PostMarkerAdmin(admin.ModelAdmin):
-    search_fields = [
-        'name',
-    ]
 
 class PostCategoryAdmin(BaseAdmin, TabbedTranslationAdmin):
     # changeform 
@@ -71,9 +66,6 @@ class PostCategoryAdmin(BaseAdmin, TabbedTranslationAdmin):
         models.TextField: {'widget': Textarea(attrs={'rows':6, 'cols':20})},
     }
 
-
-from adminsortable.admin import SortableAdmin
-from box.core.utils import BaseAdmin
 
 
 class PostAdmin(

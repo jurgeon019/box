@@ -9,7 +9,7 @@ import json
 from ..models import * 
 from box.core.utils import get_multilingual_fields
 
-
+from box.core.sw_global_config.models import GlobalConfig, GlobalLabel, GlobalMarker
 
 class ItemResource(ModelResource):
 
@@ -53,6 +53,7 @@ class ItemResource(ModelResource):
         self.handle_brand_import(row)
         self.handle_currency_import(row)
         self.handle_in_stock_import(row)
+        self.handle_images_import(row)
 
     # def after_import_row(self, row, row_result,**kwargs):
     #     self.handle_images_import(row)
@@ -155,26 +156,44 @@ class ItemResource(ModelResource):
         return in_stock
 
     def handle_images_import(self, row):
-        from box.apps.sw_shop.sw_catalog.utils.utils import get_image_path
-        if row.get('images'):
-            image_names = row['images'].split(',')
-            # print("image_names")
-            # print(image_names)
-            images = []
-            # images = [ ItemImage.objects.get_or_create(image=f'shop/item/{image_name.strip()}')[0].id for image_name in image_names]
-            item = Item.objects.get(id=row['id'])
-            for image_name in image_names:
-                if image_name.startswith('shop/item/'):
-                    # Кодова фраза, якшо вдруг захочеш протестити як виглядають картинки на сайті
-                    ItemImage.objects.get_or_create(
-                        item=item,
-                        image=image_name,
-                    )
-                else:
-                    ItemImage.objects.get_or_create(
-                        item=item,
-                        image=get_image_path(item, image_name),
-                    )
+        '''
+        1. Рядом з manage.py є папка по типу тої шо була на jcb в квітні. 
+        У Item.csv робиться поле folder_images, і прописується путь до файлу в папці. 
+        З папки фотки перетягуються в media/shop/item. 
+
+        2. Якщо товари треба парсити, то робиться server_images, 
+        і з урлів стягуються картинки напряму в media. Але краще буде ті картинки спочатку стягнути 
+        в папку рядом з manage.py і вже з неї першим способом грузити фотки.
+        
+        3. Спочатку з Item.csv грузяться товари без картинок. 
+        Потім з ItemImage.csv грузяться фотки з лінками на товари 
+        
+        4. Спочатку з ItemImage.csv грузяться фотки без лінок на товари. 
+        Потім з Item.csv з поля images грузяться товари з ссилками на фотки 
+        '''
+        # from box.apps.sw_shop.sw_catalog.utils.utils import get_image_path
+        # if row.get('images'):
+        #     image_names = row['images'].split(',')
+        #     print("image_names")
+        #     print(image_names)
+        #     images = []
+        #     # images = [ ItemImage.objects.get_or_create(image=f'shop/item/{image_name.strip()}')[0].id for image_name in image_names]
+        #     # item = Item.objects.get(id=row['id'])
+        #     # for image_name in image_names:
+        #     #     if image_name.startswith('shop/item/'):
+        #     #         # Кодова фраза, якшо вдруг захочеш протестити як виглядають картинки на сайті
+        #     #         ItemImage.objects.get_or_create(
+        #     #             item=item,
+        #     #             image=image_name,
+        #     #         )
+        #     #     else:
+        #     #         ItemImage.objects.get_or_create(
+        #     #             item=item,
+        #     #             # image=get_image_path(item, image_name),
+        #     #             image=f'shop/item/{image_name}'
+        #     #             # image=image_name
+        #     #         )
+        #     for image_name 
     
     def dehydrate_images(self, item):
         images = ItemImage.objects.all().filter(item=item) 
@@ -207,7 +226,7 @@ class ItemResource(ModelResource):
                 marker_names =  list(row['markers'])
             for marker_name in marker_names:
                 print("marker_name:", marker_name)
-                marker, _ = ItemMarker.objects.get_or_create(
+                marker, _ = GlobalMarker.objects.get_or_create(
                     name__iexact=marker_name.strip().lower()
                 )
                 markers.append(str(marker.id))
@@ -230,7 +249,7 @@ class ItemResource(ModelResource):
                 label_texts = [row['labels']]
             for label_text in label_texts:
                 print("label_text::", label_text)
-                label, _ = ItemLabel.objects.get_or_create(
+                label, _ = GlobalLabel.objects.get_or_create(
                     text__iexact=label_text.strip().lower()
                 )
                 labels.append(str(label.id))

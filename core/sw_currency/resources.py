@@ -1,17 +1,11 @@
-from django.utils.translation import gettext_lazy as _
-
 from import_export.resources import ModelResource
-from import_export.fields import Field 
-
-
-import json 
-
-from ..models import * 
 from box.core.utils import get_multilingual_fields
 
+from .models import * 
 
 
-class ItemCurrencyResource(ModelResource):
+
+class CurrencyResource(ModelResource):
     
     class Meta:
         model = Currency
@@ -27,10 +21,9 @@ class ItemCurrencyResource(ModelResource):
     def get_export_order(self):
         multilingual_fields = get_multilingual_fields(self._meta.model)
         order = [
-            # "name",
-            # "symbol",
             "code",
-            "rate",
+            "sale_rate",
+            "purchase_rate",
             "is_main",
             # *multilingual_fields['symbol'],
         ]
@@ -38,7 +31,6 @@ class ItemCurrencyResource(ModelResource):
 
     def get_import_id_fields(self):
         fields = [
-            # 'slug',
             # 'id',
             'code',
         ]

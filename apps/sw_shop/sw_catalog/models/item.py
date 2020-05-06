@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from mptt.models import MPTTModel, TreeForeignKey
 
-from . import ItemImage, Currency, ItemStock
+from . import ItemImage, Currency, ItemStock, ItemView
 from .. import settings as item_settings
 
 from box.core.models import AbstractPage
@@ -25,11 +25,11 @@ class Item(AbstractPage):
 			blank=True, null=True,
 		)
 	markers      = models.ManyToManyField(
-		verbose_name=_("Маркери"), to='sw_catalog.ItemMarker', 
+		verbose_name=_("Маркери"), to='sw_global_config.GlobalMarker', 
 		related_name='items', blank=True,
 	)
 	labels      = models.ManyToManyField(
-		verbose_name=_("Мітки"), to='sw_catalog.ItemLabel', 
+		verbose_name=_("Мітки"), to='sw_global_config.GlobalLabel', 
 		related_name='items', blank=True,
 	)
 	similars     = models.ManyToManyField(
@@ -52,7 +52,7 @@ class Item(AbstractPage):
 		help_text=' ',
 	)
 	currency     = models.ForeignKey(
-		verbose_name=_("Валюта"),    to="sw_catalog.Currency",     
+		verbose_name=_("Валюта"),    to="sw_currency.Currency",     
 		related_name="items", on_delete=models.SET_NULL, blank=True, null=True,
 	)
 	# old_price    = models.DecimalField(
@@ -86,6 +86,19 @@ class Item(AbstractPage):
 
 	def __str__(self):
 		return f"{self.title}, {self.slug}"
+	
+	def views(self):
+		return ItemView.objects.filter(item=self).count()
+	def add_view(self, request):
+		x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+		if x_forwarded_for:
+			ip = x_forwarded_for.split(',')[0]
+		else:
+			ip = request.META.get('REMOTE_ADDR')
+		if request.session.session_key:
+			view, _ = ItemView.objects.get_or_create(sk=request.session.session_key, item=self)
+			view.ip = ip 
+			view.save()
 
 	def save(self, *args, **kwargs):
 		# self.handle_currency(*args, **kwargs)

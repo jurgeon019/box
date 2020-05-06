@@ -12,41 +12,14 @@ from box.core import settings as core_settings
 
 User = get_user_model()
 
-
-class ItemLabel(models.Model):
-	text  = models.CharField(
-		verbose_name=_('Текст'), max_length=255
+class ItemView(models.Model):
+	sk   = models.CharField(verbose_name=_("Ключ сесії"), max_length=255)
+	ip   = models.CharField(verbose_name=_("IP-адреса"), max_length=255)
+	item = models.ForeignKey(
+		verbose_name=_("Товар"), to="sw_catalog.Item", on_delete=models.CASCADE
 	)
-	code  = models.SlugField(
-		verbose_name=_("Код"), unique=True, null=True, blank=True
-	)
-
-	@classmethod
-	def modeltranslation_fields(cls): return ['text']
-
-	def __str__(self): return f"{self.text}"
-
-	class Meta:
-		verbose_name = _('мітка товарів')
-		verbose_name_plural = _('мітки товарів')
-
-
-class ItemMarker(models.Model):
-	name  = models.CharField(
-		verbose_name=_('Назва'), max_length=255
-	)
-	code  = models.SlugField(
-		verbose_name=_("Код"), unique=True, null=True, blank=True
-	)
-	def __str__(self): return f"{self.name}"
-
-	@classmethod
-	def modeltranslation_fields(cls): return ['name']
-
-	class Meta:
-		verbose_name = _('маркер товарів')
-		verbose_name_plural = _('маркери товарів')
-
+	def __str__(self):
+		return f'{self.sk}: {self.item.title}'
 
 class ItemUnit(models.Model):
 	name = models.CharField(
@@ -82,8 +55,14 @@ class ItemBrand(AbstractPage):
 		ordering = ['order']
 
 
-class ItemImage(BaseMixin):
-	item      = SortableForeignKey(
+
+# class ItemImage(BaseMixin):
+class ItemImage(models.Model):
+	order           = models.PositiveIntegerField(
+		verbose_name=_("Порядок"), default=0, blank=False, null=False
+	)
+	# item      = SortableForeignKey(
+	item      = models.ForeignKey(
 		verbose_name=_("Товар"), to="sw_catalog.Item", 
 		on_delete=models.SET_NULL, 
 		related_name='images', null=True,
@@ -106,6 +85,7 @@ class ItemImage(BaseMixin):
 		]
 		return fields
 	
+	@property
 	def image_url(self):
 		image_url = core_settings.IMAGE_NOT_FOUND
 		if self.image: image_url = self.image.url 

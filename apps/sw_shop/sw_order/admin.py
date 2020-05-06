@@ -3,17 +3,25 @@ from django.contrib import admin
 from django.shortcuts import reverse, render, redirect
 from django.utils.html import mark_safe
 
-from box.apps.sw_shop.sw_order.models import Order, Status
+from box.apps.sw_shop.sw_order.models import Order, OrderStatus, Payment
 # from box.apps.sw_payment.liqpay.admin import PaymentInline
 from box.apps.sw_shop.sw_cart.admin import CartItemInline
 from box.core.utils import show_admin_link
 from box.core.sw_solo.admin import SingletonModelAdmin
 
-from ..models import *
+from .models import *
 from .filters import * 
 from .forms import * 
 
 from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInline, TranslationTabularInline
+from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
+import nested_admin
+from import_export.admin import ImportExportModelAdmin
+from .resources import * 
+
+class PaymentInline(admin.TabularInline):
+  extra = 0 
+  model = Payment
 
 
 class OrderInline(admin.TabularInline):
@@ -45,27 +53,18 @@ class OrderInline(admin.TabularInline):
         return False
 
 
-class StatusAdmin(TabbedTranslationAdmin):
+class OrderStatusAdmin(
+  TabbedTranslationAdmin,
+  ImportExportModelAdmin,
+  ):
+
   def get_model_perms(self, request):
     return {}
+  
+  resource_class = OrderStatusResource
   search_fields = [
     'name'
   ]
-
-
-class OrderTagAdmin(TabbedTranslationAdmin):
-  def get_model_perms(self, request):
-    return {}
-  # model_perms = {}
-  search_fields = [
-    'name'
-  ]
-
-
-from rangefilter.filter import DateRangeFilter, DateTimeRangeFilter
-
-
-import nested_admin
 
 
 class OrderAdmin(nested_admin.NestedModelAdmin):
@@ -234,7 +233,6 @@ class OrderAdmin(nested_admin.NestedModelAdmin):
     list_per_page = 100 
 
 
-
 class ItemRequestAdmin(admin.ModelAdmin):
     def show_item(self, obj=None):
         from django.shortcuts import reverse 
@@ -267,20 +265,21 @@ class ItemRequestAdmin(admin.ModelAdmin):
     ]
 
 
-class OrderTagInline(TranslationTabularInline):
-    extra = 0 
-    model = OrderTag
-     
-
 class StatusInline(TranslationTabularInline):
     extra = 0 
-    model = Status
+    model = OrderStatus
      
 
 class OrderConfigAdmin(SingletonModelAdmin):
   inlines = [
-    OrderTagInline, 
     StatusInline
   ]
+
+
+
+admin.site.register(Order, OrderAdmin)
+admin.site.register(ItemRequest, ItemRequestAdmin)
+admin.site.register(OrderConfig, OrderConfigAdmin)
+admin.site.register(OrderStatus, OrderStatusAdmin)
 
 

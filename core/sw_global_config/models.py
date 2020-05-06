@@ -129,6 +129,21 @@ class GlobalConfig(SingletonModel):
       verbose_name_plural = verbose_name
 
 
+class GlobalRecipientEmail(models.Model):
+  config = models.ForeignKey(
+    verbose_name=_("Глобальні налаштування"), to="sw_global_config.GlobalConfig", 
+    on_delete=models.CASCADE, related_name='emails'
+  )
+  email = models.EmailField(verbose_name=_("Емайл"), max_length=255)
+  is_active = models.BooleanField(verbose_name=_("Активність"), default=True)
+
+  def __str__(self):
+    return f'{self.email}, {self.is_active}' 
+
+  class Meta:
+      verbose_name = _('емейл для всіх сповіщень')
+      verbose_name_plural = _("емейли для всіх сповіщень")
+
 
 class SeoScript(models.Model):
   POSITION_CHOICES = (
@@ -137,10 +152,16 @@ class SeoScript(models.Model):
     ("body_top","Після відкриваючого body"),
     ("body_bottom","Перед закриваючим body"),
   )
-  setting  = models.ForeignKey(to="sw_global_config.GlobalConfig", on_delete=models.CASCADE, related_name='scripts',)
-  name     = models.CharField(verbose_name=_("Назва коду"), max_length=255)
-  position = models.CharField(verbose_name=_("Положення коду на сторінці"), max_length=255, choices=POSITION_CHOICES)
+  setting  = models.ForeignKey(
+    to="sw_global_config.GlobalConfig", 
+    on_delete=models.CASCADE, related_name='scripts',
+  )
   code     = models.TextField(verbose_name=_("Код для вставлення"))
+  name     = models.CharField(verbose_name=_("Назва коду"), max_length=255)
+  position = models.CharField(
+    verbose_name=_("Положення коду на сторінці"), max_length=255, 
+    choices=POSITION_CHOICES
+  )
 
   def __str__(self):
     return f'{self.name}, {self.position}, {self.code}'
@@ -149,4 +170,62 @@ class SeoScript(models.Model):
     verbose_name = ('Код')
     verbose_name_plural = ('Коди')
 
+
+class GlobalTag(models.Model):
+  color    = ColorField(
+    verbose_name=_("Колір"), 
+  )
+  name     = models.CharField(
+    verbose_name=_("Назва"), max_length=255, blank=False, null=False
+  )
+  config   = models.ForeignKey(
+    verbose_name=_("Глобальні налаштування"), on_delete=models.CASCADE,
+    to='sw_global_config.GlobalConfig', null=True, blank=False, 
+  )
+
+  def __str__(self):
+    return f"{self.name}"
+  
+  @classmethod 
+  def modeltranslation_fields(cls): return ['name',] 
+
+  class Meta: 
+    verbose_name = ('тег')
+    verbose_name_plural = ('теги')
+
+
+class GlobalLabel(models.Model):
+	text  = models.CharField(
+		verbose_name=_('Текст'), max_length=255,
+	)
+	code  = models.SlugField(
+		verbose_name=_("Код"), unique=True, null=True, blank=True,
+	)
+
+	@classmethod
+	def modeltranslation_fields(cls): return ['text']
+
+	def __str__(self): return f"{self.text}"
+
+	class Meta:
+		verbose_name = _('мітка товарів')
+		verbose_name_plural = _('мітки товарів')
+
+
+class GlobalMarker(models.Model):
+	name  = models.CharField(
+		verbose_name=_('Назва'), max_length=255
+	)
+	code  = models.SlugField(
+		verbose_name=_("Код"), unique=True, null=True, blank=True
+	)
+
+	def __str__(self): return f"{self.name}"
+
+	@classmethod
+	def modeltranslation_fields(cls): return ['name']
+
+	class Meta:
+		verbose_name = _('маркер товарів')
+		verbose_name_plural = _('маркери товарів')
 

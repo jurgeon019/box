@@ -1,5 +1,5 @@
 from django.contrib import admin 
-from .models import Payment
+from .models import LiqpayTransaction
 
 
 
@@ -7,18 +7,19 @@ from .models import Payment
 class PaymentInline(admin.StackedInline):
     def has_add_permission(self, request, obj=None):
         return False 
+
     def has_delete_permission(self, request, obj=None):
         return False 
+
     # КОЛИ ЦЯ ШТУКА ВКЛЮЧЕНА - ОПЛАТИ НЕ ВІДОБРАЖАЮТЬСЯ ПІД ЗАКАЗОМ
     # def has_change_permission(self, request, obj=None):
     #     return False 
-    model = Payment
+    model = LiqpayTransaction
     extra = 0
     exclude = [
         
     ]
     fields = [
-        "order",
         "status",
         "ip",
         "amount",

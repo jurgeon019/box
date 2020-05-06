@@ -191,7 +191,7 @@ class ItemAdmin(
 
     def add_markers(self, request, queryset):
         initial = {
-            'model':ItemMarker,
+            'model':GlobalMarker,
             'attr':'markers',
             'action_value':'add_markers',
             'action_type':'add',
@@ -203,7 +203,7 @@ class ItemAdmin(
     
     def remove_markers(self, request, queryset):
         initial = {
-            'model':ItemMarker,
+            'model':GlobalMarker,
             'attr':'markers',
             'action_value':'remove_markers',
             'action_type':'remove',

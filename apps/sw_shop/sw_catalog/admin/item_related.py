@@ -67,7 +67,7 @@ class ItemUnitAdmin(
 
 class ItemImageAdmin(
     # nested_admin.NestedTabularInline,
-    BaseAdmin, 
+    # BaseAdmin, 
     SortableAdminMixin,
     ImportExportActionModelAdmin,
     ImportExportModelAdmin,
@@ -79,10 +79,10 @@ class ItemImageAdmin(
         return show_admin_link(obj=obj, obj_attr='item', obj_name='title')
 
     show_item.short_description = ('Товар')
-    
+    resource_class = ItemImageResource
     list_display = [
         'id',
-        'show_image',
+        # 'show_image',
         'alt',
         'show_item',
     ]
@@ -94,47 +94,6 @@ class ItemImageAdmin(
     autocomplete_fields = [
         'item',
     ]
-
-
-class ItemCurrencyAdmin(
-    ImportExportModelAdmin,
-    ImportExportActionModelAdmin,
-    TabbedTranslationAdmin,
-    ):
-    resource_class = ItemCurrencyResource
-    actions = [
-        'delete',
-    ]
-    list_filter = []
-    list_display = [
-        # 'name',
-        'code',
-        'rate',
-        'is_main',
-    ]
-    list_display_links = [
-        # 'name',
-        'code',
-    ]
-    list_editable = [
-        'rate',
-    ]
-    readonly_fields = [
-        # 'is_active',
-        'is_main',
-        # 'updated',
-        # 'created',
-        # 'code',
-    ]
-    formfield_overrides = {
-        # models.CharField: {'widget': TextInput(attrs={'size':8})},
-        # models.DecimalField: {'widget': NumberInput(attrs={"style":"width:70px"})}
-    }
-    search_fields = [
-        # 'name',
-        'code',
-    ]
-
 
 
 class ItemStockAdmin(TabbedTranslationAdmin,
@@ -175,47 +134,6 @@ class ItemStockAdmin(TabbedTranslationAdmin,
     ]
 
 
-class ItemMarkerAdmin(
-    TabbedTranslationAdmin,
-    ImportExportActionModelAdmin,
-    ImportExportModelAdmin,
-    ):
-    def has_add_permission(self, request):
-        return False 
-    def has_delete_permission(self, request, obj=None):
-        return False 
-    
-    search_fields = [
-        'name',
-    ]
-    readonly_fields = [
-        'code'
-    ]
-    fields = [
-        'code',
-        'name',
-    ]
-
-class ItemLabelAdmin(
-    TabbedTranslationAdmin,
-    ImportExportActionModelAdmin,
-    ImportExportModelAdmin,
-    ):
-    def has_add_permission(self, request):
-        return False 
-    def has_delete_permission(self, request, obj=None):
-        return False 
-
-    search_fields = [
-        'text',
-    ]
-    readonly_fields = [
-        'code'
-    ]
-    fields = [
-        'text',
-        'code',
-    ]
 
 
 class ItemBrandAdmin(BaseAdmin, SortableAdminMixin, 

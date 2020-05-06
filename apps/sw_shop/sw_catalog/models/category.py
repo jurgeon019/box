@@ -4,7 +4,7 @@ from django.shortcuts import reverse
 from box.core.models import AbstractPage, BaseMixin
 from django.db import models 
 
-from .currency import Currency
+from box.core.sw_currency.models import Currency
 from mptt.models import MPTTModel, TreeForeignKey
 from .. import settings as catalog_settings 
 from django.utils.text import slugify
@@ -12,7 +12,7 @@ from transliterate import translit
 
 class ItemCategory(AbstractPage, MPTTModel):
   parent     = TreeForeignKey(verbose_name=_("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
-  currency   = models.ForeignKey(verbose_name=_("Валюта"), to="sw_catalog.Currency", blank=True, null=True, related_name="categories",  on_delete=models.SET_NULL)
+  currency   = models.ForeignKey(verbose_name=_("Валюта"), to="sw_currency.Currency", blank=True, null=True, related_name="categories",  on_delete=models.SET_NULL)
 
   class Meta: 
     verbose_name = _('категорія'); 

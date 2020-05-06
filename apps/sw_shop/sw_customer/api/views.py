@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from .serializers import *
 
-from box.apps.sw_shop.sw_order.models import Status, Order
+from box.apps.sw_shop.sw_order.models import OrderStatus, Order
 from box.core.utils import get_user, get_sk
 
 from rest_framework.viewsets import ModelViewSet

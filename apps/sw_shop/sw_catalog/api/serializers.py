@@ -6,7 +6,7 @@ from django.conf import settings
 from box.apps.sw_shop.sw_catalog import settings as item_settings
 
 
-class ItemCurrencySerializer(serializers.ModelSerializer):
+class CurrencySerializer(serializers.ModelSerializer):
   class Meta:
     model = Currency
     exclude = []
@@ -66,7 +66,7 @@ class ItemDetailSerializer(serializers.ModelSerializer):
 
   price    = serializers.ReadOnlyField()
   reviews  = ItemReviewSerializer(many=True)
-  currency = ItemCurrencySerializer()
+  currency = CurrencySerializer()
   in_stock = ItemStockSerializer()
 
   class Meta:
@@ -84,7 +84,7 @@ from rest_framework import serializers
 
 class ItemListSerializer(serializers.ModelSerializer):
   price    = serializers.ReadOnlyField()
-  currency = ItemCurrencySerializer()
+  currency = CurrencySerializer()
   in_stock = ItemStockSerializer()
 
   absolute_url = serializers.SerializerMethodField() 

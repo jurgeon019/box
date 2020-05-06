@@ -1,48 +1,45 @@
 from django.shortcuts import redirect
 from django.conf import settings 
 
-from box.apps.sw_payment.liqpay.models import LiqpayConfig
-from .forms import PaymentForm
+from .models import LiqpayConfig
+from .forms import LiqpayTransaction
 from .liqpay import LiqPay
-
 
 
 def get_liqpay_context(params): 
   config    = LiqpayConfig.get_solo()
-  liqpay    = LiqPay(config.liqpay_public_key, config.liqpay_private_key)
-  signature = liqpay.cnb_signature(params)
-  data      = liqpay.cnb_data(params)
-  return signature, data  
+  if config.sandbox_mode:
+    public  = config.liqpay_sandbox_public_key
+    private = config.liqpay_sandbox_private_key
+  else:
+    public  = config.liqpay_public_key
+    private = config.liqpay_private_key
+  liqpay    = LiqPay(public, private)
+  return liqpay.cnb_signature(params), liqpay.cnb_data(params)  
 
 
 def get_response(request):
-  config = LiqpayConfig.get_solo()
-  liqpay    = LiqPay(config.liqpay_public_key, config.liqpay_private_key)
+  config  = LiqpayConfig.get_solo()
+  if config.sandbox_mode:
+    public  = config.liqpay_sandbox_public_key
+    private = config.liqpay_sandbox_private_key
+  else:
+    public  = config.liqpay_public_key
+    private = config.liqpay_private_key
+  liqpay    = LiqPay(public, private)
   data      = request.POST.get('data')
   signature = request.POST.get('signature')
-  sign      = liqpay.str_to_sign(config.liqpay_private_key + data + config.liqpay_private_key)
+  sign      = liqpay.str_to_sign(private + data + private)
   response  = liqpay.decode_data_from_str(data)
-  print(response)
-  if sign == signature: 
-    print('callback is valid')
+  # print(response)
+  if sign == signature: print('callback is valid')
   return response
 
 
-
-def create_payment(response, request):
-  # TODO: Забрати звідси все що звязано з магазином 
-  from box.apps.sw_shop.sw_order.models import Order 
-  # from box.apps.sw_payment. sw_shop.sw_order.models import Order 
+def create_liqpay_transaction(request):
+  response = get_response(request)
   status   = response.get('status', '')
-  order_id = response.get('order_id', '')
-  print(status, order_id)
-  order   = Order.objects.get(id=order_id)
   if status == 'failure':
     return redirect('/')
-  form    = PaymentForm(response)
-  payment = form.save(commit=False)
-  payment.order = Order.objects.get(pk=order_id)
-  payment.save()
-  order.make_order(request)
-
-
+  form    = LiqpayTransactionForm(response)
+  form.save()

@@ -46,6 +46,7 @@ box_core = [
     'box.core.sw_global_config',
     'box.core.sw_solo',
     'box.core.sw_model_search',
+    'box.core.sw_currency',
     'box.core.sw_content',
     'box.core.sw_contact_form',
     'box.core.sw_auth',
