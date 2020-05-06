@@ -79,14 +79,11 @@ class ItemList(generics.ListCreateAPIView):
     attributes   = data.get('attributes', [])
     import json 
     attributes   = json.loads(attributes)
-    print(attributes)
     # TODO: добавити сюда пошук по modelsearch,  get_items_in_favours, get_items_in_cart
 
     if category_id is not None:
       queryset = queryset.filter(category__id=category_id)
     if category_ids is not None:
-      print(category_ids)
-      print(type(category_ids))
       queryset = queryset.filter(category__id__in=[category_ids])
     if max_price is not None:
       queryset = queryset.filter(new_price__lte=max_price)
@@ -103,19 +100,18 @@ class ItemList(generics.ListCreateAPIView):
     if ordering is not None:
       queryset = queryset.order_by(ordering)
     for attribute in attributes:
-      print(attribute)
-      # if attribute['value_ids']:
-      #   values = AttributeValue.objects.filter(id__in=attribute['value_ids'])
-      #   attribute = Attribute.objects.get(id=attribute['attribute_id'])
-      #   item_attributes = ItemAttribute.objects.filter(attribute=attribute)
-      #   item_attribute_ids = ItemAttributeValue.objects.filter(
-      #     item_attribute__in=item_attributes,
-      #     value__in=values,
-      #   ).values_list('item_attribute_id', flat=True)
-      #   item_ids = ItemAttribute.objects.filter(
-      #     id__in=item_attribute_ids,
-      #   ).values_list('item', flat=True)
-      #   queryset = queryset.filter(id__in=item_ids)
+      if attribute['value_ids']:
+        values = AttributeValue.objects.filter(id__in=attribute['value_ids'])
+        attribute = Attribute.objects.get(id=attribute['attribute_id'])
+        item_attributes = ItemAttribute.objects.filter(attribute=attribute)
+        item_attribute_ids = ItemAttributeValue.objects.filter(
+          item_attribute__in=item_attributes,
+          value__in=values,
+        ).values_list('item_attribute_id', flat=True)
+        item_ids = ItemAttribute.objects.filter(
+          id__in=item_attribute_ids,
+        ).values_list('item', flat=True)
+        queryset = queryset.filter(id__in=item_ids)
     return queryset
 
 
