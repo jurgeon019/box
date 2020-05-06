@@ -136,7 +136,13 @@ class GlobalRecipientEmail(models.Model):
   )
   email = models.EmailField(verbose_name=_("Емайл"), max_length=255)
   is_active = models.BooleanField(verbose_name=_("Активність"), default=True)
-
+  
+  @classmethod
+  def get_recipient_list(self):
+    return GlobalRecipientEmail.objects.filter(
+      is_active=True
+    ).values_list('email', flat=True)
+  
   def __str__(self):
     return f'{self.email}, {self.is_active}' 
 
