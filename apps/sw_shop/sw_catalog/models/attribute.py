@@ -51,7 +51,15 @@ class Attribute(models.Model):
             'name',
             'category',
         ]
-    
+
+    def get_attribute_values(self, items=None):
+        item_attributes = ItemAttribute.objects.all()
+        if items: item_attributes = item_attributes.filter(item__in=items)
+        item_attribute_value_ids = ItemAttributeValue.objects.filter(
+            item_attribute__in=item_attributes.filter(attribute=self),
+        ).values_list('value_id', flat=True).distinct()
+        return AttributeValue.objects.filter(id__in=item_attribute_value_ids) 
+
     @classmethod
     def modeltranslation_fields(cls):
         return ['name']
