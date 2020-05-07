@@ -23,10 +23,10 @@ third_party = [
     "mptt",
     "crispy_forms",
 
-    "froala_editor",
     "tinymce",
     'ckeditor',
     'ckeditor_uploader',
+    "froala_editor",
     'django_summernote',
     # 'django_markdown',
     'markdownx',
