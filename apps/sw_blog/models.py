@@ -1,4 +1,13 @@
 from tinymce.models import HTMLField
+from froala_editor.fields import FroalaField
+from markdownx.models import MarkdownxField
+# from django_markdown.models import MarkdownField
+from markdownx.models import MarkdownxField
+from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
+
+
+
 from django.db import models 
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -12,12 +21,22 @@ from box.core.models import AbstractPage, BaseMixin
 User = get_user_model() 
 
 
-
 class Post(AbstractPage):
   markers    = models.ManyToManyField(
     to="sw_global_config.GlobalMarker", verbose_name=_("Маркери"), blank=True
   )
-  content    = HTMLField(
+  content = RichTextUploadingField(
+  # content = RichTextField(
+    # config_name='awesome_ckeditor',
+  # content = models.TextField(
+  # content = MarkdownxField(
+  # content = MarkdownField(
+  # content    = HTMLField(
+  # content = FroalaField(
+    # options={
+    #   'toolbarInline': False,
+    # },
+    # plugins=('font_size', 'font_family'),
     verbose_name=_("Контент"), blank=False, null=True)
   category   = models.ForeignKey(
     verbose_name=_("Категорія"), to="sw_blog.PostCategory", 

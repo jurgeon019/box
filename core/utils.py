@@ -20,7 +20,7 @@ from django.core.paginator import Paginator
 def paginate(request, klass):
     query        = request.GET
     page_number  = query.get('page_number', 1)
-    per_page     = query.get('per_page', 16)
+    per_page     = query.get('per_page', 4)
     page         = Paginator(klass.objects.all(), per_page=per_page).get_page(page_number)
     is_paginated = page.has_other_pages()
     current_page = page.number

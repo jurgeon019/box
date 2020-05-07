@@ -14,7 +14,6 @@ from django.contrib.auth.admin import (UserAdmin, GroupAdmin,)
 from django.utils.html import mark_safe 
 from django.shortcuts import reverse, render, redirect
 
-# from box.apps.sw_shop.sw_order.admin import (OrderInline,)
 from box.core.utils import move_to
 from ..resources import BoxUserResource
 

@@ -1,5 +1,4 @@
 from django import apps 
-from box.apps.sw_shop.sw_order.signals import * 
 
 class OrderConfig(apps.AppConfig):
     name                = 'box.apps.sw_shop.sw_order'

@@ -15,6 +15,8 @@ from box.core.utils import (
     AdminImageWidget, seo, 
 )
 
+
+
 class CommentInline(admin.StackedInline):
     model = PostComment
     extra = 0
@@ -25,8 +27,14 @@ class PostInline(TranslationStackedInline):
     model = Post
     extra = 0
     classes = ['collapse']
+from django_summernote.admin import SummernoteModelAdmin
 
-class PostCategoryAdmin(BaseAdmin, TabbedTranslationAdmin):
+@admin.register(PostCategory)
+class PostCategoryAdmin(
+    BaseAdmin, TabbedTranslationAdmin,
+    # SummernoteModelAdmin,
+    ):
+    # summernote_fields = ('content',)
     # changeform 
     fieldsets = (
         (('ОСНОВНА ІНФОРМАЦІЯ'), {
@@ -65,20 +73,23 @@ class PostCategoryAdmin(BaseAdmin, TabbedTranslationAdmin):
         models.CharField: {'widget': TextInput(attrs={'size':'20'})},
         models.TextField: {'widget': Textarea(attrs={'rows':6, 'cols':20})},
     }
+from markdownx.admin import MarkdownxModelAdmin
 
 
-
+@admin.register(Post)
 class PostAdmin(
     BaseAdmin,
     TabbedTranslationAdmin,
     SortableAdmin,
+    # MarkdownxModelAdmin,
+    # SummernoteModelAdmin,
     ):
     def show_category(self, obj):
       return show_admin_link(obj, obj_attr='category', obj_name='title')
 
     def show_image(self, obj):
         return mark_safe(f"<img src='{obj.image_url}' width='150px' height='auto'/>")
-
+    # summernote_fields = ('content',)
     show_category.short_description = _("Категорія")
     show_image.short_description    = _("Зображення")
   
@@ -94,15 +105,22 @@ class PostAdmin(
         CommentInline,
     ]
     fieldsets = (
+
         (('ОСНОВНА ІНФОРМАЦІЯ'), {
             'fields':(
                 'title',
-                'content',
                 'category',
                 'author',
                 'markers',
                 'image',
             ),
+            # 'classes':['collapse']
+        }),
+        (('КОНТЕНТ'), {
+            'fields':(
+                'content',
+            ),
+            # 'classes':['collapse',]
         }),
         seo,
     )
@@ -138,6 +156,7 @@ class PostAdmin(
     ]
 
 
+# @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     inlines = [
         CommentInline,

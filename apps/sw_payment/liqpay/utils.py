@@ -31,7 +31,6 @@ def get_response(request):
   liqpay    = LiqPay(public, private)
   sign      = liqpay.str_to_sign(private + data + private)
   response  = liqpay.decode_data_from_str(data)
-  print(response)
   if sign == signature: print('callback is valid')
   return response
 
@@ -39,14 +38,13 @@ def get_response(request):
 def create_liqpay_transaction(request):
   response = get_response(request)
   status   = response.get('status', '')
-  print(response)
   if status == 'failure':
     return redirect('/')
   form    = LiqpayTransactionForm(response)
-  form.save()
-  print(form.instance)
-  import pdb; pdb.set_trace()
-  return form.instance
+  if form.is_valid():
+    form.save()
+    return form
+
 
 
 

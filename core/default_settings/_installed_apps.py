@@ -22,9 +22,16 @@ django_contrib = [
 third_party = [
     "mptt",
     "crispy_forms",
+
+    "froala_editor",
     "tinymce",
     'ckeditor',
     'ckeditor_uploader',
+    'django_summernote',
+    # 'django_markdown',
+    'markdownx',
+
+
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -81,5 +88,4 @@ INSTALLED_APPS  = [
     *box_payment,
     *box_blog,
 ]
-
 

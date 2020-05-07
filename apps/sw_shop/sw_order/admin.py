@@ -19,10 +19,6 @@ import nested_admin
 from import_export.admin import ImportExportModelAdmin
 from .resources import * 
 
-class PaymentInline(admin.TabularInline):
-  extra = 0 
-  model = Payment
-
 
 class OrderInline(admin.TabularInline):
     def show_link(self, obj):
@@ -66,6 +62,23 @@ class OrderStatusAdmin(
   search_fields = [
     'name'
   ]
+
+
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+  pass 
+
+class PaymentInline(nested_admin.NestedTabularInline):
+  def has_add_permission(self, request, obj=None):
+    return False
+  def has_change_permission(self, request, obj=None):
+    return False
+  def has_delete_permission(self, request, obj=None):
+    return False
+  model = Payment
+  extra = 0 
+  exclude = []
 
 
 @admin.register(Order)
@@ -167,7 +180,7 @@ class OrderAdmin(nested_admin.NestedModelAdmin):
     total_without_coupon.short_description = _('Сумма замовлення зі скидкою')
     inlines = [
         CartItemInline,
-        # PaymentInline,
+        PaymentInline,
     ]
     list_display = [
         'show_id',
@@ -284,9 +297,3 @@ class OrderConfigAdmin(SingletonModelAdmin):
     OrderStatusInline,
     OrderRecipientEmailInline
   ]
-
-
-
-@admin.register(Payment)
-class PaymentAdmin(admin.ModelAdmin):
-  pass 

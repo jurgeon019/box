@@ -1,0 +1,29 @@
+    
+            {% if paginated_data.current_page == 1 %}
+            <a class="" href="?page_number=1">1</a> 
+            {% elif paginated_data.current_page != 1 %}
+            <a class="" href="?page_number=1">1</a> 
+                {% if paginated_data.current_page > 4  %}
+                <div class="">...</div>
+                {% endif %}
+            {% endif %}
+        
+            {% for page in paginated_data.pages_list %}
+                {% if page != 1 and page != paginated_data.last_page %}
+                    {% if page == paginated_data.current_page %}
+                        <a class="" href="?page_number={{page}}">{{page}}</a>
+                    {% elif page > paginated_data.current_page|add:'-3' and page < paginated_data.current_page|add:'3' %}
+                        <a class="" href="?page_number={{page}}">{{page}}</a>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        
+            {% if paginated_data.current_page == paginated_data.last_page %}
+            <a class="" href="?page_number={{paginated_data.last_page}}">{{paginated_data.last_page}}</a> 
+            {% elif paginated_data.current_page != paginated_data.last_page %}
+                {% if paginated_data.current_page < paginated_data.last_page|add:'-4' %}
+                <div class="">...</div>
+                {% endif %}
+            <a class="" href="?page_number={{paginated_data.last_page}}">{{paginated_data.last_page}}</a> 
+            {% endif %}
+

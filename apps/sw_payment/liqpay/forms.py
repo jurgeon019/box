@@ -5,4 +5,6 @@ from .models import LiqpayTransaction
 class LiqpayTransactionForm(forms.ModelForm):
   class Meta:
       model = LiqpayTransaction
-      exclude = []
+      exclude = [
+        'timestamp',
+      ]

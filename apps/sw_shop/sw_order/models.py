@@ -189,28 +189,28 @@ class Order(models.Model):
   
 
 class Payment(models.Model):
-  order = models.ForeignKey(
+  order = models.OneToOneField(
     verbose_name=_("Заказ"),  to="sw_order.Order", on_delete=models.CASCADE,
     blank=True, null=True
   )
-  amount = models.DecimalField(
-    verbose_name=_("Сумма"), max_digits=5, decimal_places=2, 
+  amount = models.FloatField(
+    verbose_name=_("Сумма"), 
+    blank=True, null=True, default=0
   )
   currency = models.ForeignKey(
     verbose_name=_("Валюта"), to="sw_currency.Currency", on_delete=models.SET_NULL,
     blank=True, null=True, 
   )
   created     = models.DateTimeField(
-    verbose_name=_('Дата замовлення'), default=timezone.now
+    verbose_name=_('створено'), default=timezone.now
   )
   updated     = models.DateTimeField(
-    verbose_name=_('Дата оновлення'), auto_now_add=False, auto_now=True,  
+    verbose_name=_('оновлено'), auto_now_add=False, auto_now=True,  
     blank=True, null=True
   )
-
   class Meta: 
-    verbose_name = _('замовлення')
-    verbose_name_plural = _('замовлення')
+    verbose_name = _('оплата замовлення')
+    verbose_name_plural = _('оплати замовлень')
 
 
 class ItemRequest(models.Model):

@@ -29,11 +29,11 @@ for project_name, path_name in settings.SITEMAP_PATHS.items():
     })
   except:
     pass
-if 'box.core.sw_content' in settings.INSTALLED_APPS:
-  from box.core.sw_content.sitemaps import PageSitemap
-  sitemaps.update({
-    'pages':PageSitemap,
-  })
+# if 'box.core.sw_content' in settings.INSTALLED_APPS:
+#   from box.core.sw_content.sitemaps import PageSitemap
+#   sitemaps.update({
+#     'pages':PageSitemap,
+#   })
 if 'box.apps.sw_shop.sw_catalog' in settings.INSTALLED_APPS:
   from box.apps.sw_shop.sw_catalog.sitemaps import ItemSitemap, ItemCategorySitemap
   sitemaps.update({
@@ -94,8 +94,15 @@ urlpatterns = [
   path('jsi18n/',          js_cat.as_view(), name='javascript-catalog'),
   path('admin_tools/',     include('admin_tools.urls')),
   path('grappelli/',       include('grappelli.urls')),
+
+  path('froala_editor/',   include('froala_editor.urls')),
   path('tinymce/',         include('tinymce.urls')),
   path('ckeditor/',        include('ckeditor_uploader.urls')),
+  path('summernote/',      include('django_summernote.urls')),
+  # path('markdown/',        include('django_markdown.urls')),
+  path('markdownx/',       include('markdownx.urls')),
+
+
   path('api-auth/',        include('rest_framework.urls', namespace='rest_framework')),
   path('auth/',            include('djoser.urls')),
   path('auth/',            include('djoser.urls.authtoken')),

@@ -3,22 +3,6 @@ from django import forms
 from django.http import HttpResponse 
 
 
-# from box.apps.sw_shop.sw_catalog.models import *
-# from box.apps.sw_shop.sw_order.models import * 
-
-
-# class OrderForm(forms.ModelForm):
-#     class Meta:
-#         model = Order
-#         exclude = [
-#             'user',
-#             'ordered',
-#             'status',
-#             'total_price',
-#             'cart',
-#         ]
-
-
 def shop(request):
     categories       = ItemCategory.objects.all()
     main_categories  = ItemCategory.objects.filter(parent=None)

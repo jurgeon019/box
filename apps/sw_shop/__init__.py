@@ -14,3 +14,5 @@ class ShopConfig(apps.AppConfig):
 
 
 default_app_config = 'box.apps.sw_shop.ShopConfig'
+
+

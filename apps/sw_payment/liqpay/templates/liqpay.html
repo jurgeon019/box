@@ -15,7 +15,7 @@
       console.log('callback data.status:', data.status);
       console.log('callback data:', data);
       $.ajax({
-        url:'/pay_callback/',
+        url:'{{callback_url}}',
         data:data,
         method:'POST',
         type:'POST',
