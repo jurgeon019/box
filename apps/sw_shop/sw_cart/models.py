@@ -221,8 +221,8 @@ class CartItem(models.Model):
   def price_per_item(self):
     price_per_item = self.item.get_final_price()
     attrs = self.get_attributes().aggregate(Sum('price'))['price__sum']
-    print("attrs:",attrs)
-    price_per_item += attrs
+    if attrs:
+      price_per_item += attrs
     return price_per_item 
 
   @property
