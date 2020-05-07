@@ -43,18 +43,19 @@ class Cart(models.Model):
   #   return cart_item
 
   def get_cart_item_attributes(self, item, attribute):
-      if 'item_attribute_id' in attribute and 'item_attribute_value_id' in attribute:
-        cart_item_attributes = CartItemAttribute.objects.filter(
-          cart_item__item=item,
-          attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
-          value=ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id']),
-        )
-        return cart_item_attributes
+    if attribute:
+      cart_item_attributes = CartItemAttribute.objects.filter(
+        cart_item__item=item,
+        attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
+        value=ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id']),
+      )
+      return cart_item_attributes
 
   def create_cart_item_attributes(self, cart_item, attributes):
     CartItemAttribute.objects.filter(cart_item=cart_item).delete()
     for attribute in attributes:
-      if 'item_attribute_id' in attribute and 'item_attribute_value_id' in attribute:
+      # if 'item_attribute_id' in attribute.keys() and 'item_attribute_value_id' in attribute.keys():
+      if attribute:
         attribute_name  = ItemAttribute.objects.get(id=attribute['item_attribute_id'])
         attribute_value = ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id'])
         CartItemAttribute.objects.create(
@@ -71,13 +72,15 @@ class Cart(models.Model):
     if attributes:
       for attribute in attributes:
         cart_item_attributes = self.get_cart_item_attributes(item, attribute)
+        # cart_item_attributes = self.get_cart_item_attributes(item, attribute)
         if cart_item_attributes and not cart_item_attributes.exists():
           cart_item = CartItem.objects.create(item=item, cart=self)
           cart_item.quantity=quantity
           cart_item.save()
           self.create_cart_item_attributes(cart_item, attributes)
           break 
-        # else:
+        else:
+          print('ELSE!')
         #   # TODO: get_cart_item_with_attributes
         #   cart_item = get_cart_item_with_attributes(item=item)
         #   cart_item.quantity += int(quantity)
