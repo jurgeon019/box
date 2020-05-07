@@ -15,6 +15,12 @@ from import_export.admin import *
 from adminsortable2.admin import SortableAdminMixin
 
 from django.core.paginator import Paginator 
+from tablib import Dataset
+import inspect 
+from import_export.resources import ModelResource
+from django.conf import settings
+from importlib import import_module
+
 
 
 def paginate(request, klass):
@@ -44,38 +50,40 @@ def get_resource(name):
             
 
 def get_resources():
-    import inspect 
-    from import_export.resources import ModelResource
-    from django.conf import settings
-    from importlib import import_module
+  resources = []
+  for appname in settings.INSTALLED_APPS:
+    # if appname.startswith('box.'):
+      try:
+        module = import_module(appname+'.resources') 
+        for name, obj in inspect.getmembers(module):
+          if  inspect.isclass(obj) and \
+            ModelResource in obj.__mro__ and \
+            obj is not ModelResource:
+              resources.append(obj)
+      except:
+        pass
+  return resources
 
-    resources = []
-    for appname in settings.INSTALLED_APPS:
-        # if appname.startswith('box.'):
-            try:
-                module = import_module(appname+'.resources') 
-                for name, obj in inspect.getmembers(module):
-                    if  inspect.isclass(obj) and \
-                        ModelResource in obj.__mro__ and \
-                        obj is not ModelResource:
-                            resources.append(obj)
-            except:
-                pass
-    return resources
+from pathlib import Path
+from datetime import datetime 
 
-def loader(extention, file_name, action_type, resource_name):
-  from tablib import Dataset
-  # from tablib.exceptions import UnsupportedFormat
+
+def loader(extention, file_name, action_type, resource_name, time):
   Resource       = get_resource(resource_name)
   dataset = Dataset()
   if action_type == 'export':
-    
-    data   = getattr(Resource().export(), extention)
+    Path('/'.join(file_name.split('/')[:-1])).mkdir(parents=True, exist_ok=True)
     with open(file_name, 'w') as f:
-      f.write(data)
+      f.write(getattr(Resource().export(), extention))
     return True 
   elif action_type == 'import':
     
+    # TODO: ламає поведінку ItemStock.
+    # filename = f'backups/{time}/'+'/'.join(file_name.split('/')[1:-1])
+    # Path(filename).mkdir(parents=True, exist_ok=True)
+    # with open(file_name, 'w') as f:
+    #   f.write(getattr(Resource().export(), extention))
+
     with open(file_name, 'r') as f:
       # imported_data = dataset.load(f.read())
       dataset.load(f.read(), format=file_name.split('.')[-1])

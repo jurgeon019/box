@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from box.core.utils import loader 
 import csv
+from datetime import datetime 
 
 
 class Command(BaseCommand):
@@ -23,21 +24,16 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             '-i',
-            '--initial_import_commands_filename',
+            '--init_filename',
         )
     def handle(self, *args, **kwargs):
-        '''
-        python manage.py loader -f=babaski.csv -e=csv -r=ContentResource -a=import
-        python manage.py loader -f=babaski.csv -e=csv -r=ItemResource -a=export
-        python manage.py loader -f=babaski.xlsx -e=xlsx -r=ContentResource -a=import
-        python manage.py loader -f=babaski.xlsx -e=xlsx -r=ContentResource -a=export
-        '''
-        initial_import_commands_filename = kwargs.get('initial_import_commands_filename')
-        if initial_import_commands_filename:
-            items = [dct for dct in map(dict, csv.DictReader(open(initial_import_commands_filename)))] 
+        init_filename = kwargs.get('init_filename')
+        time = datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
+        if init_filename:
+            items = [dct for dct in map(dict, csv.DictReader(open(init_filename)))] 
             for item in items:
-                print("\n item:\n", item)
-                print("\n kwargs:\n", kwargs)
+                # print("\n item:\n", item)
+                # print("\n kwargs:\n", kwargs)
                 load           = item['load']
                 file_name      = item['file_name']
                 extention      = item['extention']
@@ -45,12 +41,12 @@ class Command(BaseCommand):
                 resource_name  = item['resource_name']
                 print(resource_name)
                 if bool(int(load)):
-                    result = loader(extention, file_name, action_type, resource_name)
+                    result = loader(extention, file_name, action_type, resource_name, time)
                     if result:
                         self.stdout.write(self.style.SUCCESS('Data imported successfully'))
                     else:
                         self.stdout.write(self.style.ERROR('DATA HAVENT IMPORTED'))
-        elif not initial_import_commands_filename:
+        elif not init_filename:
             file_name      = kwargs['file_name']
             extention      = kwargs.get('extention')
             action_type    = kwargs.get('action_type')
@@ -61,7 +57,7 @@ class Command(BaseCommand):
                 action_type = 'import'
             if not resource_name:
                 resource_name = f"{file_name.split('/')[-1].split('.')[0]}Resource"
-            result = loader(extention, file_name, action_type, resource_name)
+            result = loader(extention, file_name, action_type, resource_name, time)
             if result:
                 self.stdout.write(self.style.SUCCESS('Data imported successfully'))
             else:

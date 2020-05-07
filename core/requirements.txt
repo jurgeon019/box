@@ -50,3 +50,5 @@ celery
 django-froala-editor 
 django-summernote 
 django-markdownx
+
+

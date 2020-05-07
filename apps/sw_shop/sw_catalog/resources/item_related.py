@@ -32,17 +32,26 @@ class ItemManufacturerResource(ModelResource):
         model = ItemManufacturer
         exclude = []
 
+    def before_import_row(self, row, **kwargs):
+        if row.get('code') == '': row['code'] = None
+
 
 class ItemUnitResource(ModelResource):
     class Meta:
         model = ItemUnit
         exclude = []
 
+    def before_import_row(self, row, **kwargs):
+        if row.get('code') == '': row['code'] = None
+
 
 class ItemBrandResource(ModelResource):
     class Meta:
         model = ItemBrand
         exclude = []
+
+    def before_import_row(self, row, **kwargs):
+        if row.get('code') == '': row['code'] = None
 
 
 class ItemStockResource(ModelResource):
@@ -52,4 +61,5 @@ class ItemStockResource(ModelResource):
         ]
         
 
-
+    def before_import_row(self, row, **kwargs):
+        if row.get('code') == '': row['code'] = None
