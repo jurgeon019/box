@@ -2,7 +2,7 @@ from django.shortcuts import redirect
 from django.conf import settings 
 
 from .models import LiqpayConfig
-from .forms import LiqpayTransaction
+from .forms import LiqpayTransactionForm
 from .liqpay import LiqPay
 
 
@@ -19,7 +19,9 @@ def get_liqpay_context(params):
 
 
 def get_response(request):
-  config  = LiqpayConfig.get_solo()
+  data      = request.POST.get('data')
+  signature = request.POST.get('signature')
+  config    = LiqpayConfig.get_solo()
   if config.sandbox_mode:
     public  = config.liqpay_sandbox_public_key
     private = config.liqpay_sandbox_private_key
@@ -27,11 +29,9 @@ def get_response(request):
     public  = config.liqpay_public_key
     private = config.liqpay_private_key
   liqpay    = LiqPay(public, private)
-  data      = request.POST.get('data')
-  signature = request.POST.get('signature')
   sign      = liqpay.str_to_sign(private + data + private)
   response  = liqpay.decode_data_from_str(data)
-  # print(response)
+  print(response)
   if sign == signature: print('callback is valid')
   return response
 
@@ -39,7 +39,16 @@ def get_response(request):
 def create_liqpay_transaction(request):
   response = get_response(request)
   status   = response.get('status', '')
+  print(response)
   if status == 'failure':
     return redirect('/')
   form    = LiqpayTransactionForm(response)
   form.save()
+  print(form.instance)
+  import pdb; pdb.set_trace()
+  return form.instance
+
+
+
+
+

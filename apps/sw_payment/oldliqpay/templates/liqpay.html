@@ -1,0 +1,38 @@
+<div id="liqpay_checkout"></div>
+<script src="/static/liqpay/jquery.min.js" type="text/javascript"></script>
+<script>
+  
+  console.log("{{signature}}")
+  console.log("{{data}}")
+  
+  window.LiqPayCheckoutCallback = function() {
+    LiqPayCheckout.init({
+      data: "{{ data }}",
+      signature: "{{ signature }}",
+      embedTo: "#liqpay_checkout",
+        mode: "embed" // embed || popup,
+    }).on("liqpay.callback", function(data){
+      console.log('callback data.status:', data.status);
+      console.log('callback data:', data);
+      $.ajax({
+        url:'/pay_callback/',
+        data:data,
+        method:'POST',
+        type:'POST',
+        async:true,
+        success:function(data){
+            console.log(data)
+        },
+        error:function(error){
+            console.log(error)
+        }
+      })
+    }).on("liqpay.ready", function(data){
+        console.log('ready data:',data)
+    }).on("liqpay.close", function(data){
+        console.log('close data: ', data) 
+    });
+  };
+</script>
+<script src="https://static.liqpay.ua/libjs/checkout.js" async></script>
+

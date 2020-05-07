@@ -149,7 +149,8 @@ class Cart(models.Model):
     # for cart_item in CartItem.objects.filter(cart=self):
       if cart_item.total_price:
         total_price += cart_item.total_price
-    return total_price
+    print(total_price)
+    return float(total_price)
 
   @property
   def currency(self):

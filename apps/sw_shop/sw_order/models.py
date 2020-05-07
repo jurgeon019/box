@@ -188,8 +188,11 @@ class Order(models.Model):
       cart.save()
   
 
-
 class Payment(models.Model):
+  order = models.ForeignKey(
+    verbose_name=_("Заказ"),  to="sw_order.Order", on_delete=models.CASCADE,
+    blank=True, null=True
+  )
   amount = models.DecimalField(
     verbose_name=_("Сумма"), max_digits=5, decimal_places=2, 
   )

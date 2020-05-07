@@ -49,7 +49,7 @@ class CustomIndexDashboard(DefaultIndexDashboard):
                 _("Оплати"),
                 models=('box.apps.sw_payment.*',),
             ))
-     
+        
 
         self.children.append(modules.LinkList(
             _('Quick links'),

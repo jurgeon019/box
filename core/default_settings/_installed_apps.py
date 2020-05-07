@@ -38,8 +38,6 @@ third_party = [
     "rangefilter",
     'debug_toolbar',
     'nested_admin',
-    # 'nested_inline',
-    # 'robots',
 ]
 box_core = [
     'box.core',
@@ -50,7 +48,6 @@ box_core = [
     'box.core.sw_content',
     'box.core.sw_contact_form',
     'box.core.sw_auth',
-    # 'box.core.sw_robots',
 ]
 box_delivery = [
     'box.apps.sw_delivery',

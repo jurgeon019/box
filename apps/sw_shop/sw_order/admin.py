@@ -53,6 +53,7 @@ class OrderInline(admin.TabularInline):
         return False
 
 
+@admin.register(OrderStatus)
 class OrderStatusAdmin(
   TabbedTranslationAdmin,
   ImportExportModelAdmin,
@@ -67,6 +68,7 @@ class OrderStatusAdmin(
   ]
 
 
+@admin.register(Order)
 class OrderAdmin(nested_admin.NestedModelAdmin):
     def total_with_coupon(self, obj=None):
         return f'{obj.total_price_with_coupon} {obj.currency}'
@@ -233,6 +235,7 @@ class OrderAdmin(nested_admin.NestedModelAdmin):
     list_per_page = 100 
 
 
+@admin.register(ItemRequest)
 class ItemRequestAdmin(admin.ModelAdmin):
     def show_item(self, obj=None):
         from django.shortcuts import reverse 
@@ -275,16 +278,15 @@ class OrderRecipientEmailInline(admin.TabularInline):
   extra = 0
 
 
-
+@admin.register(OrderConfig)
 class OrderConfigAdmin(SingletonModelAdmin):
   inlines = [
     OrderStatusInline,
     OrderRecipientEmailInline
   ]
 
-admin.site.register(Order, OrderAdmin)
-admin.site.register(ItemRequest, ItemRequestAdmin)
-admin.site.register(OrderConfig, OrderConfigAdmin)
-admin.site.register(OrderStatus, OrderStatusAdmin)
 
 
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+  pass 
