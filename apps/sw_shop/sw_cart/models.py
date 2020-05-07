@@ -55,14 +55,15 @@ class Cart(models.Model):
   def create_cart_item_attributes(self, cart_item, attributes):
     CartItemAttribute.objects.filter(cart_item=cart_item).delete()
     for attribute in attributes:
-      attribute_name  = ItemAttribute.objects.get(id=attribute['item_attribute_id'])
-      attribute_value = ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id'])
-      CartItemAttribute.objects.create(
-        cart_item=cart_item,
-        attribute_name=attribute_name,
-        value=attribute_value,
-        price=attribute_value.price
-      )
+      if 'item_attribute_id' in attribute and 'item_attribute_value_id' in attribute:
+        attribute_name  = ItemAttribute.objects.get(id=attribute['item_attribute_id'])
+        attribute_value = ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id'])
+        CartItemAttribute.objects.create(
+          cart_item=cart_item,
+          attribute_name=attribute_name,
+          value=attribute_value,
+          price=attribute_value.price
+        )
 
   def add_item(self, item_id, quantity, attributes=None):
     try: quantity = int(quantity)
