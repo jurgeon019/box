@@ -71,20 +71,21 @@ class Cart(models.Model):
     item = Item.objects.get(pk=int(item_id))
     if attributes:
       for attribute in attributes:
-        cart_item_attributes = self.get_cart_item_attributes(item, attribute)
+          cart_item_attributes = self.get_cart_item_attributes(item, attribute)
+          print(cart_item_attributes)
         # cart_item_attributes = self.get_cart_item_attributes(item, attribute)
-        if cart_item_attributes and not cart_item_attributes.exists():
+        # if cart_item_attributes and not cart_item_attributes.exists():
           cart_item = CartItem.objects.create(item=item, cart=self)
           cart_item.quantity=quantity
           cart_item.save()
           self.create_cart_item_attributes(cart_item, attributes)
           break 
-        else:
-          print('ELSE!')
-        #   # TODO: get_cart_item_with_attributes
-        #   cart_item = get_cart_item_with_attributes(item=item)
-        #   cart_item.quantity += int(quantity)
-        #   cart_item.save()
+        # else:
+        #   print('ELSE!')
+        # #   # TODO: get_cart_item_with_attributes
+        # #   cart_item = get_cart_item_with_attributes(item=item)
+        # #   cart_item.quantity += int(quantity)
+        # #   cart_item.save()
     else:
       cart_item, created = CartItem.objects.get_or_create(
         cart=self,

@@ -9,7 +9,7 @@ from rest_framework.response import Response
 
 
 
-@api_view(['GET','POST','PATCH','DELETE'])
+@api_view(['GET','POST','DELETE'])
 def cart_items(request):
   cart       = get_cart(request)
   if request.method == 'GET':
@@ -20,6 +20,9 @@ def cart_items(request):
     item_id    = query['item_id']
     attributes = query.get('attributes', [])
     cart.add_item(item_id, quantity, attributes)
+    return Response(data=get_cart_info(request), status=200)
+  if request.method == 'DELETE':
+    cart.clear()
     return Response(data=get_cart_info(request), status=200)
 
 
