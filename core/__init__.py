@@ -6,23 +6,6 @@ class CoreConfig(apps.AppConfig):
     name = 'box.core'
     verbose_name = _('Ядро')
     verbose_name_plural = verbose_name
-    # def ready(self):
-    #     from .signals import post_save, page_post_save
-    #     from box.apps.sw_shop.sw_catalog.models import (
-    #         Item, ItemCategory, ItemBrand,  
-    #     )
-    #     from box.apps.sw_blog.models import (
-    #         Post, PostCategory,
-    #     )
-    #     models = [
-    #         # Item,
-    #         # ItemCategory,
-    #         # ItemBrand,
-    #         # Post,
-    #         # PostCategory,
-    #     ]
-    #     for model in models:
-    #         post_save.connect(receiver=page_post_save, sender=model)
 
 
 
