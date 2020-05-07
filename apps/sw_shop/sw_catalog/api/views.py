@@ -96,12 +96,7 @@ class ItemList(generics.ListCreateAPIView):
       queryset = queryset.filter(price__gte=min_price)
     # if is_discount is not None:
     if is_discount == 'true' or is_discount is True:
-      # TODO: після переробки валют і цін глянути сюда
-      # queryset = queryset.exclude(old_price__isnull=False)
-      queryset = queryset.exclude(
-        Q(discount__isnull=True) | 
-        Q(old_price__isnull=True)
-      ).distinct()
+      queryset = queryset.exclude(discount__isnull=True)
     if ordering is not None:
       queryset = queryset.order_by(ordering)
     for attribute in attributes:
