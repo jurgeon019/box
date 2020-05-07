@@ -1,11 +1,63 @@
+import json 
 import requests
 
 from django.conf import settings
+from django.http import JsonResponse
 
 from box.core.sw_model_search import model_search
 
 from .settings import NOVA_POSHTA_API_KEY
 from .models import *
+
+
+
+def handle_np(query, action, content, type):
+    limit       = query.get('limit', 150)
+    page        = query.get('page', 1)
+    pages_limit = query.get('pages_limit', None)
+    if content == 'warehouses':
+        method   = 'getWarehouses'
+        model    = "AddressGeneral"
+        message  = 'Warehouses were successfully refreshed'
+        filename = 'warehouses.json'
+        func     = create_warehouses
+    elif content == 'settlements':
+        method   = 'getSettlements'
+        model    = "AddressGeneral"
+        message  = 'Settlements were successfully refreshed'
+        filename = 'settlements.json'
+        func     = create_settlements
+    if action == 'refresh':
+        if type == 'gen_json':
+            response = get_full_response(model, method,
+                limit=limit,
+                page=page,
+                pages_limit=pages_limit,
+            )
+            with open(filename, 'w') as f:
+                f.write(json.dumps(response, indent=4))
+        elif type == 'from_api':
+            response = get_full_response(model, method,
+                limit=limit,
+                page=page,
+                pages_limit=pages_limit,
+            )
+            func(response)
+        elif type == 'from_json':
+            with open(filename, 'r') as f:
+                func(json.load(f))
+        return JsonResponse({
+            "message":message,
+            "status": "OK",
+        })
+    elif action == 'browse':
+        response = get_response(model, method,
+            limit=limit,
+            page=page,
+        )
+        return JsonResponse(response)
+
+
 
 
 def get_response(modelName, calledMethod, limit=150, page=1):

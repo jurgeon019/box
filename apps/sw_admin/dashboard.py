@@ -34,7 +34,6 @@ class CustomIndexDashboard(DefaultIndexDashboard):
                 models=('box.apps.sw_shop.*',),
             ))
         if "box.apps.sw_dev" in settings.INSTALLED_APPS:
-            print('in!')
             self.children.append(modules.AppList(
                 _('Розробка'),
                 models=('box.apps.sw_dev.*',),
@@ -49,7 +48,11 @@ class CustomIndexDashboard(DefaultIndexDashboard):
                 _("Оплати"),
                 models=('box.apps.sw_payment.*',),
             ))
-        
+        if 'box.apps.sw_delivery.' in settings.INSTALLED_APPS:
+            self.children.append(modules.AppList(
+                _("Доставки"),
+                models=('box.apps.sw_delivery.*',),
+            ))
 
         self.children.append(modules.LinkList(
             _('Quick links'),
@@ -94,7 +97,6 @@ class CustomIndexDashboard(DefaultIndexDashboard):
             _("Зворотній звязок"),
             models=('box.core.sw_contact_form.*',),
         ))
-
 
 
         self.children.append(modules.AppList(
