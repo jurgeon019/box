@@ -67,8 +67,9 @@ class ItemResource(ModelResource):
             'id',
             'is_active',
             # 'code',
-            'old_price',
-            'new_price',
+            'price',
+            'discount',
+            'discount_type',
             "currency",
             # 'image',
 

@@ -88,16 +88,12 @@ class ItemAdmin(
         'amount',
         ),
         (
-        'new_price',
+        'price',
         'discount',
-        'old_price',
+        'discount_type',
         ),
         'is_active',
-        # 'description',
         'image',
-        # 'code',
-        # 'created',
-        # 'updated',
     ]
     if item_settings .MULTIPLE_CATEGORY:
         item_fields.insert(2 ,'categories')
@@ -135,17 +131,12 @@ class ItemAdmin(
         BrandFilter,
     ]
     list_display = [
-        # 'image',
-        # 'category',
-        # 'id',
-        # "order",
         'show_image',
         'title',
-        'new_price',
-        'currency',
+        'price',
+        'category',
+        # 'currency',
         'amount',
-        # 'units',
-        # 'in_stock',
         'is_active',
         # "clone_link",
         'show_site_link',
@@ -153,11 +144,10 @@ class ItemAdmin(
         "show_delete_link",
     ]
     list_editable = [
-        'new_price',
-        'currency',
+        'price',
+        # 'currency',
+        # 'category',
         'amount',
-        # 'units',
-        # TODO: змінити ширину інпута
         'is_active',
     ]
     list_display_links = [

@@ -90,13 +90,13 @@ class ItemInline(TranslationTabularInline):
     fields = [
         'show_title',
         'old_price',
-        'new_price',
+        'price',
         'currency',
     ]
     readonly_fields = [
         'show_title',
         'old_price',
-        'new_price',
+        'price',
         'currency',
     ]
     classes = ['collapse']

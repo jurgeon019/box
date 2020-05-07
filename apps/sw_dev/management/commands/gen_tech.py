@@ -15,7 +15,7 @@ class Command(BaseCommand):
         currency = choice(Currency.objects.all())
         Item.objects.get_or_create(
             title=f'Техніка на оренду ({category.title}) ({i})',
-            new_price=price,
+            price=price,
             currency=currency,
             category=category,
         )
@@ -23,7 +23,7 @@ class Command(BaseCommand):
         currency = choice(Currency.objects.all())
         sell_item = Item.objects.get_or_create(
             title=f'Техніка на продажу ({category.title}) ({i})',
-            new_price=price,
+            price=price,
             currency=currency,
             category=category,
         )

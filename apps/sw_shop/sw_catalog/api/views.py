@@ -22,6 +22,9 @@ from rest_framework.viewsets import ModelViewSet
 from .serializers import * 
 from .paginators import * 
 
+import json 
+
+
 
 def get_items_in_favours(request, items):
   items_in_favours = []
@@ -47,7 +50,7 @@ class ItemList(generics.ListCreateAPIView):
   queryset = Item.objects.all()
   serializer_class = ItemListSerializer
   pagination_class = StandardPageNumberPagination
-  
+
   def list(self, request, *args, **kwargs):
     queryset = self.filter_queryset(self.get_queryset())
 
@@ -65,10 +68,10 @@ class ItemList(generics.ListCreateAPIView):
     :max_price: максимальна ціна(цифра)
     :min_price: мінімальна ціна(цифра)
     :is_discount: true|false
-    :ordering: -new_price | new_price 
+    :ordering: -price | price 
     :attributes: 
     '''
-    queryset     = super().get_queryset()
+    queryset     = super().get_queryset().filter(is_active=True).order_by('order')
     data         = self.request.query_params
     category_id  = data.get('category_id', None)
     category_ids = data.get('category_ids', None)
@@ -77,18 +80,20 @@ class ItemList(generics.ListCreateAPIView):
     is_discount  = data.get('is_discount', None)
     ordering     = data.get('ordering', None)
     attributes   = data.get('attributes', [])
-    import json 
-    attributes   = json.loads(attributes)
+    if attributes:
+      attributes   = json.loads(attributes)
     # TODO: добавити сюда пошук по modelsearch,  get_items_in_favours, get_items_in_cart
 
     if category_id is not None:
       queryset = queryset.filter(category__id=category_id)
     if category_ids is not None:
       queryset = queryset.filter(category__id__in=[category_ids])
-    if max_price is not None:
-      queryset = queryset.filter(new_price__lte=max_price)
-    if min_price is not None:
-      queryset = queryset.filter(new_price__gte=min_price)
+    # if max_price is not None:
+    if max_price:
+      queryset = queryset.filter(price__lte=max_price)
+    # if min_price is not None:
+    if min_price:
+      queryset = queryset.filter(price__gte=min_price)
     # if is_discount is not None:
     if is_discount == 'true' or is_discount is True:
       # TODO: після переробки валют і цін глянути сюда
@@ -100,7 +105,7 @@ class ItemList(generics.ListCreateAPIView):
     if ordering is not None:
       queryset = queryset.order_by(ordering)
     for attribute in attributes:
-      if attribute['value_ids']:
+      if attribute.get('attribute_id') and attribute.get('value_ids'):
         values = AttributeValue.objects.filter(id__in=attribute['value_ids'])
         attribute = Attribute.objects.get(id=attribute['attribute_id'])
         item_attributes = ItemAttribute.objects.filter(attribute=attribute)

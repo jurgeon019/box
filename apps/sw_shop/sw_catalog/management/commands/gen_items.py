@@ -12,13 +12,16 @@ import csv
 
 class Command(BaseCommand):
   def handle(self, *args, **kwargs):
-    attributes = Attribute.objects.all().exclude(id__in=range(1,5))
-    attribute_values = AttributeValue.objects.all().exclude(id__in=range(1,17))
     for i in range(1, 4):
       attribute, _ = Attribute.objects.get_or_create(name=f'атрибут {i}')
 
-    for i in range(1, 10):
-      value, _ = AttributeValue.objects.get_or_create(value=f'значення {i}')
+      for j in range(1, 3):
+        value, _ = AttributeValue.objects.get_or_create(
+          attribute=attribute,
+          value=f'значення {i}',
+        )
+    attributes = Attribute.objects.all().exclude(id__in=range(1,5))
+    attribute_values = AttributeValue.objects.all().exclude(id__in=range(1,17))
 
     for i in range(1, 100):
       item, _  = Item.objects.get_or_create(title=f'товар {i}')

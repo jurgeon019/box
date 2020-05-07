@@ -25,6 +25,11 @@ class Currency(models.Model):
 	is_main = models.BooleanField(
 		verbose_name=_("Головна"), default=False,
 	)
+
+	def get_rate(self):
+		# TODO: CurrencyConfig.get_solo().main_field
+		return self.sale_rate or self.purchase_rate
+
 	class Meta: 
 		verbose_name = _('валюта'); 
 		verbose_name_plural = _('валюти')

@@ -121,13 +121,13 @@ class Coupon(models.Model):
         discount = self.get_discount()
 
         if discount['is_percentage']:
-            new_price = initial_value - ((initial_value * discount['value']) / 100)
-            new_price = new_price if new_price >= 0.0 else 0.0
+            price = initial_value - ((initial_value * discount['value']) / 100)
+            price = price if price >= 0.0 else 0.0
         else:
-            new_price = initial_value - discount['value']
-            new_price = new_price if new_price >= 0.0 else 0.0
+            price = initial_value - discount['value']
+            price = price if price >= 0.0 else 0.0
 
-        return new_price
+        return price
 
     def save(self, *args, **kwargs):
         if not self.id:

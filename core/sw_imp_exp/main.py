@@ -649,7 +649,7 @@ class ExportMixin(Parser):
             item.category.slug,
             item.slug,
             item.old_price,
-            item.new_price,
+            item.price,
             ','.join([image.image.url for image in item.images.all()]),
         ]
         features = []
@@ -841,8 +841,8 @@ class ExportMixin(Parser):
       <field name="old_price" descr="{item._meta.get_field('old_price').verbose_name}">
         {item.old_price}
       </field>
-      <field name="new_price" descr="{item._meta.get_field('new_price').verbose_name}">
-        {item.new_price}
+      <field name="price" descr="{item._meta.get_field('price').verbose_name}">
+        {item.price}
       </field>
       <field name="currency" descr="{item._meta.get_field('currency').verbose_name}">
         {item.currency}
@@ -1220,17 +1220,17 @@ class ImportMixin(Parser):
 
   def handle_price(self, item, new_item, *args, **kwargs):
     old_price    = item.get("Старая_Цена")
-    new_price    = item.get("Новая_Цена")
+    price    = item.get("Новая_Цена")
     price_netto  = item.get("price_netto")
     price_brutto = item.get("price_brutto")
     if old_price:
       new_item.old_price = old_price
-    if new_price:
-      new_item.new_price = new_price
+    if price:
+      new_item.price = price
 
     if '€' in price_netto:
       new_item.old_price   = float(price_netto.replace('€', '').strip().replace(',','.').replace(' ', ''))
-      new_item.new_price   = float(price_brutto.replace('€', '').strip().replace(',','.').replace(' ', ''))
+      new_item.price   = float(price_brutto.replace('€', '').strip().replace(',','.').replace(' ', ''))
       new_item.currency, _ = Currency.objects.get_or_create(name='EUR')
     elif 'грн' in price_netto:
       price_netto          = price_netto.replace(' ', '').replace('грн.', '').strip().replace(',','.').replace(' ', '')
@@ -1238,11 +1238,11 @@ class ImportMixin(Parser):
       price_netto          = price_netto.replace('\xa0', '').replace(' ', '')
       price_brutto         = price_brutto.replace('\xa0', '').replace(' ', '')
       new_item.old_price   = float(price_netto)
-      new_item.new_price   = float(price_brutto)
+      new_item.price   = float(price_brutto)
       new_item.currency, _ = Currency.objects.get_or_create(name='UAH')
     elif 'Цену уточняйте' in price_netto:
       new_item.old_price   = None 
-      new_item.new_price   = None 
+      new_item.price   = None 
       new_item.currency    = None 
     # print('1:', new_item.currency)
     return new_item 
@@ -1294,7 +1294,7 @@ class ImportMixin(Parser):
     slug        = None
     image   = None
     old_price   = None
-    new_price   = None
+    price   = None
     currency    = None
     category    = None
     in_stock    = None
@@ -1348,7 +1348,7 @@ class ImportMixin(Parser):
       slug        = xml_item.fields['slug']
       image   = xml_item.fields['image']
       old_price   = xml_item.fields['old_price']
-      new_price   = xml_item.fields['new_price']
+      price   = xml_item.fields['price']
       currency    = xml_item.fields['currency']
       category    = xml_item.fields['category']
       in_stock    = xml_item.fields['in_stock']
@@ -1374,7 +1374,7 @@ class ImportMixin(Parser):
       item.slug        = slug
       item.image   = image
       item.old_price   = old_price
-      item.new_price   = new_price
+      item.price   = price
       item.currency    = currency
       item.category    = category
       item.in_stock    = in_stock

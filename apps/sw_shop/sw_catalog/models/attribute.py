@@ -1,5 +1,6 @@
 from django.db import models 
 from django.utils.translation import gettext_lazy as _
+from box.core.sw_currency.models import Currency
 
 
 class AttributeCategory(models.Model):
@@ -108,6 +109,7 @@ class ItemAttribute(models.Model):
     is_option = models.BooleanField(
         verbose_name=_("Опція?"), default=False
     )
+   
 
     @property
     def has_multiple_values(self):
@@ -137,7 +139,6 @@ class ItemAttributeValue(models.Model):
         verbose_name=_("Значення"), 
         to='sw_catalog.AttributeValue', 
         on_delete=models.CASCADE,
-        # unique=True,
     )
     price = models.DecimalField(
         verbose_name=_("Ціна"), max_digits=9, decimal_places=2, default=0,
@@ -150,6 +151,11 @@ class ItemAttributeValue(models.Model):
         verbose_name=_("Опис"), blank=True, null=True, 
     )
 
+    def save(self, *args, **kwargs):
+      if not self.currency:
+        self.currency = Currency.objects.get(is_main=True)
+      super().save(*args, **kwargs)
+
     @classmethod
     def modeltranslation_fields(self):
         return ['description',]
@@ -157,9 +163,12 @@ class ItemAttributeValue(models.Model):
     def __str__(self):
         return f'{self.value}'
 
-
     class Meta:
         verbose_name = _('значення атрибутів товарів')
         verbose_name_plural = _('значення атрибутів товарів')
+        unique_together = [
+            'item_attribute',
+            'value',
+        ]
 
 

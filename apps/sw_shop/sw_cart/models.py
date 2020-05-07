@@ -2,9 +2,10 @@ from django.db import models
 from django.contrib.auth import get_user_model 
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.db.models import Sum
 
 from box.apps.sw_shop.sw_catalog.models import (
-  Item, Currency, Attribute, AttributeValue
+  Item, Currency, Attribute, AttributeValue, ItemAttribute, ItemAttributeValue
 )
 
 
@@ -35,47 +36,38 @@ class Cart(models.Model):
     verbose_name = _('Корзина')
     verbose_name_plural = _('Корзини')
 
-  def create_cart_item_attributes(self, cart_item, attributes):
-    CartItemAttribute.objects.filter(cart_item=cart_item).delete()
-    for attribute in attributes:
-      CartItemAttribute.objects.create(
-        cart_item=cart_item,
-        value=AttributeValue.objects.get(id=attribute['value_id']),
-        attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
-      )
-
-  def get_cart_item_attributes(self, item, attribute):
-      cart_item_attributes = CartItemAttribute.objects.filter(
-        cart_item__item=item,
-        attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
-        value=AttributeValue.objects.get(id=attribute['value_id']),
-      )
-      return cart_item_attributes
-    
   # def get_cart_item_with_attributes(self, item, attributes):
   #   cart_item = CartItem.objects.filter(item=item, cart=self)
   #   for attribute in attributes:
   # TODO:get_cart_item_with_attributes
   #   return cart_item
 
+  def get_cart_item_attributes(self, item, attribute):
+      cart_item_attributes = CartItemAttribute.objects.filter(
+        cart_item__item=item,
+        attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
+        # attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
+        value=ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id']),
+        # value=AttributeValue.objects.get(id=attribute['value_id']),
+      )
+      return cart_item_attributes
+
+  def create_cart_item_attributes(self, cart_item, attributes):
+    CartItemAttribute.objects.filter(cart_item=cart_item).delete()
+    for attribute in attributes:
+      # print(attribute)
+      CartItemAttribute.objects.create(
+        cart_item=cart_item,
+        value=ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id']),
+        # value=AttributeValue.objects.get(id=attribute['value_id']),
+        attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
+        # attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
+      )
 
   def add_item(self, item_id, quantity, attributes=None):
-    """
-    товар 1 з розміром 1 i кольором 1 додається в корзину 
-    в корзині товар з розміром 1 і кольором 1 
-    товар 1 з розміром 1 і кольором 2 додається в корзину 
-    перевіряється чи немає товара в корзині з такими ж характеристиками
-    якщо є то створюється новий товар 
-    якщо нє то додається кількість 
-
-    як перевірити шо в корзині є товар з такими ж характеристиками?
-    """
     try: quantity = int(quantity)
     except: quantity = 1
     item = Item.objects.get(pk=int(item_id))
-
-
-    # print(quantity)
     if attributes:
       for attribute in attributes:
         cart_item_attributes = self.get_cart_item_attributes(item, attribute)
@@ -100,7 +92,6 @@ class Cart(models.Model):
       elif not created:
         cart_item.quantity += int(quantity)
       cart_item.save()
-
       
   def change_cart_item_amount(self, cart_item_id, quantity):
     try: quantity = int(quantity)
@@ -149,10 +140,6 @@ class Cart(models.Model):
 
   @property
   def total_price(self):
-
-    #TODO: зробити сумування не пітонячим циклом, а якось пройтись SQLьом
-    #TODO 2: не получиться, бо total_price зроблено через @property, а має бути окремим полем
-
     total_price = 0
     for cart_item in self.items.all():
     # for cart_item in CartItem.objects.filter(cart=self):
@@ -162,33 +149,34 @@ class Cart(models.Model):
 
   @property
   def currency(self):
-    currency = None 
-    currencies = Currency.objects.filter(is_main=True)
-    if currencies.exists():
-      currency = currencies.first().code
-    return currency
+    return Currency.objects.get(is_main=True).code
 
 
 class CartItemAttribute(models.Model):
   cart_item = models.ForeignKey(
-    verbose_name=_("Товар в корзині"), 
-    to="sw_cart.CartItem",
-    on_delete=models.CASCADE,
-    related_name='attributes',
+    verbose_name=_("Товар в корзині"), on_delete=models.CASCADE,
+    to="sw_cart.CartItem", related_name='attributes',
   )
   attribute_name = models.ForeignKey(
-    to="sw_catalog.Attribute",
-    on_delete=models.CASCADE,
+    to="sw_catalog.ItemAttribute", on_delete=models.CASCADE,
     verbose_name=_("Атрибут"),
   )
+  # attribute_name = models.ForeignKey(
+  #   to="sw_catalog.Attribute", on_delete=models.CASCADE,
+  #   verbose_name=_("Атрибут"),
+  # )
   value = models.ForeignKey(
-    to="sw_catalog.AttributeValue",
-    on_delete=models.CASCADE,
+    to="sw_catalog.ItemAttributeValue", on_delete=models.CASCADE,
     verbose_name=_("Значення")
   )
-  # price = models.FloatField(
-  #   verbose_name=_("")
+  # value = models.ForeignKey(
+  #   to="sw_catalog.AttributeValue", on_delete=models.CASCADE,
+  #   verbose_name=_("Значення")
   # )
+  price = models.FloatField(
+    # verbose_name=_("Ціна"), null=False, blank=False,
+    verbose_name=_("Ціна"), null=True, blank=True,
+  )
 
   class Meta: 
     verbose_name = _('вибраний атрибут у товара в корзині')
@@ -196,7 +184,6 @@ class CartItemAttribute(models.Model):
   
   def __str__(self):
     return f'{self.cart_item.item.title}, {self.attribute_name.name}:{self.value.value}'
-
 
 
 class CartItem(models.Model):
@@ -213,38 +200,31 @@ class CartItem(models.Model):
      to="sw_catalog.Item",   verbose_name=('Товар'),   
      on_delete=models.CASCADE, 
      blank=False, null=False, 
-    #  blank=True, null=True, 
      related_name="cart_items",
     )
   quantity = models.IntegerField(
     verbose_name=_('Кількість'), default=1,
   )
-  created  = models.DateTimeField(verbose_name=_('Дата создания'),  default=timezone.now)
-  updated  = models.DateTimeField(verbose_name=_('Дата обновления'),auto_now_add=False, auto_now=True,  blank=True, null=True)
+  created  = models.DateTimeField(
+    verbose_name=_('Дата создания'),  default=timezone.now
+  )
+  updated  = models.DateTimeField(
+    verbose_name=_('Дата обновления'),auto_now_add=False, 
+    auto_now=True,  blank=True, null=True
+  )
 
-  # features = models.ManyToManyField(verbose_name=_("Атрибут"), "sw_sw_catalog.ItemAttribute")
-  # options  = models.ManyToManyField(verbose_name=_("Атрибут"), "sw_catalog.ItemOption")
-  
   def get_attributes(self):
     return CartItemAttribute.objects.filter(cart_item=self)
 
   @property
   def total_price(self):
-    return self.item.price * self.quantity
-    # if self.item and self.item.price
-    # try:
-    #   item = self.item.price
-    #   if item:
-    #     return item * self.quantity
-    #   else:
-    #     return None 
-    # except:
-    #   print('Блядь поправ це гімно, відвалюється при покупці в 1 клік')
-    #   return 1
+    total_price = self.price_per_item * self.quantity
+    # total_price += self.get_attributes()#.aggregate(Sum('price'))['price__sum']
+    return total_price 
 
   @property
   def price_per_item(self):
-    return self.item.price
+    return self.item.get_final_price()
 
   @property
   def currency(self):
