@@ -43,14 +43,13 @@ class Cart(models.Model):
   #   return cart_item
 
   def get_cart_item_attributes(self, item, attribute):
-      cart_item_attributes = CartItemAttribute.objects.filter(
-        cart_item__item=item,
-        attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
-        # attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
-        value=ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id']),
-        # value=AttributeValue.objects.get(id=attribute['value_id']),
-      )
-      return cart_item_attributes
+      if 'item_attribute_id' in attribute and 'item_attribute_value_id' in attribute:
+        cart_item_attributes = CartItemAttribute.objects.filter(
+          cart_item__item=item,
+          attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
+          value=ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id']),
+        )
+        return cart_item_attributes
 
   def create_cart_item_attributes(self, cart_item, attributes):
     CartItemAttribute.objects.filter(cart_item=cart_item).delete()
@@ -72,7 +71,7 @@ class Cart(models.Model):
     if attributes:
       for attribute in attributes:
         cart_item_attributes = self.get_cart_item_attributes(item, attribute)
-        if not cart_item_attributes.exists():
+        if cart_item_attributes and not cart_item_attributes.exists():
           cart_item = CartItem.objects.create(item=item, cart=self)
           cart_item.quantity=quantity
           cart_item.save()
