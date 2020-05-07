@@ -55,13 +55,13 @@ class Cart(models.Model):
   def create_cart_item_attributes(self, cart_item, attributes):
     CartItemAttribute.objects.filter(cart_item=cart_item).delete()
     for attribute in attributes:
-      # print(attribute)
+      attribute_name  = ItemAttribute.objects.get(id=attribute['item_attribute_id'])
+      attribute_value = ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id'])
       CartItemAttribute.objects.create(
         cart_item=cart_item,
-        value=ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id']),
-        # value=AttributeValue.objects.get(id=attribute['value_id']),
-        attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
-        # attribute_name=Attribute.objects.get(id=attribute['attribute_id']),
+        attribute_name=attribute_name,
+        value=attribute_value,
+        price=attribute_value.price
       )
 
   def add_item(self, item_id, quantity, attributes=None):
@@ -161,21 +161,13 @@ class CartItemAttribute(models.Model):
     to="sw_catalog.ItemAttribute", on_delete=models.CASCADE,
     verbose_name=_("Атрибут"),
   )
-  # attribute_name = models.ForeignKey(
-  #   to="sw_catalog.Attribute", on_delete=models.CASCADE,
-  #   verbose_name=_("Атрибут"),
-  # )
   value = models.ForeignKey(
     to="sw_catalog.ItemAttributeValue", on_delete=models.CASCADE,
     verbose_name=_("Значення")
   )
-  # value = models.ForeignKey(
-  #   to="sw_catalog.AttributeValue", on_delete=models.CASCADE,
-  #   verbose_name=_("Значення")
-  # )
   price = models.FloatField(
-    # verbose_name=_("Ціна"), null=False, blank=False,
-    verbose_name=_("Ціна"), null=True, blank=True,
+    # verbose_name=_("Ціна"), null=False, blank=False, default=0,
+    verbose_name=_("Ціна"), null=True, blank=True, default=0,
   )
 
   class Meta: 
@@ -183,7 +175,8 @@ class CartItemAttribute(models.Model):
     verbose_name_plural = _('вибрані атрибути у товарів в корзині')
   
   def __str__(self):
-    return f'{self.cart_item.item.title}, {self.attribute_name.name}:{self.value.value}'
+    # return f'{self.cart_item.item.title}, {self.attribute_name.name}:{self.value.value}'
+    return f'{self.cart_item.item.title}, {self.attribute_name.attribute.name}:{self.value.value.value}'
 
 
 class CartItem(models.Model):
@@ -212,19 +205,22 @@ class CartItem(models.Model):
     verbose_name=_('Дата обновления'),auto_now_add=False, 
     auto_now=True,  blank=True, null=True
   )
-
+  
   def get_attributes(self):
     return CartItemAttribute.objects.filter(cart_item=self)
 
   @property
   def total_price(self):
     total_price = self.price_per_item * self.quantity
-    # total_price += self.get_attributes()#.aggregate(Sum('price'))['price__sum']
     return total_price 
 
   @property
   def price_per_item(self):
-    return self.item.get_final_price()
+    price_per_item = self.item.get_final_price()
+    attrs = self.get_attributes().aggregate(Sum('price'))['price__sum']
+    print("attrs:",attrs)
+    price_per_item += attrs
+    return price_per_item 
 
   @property
   def currency(self):

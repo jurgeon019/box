@@ -94,6 +94,9 @@ class ItemAttributeValueResource(ModelResource):
         row['item_attribute'] = item_attribute.id
         row['value'] = AttributeValue.objects.get_or_create(value=value_value)[0].id
         row['currency'] = Currency.objects.get_or_create(code=row['currency'])[0].id
+        if row.get('amount') == '':
+            row['amount'] = None 
+
 
 
 

@@ -12,14 +12,12 @@ register = template.Library()
 # @register.filter
 @register.simple_tag
 def get_cart_item_attribute(cart_item, attr_code):
-    print(cart_item)
-    print(attr_code)
-    attr = Attribute.objects.get(code=attr_code)
     attr = CartItemAttribute.objects.get(
         cart_item=cart_item,
-        # attribute_name__code=attr_code
-        attribute_name=attr,
+        attribute_name=ItemAttribute.objects.get(item=cart_item.item,attribute__code=attr_code),
+        # attribute_name=Attribute.objects.get(code=attr_code),
     ) 
-    return attr#.value.code
+    print(attr)
+    return attr
 
 

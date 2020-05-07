@@ -147,9 +147,16 @@ class ItemAttributeValue(models.Model):
         verbose_name=_("Валюта"), to="sw_currency.Currency", 
         on_delete=models.CASCADE, blank=True, null=True
     )
+    amount = models.PositiveIntegerField(
+		verbose_name=_("Кількість"), blank=True, null=True, default=None,
+		help_text=_('0 - товар з таким значенням характеристики відсутній. Порожнє поле - необмежена кількість.'),
+	)
     description = models.TextField(
         verbose_name=_("Опис"), blank=True, null=True, 
     )
+    # TODO: виводити тільки ті характеристики товару у яких amount > 0 
+    # TODO: відмінусовувати amount у характеристики товару при заказі 
+    # TODO: виводити тільки ті характеристики товару у яких is_active=True
 
     def save(self, *args, **kwargs):
       if not self.currency:
