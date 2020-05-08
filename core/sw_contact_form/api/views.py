@@ -26,7 +26,6 @@ def sw_contact(request):
     box_send_mail(
       subject      = 'Отримано контактну форму',
       template     = 'sw_contact_form/mail.html', 
-      config       = ContactConfig, 
       email_config = ContactRecipientEmail, 
       model        = model, 
       fail_silently= False,

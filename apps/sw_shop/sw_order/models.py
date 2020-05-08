@@ -135,7 +135,6 @@ class Order(models.Model):
     box_send_mail(
       subject      = f'Отримано замовлення товарів # {self.id}',
       template     = 'sw_order/mail.html', 
-      config       = OrderConfig, 
       email_config = OrderRecipientEmail, 
       model        = self, 
       fail_silently= False,
