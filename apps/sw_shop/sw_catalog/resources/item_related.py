@@ -23,9 +23,6 @@ class ItemImageResource(ModelResource):
     def before_import_row(self, row, **kwargs):
         row['image'] = f"shop/item/{row['image']}"
 
-    
-
-        
 
 class ItemManufacturerResource(ModelResource):
     class Meta:
@@ -59,7 +56,7 @@ class ItemStockResource(ModelResource):
         model = ItemStock
         exclude = [
         ]
-        
 
-    def before_import_row(self, row, **kwargs):
-        if row.get('code') == '': row['code'] = None
+
+
+

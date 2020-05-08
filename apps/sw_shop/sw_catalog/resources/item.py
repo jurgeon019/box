@@ -114,8 +114,8 @@ class ItemResource(ModelResource):
 
     def handle_brand_import(self, row):
         if row.get('brand'):
-            brand_title  = row['brand']
-            brand, _     = ItemBrand.objects.get_or_create(title=brand_title)
+            brand_title  = row['brand'].lower().strip()
+            brand, _     = ItemBrand.objects.get_or_create(title__iexact=brand_title)
             row['brand'] = brand.id
 
     def dehydrate_brand(self, item):
@@ -125,8 +125,8 @@ class ItemResource(ModelResource):
         
     def handle_currency_import(self, row):
         if row.get('currency'):
-            currency_code   = row['currency']
-            currency, _     = Currency.objects.get_or_create(code=currency_code)
+            currency_code   = row['currency'].strip()
+            currency, _     = Currency.objects.get_or_create(code__iexact=currency_code)
             row['currency'] = currency.id
 
     def dehydrate_currency(self, item):
@@ -136,7 +136,7 @@ class ItemResource(ModelResource):
 
     def handle_category_import(self, row):
         if row.get('category'):
-            category_id = row['category']
+            category_id = row['category'].lower().strip()
             category, _ = ItemCategory.objects.get_or_create(id=category_id)
             row['category'] = category.id
 
@@ -147,8 +147,8 @@ class ItemResource(ModelResource):
 
     def handle_in_stock_import(self, row):
         if row.get('in_stock'):
-            in_stock_text   = row['in_stock']
-            in_stock, _     = ItemStock.objects.get_or_create(text=in_stock_text)
+            in_stock_text   = row['in_stock'].lower().strip()
+            in_stock, _     = ItemStock.objects.get_or_create(text__iexact=in_stock_text)
             row['in_stock'] = in_stock.id
             
     def dehydrate_in_stock(self, item):

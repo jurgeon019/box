@@ -8,6 +8,8 @@ from ..utils import generate_unique_slug, item_image_folder
 from django.contrib.auth import get_user_model
 from django.conf import settings 
 from box.core import settings as core_settings
+from colorfield.fields import ColorField
+from django.utils import timezone 
 
 
 User = get_user_model()
@@ -141,20 +143,16 @@ class ItemReview(BaseMixin):
 		verbose_name_plural = _('Відгуки')
 		ordering = ['order']
 
-
-class ItemStock(BaseMixin):
-	STOCK_COLOR_CHOICES = (
-		('g', "green"),
-		('o', "orange"),
-		('r', "red"),
-	)
+class ItemStock(models.Model):
 	text         = models.CharField(verbose_name=_('Текст'), max_length=255, unique=True)
 	availability = models.BooleanField(verbose_name=_('Можливість покупки'), default=True)
-	# availability = models.NullBooleanField(verbose_name=_('Можливість покупки'), default=True, null=True)
-	colour       = models.CharField(verbose_name=_('Колір'), choices=STOCK_COLOR_CHOICES, max_length=255, default=1)
-
+	colour       = ColorField(verbose_name=_('Колір'),  max_length=255)
 	def __str__(self):
 		return f"{self.text}"
+	
+	def save(self, *args, **kwargs):
+		self.text = self.text.lower().strip()
+		super().save(*args, **kwargs)
 	
 	class Meta:
 		verbose_name = _('статус наявності')

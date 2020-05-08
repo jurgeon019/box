@@ -96,12 +96,16 @@ class ItemImageAdmin(
     ]
 
 
-class ItemStockAdmin(TabbedTranslationAdmin,
+class ItemStockAdmin(
+    TabbedTranslationAdmin,
     ImportExportActionModelAdmin,
     ImportExportModelAdmin,
     ):
-    def get_model_perms(self, request):
-        return {}
+    # def get_model_perms(self, request):
+    #     return {}
+
+    # def has_add_permission(self, request, obj=None):
+    #     return False 
 
     list_display = [
         'id',
@@ -113,26 +117,15 @@ class ItemStockAdmin(TabbedTranslationAdmin,
         'id',
         'text',
     ] 
-    fields = [
-        # ''
-    ]
     readonly_fields = [
-        'created',
-        'updated',
-        # 'code',
+        'availability',
     ]
     exclude = [
-        'code',
-        'order',
-        "colour",
-    ]
-    list_editable = [
-        'availability',
+        'is_active',
     ]
     search_fields = [
         'text',
     ]
-
 
 
 

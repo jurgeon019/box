@@ -115,7 +115,7 @@ class Item(AbstractPage):
 	def clean(self):
 		from django.core.validators import ValidationError 
 		if self.discount_type == 'v' and not (self.price > self.discount):
-			raise ValidationError('Знижка мусить бути мешною за ціну')
+			raise ValidationError('Знижка мусить бути меншою за ціну')
 		if self.discount_type == 'p' and not (self.discount < 100):
 			raise ValidationError('Знижка мусить бути мешною за 100%')
 
@@ -132,6 +132,9 @@ class Item(AbstractPage):
 			view, _ = ItemView.objects.get_or_create(sk=request.session.session_key, item=self)
 			view.ip = ip 
 			view.save()
+
+	def get_absolute_url(self):
+		return reverse(item_settings.ITEM_URL_NAME, kwargs={"slug": self.slug})
 
 	def resize_image(self, image):
 		if image:
@@ -152,12 +155,37 @@ class Item(AbstractPage):
 				ContentFile(image.read()),
 			)
 
-	def get_absolute_url(self):
-		return reverse(item_settings.ITEM_URL_NAME, kwargs={"slug": self.slug})
+	@property
+	def is_available(self):
+		# avail = True 
+		# if self.in_stock and self.in_stock.availability == True:
+		# 	print(1)
+		# 	avail = True
+		# if self.in_stock and self.in_stock.availability == False:
+		# 	print(2)
+		# 	avail = False  
+		if self.amount != 0 and self.amount is not None:
+			print(3)
+			avail = True 
+		if self.amount == 0 and self.amount is not None:
+			print(4)
+			avail = False 
+		print(avail)
+		return avail
 
+	def handle_in_stock(self, *args, **kwargs):
+		if self.amount == 0:
+			self.in_stock = ItemStock.objects.get(availability=False) 
+		elif self.amount and not self.in_stock:
+			self.in_stock = ItemStock.objects.filter(availability=True).first()
+		elif self.amount and self.in_stock.availability == False:
+			self.in_stock = ItemStock.objects.filter(availability=True).first()
+			
 	def save(self, *args, **kwargs):
+		self.handle_in_stock(*args, **kwargs)
 		super().save(*args, **kwargs)
 		self.resize_image(self.image)
+
 
 	def __str__(self):
 		return f"{self.title}, {self.slug}"
