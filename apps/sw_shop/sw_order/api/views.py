@@ -80,7 +80,7 @@ def order_request(request):
     phone    = query.get('phone', '---')
     address  = query.get('address', '---')
     comments = query.get('comments', '---')
-    attributes = json.loads(query.get('item_attr'))
+    attributes = json.loads(query.get('attributes'))
     item_id  = query['product_id']
     payment  = _('Покупка в 1 клік')
     delivery = _('Покупка в 1 клік')

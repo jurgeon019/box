@@ -72,8 +72,8 @@ class ItemImageAdmin(
     ImportExportActionModelAdmin,
     ImportExportModelAdmin,
     ):
-    def get_model_perms(self, request):
-        return {}
+    # def get_model_perms(self, request):
+    #     return {}
 
     def show_item(self, obj):
         return show_admin_link(obj=obj, obj_attr='item', obj_name='title')

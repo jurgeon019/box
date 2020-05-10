@@ -20,7 +20,21 @@ import inspect
 from import_export.resources import ModelResource
 from django.conf import settings
 from importlib import import_module
+from io import StringIO, BytesIO
+import csv 
+import pandas as pd 
 
+
+def load_xlsx(filename, sheet_name):
+  data = pd.read_excel(filename, sheet_name=sheet_name)
+  data = data.to_csv()
+  data = [dct for dct in map(dict, csv.DictReader(StringIO(data)))]
+  return data
+
+
+def load_csv(filename):
+  data = [dct for dct in map(dict, csv.DictReader(open(filename)))]
+  return data
 
 
 def paginate(request, klass):

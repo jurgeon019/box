@@ -10,8 +10,10 @@ from .. import settings as catalog_settings
 from django.utils.text import slugify
 from transliterate import translit
 
+# class ItemCategory(AbstractPage):
 class ItemCategory(AbstractPage, MPTTModel):
-  parent     = TreeForeignKey(verbose_name=_("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
+  parent     = models.ForeignKey(verbose_name=_("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
+  # parent     = TreeForeignKey(verbose_name=_("Батьківська категорія"), to='self', blank=True, null=True, on_delete=models.SET_NULL, related_name='subcategories')
   currency   = models.ForeignKey(verbose_name=_("Валюта"), to="sw_currency.Currency", blank=True, null=True, related_name="categories",  on_delete=models.SET_NULL)
 
   class Meta: 

@@ -71,8 +71,21 @@ excluded_apps = [
   'box.apps.sw_delivery',
 ]
 box_apps          = [app for app in settings.INSTALLED_APPS if app.startswith('box.') and  app not in excluded_apps]  #https://stackoverflow.com/questions/4843158/check-if-a-python-list-item-contains-a-string-inside-another-string
-box               = [path('', include(f'{app}.urls')) for app in box_apps]
-box_multilingual  = [path('', include(f'{app}.multilingual_urls')) for app in box_apps]
+# box               = [path('', include(f'{app}.urls')) for app in box_apps]
+# box_multilingual  = [path('', include(f'{app}.multilingual_urls')) for app in box_apps]
+box = []
+for app in box_apps:
+  try:
+    box.append(path('', include(f'{app}.urls')))
+  except:
+    pass 
+box_multilingual = []
+for app in box_apps:
+  try:
+    box_multilingual.append(path('', include(f'{app}.multilingual_urls')))
+  except:
+    pass 
+
 
 multilingual = i18n_patterns(
   path('admin/',    admin.site.urls),
@@ -101,7 +114,7 @@ urlpatterns = [
   path('summernote/',      include('django_summernote.urls')),
   # path('markdown/',        include('django_markdown.urls')),
   path('markdownx/',       include('markdownx.urls')),
-
+  path('filer/',           include('filer.urls')),
 
   path('api-auth/',        include('rest_framework.urls', namespace='rest_framework')),
   path('auth/',            include('djoser.urls')),

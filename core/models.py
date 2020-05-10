@@ -18,16 +18,10 @@ __all__ = [
 
 
 class BaseMixin(models.Model):
-	"""
-	У BaseMixin code blank=True, null=True тому що від нього наслідуються об'єкти,
-	у яких коду є опціональним(Item, Post, ItemCategory, PostCategory, AbstractContent і тд.) 
-	"""
 	code            = models.SlugField(
 		verbose_name=_("Код"), 
 		blank=True, null=True,
 		unique=True, 
-		# default=None, 
-		# unique=False, 
 		max_length=255, help_text=("Kод для виводу в шаблоні")
 	)
 	# def save(self, *args, **kwargs):
@@ -73,19 +67,48 @@ class BaseMixin(models.Model):
 		return []
 
 
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+import os
+
+class OverwriteStorage(FileSystemStorage):
+    def get_available_name(self, name, *args, **kwargs):
+        if self.exists(name):
+            os.remove(os.path.join(settings.MEDIA_ROOT, name))
+        return name
+
+
 class AbstractPage(BaseMixin):
-	meta_title = models.TextField(verbose_name=_("Мета-заголовок"),     blank=True, null=True, help_text=_("Заголовок сторінки в браузері, який відображається у видачі пошукових систем"))
-	meta_descr = models.TextField(verbose_name=_("Мета-опис"),          blank=True, null=True, help_text=_("__"))
-	meta_key   = models.TextField(verbose_name=_("Ключові слова"),      blank=True, null=True, help_text=_("Список ключових слів"))
-	slug       = models.SlugField(verbose_name=_("Посилання"),          max_length=255, null=True, blank=False, unique=True)
-	alt        = models.CharField(verbose_name=_("Альт до картинки"),   blank=True, null=True, max_length=255)
-	image      = models.ImageField(verbose_name=_("Картинка"),          blank=True, null=True)
-	title      = models.CharField(verbose_name=_("Назва"),              blank=False, null=False, max_length=255, )
-	description= HTMLField(verbose_name=_("Опис"), blank=True, null=True)
+	meta_title = models.TextField(
+		verbose_name=_("Мета-заголовок"),     blank=True, null=True, help_text=_("Заголовок сторінки в браузері, який відображається у видачі пошукових систем")
+	)
+	meta_descr = models.TextField(
+		verbose_name=_("Мета-опис"),          blank=True, null=True, help_text=_("__")
+	)
+	meta_key   = models.TextField(
+		verbose_name=_("Ключові слова"),      blank=True, null=True, help_text=_("Список ключових слів")
+	)
+	slug       = models.SlugField(
+		verbose_name=_("Посилання"),          max_length=255, 
+		null=True, blank=False, #unique=True
+	)
+	alt        = models.CharField(
+		verbose_name=_("Альт до картинки"),   blank=True, null=True, max_length=255)
+	image      = models.ImageField(
+		verbose_name=_("Картинка"),          blank=True, null=True, storage=OverwriteStorage()
+	)
+	title      = models.CharField(
+		verbose_name=_("Назва"),              blank=False, null=False, max_length=255, )
+	description= HTMLField(
+		verbose_name=_("Опис"), blank=True, null=True)
 
 	class Meta:
 		abstract = True
-	
+
+	def clean_slug(self):
+		slug = self.cleaned_data['slug']
+		return slug
+
 	def save(self, *args, **kwargs):
 		from box.core.signals import handle_slug 
 		if not self.meta_title and self.title:
@@ -95,7 +118,6 @@ class AbstractPage(BaseMixin):
 		if not self.meta_descr and self.description:
 			self.meta_descr = self.description
 		handle_slug(self)
-		print(self.title, self.code)
 		super().save(*args, **kwargs)
 
 	def __str__(self):

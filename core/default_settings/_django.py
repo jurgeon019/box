@@ -21,7 +21,7 @@ SITE_ID            = 1
 LOGIN_REDIRECT_URL = '/profile/' # '/' # 
 LOGIN_URL          = '/' # '/login/' #  'profile # 
 # https://stackoverflow.com/questions/47585583/the-number-of-get-post-parameters-exceeded-settings-data-upload-max-number-field
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240 
+# DATA_UPLOAD_MAX_NUMBER_FIELDS = 10240 
 
 
 
