@@ -30,6 +30,15 @@ def load_warehouses():
 
 
 
+@periodic_task(run_every=timedelta(seconds=10))
+def test_faina():
+    print('celery works!')
+    return 'celery works!'
+
+
+
+
+
 
 
 
