@@ -59,7 +59,6 @@ class Attribute(models.Model):
         item_attribute_value_ids = ItemAttributeValue.objects.filter(
             item_attribute__in=item_attributes.filter(attribute=self),
         ).values_list('value_id', flat=True).distinct()
-        print("sdfsdf:",item_attribute_value_ids.query)
         return AttributeValue.objects.filter(id__in=item_attribute_value_ids) 
 
     @classmethod
@@ -74,7 +73,10 @@ class AttributeValue(models.Model):
     )
     attribute = models.ForeignKey(
         verbose_name=_("Атрибут"), to="sw_catalog.Attribute", 
-        on_delete=models.SET_NULL, blank=True, null=True,
+        # on_delete=models.CASCADE, 
+        on_delete=models.SET_NULL, 
+        # blank=True, 
+        null=True,
     )
     value = models.CharField(
         verbose_name=_("Значення"), max_length=255, unique=True,
@@ -154,6 +156,7 @@ class ItemAttributeValue(models.Model):
     description = models.TextField(
         verbose_name=_("Опис"), blank=True, null=True, 
     )
+
     # TODO: виводити тільки ті характеристики товару у яких amount > 0 
     # TODO: відмінусовувати amount у характеристики товару при заказі 
     # TODO: виводити тільки ті характеристики товару у яких is_active=True

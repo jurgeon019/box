@@ -22,7 +22,7 @@ from io import BytesIO
 from django.core.files import File
 from box.core.models import OverwriteStorage
 
-
+from . import ItemAttribute, ItemAttributeValue, Attribute, AttributeValue
 
 class Item(AbstractPage):
     if item_settings.MULTIPLE_CATEGORY:
@@ -209,6 +209,17 @@ class Item(AbstractPage):
             height = int((float(img.size[1])*float((width/float(img.size[0])))))
             img    = img.resize((width,height), Image.ANTIALIAS)
             img.save(image.path) 
+        
+    def get_item_attributes(self):
+        return ItemAttribute.objects.filter(item=self)    
+
+    def get_item_attribute_values(self, code):
+        values = ItemAttributeValue.objects.filter(
+            item_attribute__in=self.get_item_attributes().filter(
+                attribute=Attribute.objects.get(code=code)
+            )
+        )
+        return values 
 
     def __str__(self):
         return f"{self.title}, {self.slug}"

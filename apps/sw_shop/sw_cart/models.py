@@ -214,6 +214,17 @@ class CartItem(models.Model):
   def get_attributes(self):
     return CartItemAttribute.objects.filter(cart_item=self)
 
+  def get_attribute(self, attr_code):
+    try:
+        attr = CartItemAttribute.objects.get(
+            cart_item=self,
+            attribute_name=ItemAttribute.objects.get(item=self.item,attribute__code=attr_code),
+            # attribute_name=Attribute.objects.get(code=attr_code),
+        ) 
+    except:
+        attr = None 
+    return attr 
+
   @property
   def total_price(self):
     total_price = self.price_per_item * self.quantity
