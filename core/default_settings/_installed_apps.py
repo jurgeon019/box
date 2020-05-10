@@ -45,11 +45,14 @@ third_party = [
     "rangefilter",
     'debug_toolbar',
     'nested_admin',
+    'easy_thumbnails',
+    'filer',
 ]
 box_core = [
     'box.core',
     'box.core.sw_global_config',
     'box.core.sw_solo',
+    'box.core.sw_watermarker',
     'box.core.sw_model_search',
     'box.core.sw_currency',
     'box.core.sw_content',

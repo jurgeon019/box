@@ -64,26 +64,29 @@ def order_items(request):
     url = reverse('thank_you')
     return JsonResponse({"url":url})
 
+from rest_framework.decorators import api_view
 
-@csrf_exempt
+
+import json 
+
+
+@api_view(['GET','POST'])
 def order_request(request):
-    query    = request.POST
+    # query    = request.POST or request.GET
+    query = request.data
+    
     name     = query.get('name', '---')
     email    = query.get('email', '---')
     phone    = query.get('phone', '---')
     address  = query.get('address', '---')
     comments = query.get('comments', '---')
+    attributes = json.loads(query.get('attributes'))
     item_id  = query['product_id']
     payment  = _('Покупка в 1 клік')
     delivery = _('Покупка в 1 клік')
     print(query)
-
     cart = get_cart(request)
-    
-    cart_item = CartItem.objects.create(
-      cart=cart,
-      item = Item.objects.get(id=item_id),
-    )
+    cart.add_item(item_id=item_id, quantity=1, attributes=attributes)
     order = Order.objects.create(
       name    = name,    
       email   = email,   
@@ -99,7 +102,7 @@ def order_request(request):
       'url':reverse('thank_you'),
     })
 
-
+from ..models import OrderRecipientEmail
 @csrf_exempt
 def item_info(request):
   query   = request.GET or request.POST
@@ -120,9 +123,11 @@ def item_info(request):
     item_request.save()
 
   box_send_mail(
-    model=item_request, 
     subject=('Було отримано заявку на інформацію про товар'),
-    recipient_list=GlobalConfig.objects.get_solo().get_data('other')['emails'],
+    template = 'sw_order/item_info_mail.html',
+    email_config = OrderRecipientEmail,
+    model=item_request, 
+    fail_silently=False,
   )
   return JsonResponse({
     'status':'OK',

@@ -77,12 +77,12 @@ class ItemAdmin(
     item_fields = [
         'title',
         "brand",
-        'in_stock',
-        'currency',
+        "manufacturer",
         "markers",   
+        'currency',
         "labels",   
         "similars",   
-        "manufacturer",
+        'in_stock',
         (
         "unit",
         'amount',

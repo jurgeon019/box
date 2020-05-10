@@ -53,6 +53,7 @@ class ItemResource(ModelResource):
         self.handle_brand_import(row)
         self.handle_currency_import(row)
         self.handle_in_stock_import(row)
+        self.handle_unit_import(row)
         self.handle_images_import(row)
 
     # def after_import_row(self, row, row_result,**kwargs):
@@ -114,8 +115,8 @@ class ItemResource(ModelResource):
 
     def handle_brand_import(self, row):
         if row.get('brand'):
-            brand_title  = row['brand']
-            brand, _     = ItemBrand.objects.get_or_create(title=brand_title)
+            brand_title  = row['brand'].lower().strip()
+            brand, _     = ItemBrand.objects.get_or_create(title__iexact=brand_title)
             row['brand'] = brand.id
 
     def dehydrate_brand(self, item):
@@ -125,8 +126,8 @@ class ItemResource(ModelResource):
         
     def handle_currency_import(self, row):
         if row.get('currency'):
-            currency_code   = row['currency']
-            currency, _     = Currency.objects.get_or_create(code=currency_code)
+            currency_code   = row['currency'].strip()
+            currency, _     = Currency.objects.get_or_create(code__iexact=currency_code)
             row['currency'] = currency.id
 
     def dehydrate_currency(self, item):
@@ -136,7 +137,7 @@ class ItemResource(ModelResource):
 
     def handle_category_import(self, row):
         if row.get('category'):
-            category_id = row['category']
+            category_id = row['category'].lower().strip()
             category, _ = ItemCategory.objects.get_or_create(id=category_id)
             row['category'] = category.id
 
@@ -147,14 +148,25 @@ class ItemResource(ModelResource):
 
     def handle_in_stock_import(self, row):
         if row.get('in_stock'):
-            in_stock_text   = row['in_stock']
-            in_stock, _     = ItemStock.objects.get_or_create(text=in_stock_text)
+            in_stock_text   = row['in_stock'].lower().strip()
+            in_stock, _     = ItemStock.objects.get_or_create(text__iexact=in_stock_text)
             row['in_stock'] = in_stock.id
             
     def dehydrate_in_stock(self, item):
         in_stock = None 
         if item.in_stock: in_stock = item.in_stock.text 
         return in_stock
+
+    def handle_unit_import(self, row):
+        if row.get('unit'):
+            unit_name   = row['unit'].lower().strip()
+            unit, _     = ItemUnit.objects.get_or_create(name=unit_name)
+            row['unit'] = unit.id
+            
+    def dehydrate_unit(self, item):
+        unit = None 
+        if item.unit: unit = item.unit.name 
+        return unit
 
     def handle_images_import(self, row):
         '''

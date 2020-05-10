@@ -1,11 +1,11 @@
 from tinymce.models import HTMLField
-from froala_editor.fields import FroalaField
-from markdownx.models import MarkdownxField
+# from froala_editor.fields import FroalaField
+# from markdownx.models import MarkdownxField
 # from django_markdown.models import MarkdownField
-from markdownx.models import MarkdownxField
-from ckeditor.fields import RichTextField
-from ckeditor_uploader.fields import RichTextUploadingField
-
+# from markdownx.models import MarkdownxField
+# from ckeditor.fields import RichTextField
+# from ckeditor_uploader.fields import RichTextUploadingField
+# from djangocms_text_ckeditor.fields import HTMLField
 
 
 from django.db import models 
@@ -25,13 +25,13 @@ class Post(AbstractPage):
   markers    = models.ManyToManyField(
     to="sw_global_config.GlobalMarker", verbose_name=_("Маркери"), blank=True
   )
-  content = RichTextUploadingField(
+  # content = RichTextUploadingField(
   # content = RichTextField(
     # config_name='awesome_ckeditor',
   # content = models.TextField(
   # content = MarkdownxField(
   # content = MarkdownField(
-  # content    = HTMLField(
+  content    = HTMLField(
   # content = FroalaField(
     # options={
     #   'toolbarInline': False,

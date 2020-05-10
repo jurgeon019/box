@@ -7,7 +7,7 @@ from django.template.loader import render_to_string
 from box.core.sw_global_config.models import GlobalConfig, GlobalRecipientEmail
 
 
-def box_send_mail(subject, template, config, email_config, model, fail_silently=False, context={}):
+def box_send_mail(subject, template, email_config, model, fail_silently=False, context={}):
   site           = Site.objects.get_current().domain
   app_label      = model._meta.app_label
   model_name     = model._meta.model_name

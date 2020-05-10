@@ -101,9 +101,26 @@
     </div>
     <!-- END Content -->
 
-    {% block footer %}<div id="footer"></div>{% endblock %}
+    {% block footer %}
+    <div id="footer">
+
+    </div>
+    <script type="text/javascript">
+        var $ = django.jQuery;
+        $(document).ready(function() {
+            $('.tabular table th:contains({% trans "Delete?" %})').each(function(index) {
+                var text = $(this).text();
+                $(this).html('<input type="checkbox" class="selectall_checkbox">&nbsp; ' + text);
+            });
+            $('.selectall_checkbox').click(function(e) {
+                $(e.target).closest('table').find(':checkbox').filter(function () { return /DELETE/.test(this.name); }).each(function () {    
+                this.checked = e.target.checked;
+                });
+            });
+        });
+        </script>
+    {% endblock %}
 </div>
 <!-- END Container -->
-
 </body>
 </html>

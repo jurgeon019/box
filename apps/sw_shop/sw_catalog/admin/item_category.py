@@ -40,10 +40,11 @@ from ..resources import *
 
 
 class ItemCategoryAdmin(
-    BaseAdmin,
-    ImportExportActionModelAdmin,
-    ImportExportModelAdmin, 
-    ClonableModelAdmin, 
+    # BaseAdmin,
+    # ImportExportActionModelAdmin,
+    # ImportExportModelAdmin, 
+    # ClonableModelAdmin, 
+    # SortableAdminMixin,
     DraggableMPTTAdmin,
     TabbedTranslationAdmin,
     admin.ModelAdmin,
@@ -51,40 +52,45 @@ class ItemCategoryAdmin(
     # changelist
     # TODO: Проміжна дія : встановити всім товарам в вибраних категоріях валюту категорії.
     # TODO: Проміжна дія: встановити всім товарам в вибраних категоріях характеристику категорії.
-
-    def tree_title(self, obj):
-        lvl = obj._mpttfield('level') * self.mptt_level_indent
-        return mark_safe(f'<div style="text-indent:{lvl}px">{obj.tree_title}</div>')
+    def delete_queryset(self, request, queryset):
+        queryset.filter(code__isnull=True).delete()
     
-    tree_title.short_description = _('Заголовок')
-    expand_tree_by_default = False 
-    mptt_level_indent = 20
+    def has_delete_permission(self, request, obj=None):
+        return False if obj and obj.code else True 
+
+    # def tree_title(self, obj):
+    #     lvl = obj._mpttfield('level') * self.mptt_level_indent
+    #     return mark_safe(f'<div style="text-indent:{lvl}px">{obj.tree_title}</div>')
+    # tree_title.short_description = _('Заdispголовок')
+    # expand_tree_by_default = False 
+    # mptt_level_indent = 20
+
     resource_class = ItemCategoryResource
     inlines = [
         ItemCategoryInline,
     ]
     actions = [
-        "is_active_on",
-        "is_active_off",
+        # "is_active_on",
+        # "is_active_off",
     ]
-    mptt_indent_field = "currency"
+    # mptt_indent_field = "currency"
     list_display = [
-        # 'slug',
-        # 'code',
-        'tree_actions',
-        "show_image",
+        # 'tree_actions',
+        # "show_image",
         # 'indented_title',
-        'tree_title',
+        # 'tree_title',
+        'title',
         'is_active',
-        'show_site_link',
-        'show_delete_link',
+        # 'show_site_link',
+        # 'show_delete_link',
     ]
     search_fields = [
         'title',
     ]
     list_display_links = [
         # 'indented_title',
-        'tree_title',
+        # 'tree_title',
+        'title',
     ]
     list_editable = [
         'is_active',

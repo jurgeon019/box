@@ -19,6 +19,7 @@ from ._templates import *
 from ._tinymce import * 
 from ._translation import * 
 from ._wp import * 
+from ._sw_watermark import * 
 
 
 

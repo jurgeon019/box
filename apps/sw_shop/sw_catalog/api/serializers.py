@@ -95,6 +95,10 @@ class ItemListSerializer(serializers.ModelSerializer):
   def get_image_url(self, obj):
     return obj.image_url
 
+  discount_price = serializers.SerializerMethodField() 
+  def get_discount_price(self, obj):
+    return obj.discount_price()
+
   class Meta:
     model = Item
     exclude = [
