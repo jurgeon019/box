@@ -194,11 +194,11 @@ class Item(AbstractPage):
         if images.exists():
             image = images.first().image 
             if image:
-                self.image.delete()
                 name = self.slug + image.name.split("/")[-1]
-                print(name)
-                content_file = ContentFile(image.read())
-                self.image.save(name, image, save=False)
+                try:
+                    self.image.save(name, image, save=False)
+                except Exception as e:
+                    print(e)
 
     def resize_image(self, *args, **kwargs):
         if self.image:
