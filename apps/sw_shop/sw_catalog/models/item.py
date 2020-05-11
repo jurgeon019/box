@@ -117,9 +117,14 @@ class Item(AbstractPage):
 
     def converted_discount_price(self):
         price = 0 
-        if self.discount_price and self.currency:
+        if self.discount_price() and self.currency:
             price = self.price * self.currency.get_rate()
         return price
+
+    def final_unconverted_price(self):
+        final_unconverted_price = self.discount_price() or self.price 
+        return final_unconverted_price
+
 
     def discount_price(self):
         price = 0 
