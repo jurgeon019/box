@@ -96,15 +96,16 @@ def remove_favour_by_like(request, id):
 
 @api_view(['POST'])
 def add_favour_to_cart(request, id):
+  favour_item = FavourItem.objects.get(id=id)
   cart_item, _ = CartItem.objects.get_or_create(
     cart=get_cart(request),
-    item__id=request.data['item_id']
+    item__id=favour_item.item.id,
     ordered=False,
   )
   if _: cart_item.quantity = 1
   if not _: cart_item.quantity += 1
   cart_item.save()
-  FavourItem.objects.get(id=id).delete()
+  favour_item.delete()
   return Response(status=202)
 
 
@@ -114,7 +115,7 @@ def add_favours_to_cart(request):
   for favour in favours:
     cart_item, _ = CartItem.objects.get_or_create(
       cart=get_cart(request),
-      item=Item.objects.get(id=favour.item.id),
+      item__id=favour.item.id,
       ordered=False,
     )
     if _: cart_item.quantity = 1
