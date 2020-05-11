@@ -36,20 +36,25 @@ class Cart(models.Model):
     verbose_name = _('Корзина')
     verbose_name_plural = _('Корзини')
 
-  # def get_cart_item_with_attributes(self, item, attributes):
-  #   cart_item = CartItem.objects.filter(item=item, cart=self)
-  #   for attribute in attributes:
-  # TODO:get_cart_item_with_attributes
-  #   return cart_item
+  def get_cart_item_with_attributes(self, item, attributes):
+    cart_item = CartItem.objects.filter(item=item, cart=self)
+    for attribute in attributes:
+      CartItemAttribute.objects.filter(
+        cart_item=cart_item,
+        attribute_name__id=attribute['item_attribute_id'],
+        value__id=attribute['item_attribute_value_id'],
+      )
+    # TODO:???
+    return cart_item
 
   def get_cart_item_attributes(self, item, attribute):
-    if attribute:
-      cart_item_attributes = CartItemAttribute.objects.filter(
-        cart_item__item=item,
-        attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
-        value=ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id']),
-      )
-      return cart_item_attributes
+    # if attribute:
+    cart_item_attributes = CartItemAttribute.objects.filter(
+      cart_item__item=item,
+      attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
+      value=ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id']),
+    )
+    return cart_item_attributes
 
   def create_cart_item_attributes(self, cart_item, attributes):
     CartItemAttribute.objects.filter(cart_item=cart_item).delete()
@@ -71,21 +76,21 @@ class Cart(models.Model):
     item = Item.objects.get(pk=int(item_id))
     if attributes:
       for attribute in attributes:
-          cart_item_attributes = self.get_cart_item_attributes(item, attribute)
-          print(cart_item_attributes)
-        # cart_item_attributes = self.get_cart_item_attributes(item, attribute)
+        cart_item_attributes = self.get_cart_item_attributes(item, attribute)
+        print("cart_item_attributes:",cart_item_attributes)
         # if cart_item_attributes and not cart_item_attributes.exists():
+        if not cart_item_attributes.exists():
+        # if True:
           cart_item = CartItem.objects.create(item=item, cart=self)
           cart_item.quantity=quantity
           cart_item.save()
           self.create_cart_item_attributes(cart_item, attributes)
           break 
-        # else:
-        #   print('ELSE!')
-        # #   # TODO: get_cart_item_with_attributes
-        # #   cart_item = get_cart_item_with_attributes(item=item)
-        # #   cart_item.quantity += int(quantity)
-        # #   cart_item.save()
+        else:
+          print('ELSE!')
+          cart_item = self.get_cart_item_with_attributes(item, attributes)
+          # cart_item.quantity += int(quantity)
+          # cart_item.save()
     else:
       cart_item, created = CartItem.objects.get_or_create(
         cart=self,
@@ -126,7 +131,8 @@ class Cart(models.Model):
     ).delete()
 
   def clear(self):
-    self.items.all().delete()
+    CartItem.objects.filter(cart=self).delete()
+    # self.items.all().delete()
 
   @property
   def items_quantity(self):

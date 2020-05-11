@@ -11,13 +11,11 @@ router.register('cart_items', CartItemViewSet)
 
 old_urlpatterns = [
   path('clear_cart/',             clear_cart,              name='clear_cart'),
-  path('cart_items/',     cart_items, name='cart_items'),
-  path('cart_item/<id>/', cart_item,  name='cart_item'),
 
-  path('get_cart_items/',         get_cart_items,          name='get_cart_items'),
-  path('add_cart_item/',          add_cart_item,           name='add_cart_item'),
-  path('remove_cart_item/',       remove_cart_item,        name='remove_cart_item'),
-  path('change_cart_item_amount/',change_cart_item_amount, name='change_cart_item_amount'),
+  # path('get_cart_items/',         get_cart_items,          name='get_cart_items'),
+  # path('add_cart_item/',          add_cart_item,           name='add_cart_item'),
+  # path('remove_cart_item/',       remove_cart_item,        name='remove_cart_item'),
+  # path('change_cart_item_amount/',change_cart_item_amount, name='change_cart_item_amount'),
   path('change_item_amount/',     change_item_amount,      name='change_item_amount'),
 
 
@@ -32,7 +30,10 @@ old_urlpatterns = [
 
 urlpatterns = [
   path('', include(old_urlpatterns)), 
-  path('', include(router.urls)),
+  path('cart_items/',     cart_items, name='cart_items'),
+  path('cart_item/<id>/', cart_item,  name='cart_item'),
+
+  # path('', include(router.urls)),
 ]
 
 

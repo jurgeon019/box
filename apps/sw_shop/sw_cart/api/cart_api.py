@@ -6,6 +6,7 @@ from box.apps.sw_shop.sw_cart.models import CartItem
 from box.apps.sw_shop.sw_cart.utils import get_cart, get_cart_info
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+import json 
 
 
 
@@ -18,7 +19,8 @@ def cart_items(request):
     query      = request.data
     quantity   = query.get('quantity', 1)
     item_id    = query['item_id']
-    attributes = query.get('attributes', [])
+    # attributes = query.get('attributes', [])
+    attributes = json.loads(query.get('attributes', []))
     cart.add_item(item_id, quantity, attributes)
     return Response(data=get_cart_info(request), status=200)
   if request.method == 'DELETE':
@@ -63,32 +65,31 @@ def check_if_item_with_attributes_is_in_cart(request):
 
 # old 
 
-@csrf_exempt
-def get_cart_items(request):
-  return JsonResponse(get_cart_info(request))
+# @csrf_exempt
+# def get_cart_items(request):
+#   return JsonResponse(get_cart_info(request))
 
-import json 
-@api_view(['GET','POST'])
-def add_cart_item(request):
-  # query      = request.data 
-  query      = request.POST or request.GET
-  cart       = get_cart(request)
-  # print("query::",query)
-  quantity   = query.get('quantity', 1)
-  item_id    = query['item_id']
-  attributes = json.loads(query.get('attributes', []))
-  # print(attributes)
-  cart.add_item(item_id, quantity, attributes)
-  return JsonResponse(get_cart_info(request))
+# @api_view(['GET','POST'])
+# def add_cart_item(request):
+#   # query      = request.data 
+#   query      = request.POST or request.GET
+#   cart       = get_cart(request)
+#   # print("query::",query)
+#   quantity   = query.get('quantity', 1)
+#   item_id    = query['item_id']
+#   attributes = json.loads(query.get('attributes', []))
+#   # print(attributes)
+#   cart.add_item(item_id, quantity, attributes)
+#   return JsonResponse(get_cart_info(request))
 
 
-@csrf_exempt
-def remove_cart_item(request):
-  cart         = get_cart(request)
-  query        = request.POST or request.GET
-  cart_item_id = query['cart_item_id']
-  cart.remove_cart_item(cart_item_id)
-  return JsonResponse(get_cart_info(request))
+# @csrf_exempt
+# def remove_cart_item(request):
+#   cart         = get_cart(request)
+#   query        = request.POST or request.GET
+#   cart_item_id = query['cart_item_id']
+#   cart.remove_cart_item(cart_item_id)
+#   return JsonResponse(get_cart_info(request))
 
 
 @csrf_exempt
