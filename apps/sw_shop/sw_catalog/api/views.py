@@ -82,6 +82,7 @@ class ItemList(generics.ListCreateAPIView):
     attributes   = data.get('attributes', [])
     if attributes:
       attributes   = json.loads(attributes)
+  
     # TODO: добавити сюда пошук по modelsearch,  get_items_in_favours, get_items_in_cart
 
     if category_id is not None:
