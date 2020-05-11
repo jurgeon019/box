@@ -64,11 +64,10 @@ def favour_items(request):
     response = FavourItemSerializer(favours, many=True).data
     return Response(response, status=200)
   if request.method == 'POST':
-    query     = request.data
-    item_id   = query['item_id']
+    item_id   = request.data['item_id']
     favour, _ = FavourItem.objects.get_or_create(
       cart=cart, 
-      item__id=item_id,
+      item=Item.objects.get(id=item_id),
     )
     return Response(status=202)
   if request.method == 'DELETE':
