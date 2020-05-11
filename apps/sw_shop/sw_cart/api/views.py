@@ -15,17 +15,9 @@ def check_if_item_with_attributes_is_in_cart(request):
 
 
 @api_view(['GET','POST'])
-def change_item_amount(request):
-  cart      = get_cart(request)
-  query     = request.data
-  item_id   = query['item_id']
-  quantity  = query['quantity']
-  cart_item = cart.change_item_amount(item_id, quantity)
-  response  = {
-    "cart_item_id":cart_item.id,
-  }
-  response.update(get_cart_info(request))
-  return JsonResponse(response)
+def change_item_amount(request, id):
+  get_cart(request).change_item_amount(id, request.data['quantity'])
+  return Response(get_cart_info(request), status=203)
 
 
 @api_view(['GET','POST','DELETE'])
@@ -37,13 +29,13 @@ def cart_items(request):
     query      = request.data
     quantity   = query.get('quantity', 1)
     item_id    = query['item_id']
-    # attributes = query.get('attributes', [])
-    attributes = json.loads(query.get('attributes', []))
+    attributes = query.get('attributes', [])
+    attributes = json.loads(attributes)
     cart.add_item(item_id, quantity, attributes)
-    return Response(data=get_cart_info(request), status=200)
+    return Response(data=get_cart_info(request), status=203)
   if request.method == 'DELETE':
     cart.clear()
-    return Response(data=get_cart_info(request), status=200)
+    return Response(data=get_cart_info(request), status=204)
 
 
 @api_view(['GET','PATCH','DELETE'])
@@ -53,23 +45,14 @@ def cart_item(request, id):
     cart_item = CartItem.objects.get(id=id)
     return Response(data=CartItemSerializer(cart_item).data, status=200)
   elif request.method == 'PATCH':
-    query        = request.data
-    # cart_item_id = query['cart_item_id']
-    cart_item_id = id
-    quantity     = query['quantity']
-    cart_item    = cart.change_cart_item_amount(cart_item_id, quantity)
+    cart_item    = cart.change_cart_item_amount(id, request.data['quantity'])
     response     = {
-      "cart_item_id":cart_item_id,
       "cart_item_total_price":cart_item.total_price,
     }
     response.update(get_cart_info(request))
-    return Response(data=response, status=200)
+    return Response(data=response, status=202)
   elif request.method == 'DELETE':
-    cart         = get_cart(request)
-    query        = request.POST or request.GET
-    # cart_item_id = query['cart_item_id']
-    cart_item_id = id
-    cart.remove_cart_item(cart_item_id)
+    get_cart(request).remove_cart_item(id)
     return Response(get_cart_info(request), status=204)
 
 
@@ -77,145 +60,76 @@ def cart_item(request, id):
 def favour_items(request):
   cart = get_cart(request)
   if request.method == 'GET':
-    favours    = FavourItem.objects.filter(cart=cart)
-    serializer = FavourItemSerializer(favours, many=True)
-    response = {
-      'favours':serializer.data, 
-    }
-    return Response(data={},status=200)
+    favours  = FavourItem.objects.filter(cart=cart)
+    response = FavourItemSerializer(favours, many=True).data
+    return Response(response, status=200)
   if request.method == 'POST':
-    query      = request.data
-    return Response(data={}, status=200)
+    query     = request.data
+    item_id   = query['item_id']
+    favour, _ = FavourItem.objects.get_or_create(
+      cart=cart, 
+      item__id=item_id,
+    )
+    return Response(status=202)
   if request.method == 'DELETE':
     FavourItem.objects.filter(cart=cart).delete()
-    return Response(data={}, status=200)
+    return Response(status=204)
 
 
-@api_view(['GET','PATCH','DELETE'])
-def cart_item(request, id):
+@api_view(['GET','DELETE'])
+def favour_item(request, id):
   cart = get_cart(request)
   if request.method == 'GET':
-    cart_item = CartItem.objects.get(id=id)
-    return Response(data=CartItemSerializer(cart_item).data, status=200)
-  elif request.method == 'PATCH':
-    query        = request.data
-    # cart_item_id = query['cart_item_id']
-    cart_item_id = id
-    quantity     = query['quantity']
-    cart_item    = cart.change_cart_item_amount(cart_item_id, quantity)
-    response     = {
-      "cart_item_id":cart_item_id,
-      "cart_item_total_price":cart_item.total_price,
-    }
-    response.update(get_cart_info(request))
-    return Response(data=response, status=200)
+    favour_item = FavourItem.objects.get(id=id)
+    response    = FavourItemSerializer(favour_item).data
+    return Response(response, status=200)
   elif request.method == 'DELETE':
-    cart         = get_cart(request)
-    query        = request.POST or request.GET
-    # cart_item_id = query['cart_item_id']
-    cart_item_id = id
-    cart.remove_cart_item(cart_item_id)
-    return Response(get_cart_info(request), status=204)
+    FavourItem.objects.get(id=id).delete()
+    return Response(status=204)
 
 
+@api_view(['DELETE'])
+def remove_favour_by_like(request, id):
+  FavourItem.objects.get(cart=get_cart(request), item__id=id).delete()
+  return Response(status=204)
 
 
-
-@csrf_exempt
-def add_favour(request):
-  query           = request.POST or request.GET
-  item_id         = query['item_id']
-  favour, created = FavourItem.objects.get_or_create(
-    cart=get_cart(request),
-    item=Item.objects.get(pk=int(item_id))
-  )
-  return HttpResponse()
-
-
-
-
-@csrf_exempt
-def remove_favour(request):
-  query = request.POST or request.GET
-  favour_id = query['favour_id']
-  favour_item = FavourItem.objects.get(
-    cart=get_cart(request),
-    id=favour_id,
-  )
-  item_id = favour_item.item.id
-  favour_item.delete()
-  return HttpResponse(item_id)
-
-@csrf_exempt
-def remove_favour_by_like(request):
-  '''
-  Removes item from favours by clicking on heart-button on item card 
-  :item_id: item id
-  '''
-  query   = request.POST or request.GET
-  item_id = query['item_id']
-  FavourItem.objects.get(
-    cart=get_cart(request), 
-    item=Item.objects.get(pk=int(item_id))
-  ).delete()
-  return HttpResponse()
-
-
-@csrf_exempt
-def add_favour_to_cart(request):
-  query        = request.POST or request.GET
-  item_id      = query['item_id']
-  favour_id    = query['favour_id']
+@api_view(['POST'])
+def add_favour_to_cart(request, id):
   cart_item, _ = CartItem.objects.get_or_create(
     cart=get_cart(request),
-    item=Item.objects.get(id=item_id),
+    item__id=request.data['item_id']
     ordered=False,
   )
-  quantity = 1
-  if _: cart_item.quantity = int(quantity)
-  if not _: cart_item.quantity += int(quantity)
+  if _: cart_item.quantity = 1
+  if not _: cart_item.quantity += 1
   cart_item.save()
-  favouritem = FavourItem.objects.get(id=favour_id)
-  favouritem.delete()
-  return HttpResponse('ok')
+  FavourItem.objects.get(id=id).delete()
+  return Response(status=202)
 
 
-@csrf_exempt
+@api_view(['POST'])
 def add_favours_to_cart(request):
   favours = FavourItem.objects.filter(cart=get_cart(request))
   for favour in favours:
-    cart_item, created = CartItem.objects.get_or_create(
+    cart_item, _ = CartItem.objects.get_or_create(
       cart=get_cart(request),
       item=Item.objects.get(id=favour.item.id),
       ordered=False,
     )
-    quantity = 1
-    if created: cart_item.quantity = int(quantity)
-    if not created: cart_item.quantity += int(quantity)
+    if _: cart_item.quantity = 1
+    if not _: cart_item.quantity += 1
     cart_item.save()
     favour.delete()
-  return HttpResponse('ok')
+  return Response(status=200)
 
 
-@csrf_exempt
+
+
+@api_view(['GET'])
 def get_favours_amount(request):
   favours = FavourItem.objects.filter(cart=get_cart(request))
   return HttpResponse(favours.count())
-
-
-@csrf_exempt
-def get_favours(request):
-  favours = FavourItem.objects.filter(
-    cart=get_cart(request),
-  )
-  serializer = FavourItemSerializer(favours, many=True)
-  response = {
-    'favours':serializer.data, 
-  }
-  return JsonResponse(response)
-
-
-
 
 
 
@@ -270,4 +184,101 @@ def get_favours(request):
 #   cart = get_cart(request)
 #   cart.clear()
 #   return JsonResponse(get_cart_info(request))
+
+
+
+# @csrf_exempt
+# def get_favours(request):
+#   favours = FavourItem.objects.filter(
+#     cart=get_cart(request),
+#   )
+#   serializer = FavourItemSerializer(favours, many=True)
+#   response = {
+#     'favours':serializer.data, 
+#   }
+#   return JsonResponse(response)
+
+
+
+
+
+# @csrf_exempt
+# def add_favour(request):
+#   query           = request.POST or request.GET
+#   item_id         = query['item_id']
+#   favour, created = FavourItem.objects.get_or_create(
+#     cart=get_cart(request),
+#     item=Item.objects.get(pk=int(item_id))
+#   )
+#   return HttpResponse()
+
+
+# @csrf_exempt
+# def remove_favour(request):
+#   query = request.POST or request.GET
+#   favour_id = query['favour_id']
+#   favour_item = FavourItem.objects.get(
+#     cart=get_cart(request),
+#     id=favour_id,
+#   )
+#   item_id = favour_item.item.id
+#   favour_item.delete()
+#   return HttpResponse(item_id)
+
+
+
+
+# @csrf_exempt
+# def remove_favour_by_like(request):
+#   query   = request.POST or request.GET
+#   item_id = query['item_id']
+#   FavourItem.objects.get(
+#     cart=get_cart(request), 
+#     item=Item.objects.get(pk=int(item_id))
+#   ).delete()
+#   return HttpResponse()
+
+
+# @csrf_exempt
+# def add_favour_to_cart(request):
+#   query        = request.POST or request.GET
+#   item_id      = query['item_id']
+#   favour_id    = query['favour_id']
+#   cart_item, _ = CartItem.objects.get_or_create(
+#     cart=get_cart(request),
+#     item=Item.objects.get(id=item_id),
+#     ordered=False,
+#   )
+#   quantity = 1
+#   if _: cart_item.quantity = int(quantity)
+#   if not _: cart_item.quantity += int(quantity)
+#   cart_item.save()
+#   favouritem = FavourItem.objects.get(id=favour_id)
+#   favouritem.delete()
+#   return HttpResponse('ok')
+
+
+# @csrf_exempt
+# def add_favours_to_cart(request):
+#   favours = FavourItem.objects.filter(cart=get_cart(request))
+#   for favour in favours:
+#     cart_item, created = CartItem.objects.get_or_create(
+#       cart=get_cart(request),
+#       item=Item.objects.get(id=favour.item.id),
+#       ordered=False,
+#     )
+#     quantity = 1
+#     if created: cart_item.quantity = int(quantity)
+#     if not created: cart_item.quantity += int(quantity)
+#     cart_item.save()
+#     favour.delete()
+#   return HttpResponse('ok')
+
+
+# @csrf_exempt
+# def get_favours_amount(request):
+#   favours = FavourItem.objects.filter(cart=get_cart(request))
+#   return HttpResponse(favours.count())
+
+
 
