@@ -73,7 +73,6 @@ def cart_item(request, id):
     return Response(get_cart_info(request), status=204)
 
 
-
 @api_view(['GET','POST','DELETE'])
 def favour_items(request):
   cart = get_cart(request)
@@ -86,15 +85,40 @@ def favour_items(request):
     return Response(data={},status=200)
   if request.method == 'POST':
     query      = request.data
-    quantity   = query.get('quantity', 1)
-    item_id    = query['item_id']
-    # attributes = query.get('attributes', [])
-    attributes = json.loads(query.get('attributes', []))
-    cart.add_item(item_id, quantity, attributes)
     return Response(data={}, status=200)
   if request.method == 'DELETE':
     FavourItem.objects.filter(cart=cart).delete()
     return Response(data={}, status=200)
+
+
+@api_view(['GET','PATCH','DELETE'])
+def cart_item(request, id):
+  cart = get_cart(request)
+  if request.method == 'GET':
+    cart_item = CartItem.objects.get(id=id)
+    return Response(data=CartItemSerializer(cart_item).data, status=200)
+  elif request.method == 'PATCH':
+    query        = request.data
+    # cart_item_id = query['cart_item_id']
+    cart_item_id = id
+    quantity     = query['quantity']
+    cart_item    = cart.change_cart_item_amount(cart_item_id, quantity)
+    response     = {
+      "cart_item_id":cart_item_id,
+      "cart_item_total_price":cart_item.total_price,
+    }
+    response.update(get_cart_info(request))
+    return Response(data=response, status=200)
+  elif request.method == 'DELETE':
+    cart         = get_cart(request)
+    query        = request.POST or request.GET
+    # cart_item_id = query['cart_item_id']
+    cart_item_id = id
+    cart.remove_cart_item(cart_item_id)
+    return Response(get_cart_info(request), status=204)
+
+
+
 
 
 @csrf_exempt
