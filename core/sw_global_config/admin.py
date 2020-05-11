@@ -75,11 +75,18 @@ class GlobalMarkerAdmin(
     ImportExportModelAdmin,
     ):
 
-    def has_add_permission(self, request):
-        return False 
-
+    def delete_queryset(self, request, queryset):
+        queryset.filter(code__isnull=True).delete()
+    
     def has_delete_permission(self, request, obj=None):
-        return False 
+        return False if obj and obj.code else True 
+
+    # def has_add_permission(self, request):
+    #     return False 
+
+    # def has_delete_permission(self, request, obj=None):
+    #     return False 
+
     resource_class = GlobalMarkerResource
     
     search_fields = [

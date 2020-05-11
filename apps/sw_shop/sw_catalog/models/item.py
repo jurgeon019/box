@@ -24,7 +24,10 @@ from box.core.models import OverwriteStorage
 
 from . import ItemAttribute, ItemAttributeValue, Attribute, AttributeValue
 
+
+
 class Item(AbstractPage):
+    title = models.TextField(null=True)
     if item_settings.MULTIPLE_CATEGORY:
         categories = models.ManyToManyField(
             verbose_name=_("Категорія"), to='sw_catalog.ItemCategory',
@@ -96,10 +99,19 @@ class Item(AbstractPage):
     # price        = models.DecimalField(
     # verbose_name=_("Нова ціна"),  max_digits=10, decimal_places=2, default=0)
     price = models.FloatField(
-        verbose_name=_("Актуальна ціна"), 
+        verbose_name=_("Ціна"), 
         default=0, 
         # blank=True, null=True,
     )
+
+    def __str__(self):
+        return f"{self.title}"#, {self.slug}"
+    
+    class Meta: 
+        verbose_name = _('товар'); 
+        verbose_name_plural = _('товари')
+        # ordering = ['order']
+
 
     def get_cart_price(self):
         cart_price = self.converted_discount_price() or self.converted_price()
@@ -124,7 +136,6 @@ class Item(AbstractPage):
     def final_unconverted_price(self):
         final_unconverted_price = self.discount_price() or self.price 
         return final_unconverted_price
-
 
     def discount_price(self):
         price = 0 
@@ -189,11 +200,11 @@ class Item(AbstractPage):
         elif self.amount and self.in_stock.availability == False:
             self.in_stock = ItemStock.objects.filter(availability=True).first()
 
-    def save(self, *args, **kwargs):
-        self.handle_in_stock(*args, **kwargs)
-        self.handle_image(*args, **kwargs)
-        super().save(*args, **kwargs)
-        self.resize_image(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     self.handle_in_stock(*args, **kwargs)
+    #     self.handle_image(*args, **kwargs)
+    #     super().save(*args, **kwargs)
+    #     self.resize_image(*args, **kwargs)
         
     def handle_image(self, *args, **kwargs):
         images = ItemImage.objects.filter(item=self)
@@ -244,12 +255,3 @@ class Item(AbstractPage):
 
     def get_visited_by(self, request):
         return 
-
-    def __str__(self):
-        return f"{self.title}, {self.slug}"
-    
-    class Meta: 
-        verbose_name = _('товар'); 
-        verbose_name_plural = _('товари')
-        ordering = ['order']
-

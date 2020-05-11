@@ -130,7 +130,6 @@ class GlobalConfig(SingletonModel):
       verbose_name_plural = verbose_name
 
 
-
 class GlobalRecipientEmail(AbstractRecipientEmail):
   config = models.ForeignKey(
     verbose_name=_("Глобальні налаштування"), to="sw_global_config.GlobalConfig", 
@@ -191,37 +190,48 @@ class GlobalTag(models.Model):
 
 
 class GlobalLabel(models.Model):
-	text  = models.CharField(
-		verbose_name=_('Текст'), max_length=255,
-	)
-	code  = models.SlugField(
-		verbose_name=_("Код"), unique=True, null=True, blank=True,
-	)
+  text  = models.CharField(
+    verbose_name=_('Текст'), max_length=255,
+  )
+  code  = models.SlugField(
+    verbose_name=_("Код"), unique=True, null=True, blank=True,
+  )
 
-	@classmethod
-	def modeltranslation_fields(cls): return ['text']
+  @classmethod
+  def modeltranslation_fields(cls): return ['text']
 
-	def __str__(self): return f"{self.text}"
+  def __str__(self): 
+    return f"{self.text}"
+  
+  def save(self, *args, **kwargs):
+    if self.text:
+      self.text = self.text.strip().lower()
+    super().save(*args, **kwargs)
 
-	class Meta:
-		verbose_name = _('мітка товарів')
-		verbose_name_plural = _('мітки товарів')
+  class Meta:
+    verbose_name = _('мітка')
+    verbose_name_plural = _('мітки')
 
 
 class GlobalMarker(models.Model):
-	name  = models.CharField(
-		verbose_name=_('Назва'), max_length=255
-	)
-	code  = models.SlugField(
-		verbose_name=_("Код"), unique=True, null=True, blank=True
-	)
+  name  = models.CharField(
+    verbose_name=_('Назва'), max_length=255
+  )
+  code  = models.SlugField(
+    verbose_name=_("Код"), unique=True, null=True, blank=True
+  )
 
-	def __str__(self): return f"{self.name}"
+  def __str__(self): 
+    return f"{self.name}"
+  def save(self, *args, **kwargs):
+    if self.name:
+      self.name = self.name.strip().lower()
+    super().save(*args, **kwargs)
 
-	@classmethod
-	def modeltranslation_fields(cls): return ['name']
+  @classmethod
+  def modeltranslation_fields(cls): return ['name']
 
-	class Meta:
-		verbose_name = _('маркер товарів')
-		verbose_name_plural = _('маркери товарів')
+  class Meta:
+    verbose_name = _('маркер')
+    verbose_name_plural = _('маркери')
 
