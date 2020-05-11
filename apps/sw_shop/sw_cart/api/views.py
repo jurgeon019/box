@@ -67,8 +67,9 @@ def favour_items(request):
     item_id   = request.data['item_id']
     favour, _ = FavourItem.objects.get_or_create(
       cart=cart, 
-      item=Item.objects.get(id=item_id),
+      item=Item.objects.get(id=item_id)
     )
+    print(favour.item)
     return Response(status=202)
   if request.method == 'DELETE':
     FavourItem.objects.filter(cart=cart).delete()

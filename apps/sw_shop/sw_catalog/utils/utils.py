@@ -1,8 +1,4 @@
-from django.core.paginator import Paginator
 
-
-def paginate_items_to_template(query, slug):
-    return items 
 
 
 def generate_unique_slug(klass, field, item, *args, **kwargs):

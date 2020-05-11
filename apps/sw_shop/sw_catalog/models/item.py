@@ -225,6 +225,24 @@ class Item(AbstractPage):
         )
         return values 
 
+    def create_visit(self, request):
+        visits = request.session.get('visits', [])
+        # visits.insert(0, {
+        #     'item_id':self.id,
+        #     # 'url': request.META['PATH_INFO']
+        # })
+        visits.insert(0,self.id)
+        # if len(visits) > 10:
+        #     visits = visits[:10]
+        request.session['visits'] = visits
+    
+    def get_visited(self, request):
+        visited = self._meta.model.objects.filter(id__in=request.session['visits'])
+        return visited
+
+    def get_visited_by(self, request):
+        return 
+
     def __str__(self):
         return f"{self.title}, {self.slug}"
     
