@@ -238,11 +238,11 @@ class ItemResource(ModelResource):
             if not marker_names:
                 marker_names =  list(row['markers'])
             for marker_name in marker_names:
-                for marker in GlobalMarker.objects.all():
+                # for marker in GlobalMarker.objects.all():
                     
-                    print('marker.name', marker.name.strip().lower())
-                    print('marker_name', marker_name.strip().lower())
-                    print( marker.name.strip().lower() == marker_name.strip().lower())
+                #     print('marker.name', marker.name.strip().lower())
+                #     print('marker_name', marker_name.strip().lower())
+                #     print( marker.name.strip().lower() == marker_name.strip().lower())
 
                 marker = GlobalMarker.objects.get(
                 # marker, _ = GlobalMarker.objects.get_or_create(
