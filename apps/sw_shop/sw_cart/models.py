@@ -76,8 +76,9 @@ class Cart(models.Model):
     item = Item.objects.get(pk=int(item_id))
     if attributes:
       for attribute in attributes:
+        print(attribute)
         cart_item_attributes = self.get_cart_item_attributes(item, attribute)
-        print("cart_item_attributes:",cart_item_attributes)
+        # print("cart_item_attributes:",cart_item_attributes)
         # if cart_item_attributes and not cart_item_attributes.exists():
         if not cart_item_attributes.exists():
         # if True:
