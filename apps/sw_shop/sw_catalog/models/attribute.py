@@ -99,37 +99,6 @@ class AttributeValue(models.Model):
         return ['value']
 
 
-class ItemAttribute(models.Model):
-    item = models.ForeignKey(
-        verbose_name=_("Товар"), to="sw_catalog.Item", 
-        on_delete=models.CASCADE, related_name='item_attributes',
-    )
-    attribute = models.ForeignKey(
-        verbose_name=_("Атрибут"), to='sw_catalog.Attribute', 
-        on_delete=models.CASCADE,
-    )
-    is_option = models.BooleanField(
-        verbose_name=_("Опція?"), default=False
-    )
-   
-
-    @property
-    def has_multiple_values(self):
-        return self.values.all().count() > 1
-
-    def __str__(self):
-        try:
-            return f'{self.attribute.name}'
-        except:
-            return f'{self.id}'
-
-    class Meta:
-        verbose_name = _("атрибут товару")
-        verbose_name_plural = _("атрибути товарів")
-        unique_together = [
-            'item',
-            'attribute',
-        ]
 
 
 class ItemAttributeValue(models.Model):
@@ -182,3 +151,40 @@ class ItemAttributeValue(models.Model):
         ]
 
 
+
+
+
+class ItemAttribute(models.Model):
+    item = models.ForeignKey(
+        verbose_name=_("Товар"), to="sw_catalog.Item", 
+        on_delete=models.CASCADE, related_name='item_attributes',
+    )
+    attribute = models.ForeignKey(
+        verbose_name=_("Атрибут"), to='sw_catalog.Attribute', 
+        on_delete=models.CASCADE,
+    )
+    is_option = models.BooleanField(
+        verbose_name=_("Опція?"), default=False
+    )
+   
+    def get_values(self):
+        return ItemAttributeValue.objects.filter(item_attribute=self)
+
+    @property
+    def has_multiple_values(self):
+        return self.values.all().count() > 1
+
+
+    def __str__(self):
+        try:
+            return f'{self.attribute.name}'
+        except:
+            return f'{self.id}'
+
+    class Meta:
+        verbose_name = _("атрибут товару")
+        verbose_name_plural = _("атрибути товарів")
+        unique_together = [
+            'item',
+            'attribute',
+        ]
