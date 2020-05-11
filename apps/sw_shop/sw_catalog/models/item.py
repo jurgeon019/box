@@ -200,11 +200,11 @@ class Item(AbstractPage):
         elif self.amount and self.in_stock.availability == False:
             self.in_stock = ItemStock.objects.filter(availability=True).first()
 
-    # def save(self, *args, **kwargs):
-    #     self.handle_in_stock(*args, **kwargs)
-    #     self.handle_image(*args, **kwargs)
-    #     super().save(*args, **kwargs)
-    #     self.resize_image(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        self.handle_in_stock(*args, **kwargs)
+        self.handle_image(*args, **kwargs)
+        super().save(*args, **kwargs)
+        self.resize_image(*args, **kwargs)
         
     def handle_image(self, *args, **kwargs):
         images = ItemImage.objects.filter(item=self)
