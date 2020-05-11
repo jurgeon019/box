@@ -49,6 +49,7 @@ class Cart(models.Model):
 
   def get_cart_item_attributes(self, item, attribute):
     # if attribute:
+    print("attribute:", attribute)
     cart_item_attributes = CartItemAttribute.objects.filter(
       cart_item__item=item,
       attribute_name=ItemAttribute.objects.get(id=attribute['item_attribute_id']),
@@ -58,6 +59,7 @@ class Cart(models.Model):
 
   def create_cart_item_attributes(self, cart_item, attributes):
     CartItemAttribute.objects.filter(cart_item=cart_item).delete()
+    print("attributes:", attributes)
     for attribute in attributes:
       # if 'item_attribute_id' in attribute.keys() and 'item_attribute_value_id' in attribute.keys():
       if attribute:
@@ -75,8 +77,8 @@ class Cart(models.Model):
     except: quantity = 1
     item = Item.objects.get(pk=int(item_id))
     if attributes:
+      print("attributes:", attributes)
       for attribute in attributes:
-        print(attribute)
         cart_item_attributes = self.get_cart_item_attributes(item, attribute)
         # print("cart_item_attributes:",cart_item_attributes)
         # if cart_item_attributes and not cart_item_attributes.exists():
@@ -89,7 +91,7 @@ class Cart(models.Model):
           break 
         else:
           print('ELSE!')
-          cart_item = self.get_cart_item_with_attributes(item, attributes)
+          # cart_item = self.get_cart_item_with_attributes(item, attributes)
           # cart_item.quantity += int(quantity)
           # cart_item.save()
     else:

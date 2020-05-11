@@ -128,9 +128,6 @@ class Item(AbstractPage):
 
     def discount_price(self):
         price = 0 
-        # price = self.price 
-        # TODO: згадати нашо ти це хотів зробити. 
-        # З цьою штукою ціна зі знижкою на карточці товару хреново відображається
         
         if self.price and self.discount:
             discount = self.discount / 100
