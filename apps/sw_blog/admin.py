@@ -8,12 +8,13 @@ from modeltranslation.admin import TabbedTranslationAdmin, TranslationStackedInl
 from box.core.utils import BaseAdmin , seo 
 from adminsortable.admin import SortableAdmin
 from box.core.utils import BaseAdmin
-
 from .models import *
 from box.core.utils import (
     show_admin_link,
     AdminImageWidget, seo, 
 )
+from django_summernote.admin import SummernoteModelAdmin
+from markdownx.admin import MarkdownxModelAdmin
 
 
 
@@ -27,11 +28,12 @@ class PostInline(TranslationStackedInline):
     model = Post
     extra = 0
     classes = ['collapse']
-from django_summernote.admin import SummernoteModelAdmin
+
 
 @admin.register(PostCategory)
 class PostCategoryAdmin(
-    BaseAdmin, TabbedTranslationAdmin,
+    BaseAdmin, 
+    TabbedTranslationAdmin,
     # SummernoteModelAdmin,
     ):
     # summernote_fields = ('content',)
@@ -73,7 +75,12 @@ class PostCategoryAdmin(
         models.CharField: {'widget': TextInput(attrs={'size':'20'})},
         models.TextField: {'widget': Textarea(attrs={'rows':6, 'cols':20})},
     }
-from markdownx.admin import MarkdownxModelAdmin
+
+
+
+from import_export.admin import ImportExportModelAdmin
+from .resources import PostResource
+
 
 
 @admin.register(Post)
@@ -81,9 +88,11 @@ class PostAdmin(
     BaseAdmin,
     TabbedTranslationAdmin,
     SortableAdmin,
+    ImportExportModelAdmin,
     # MarkdownxModelAdmin,
     # SummernoteModelAdmin,
     ):
+    resource_class = PostResource
     def show_category(self, obj):
       return show_admin_link(obj, obj_attr='category', obj_name='title')
 
@@ -105,7 +114,7 @@ class PostAdmin(
         CommentInline,
     ]
     fieldsets = (
-
+        seo,
         (('ОСНОВНА ІНФОРМАЦІЯ'), {
             'fields':(
                 'title',
@@ -113,18 +122,17 @@ class PostAdmin(
                 'author',
                 'markers',
                 'image',
+                'content',
             ),
             # 'classes':['collapse']
         }),
-        (('КОНТЕНТ'), {
-            'fields':(
-                'content',
-            ),
-            # 'classes':['collapse',]
-        }),
-        seo,
+        # (('КОНТЕНТ'), {
+        #     'fields':(
+        #         'content',
+        #     ),
+        #     # 'classes':['collapse',]
+        # }),
     )
-
     list_display = [
         'show_image',
         'title',
