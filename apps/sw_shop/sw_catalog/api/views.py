@@ -26,26 +26,6 @@ import json
 
 
 
-def get_items_in_favours(request, items):
-  items_in_favours = []
-  for item in items:
-    cart = get_cart(request)
-    # if cart.favour_items.all().exists():
-    if cart.favour_items.filter(item=item).exists():
-      items_in_favours.append(item.id)
-  return items_in_favours
-
-
-def get_items_in_cart(request, items):
-  items_in_cart = []
-  for item in items:
-    cart = get_cart(request)
-    # if cart.cart_items.all().exists():
-    if cart.items.filter(item=item).exists():
-      items_in_cart.append(item.id)
-  return items_in_cart
-
-
 class ItemList(generics.ListCreateAPIView):
   queryset = Item.objects.all()
   serializer_class = ItemListSerializer
@@ -83,7 +63,8 @@ class ItemList(generics.ListCreateAPIView):
     if attributes:
       attributes   = json.loads(attributes)
   
-    # TODO: добавити сюда пошук по modelsearch,  get_items_in_favours, get_items_in_cart
+    # TODO: добавити сюда пошук по modelsearch, 
+    #  get_items_in_favours, get_items_in_cart
 
     if category_id is not None:
       queryset = queryset.filter(category__id=category_id)
@@ -128,6 +109,42 @@ class ReviewViewSet(ModelViewSet):
   queryset = ItemReview.objects.all().filter(is_active=True)
   serializer_class = ItemReviewSerializer
 
+
+
+
+@csrf_exempt
+def create_review(request):
+    item_id = request.POST['item_id']
+    text    = request.POST['text']
+    phone   = request.POST['phone']
+    name    = request.POST['name']
+    rating  = request.POST['product_rating']
+    item    = Item.objects.get(id=item_id)
+    review  = ItemReview.objects.create(
+      item=item,
+      text=text,
+      phone=phone,
+      name=name,
+      rating=rating,
+    )
+    if GlobalConfig.get_solo().auto_review_approval:
+      review.is_active = True 
+      review.save()
+    json_review = ItemReviewSerializer(review).data
+    response = {
+      "review":json_review,
+      "reviews_count":item.reviews.all().count(),
+      "current_star":rating,
+      "rounded_stars":item.rounded_stars,
+      "stars":item.stars,
+      "is_active":review.is_active,
+    }
+    box_send_mail(
+      subject=GlobalConfig.get_colo().get_data('review')['subject'],
+      recipient_list=GlobalConfig.get_colo().get_data('review')['emails'],
+      model=review,
+    )
+    return JsonResponse(response)
 
 
 
@@ -232,39 +249,6 @@ def get_items(request):
   return JsonResponse(response)
 
 
-@csrf_exempt
-def create_review(request):
-    item_id = request.POST['item_id']
-    text    = request.POST['text']
-    phone   = request.POST['phone']
-    name    = request.POST['name']
-    rating  = request.POST['product_rating']
-    item    = Item.objects.get(id=item_id)
-    review  = ItemReview.objects.create(
-      item=item,
-      text=text,
-      phone=phone,
-      name=name,
-      rating=rating,
-    )
-    if GlobalConfig.get_solo().auto_review_approval:
-      review.is_active = True 
-      review.save()
-    json_review = ItemReviewSerializer(review).data
-    response = {
-      "review":json_review,
-      "reviews_count":item.reviews.all().count(),
-      "current_star":rating,
-      "rounded_stars":item.rounded_stars,
-      "stars":item.stars,
-      "is_active":review.is_active,
-    }
-    box_send_mail(
-      subject=GlobalConfig.get_colo().get_data('review')['subject'],
-      recipient_list=GlobalConfig.get_colo().get_data('review')['emails'],
-      model=review,
-    )
-    return JsonResponse(response)
 
 
 @csrf_exempt

@@ -42,3 +42,5 @@ class BoxUserResource(ModelResource):
             'id',
         ]
         return import_id_fields
+
+

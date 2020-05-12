@@ -17,7 +17,6 @@ from io import StringIO
 import os
 
 from django.core.files.storage import default_storage as storage
-
 from io import BytesIO
 from django.core.files import File
 from box.core.models import OverwriteStorage
@@ -27,7 +26,6 @@ from . import ItemAttribute, ItemAttributeValue, Attribute, AttributeValue
 
 
 class Item(AbstractPage):
-    title = models.TextField(null=True)
     if item_settings.MULTIPLE_CATEGORY:
         categories = models.ManyToManyField(
             verbose_name=_("Категорія"), to='sw_catalog.ItemCategory',
@@ -255,3 +253,9 @@ class Item(AbstractPage):
 
     def get_visited_by(self, request):
         return 
+
+    def is_in_cart(self, request):
+        from box.apps.sw_shop.sw_cart.utils import get_cart
+        return self.id in get_cart(request).items.all().values_list('item__id', flat=True)
+
+        
