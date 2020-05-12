@@ -1,9 +1,8 @@
-from rest_framework import serializers
-
-from box.apps.sw_shop.sw_catalog.models import *
-
 from django.conf import settings 
+from box.apps.sw_shop.sw_catalog.models import *
 from box.apps.sw_shop.sw_catalog import settings as item_settings
+from modeltranslation.manager import get_translatable_fields_for_model
+from rest_framework import serializers
 
 
 class CurrencySerializer(serializers.ModelSerializer):
@@ -47,12 +46,17 @@ class ItemStockSerializer(serializers.ModelSerializer):
     model = ItemStock 
     exclude = []
 
+
 class ItemDetailSerializer(serializers.ModelSerializer):
   images   = ItemImageSerializer(many=True, read_only=True)
   # features = ItemFeatureSerializer(many=True)
   absolute_url = serializers.SerializerMethodField() 
   image_url = serializers.SerializerMethodField() 
   
+  is_in_cart = serializers.SerializerMethodField()
+  def get_is_in_cart(self, obj):
+    return obj.is_in_cart(self.context['request'])
+
   def get_absolute_url(self, obj):
       return obj.get_absolute_url()
 
@@ -76,11 +80,6 @@ class ItemDetailSerializer(serializers.ModelSerializer):
       # 'images',
     ]
 
-from django.conf import settings
-from modeltranslation.manager import get_translatable_fields_for_model
-from rest_framework import serializers
-
-
 
 class ItemListSerializer(serializers.ModelSerializer):
   price    = serializers.ReadOnlyField()
@@ -98,6 +97,10 @@ class ItemListSerializer(serializers.ModelSerializer):
   final_unconverted_price = serializers.SerializerMethodField() 
   def get_final_unconverted_price(self, obj):
     return obj.final_unconverted_price()
+  
+  is_in_cart = serializers.SerializerMethodField()
+  def get_is_in_cart(self, obj):
+    return obj.is_in_cart(self.context['request'])
 
   class Meta:
     model = Item
