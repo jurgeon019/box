@@ -7,8 +7,6 @@ from datetime import datetime
 from io import StringIO, BytesIO
 
 
-
-
 def loader(extention, file_name, action_type, resource_name, time):
   Resource       = get_resource(resource_name)
   dataset = Dataset()
@@ -43,7 +41,6 @@ def loader(extention, file_name, action_type, resource_name, time):
       return False 
 
 
-
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument(
@@ -66,6 +63,7 @@ class Command(BaseCommand):
             '-i',
             '--init_filename',
         )
+
     def handle(self, *args, **kwargs):
         init_filename = kwargs.get('init_filename')
         time = datetime.now().strftime('%d_%m_%Y_%H_%M_%S')
