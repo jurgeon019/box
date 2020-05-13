@@ -55,3 +55,4 @@ django-filer
 
 
 django-suit==0.2.26
+easy-thumbnails

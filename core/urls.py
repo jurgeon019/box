@@ -8,10 +8,10 @@ from django.conf import settings
 from django.views.decorators.cache import cache_page
 
 from . import settings as core_settings
+from .views import custom_page_not_found
 from filebrowser.sites import site
 from box.core.views import robots, set_lang, testmail
 from box.core.sitemaps import StaticSitemap
-
 from importlib import import_module
 
 sitemaps = {
@@ -98,6 +98,7 @@ multilingual = i18n_patterns(
 
 urlpatterns = [
   *static_urlpatterns,
+  path("test_404/",        custom_page_not_found),
   path('sitemap.xml/',     sitemap, {'sitemaps':sitemaps}, name='sitemap'),
   path('robots.txt/',      robots,           name='robots'),
   # path('sitemap.xml/',     cache_page(60)(sitemap), {'sitemaps': sitemaps}, name='cached-sitemap'),

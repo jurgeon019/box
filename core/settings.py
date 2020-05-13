@@ -29,4 +29,9 @@ CAPTCHA_V3_PUBLIC = 'SDF'
 CAPTCHA_V3_SECRET = 'SDF'
 
 
+PATH_404 = get('PATH_404', '404.html')
+PATH_500 = get('PATH_500', '500.html') 
+HANDLER_404 = get('HANDLER_404', 'box.core.views.handler_404') 
+HANDLER_500 = get('HANDLER_500', 'box.core.views.handler_500') 
+
 

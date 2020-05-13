@@ -4,14 +4,22 @@ from django.core.mail import send_mail
 from django.conf import settings 
 from django.utils import translation
 from box.core.sw_global_config.models import GlobalConfig
+from . import settings as core_settings
+
+
+from django.views.defaults import page_not_found
+
+def custom_page_not_found(request):
+    return page_not_found(request, None)
+
 
 
 def handler_404(request, exception):
-  return render(request,'404.html', locals())
+  return render(request, core_settings.PATH_404, locals())
 
 
 def handler_500(request):
-  return render(request,'500.html', locals())
+  return render(request, core_settings.PATH_500, locals())
 
 
 def robots(request):
