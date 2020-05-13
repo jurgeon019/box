@@ -1,3 +1,6 @@
+from django.views.defaults import (
+  page_not_found, server_error, bad_request, permission_denied,
+)
 from django.shortcuts import render, reverse, redirect
 from django.http import JsonResponse, HttpResponse
 from django.core.mail import send_mail 
@@ -7,11 +10,28 @@ from box.core.sw_global_config.models import GlobalConfig
 from . import settings as core_settings
 
 
-from django.views.defaults import page_not_found
+def custom_bad_request(request):
+    return bad_request(request, exception=None, template_name=core_settings.PATH_400)
+
+
+def custom_permission_denied(request):
+    return permission_denied(request, exception=None, template_name=core_settings.PATH_403)
+
 
 def custom_page_not_found(request):
-    return page_not_found(request, None)
+    return page_not_found(request, exception=None, template_name=core_settings.PATH_404)
 
+
+def custom_server_error(request):
+    return server_error(request, template_name=core_settings.PATH_500)
+
+
+def handler_400(request, exception):
+  return render(request, core_settings.PATH_400, locals())
+
+
+def handler_403(request, exception):
+  return render(request, core_settings.PATH_403, locals())
 
 
 def handler_404(request, exception):
@@ -40,7 +60,6 @@ def set_lang(request, lang=None):
   url[3] = lang
   url = '/'.join(url)
   return redirect(url)
-
 
 
 def testmail(request):
