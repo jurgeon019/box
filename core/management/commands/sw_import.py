@@ -83,8 +83,10 @@ class Command(BaseCommand):
 
   # 1
   def import_from_folder(self, dirname):
-    # dir = sorted(glob.glob(os.path.join(dirname, '*/')), key=os.path.getmtime)[-n]
-    path = max(glob.glob(os.path.join(dirname, '*/')), key=os.path.getmtime)
+    if dirname == 'export/':
+      path = max(glob.glob(os.path.join(dirname, '*/')), key=os.path.getmtime)
+    else:
+      path = dirname 
     paths = []
     for r, d, f in os.walk(path):
       for file in f:
