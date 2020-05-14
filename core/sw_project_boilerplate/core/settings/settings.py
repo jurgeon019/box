@@ -32,7 +32,7 @@ STATIC_SITEMAP_PAGES = [
     # 'about',
 ]
 PROJECT_CORE_MULTILINGUAL_URLS = [
-    'project.multilingaul_urls',
+    'project.multilingual_urls',
 ]
 PROJECT_CORE_URLS = [
     'project.urls',
