@@ -15,8 +15,11 @@ def translate_url(context: Dict[str, Any], language: Optional[str]) -> str:
     Usage:
         {% translate_url 'en' %}
     """
-    url = context['request'].build_absolute_uri()
-    return urls.translate_url(url, language)
+    try:
+        url = context['request'].build_absolute_uri()
+        return urls.translate_url(url, language)
+    except Exception as e:
+        print('core/templatetags/core/translate_url:', e)
 
 
 

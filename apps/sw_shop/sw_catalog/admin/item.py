@@ -42,6 +42,18 @@ import nested_admin
 
 
 
+class SimilarInline(nested_admin.NestedTabularInline):
+    model = Item.similars.through
+    extra = 0 
+    fk_name = 'from_item'
+    autocomplete_fields = [
+        'to_item',
+    ]
+    classes = ['collapse',]
+    verbose_name = _('Схожий товар')
+    verbose_name_plural = _('Схожі товари')
+
+
 class ItemAdmin(
     BaseAdmin,
     TabbedTranslationAdmin, 
@@ -70,6 +82,7 @@ class ItemAdmin(
         # "code": ("title",),
     }
     inlines = [
+        SimilarInline,
         ItemImageInline,
         ItemAttributeInline,
         # ItemReviewInline, 
@@ -81,7 +94,7 @@ class ItemAdmin(
         "markers",   
         'currency',
         "labels",   
-        "similars",   
+        # "similars",   
         'in_stock',
         (
         "unit",

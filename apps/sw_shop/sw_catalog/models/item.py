@@ -17,12 +17,13 @@ from io import StringIO
 import os
 
 from django.core.files.storage import default_storage as storage
-
 from io import BytesIO
 from django.core.files import File
 from box.core.models import OverwriteStorage
 
 from . import ItemAttribute, ItemAttributeValue, Attribute, AttributeValue
+
+
 
 class Item(AbstractPage):
     if item_settings.MULTIPLE_CATEGORY:
@@ -96,10 +97,19 @@ class Item(AbstractPage):
     # price        = models.DecimalField(
     # verbose_name=_("Нова ціна"),  max_digits=10, decimal_places=2, default=0)
     price = models.FloatField(
-        verbose_name=_("Актуальна ціна"), 
+        verbose_name=_("Ціна"), 
         default=0, 
         # blank=True, null=True,
     )
+
+    def __str__(self):
+        return f"{self.title}"#, {self.slug}"
+    
+    class Meta: 
+        verbose_name = _('товар'); 
+        verbose_name_plural = _('товари')
+        # ordering = ['order']
+
 
     def get_cart_price(self):
         cart_price = self.converted_discount_price() or self.converted_price()
@@ -124,7 +134,6 @@ class Item(AbstractPage):
     def final_unconverted_price(self):
         final_unconverted_price = self.discount_price() or self.price 
         return final_unconverted_price
-
 
     def discount_price(self):
         price = 0 
@@ -245,11 +254,8 @@ class Item(AbstractPage):
     def get_visited_by(self, request):
         return 
 
-    def __str__(self):
-        return f"{self.title}, {self.slug}"
-    
-    class Meta: 
-        verbose_name = _('товар'); 
-        verbose_name_plural = _('товари')
-        ordering = ['order']
+    def is_in_cart(self, request):
+        from box.apps.sw_shop.sw_cart.utils import get_cart
+        return self.id in get_cart(request).items.all().values_list('item__id', flat=True)
 
+        

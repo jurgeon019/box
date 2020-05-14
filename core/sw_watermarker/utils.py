@@ -14,7 +14,7 @@ except ImportError:
 
 from PIL import Image, ImageEnhance
 
-from .conf import settings
+from . import settings
 
 
 def _percent(var):

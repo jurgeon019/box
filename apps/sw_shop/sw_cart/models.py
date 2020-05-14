@@ -59,12 +59,14 @@ class Cart(models.Model):
 
   def create_cart_item_attributes(self, cart_item, attributes):
     CartItemAttribute.objects.filter(cart_item=cart_item).delete()
-    print("attributes:", attributes)
     for attribute in attributes:
       # if 'item_attribute_id' in attribute.keys() and 'item_attribute_value_id' in attribute.keys():
       if attribute:
         attribute_name  = ItemAttribute.objects.get(id=attribute['item_attribute_id'])
         attribute_value = ItemAttributeValue.objects.get(id=attribute['item_attribute_value_id'])
+        print("attribute:", attribute)
+        print("attribute_name:", attribute_name)
+        print("attribute_value:", attribute_value)
         CartItemAttribute.objects.create(
           cart_item=cart_item,
           attribute_name=attribute_name,
@@ -232,6 +234,8 @@ class CartItem(models.Model):
         ) 
     except:
         attr = None 
+    # print(attr)
+    # print(attr.value.value.code)
     return attr 
 
   @property

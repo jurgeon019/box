@@ -21,6 +21,8 @@ class GlobalMarkerResource(ModelResource):
 
     def before_import_row(self, row, **kwargs):
         if row.get('code') == '': row['code'] = None
+        if row.get('name'):
+            row['name'] = row['name'].lower().strip()
 
 
 class GlobalLabelResource(ModelResource):
@@ -30,6 +32,8 @@ class GlobalLabelResource(ModelResource):
     
     def before_import_row(self, row, **kwargs):
         if row.get('code') == '': row['code'] = None
+        if row.get('text'):
+            row['text'] = row['text'].lower().strip()
 
 
 

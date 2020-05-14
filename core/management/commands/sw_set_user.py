@@ -25,7 +25,6 @@ class Command(BaseCommand):
           'last_name',
       )
 
-  
   def handle(self, *args, **kwargs):
     User = get_user_model()
     username      = kwargs['username']

@@ -1,0 +1,14 @@
+from django.conf import settings 
+
+
+
+QUALITY = getattr(settings, 'QUALITY', 85)
+OBSCURE_ORIGINAL = getattr(settings, 'OBSCURE_ORIGINAL', True)
+RANDOM_POSITION_ONCE = getattr(settings, 'RANDOM_POSITION_ONCE', True)
+WATERMARK_PERCENTAGE = getattr(settings, 'WATERMARK_PERCENTAGE', 30)
+WATERMARK_QUALITY = getattr(settings, 'WATERMARK_QUALITY', 30)
+WATERMARK_OBSCURE_ORIGINAL = getattr(settings, 'WATERMARK_OBSCURE_ORIGINAL', True)
+WATERMARK_RANDOM_POSITION_ONCE = getattr(settings, 'WATERMARK_RANDOM_POSITION_ONCE', True)
+
+
+

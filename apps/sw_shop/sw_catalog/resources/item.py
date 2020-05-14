@@ -26,28 +26,13 @@ class ItemResource(ModelResource):
         attribute='category',
         widget=ForeignKeyWidget(ItemCategory, field='id'),
     )
+    category_tree = Field()
     images        = Field(column_name=_('images') )
     server_images = Field(column_name=_('server_images') )
-    similars      = Field(
-        column_name='similars',
-        # attribute='similars',
-        widget=ManyToManyWidget,
-    )
-    markers       = Field(
-        column_name='markers',
-        # attribute='markers',
-        widget=ManyToManyWidget,
-    )
-    labels        = Field(
-        column_name='labels',
-        # attribute='labels',
-        widget=ManyToManyWidget,
-    )
-
+    
     def before_import_row(self, row, **kwargs):
-        # self.handle_markers_import(row)
+        self.handle_markers_import(row)
         self.handle_labels_import(row)
-        # self.handle_similars_import(row)
         self.handle_category_import(row)
         self.handle_manufacturer_import(row)
         self.handle_brand_import(row)
@@ -59,8 +44,8 @@ class ItemResource(ModelResource):
     # def after_import_row(self, row, row_result,**kwargs):
     #     self.handle_images_import(row)
     #     self.handle_server_images_import(row)
-    #     self.handle_similars_import(row)
-
+        # self.handle_markers_import(row)
+        # self.handle_labels_import(row)
 
     def get_export_order(self):
         multilingual_fields = get_multilingual_fields(self._meta.model)
@@ -78,6 +63,7 @@ class ItemResource(ModelResource):
             'server_images',
 
             "category",
+            "category_tree",
             "manufacturer",
             "brand",
             "in_stock",
@@ -145,6 +131,14 @@ class ItemResource(ModelResource):
         category = None 
         if item.category: category = item.category.id 
         return category
+
+    def dehydrate_category_tree(self, item):
+        category_tree = None 
+        if item.category: 
+            anc = item.category.get_ancestors(ascending=False,include_self=True)
+            tree_values = anc.values_list('title', flat=True)
+            category_tree = ' -> '.join(tree_values)
+        return category_tree
 
     def handle_in_stock_import(self, row):
         if row.get('in_stock'):
@@ -238,54 +232,42 @@ class ItemResource(ModelResource):
             if not marker_names:
                 marker_names =  list(row['markers'])
             for marker_name in marker_names:
-                print("marker_name:", marker_name)
-                marker, _ = GlobalMarker.objects.get_or_create(
-                    name__iexact=marker_name.strip().lower()
+                # for marker in GlobalMarker.objects.all():
+                    
+                #     print('marker.name', marker.name.strip().lower())
+                #     print('marker_name', marker_name.strip().lower())
+                #     print( marker.name.strip().lower() == marker_name.strip().lower())
+
+                marker = GlobalMarker.objects.get(
+                # marker, _ = GlobalMarker.objects.get_or_create(
+                    # name__iexact=marker_name.strip().lower()
+                    name=marker_name.strip().lower()
                 )
                 markers.append(str(marker.id))
-            print("markers:", markers)
             row['markers'] = ','.join(markers)
 
-    # def dehydrate_markers(self, item):
-    #     markers = None 
-    #     if item.markers.all().exists():
-    #         markers = ','.join([marker.name for marker in item.markers.all()])
-    #     return markers
+    def dehydrate_markers(self, item):
+        markers = None 
+        if item.id and item.markers.all().exists():
+            markers = ','.join([marker.name.lower().strip() for marker in item.markers.all()])
+        return markers
 
     def handle_labels_import(self, row):
-        # print(row)
         if row.get('labels'):
             labels = []
-            try:
-                label_texts = row['labels'].split(',')
-            except:
-                label_texts = [row['labels']]
-            for label_text in label_texts:
-                print("label_text::", label_text)
+            label_names = row['labels'].split(',')
+            if not label_names:
+                label_names =  list(row['labels'])
+            for label_name in label_names:
                 label, _ = GlobalLabel.objects.get_or_create(
-                    text__iexact=label_text.strip().lower()
+                    text=label_name.strip().lower()
                 )
                 labels.append(str(label.id))
             row['labels'] = ','.join(labels)
 
-    # def dehydrate_labels(self, item):
-    #     labels = None 
-    #     if item.labels:
-    #         labels = ','.join([label.text for label in item.labels.all()])
-    #     return labels
+    def dehydrate_labels(self, item):
+        labels = None 
+        if item.id and item.labels.all():
+            labels = ','.join([label.text.strip().lower() for label in item.labels.all()])
+        return labels
 
-    def handle_similars_import(self, row):
-        if row.get('similars'):
-            similars = []
-            # for pk in row['similars'].split(','):
-            #     # similar  = Item.objects.get(pk=pk)
-            #     similar = Item.objects.filter(pk=pk)
-            #     if similar.exists():
-            #         similars.append(str(similar.first().pk))
-            # row['similars'] = ','.join(similars)
-
-    # def dehydrate_similars(self, item):
-    #     similars = None 
-    #     if item.similars:
-    #         similars = item.similars.all().values_list('id', flat=True)
-    #     return similars

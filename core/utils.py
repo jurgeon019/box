@@ -23,6 +23,10 @@ from importlib import import_module
 from io import StringIO, BytesIO
 import csv 
 import pandas as pd 
+import sys 
+
+
+
 
 
 def load_xlsx(filename, sheet_name):
@@ -54,68 +58,33 @@ def paginate(request, klass):
     return locals()
 
 
-
 def get_resource(name):
     resources = get_resources()
     for resource in resources:
         if resource.__name__ == name:
             return resource 
     raise Exception(f"Resource '{name}' not found")
-            
+
 
 def get_resources():
   resources = []
   for appname in settings.INSTALLED_APPS:
-    # if appname.startswith('box.'):
+    module = None 
+    if not appname.startswith('import_export.'):
       try:
         module = import_module(appname+'.resources') 
-        for name, obj in inspect.getmembers(module):
-          if  inspect.isclass(obj) and \
-            ModelResource in obj.__mro__ and \
-            obj is not ModelResource:
+      except Exception as e:
+        # print(e)
+        pass 
+    if module:
+      for name, obj in inspect.getmembers(module):
+        if  inspect.isclass(obj) and \
+          ModelResource in obj.__mro__ and \
+          obj is not ModelResource:
+            package_name = inspect.getmodule(obj)
+            if package_name.__name__.split('.')[-1] == 'resources':
               resources.append(obj)
-      except:
-        pass
   return resources
-
-from pathlib import Path
-from datetime import datetime 
-
-
-def loader(extention, file_name, action_type, resource_name, time):
-  Resource       = get_resource(resource_name)
-  dataset = Dataset()
-  if action_type == 'export':
-    Path('/'.join(file_name.split('/')[:-1])).mkdir(parents=True, exist_ok=True)
-    with open(file_name, 'w') as f:
-      f.write(getattr(Resource().export(), extention))
-    return True 
-  elif action_type == 'import':
-    
-    # TODO: ламає поведінку ItemStock.
-    # filename = f'backups/{time}/'+'/'.join(file_name.split('/')[1:-1])
-    # Path(filename).mkdir(parents=True, exist_ok=True)
-    # with open(file_name, 'w') as f:
-    #   f.write(getattr(Resource().export(), extention))
-
-    with open(file_name, 'r') as f:
-      # imported_data = dataset.load(f.read())
-      dataset.load(f.read(), format=file_name.split('.')[-1])
-    result = Resource().import_data(dataset, dry_run=True)
-    if not result.has_errors():
-      Resource().import_data(dataset, dry_run=False)  
-      return True 
-    else:
-      for error in result.row_errors():
-        row = error[0]
-        error = error[1][0]
-        print(error.traceback)
-        print(f"ERROR IN {row} LINE IN FILE {file_name}:", error.error)
-        raise Exception(error.error)
-
-      return False 
-
-
 
 
 seo = [_("SEO"), {

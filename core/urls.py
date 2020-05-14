@@ -8,10 +8,10 @@ from django.conf import settings
 from django.views.decorators.cache import cache_page
 
 from . import settings as core_settings
+from .views import *
 from filebrowser.sites import site
 from box.core.views import robots, set_lang, testmail
 from box.core.sitemaps import StaticSitemap
-
 from importlib import import_module
 
 sitemaps = {
@@ -58,8 +58,11 @@ admin.site.site_header = "STARWAY CMS"
 admin.site.site_title  = "STARWAY CMS"
 admin.site.index_title = "STARWAY CMS"
 
-handler404 = 'box.core.views.handler_404'
-handler500 = 'box.core.views.handler_500'
+handler400 = core_settings.HANDLER_400
+handler403 = core_settings.HANDLER_403
+handler404 = core_settings.HANDLER_404
+handler500 = core_settings.HANDLER_500
+
 
 PROJECT_CORE              = [path('', include(url)) for url in core_settings.PROJECT_CORE_URLS]
 PROJECT_CORE_MULTILINGUAL = [path('', include(url)) for url in core_settings.PROJECT_CORE_MULTILINGUAL_URLS]
@@ -91,6 +94,11 @@ multilingual = i18n_patterns(
   path('admin/',    admin.site.urls),
   path('accounts/', include('allauth.urls')),
   path('rosetta/',  include('rosetta.urls')),
+  path("test_400/",        custom_bad_request),
+  path("test_403/",        custom_permission_denied),
+  path("test_404/",        custom_page_not_found),
+  path("test_500/",        custom_server_error),
+
   *box_multilingual,
   *PROJECT_CORE_MULTILINGUAL,
   prefix_default_language=core_settings.PREFIX_DEFAULT_LANGUAGE,

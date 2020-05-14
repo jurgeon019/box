@@ -50,5 +50,9 @@ celery
 django-froala-editor 
 django-summernote 
 django-markdownx
+easy-thumbnails
+django-filer
 
 
+django-suit==0.2.26
+easy-thumbnails

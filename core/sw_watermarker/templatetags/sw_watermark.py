@@ -17,8 +17,8 @@ from django import template
 from django.utils.encoding import smart_str
 from django.utils.timezone import make_aware, get_default_timezone, is_aware
 
-from .. import utils
-from ..conf import settings
+from .. import utils#, settings
+from django.conf import settings 
 from ..models import Watermark
 
 QUALITY = settings.WATERMARK_QUALITY

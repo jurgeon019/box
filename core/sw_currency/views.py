@@ -10,11 +10,16 @@ from .serializers import *
 
 
 def parse_currencies(pb_date=date.today().strftime('%d.%m.%Y')):
-    url = f'https://api.privatbank.ua/p24api/exchange_rates?json&date={pb_date}'
-    response = requests.get(url).json()
-    rates = response.get('exchangeRate', [])
+	# TODO: з адмінки вибирати джерело парсингу валют(pb, нацбанк і тд)
+    url        = f'https://api.privatbank.ua/p24api/exchange_rates?json&date={pb_date}'
+    response   = requests.get(url).json()
+    rates      = response.get('exchangeRate', [])
+    currencies = CurrencyConfig.get_solo().get_currencies().values_list('name', flat=True)
     for rate in rates:
         print(rate)
+        print(currencies)
+        if rate.get('currency') not in currencies:
+            continue
         sale_rate = rate['saleRateNB']
         purchase_rate = rate['purchaseRateNB']
         # if sale_rate != purchase_rate:
