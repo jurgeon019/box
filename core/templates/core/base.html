@@ -59,7 +59,7 @@
   {% endblock head_bottom_scripts %}
 
 </head>
-<body>
+<body class="{% block body_class%}{% endblock body_class%}">
   <input type="hidden" id='current_language' name="current_language" value="{{LANGUAGE_CODE}}">
   {% block body_top_scripts %}
     {% for script in global_config.scripts.all %}
