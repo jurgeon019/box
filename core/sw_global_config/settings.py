@@ -5,6 +5,7 @@ def get(x, y):
 
 
 FAVICON    = get('FAVICON', 'favicon/favicon.ico')
+print("FAVICON:", FAVICON)
 OGIMAGE_SQUARE                 = get(
     'OGIMAGE_SQUARE', 'ogimage/square.png')
 OGIMAGE_RECTANGLE              = get(

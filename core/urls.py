@@ -90,14 +90,15 @@ for app in box_apps:
     pass 
 
 
+
 multilingual = i18n_patterns(
   path('admin/',    admin.site.urls),
   path('accounts/', include('allauth.urls')),
   path('rosetta/',  include('rosetta.urls')),
-  path("test_400/",        custom_bad_request),
-  path("test_403/",        custom_permission_denied),
-  path("test_404/",        custom_page_not_found),
-  path("test_500/",        custom_server_error),
+  path(core_settings.URL_400, custom_bad_request),
+  path(core_settings.URL_403, custom_permission_denied),
+  path(core_settings.URL_404, custom_page_not_found),
+  path(core_settings.URL_500, custom_server_error),
 
   *box_multilingual,
   *PROJECT_CORE_MULTILINGUAL,

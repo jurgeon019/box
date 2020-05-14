@@ -29,6 +29,7 @@ CAPTCHA_V3_PUBLIC = 'SDF'
 CAPTCHA_V3_SECRET = 'SDF'
 
 
+
 PATH_400    = get('PATH_400', 'core/errors/400.html')
 PATH_403    = get('PATH_403', 'core/errors/403.html')
 PATH_404    = get('PATH_404', 'core/errors/404.html')
@@ -40,6 +41,10 @@ HANDLER_404 = get('HANDLER_404', 'box.core.views.handler_404')
 HANDLER_500 = get('HANDLER_500', 'box.core.views.handler_500')
 
 
+URL_400 = get('URL_400', "test_400/")
+URL_403 = get('URL_403', "test_403/")
+URL_404 = get('URL_404', "test_404/")
+URL_500 = get('URL_500', "test_500/")
 
 
 

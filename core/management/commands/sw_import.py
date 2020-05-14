@@ -98,14 +98,15 @@ class Command(BaseCommand):
   # 2 
   def import_from_init_file(self, init_filename):
     items = [dct for dct in map(dict, csv.DictReader(open(init_filename)))] 
+    # TODO: зробити шось з порядком імпортів
     for item in items:
-        print(item)
-        if bool(int(item['load'])):
-          self.load(
-            filename=item['filename'], 
-            resource_name=item['resource_name'], 
-            ext=item['extention'],
-          )
+      print(item)
+      if bool(int(item['load'])):
+        res = self.load(
+          filename=item['filename'], 
+          resource_name=item['resource_name'], 
+          ext=item['extention'],
+        )
     return True 
 
   # 3
@@ -115,7 +116,7 @@ class Command(BaseCommand):
 
   def load(self, filename, resource_name, ext):
     Resource = get_resource(resource_name)
-    print(Resource)
+    # print(Resource)
     dataset  = Dataset()
     with open(filename, 'r') as f:
       # imported_data = dataset.load(f.read())
@@ -130,7 +131,7 @@ class Command(BaseCommand):
         error = error[1][0]
         print(error.traceback)
         print(f"ERROR IN {row} LINE IN FILE {filename}:", error.error)
-        raise Exception(error.error)
+        # raise Exception(error.error)
       return False 
 
 
