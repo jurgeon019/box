@@ -48,7 +48,7 @@ class CustomIndexDashboard(DefaultIndexDashboard):
                 _("Оплати"),
                 models=('box.apps.sw_payment.*',),
             ))
-        if 'box.apps.sw_delivery.' in settings.INSTALLED_APPS:
+        if 'box.apps.sw_delivery' in settings.INSTALLED_APPS:
             self.children.append(modules.AppList(
                 _("Доставки"),
                 models=('box.apps.sw_delivery.*',),

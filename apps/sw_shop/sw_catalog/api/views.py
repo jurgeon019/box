@@ -111,7 +111,6 @@ class ReviewViewSet(ModelViewSet):
 
 
 
-
 @csrf_exempt
 def create_review(request):
     item_id = request.POST['item_id']

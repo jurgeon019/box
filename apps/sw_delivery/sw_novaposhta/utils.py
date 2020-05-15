@@ -11,7 +11,7 @@ from .models import *
 
 
 
-def handle_np(query={}, action='refresh', content='warehouses', type='gen_json'):
+def handle_np(query={}, action='refresh', content='warehouses', type='from_json'):
     limit       = query.get('limit', 150)
     page        = query.get('page', 1)
     pages_limit = query.get('pages_limit', None)
