@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-02-06 19:16+0100\n"
+"POT-Creation-Date: 2020-05-14 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,23 +17,27 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: admin.py:12
+#: box/core/sw_robots/__init__.py:10
+msgid "Robots"
+msgstr ""
+
+#: box/core/sw_robots/admin.py:11
 msgid "URL patterns"
 msgstr ""
 
-#: admin.py:15
+#: box/core/sw_robots/admin.py:13
 msgid "Advanced options"
 msgstr ""
 
-#: forms.py:16
+#: box/core/sw_robots/forms.py:16
 msgid "Please specify at least one allowed or dissallowed URL."
 msgstr ""
 
-#: models.py:15
+#: box/core/sw_robots/models.py:16
 msgid "pattern"
 msgstr ""
 
-#: models.py:16
+#: box/core/sw_robots/models.py:19
 msgid ""
 "Case-sensitive. A missing trailing slash does also match to files which "
 "start with the name of the pattern, e.g., '/admin' matches /admin.html too. "
@@ -41,46 +45,46 @@ msgid ""
 "sign ($) to match the end of the URL, e.g., '/*.jpg$'."
 msgstr ""
 
-#: models.py:24 models.py:25
+#: box/core/sw_robots/models.py:29 box/core/sw_robots/models.py:30
 msgid "url"
 msgstr ""
 
-#: models.py:44
+#: box/core/sw_robots/models.py:51
 msgid "robot"
 msgstr ""
 
-#: models.py:45
+#: box/core/sw_robots/models.py:54
 msgid ""
 "This should be a user agent string like 'Googlebot'. Enter an asterisk (*) "
 "for all user agents. For a full list look at the <a target=_blank "
 "href='http://www.robotstxt.org/db.html'> database of Web Robots</a>."
 msgstr ""
 
-#: models.py:53 models.py:91
+#: box/core/sw_robots/models.py:67 box/core/sw_robots/models.py:115
 msgid "allowed"
 msgstr ""
 
-#: models.py:54
+#: box/core/sw_robots/models.py:68
 msgid "The URLs which are allowed to be accessed by bots."
 msgstr ""
 
-#: models.py:58 models.py:95
+#: box/core/sw_robots/models.py:75 box/core/sw_robots/models.py:120
 msgid "disallowed"
 msgstr ""
 
-#: models.py:59
+#: box/core/sw_robots/models.py:76
 msgid "The URLs which are not allowed to be accessed by bots."
 msgstr ""
 
-#: models.py:62
+#: box/core/sw_robots/models.py:78
 msgid "sites"
 msgstr ""
 
-#: models.py:64
+#: box/core/sw_robots/models.py:81
 msgid "crawl delay"
 msgstr ""
 
-#: models.py:66
+#: box/core/sw_robots/models.py:87
 msgid ""
 "Between 0.1 and 99.0. This field is supported by some search engines and "
 "defines the delay between successive crawler accesses in seconds. If the "
@@ -91,14 +95,14 @@ msgid ""
 "and decrease the maximum crawl rate to your web server."
 msgstr ""
 
-#: models.py:83
+#: box/core/sw_robots/models.py:106
 msgid "rule"
 msgstr ""
 
-#: models.py:84
+#: box/core/sw_robots/models.py:107
 msgid "rules"
 msgstr ""
 
-#: models.py:90 models.py:94
+#: box/core/sw_robots/models.py:113 box/core/sw_robots/models.py:118
 msgid "and"
 msgstr ""

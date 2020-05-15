@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-04 11:07+0000\n"
+"POT-Creation-Date: 2020-05-14 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,54 +19,39 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: box/model_search/__init__.py:15
+#: box/core/sw_model_search/__init__.py:15
 msgid "Search"
 msgstr "Пошук"
 
-#: box/model_search/admin.py:25
-msgid "Latest tags"
-msgstr "Останні теги"
+#~ msgid "Latest tags"
+#~ msgstr "Останні теги"
 
-#: box/model_search/models.py:8
-msgid "Group name"
-msgstr "Назва групи"
+#~ msgid "Group name"
+#~ msgstr "Назва групи"
 
-#: box/model_search/models.py:14
-msgid "Search tag group"
-msgstr "Група пошукових тегів"
+#~ msgid "Search tag group"
+#~ msgstr "Група пошукових тегів"
 
-#: box/model_search/models.py:15
-msgid "Search tag groups"
-msgstr "Групи пошукових тегів"
+#~ msgid "Search tag groups"
+#~ msgstr "Групи пошукових тегів"
 
-#: box/model_search/models.py:21
-msgid "Group"
-msgstr "Група"
+#~ msgid "Group"
+#~ msgstr "Група"
 
-#: box/model_search/models.py:23 box/model_search/models.py:37
-msgid "Text"
-msgstr "Текст"
+#~ msgid "Text"
+#~ msgstr "Текст"
 
-#: box/model_search/models.py:29
-msgid "Search tag"
-msgstr "Пошуковий тег"
+#~ msgid "Search tag"
+#~ msgstr "Пошуковий тег"
 
-#: box/model_search/models.py:30
-msgid "Search tags"
-msgstr "Пошукові теги"
+#~ msgid "Search tags"
+#~ msgstr "Пошукові теги"
 
-#: box/model_search/models.py:35
-msgid "URL"
-msgstr ""
+#~ msgid "Result count"
+#~ msgstr "Кількість результатів"
 
-#: box/model_search/models.py:39
-msgid "Result count"
-msgstr "Кількість результатів"
+#~ msgid "Search query"
+#~ msgstr "Пошуковий запит"
 
-#: box/model_search/models.py:50
-msgid "Search query"
-msgstr "Пошуковий запит"
-
-#: box/model_search/models.py:51
-msgid "Search queries"
-msgstr "Пошукові запити"
+#~ msgid "Search queries"
+#~ msgstr "Пошукові запити"
