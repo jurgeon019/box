@@ -119,7 +119,7 @@ class GlobalMarker(models.Model):
 
 
 class GlobalConfig(SingletonModel):
-  @classmethod
+  
   def get_recipient_list(self):
     return list(GlobalRecipientEmail.objects.filter(
       is_active=True, config=self,
