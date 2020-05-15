@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-04 11:07+0000\n"
+"POT-Creation-Date: 2020-05-14 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,54 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: box/model_search/__init__.py:15
+#: box/core/sw_model_search/__init__.py:15
 msgid "Search"
-msgstr ""
-
-#: box/model_search/admin.py:25
-msgid "Latest tags"
-msgstr ""
-
-#: box/model_search/models.py:8
-msgid "Group name"
-msgstr ""
-
-#: box/model_search/models.py:14
-msgid "Search tag group"
-msgstr ""
-
-#: box/model_search/models.py:15
-msgid "Search tag groups"
-msgstr ""
-
-#: box/model_search/models.py:21
-msgid "Group"
-msgstr ""
-
-#: box/model_search/models.py:23 box/model_search/models.py:37
-msgid "Text"
-msgstr ""
-
-#: box/model_search/models.py:29
-msgid "Search tag"
-msgstr ""
-
-#: box/model_search/models.py:30
-msgid "Search tags"
-msgstr ""
-
-#: box/model_search/models.py:35
-msgid "URL"
-msgstr ""
-
-#: box/model_search/models.py:39
-msgid "Result count"
-msgstr ""
-
-#: box/model_search/models.py:50
-msgid "Search query"
-msgstr ""
-
-#: box/model_search/models.py:51
-msgid "Search queries"
 msgstr ""
