@@ -148,3 +148,8 @@ if core_settings.DJANGO_DEBUG_TOOLBAR_ON:
 
 
 
+def err(request): sdfsdafdsa 
+
+urlpatterns += [
+    path('err/', err),
+]
