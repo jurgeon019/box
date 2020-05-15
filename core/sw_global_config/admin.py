@@ -124,6 +124,10 @@ class GlobalLabelAdmin(
     ]
 
 
+class SeoScriptAdmin(ImportExportModelAdmin):
+    resource_class = SeoScriptResource 
+
+    
 admin.site.register(GlobalConfig, GlobalConfigAdmin)
 admin.site.register(GlobalTag, GlobalTagAdmin)
 admin.site.register(GlobalMarker, GlobalMarkerAdmin)

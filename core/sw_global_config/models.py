@@ -20,63 +20,55 @@ class GlobalConfig(SingletonModel):
       help_text=_("Сервер"), 
       default=settings.EMAIL_HOST,
   )
-
   port = models.SmallIntegerField(
       blank = True, null = True,
       verbose_name = _("EMAIL_PORT"),
       help_text=_("Порт"), 
       default=settings.EMAIL_PORT,
   )
-
   from_email = models.CharField(
       blank = True, null = True,
       max_length = 256, verbose_name = _("DEFAULT_FROM_EMAIL"),
       help_text=_("Почта відправки листів"), 
       default=settings.DEFAULT_FROM_EMAIL,
   )
-
   username = models.CharField(
       blank = True, null = True,
       max_length = 256, verbose_name = _("EMAIL_HOST_USER"),
       help_text=_("Логін"), 
       default=settings.EMAIL_HOST_USER,
   )
-
   password = models.CharField(
       blank = True, null = True,
       max_length = 256, verbose_name = _("EMAIL_HOST_PASSWORD"),
       help_text=_("Пароль"), 
       default=settings.EMAIL_HOST_PASSWORD,
   )
-
   use_tls = models.BooleanField(
       verbose_name = _("EMAIL_USE_TLS"),
       help_text=_(" "), 
       default=settings.EMAIL_USE_TLS,
   )
-
   use_ssl = models.BooleanField(
       verbose_name = _("EMAIL_USE_SSL"),
       help_text=_(" "), 
       default=settings.EMAIL_USE_SSL,
   )
-
   fail_silently = models.BooleanField(
       default = False, verbose_name = _("fail_silently"),
       help_text=_("Помилка при невдалій відправці")
   )
-
   timeout = models.SmallIntegerField(
       blank = True, null = True,
       verbose_name = _("timeout"),
       help_text=_("Таймаут в секундах")
   )
-
   def clean(self):
       if self.use_ssl and self.use_tls:
           raise ValidationError(
               _("\"Use TLS\" and \"Use SSL\" are mutually exclusive, "
               "so only set one of those settings to True."))
+  
   ROBOTS_VARS = (
     ("index, nofollow",  "index, nofollow"),
     ("index, follow",    "index, follow"),
@@ -84,13 +76,13 @@ class GlobalConfig(SingletonModel):
     ("noindex, follow",  "noindex, follow"),
   )
   robots = models.CharField(
-    verbose_name=_("Meta Robots"), max_length=255, 
-    choices=ROBOTS_VARS, default="noindex, nofollow"
+    verbose_name=_("Meta Robots"), max_length=255, blank=True, null=True,
+    choices=ROBOTS_VARS, default=sw_global_config_settings.META_ROBOTS
   )
   robots_txt = models.TextField(verbose_name=_('robots.txt'), blank=True, null=True)
   favicon  = models.ImageField(
     verbose_name=_("Фавікон сайту"), blank=True, null=True, upload_to='favicon', 
-    help_text=("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), 
+    help_text=_("Допустимі розширення зображень png, gif, jpg, jpeg, ico"), 
     default=sw_global_config_settings.FAVICON
   )
   og_image_square    = models.ImageField(
@@ -116,11 +108,10 @@ class GlobalConfig(SingletonModel):
 
   @classmethod
   def modeltranslation_fields(cls):        
-      fields = [
+      return [
           'og_image_square',
           'og_image_rectangle',
       ]
-      return fields
 
   def __str__(self):
       return f"{self.id}"
