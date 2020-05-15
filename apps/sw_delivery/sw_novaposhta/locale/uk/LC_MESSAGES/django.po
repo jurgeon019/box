@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-04 11:07+0000\n"
+"POT-Creation-Date: 2020-05-14 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,22 +19,78 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: box/shop/novaposhta/__init__.py:8
+#: box/apps/sw_delivery/sw_novaposhta/__init__.py:8
 msgid "Nova poshta"
 msgstr "Нова пошта"
 
-#: box/shop/novaposhta/models.py:7
+#: box/apps/sw_delivery/sw_novaposhta/models.py:6
+#: box/apps/sw_delivery/sw_novaposhta/models.py:30
+#: box/apps/sw_delivery/sw_novaposhta/models.py:49
+#: box/apps/sw_delivery/sw_novaposhta/models.py:67
+#: box/apps/sw_delivery/sw_novaposhta/models.py:84
 msgid "Title"
 msgstr "Назва"
 
-#: box/shop/novaposhta/models.py:9
+#: box/apps/sw_delivery/sw_novaposhta/models.py:7
 msgid "Address"
 msgstr "Адреса"
 
-#: box/shop/novaposhta/models.py:19
+#: box/apps/sw_delivery/sw_novaposhta/models.py:25
 msgid "Warehouse"
 msgstr "Відділ Нової пошти"
 
-#: box/shop/novaposhta/models.py:20
+#: box/apps/sw_delivery/sw_novaposhta/models.py:26
 msgid "Warehouses"
 msgstr "Відділи Нової пошти"
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:43
+msgid "Область"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:44
+msgid "Області"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:50
+msgid "Area"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:62
+msgid "район"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:63
+msgid "райони"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:79
+msgid "Тип населеного пункту"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:80
+msgid "Типи населених пунктів"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:85
+msgid "Type"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:86
+msgid "latitude"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:87
+msgid "longitude"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:88
+msgid "Region"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:109
+msgid "населений пункт"
+msgstr ""
+
+#: box/apps/sw_delivery/sw_novaposhta/models.py:110
+msgid "населені пункти"
+msgstr ""

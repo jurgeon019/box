@@ -1,6 +1,9 @@
-import re 
 from decouple import config 
-
+import re 
+IGNORABLE_404_URLS = [
+    re.compile(r'\.(php|cgi)$'),
+    re.compile(r'^/phpmyadmin/'),
+]
 MAIL_TYPE = config('MAIL_TYPE')
 if MAIL_TYPE == 'from_settings':
     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -13,21 +16,10 @@ EMAIL_HOST             = "mail.starwayua.com"
 EMAIL_HOST_USER        = "dev@starwayua.com"
 EMAIL_HOST_PASSWORD    = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL     = EMAIL_HOST_USER
-DEFAULT_RECIPIENT_LIST = [
-    'jurgeon018@gmail.com',
+
+SERVER_EMAIL = 'dev@starwayua.com'
+ADMINS = [
+    ('jurgeon018', 'jurgeon018@gmail.com'),
+    ('DEV', 'dev@starwayua.com'),
 ]
-
-
-
-
-# IGNORABLE_404_URLS = [
-#     re.compile(r'\.(php|cgi)$'),
-#     re.compile(r'^/phpmyadmin/'),
-# ]
-# SERVER_EMAIL = 'dev@starwayua.com'
-# ADMINS = [
-#     ('jurgeon018', 'jurgeon018@gmail.com'),
-# ]
-# MANAGERS = [
-#     'jurgeon018@gmail.com',
-# ]
+MANAGERS = ADMINS 

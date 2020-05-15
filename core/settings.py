@@ -17,9 +17,6 @@ PROJECT_CORE_MULTILINGUAL_URLS = get(
 PROJECT_CORE_URLS              = get(
     'PROJECT_CORE_URLS', [])
 
-DEFAULT_RECIPIENT_LIST = [
-    'jurgeon018@gmail.com',
-]
 DJANGO_DEBUG_TOOLBAR_ON = get(
     'DJANGO_DEBUG_TOOLBAR_ON', False)
 
@@ -35,10 +32,11 @@ PATH_403    = get('PATH_403', 'core/errors/403.html')
 PATH_404    = get('PATH_404', 'core/errors/404.html')
 PATH_500    = get('PATH_500', 'core/errors/500.html')
 
-HANDLER_400 = get('HANDLER_400', 'box.core.views.handler_400')
-HANDLER_403 = get('HANDLER_403', 'box.core.views.handler_403')
-HANDLER_404 = get('HANDLER_404', 'box.core.views.handler_404')
-HANDLER_500 = get('HANDLER_500', 'box.core.views.handler_500')
+HANDLER_400 = get('HANDLER_400', 'box.core.views.custom_bad_request')
+HANDLER_403 = get('HANDLER_403', 'box.core.views.custom_permission_denied')
+HANDLER_404 = get('HANDLER_404', 'box.core.views.custom_page_not_found')
+HANDLER_500 = get('HANDLER_500', 'box.core.views.custom_server_error')
+
 
 
 URL_400 = get('URL_400', "test_400/")

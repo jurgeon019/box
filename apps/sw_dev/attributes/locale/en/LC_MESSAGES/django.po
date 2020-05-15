@@ -1,0 +1,115 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-14 15:41+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: box/apps/sw_dev/attributes/__init__.py:8
+#: box/apps/sw_dev/attributes/models/attribute.py:173
+msgid "Attributes"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/admin/__init__.py:43
+#: box/apps/sw_dev/attributes/models/attribute.py:50
+msgid "Categories"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/admin/__init__.py:48
+#: box/apps/sw_dev/attributes/models/attribute.py:68
+msgid "Type"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/constants.py:11
+msgid "Text"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/constants.py:12
+msgid "Integer"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/constants.py:13
+msgid "True / False"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/constants.py:14
+msgid "Options"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/fields.py:22
+msgid "Form is invalid."
+msgstr ""
+
+#: box/apps/sw_dev/attributes/forms.py:150
+msgid "{} is required"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:54
+#: box/apps/sw_dev/attributes/models/attribute_option.py:14
+msgid "Name"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:58
+msgid "Code"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:71
+msgid "Required"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:73
+msgid "You will not be able to update record without filling this field"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:77
+msgid "Is visible"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:79
+msgid "Display this attribute for users"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:82
+msgid "Is filter"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:84
+msgid "Display this attribute in records filter"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:142
+msgid " [New value]"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute.py:172
+#: box/apps/sw_dev/attributes/models/attribute_option.py:11
+msgid "Attribute"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute_option.py:21
+msgid "Attribute option"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute_option.py:22
+msgid "Attribute options"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute_value.py:89
+msgid "Yes"
+msgstr ""
+
+#: box/apps/sw_dev/attributes/models/attribute_value.py:89
+msgid "No"
+msgstr ""

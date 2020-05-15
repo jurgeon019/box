@@ -66,7 +66,8 @@ class Command(BaseCommand):
     resource_name = kwargs.get('resource_name')
     filename      = kwargs.get('filename')
     if filename is None and resource_name is not None:
-      filename = resource_name + '.' + ext 
+      # filename = resource_name + '.' + ext 
+      filename = resource_name + '.csv' 
 
     ext = kwargs['extention']
     if ext is None:

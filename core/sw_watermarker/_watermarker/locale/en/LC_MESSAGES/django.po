@@ -1,0 +1,92 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-05-14 15:41+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: box/core/sw_watermarker/_watermarker/models.py:7
+msgid "Opacity should be more 0 and less 1. This is a rule!"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:17
+msgid "tile"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:18
+msgid "scale"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:19
+msgid "buttom right corner"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:20
+msgid "top rigth corner"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:21
+msgid "buttom left corner"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:22
+msgid "top left corner"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:25
+msgid "Title"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:26
+#: box/core/sw_watermarker/_watermarker/models.py:48
+msgid "Watermark"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:27
+msgid "Opacity"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:27
+msgid "Value must be between 0 and 1"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:28
+#: box/core/sw_watermarker/_watermarker/models.py:45
+msgid "Position"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:29
+msgid "Indent X"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:30
+msgid "Indent Y"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:31
+msgid "Is active"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:32
+msgid "Update hard"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:33
+msgid "Use it if you want to update all already created watermarks"
+msgstr ""
+
+#: box/core/sw_watermarker/_watermarker/models.py:49
+msgid "Watermarks"
+msgstr ""

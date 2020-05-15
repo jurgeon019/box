@@ -1,4 +1,5 @@
 MIDDLEWARE = [
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
     # 'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -12,10 +13,10 @@ MIDDLEWARE = [
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.contrib.redirects.middleware.RedirectFallbackMiddleware',
     
-    'django.middleware.common.BrokenLinkEmailsMiddleware',
     'box.core.middleware.PutParsingMiddleware',
     'box.core.middleware.JSONParsingMiddleware',
     'box.core.middleware.DisableCSRF',
 ]
+
 
 

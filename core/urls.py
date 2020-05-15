@@ -102,7 +102,8 @@ multilingual = i18n_patterns(
 
   *box_multilingual,
   *PROJECT_CORE_MULTILINGUAL,
-  prefix_default_language=core_settings.PREFIX_DEFAULT_LANGUAGE,
+  prefix_default_language=False,
+  # prefix_default_language=core_settings.PREFIX_DEFAULT_LANGUAGE,
 )
 
 urlpatterns = [
@@ -147,3 +148,8 @@ if core_settings.DJANGO_DEBUG_TOOLBAR_ON:
 
 
 
+def err(request): sdfsdafdsa 
+
+urlpatterns += [
+    path('err/', err),
+]

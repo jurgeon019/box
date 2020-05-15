@@ -36,4 +36,8 @@ class GlobalLabelResource(ModelResource):
             row['text'] = row['text'].lower().strip()
 
 
-
+class SeoScriptResource(ModelResource):
+    class Meta:
+        model = SeoScript
+        exclude = []
+        

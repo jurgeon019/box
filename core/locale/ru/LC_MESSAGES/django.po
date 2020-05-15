@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-04 11:07+0000\n"
+"POT-Creation-Date: 2020-05-14 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,14 +20,1757 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: box/core/settings/translation.py:11
+#: box/core/__init__.py:7
+msgid "Ядро"
+msgstr ""
+
+#: box/core/default_settings/_translation.py:10
 msgid "Українська"
 msgstr ""
 
-#: box/core/settings/translation.py:12
+#: box/core/default_settings/_translation.py:11
 msgid "Англійська"
 msgstr ""
 
-#: box/core/settings/translation.py:13
+#: box/core/default_settings/_translation.py:12
 msgid "Російська"
+msgstr ""
+
+#: box/core/models.py:22 box/core/sw_content/models.py:20
+#: box/core/sw_content/models.py:129 box/core/sw_content/models.py:198
+#: box/core/sw_global_config/models.py:197
+#: box/core/sw_global_config/models.py:221
+msgid "Код"
+msgstr ""
+
+#: box/core/models.py:39
+msgid "Порядок"
+msgstr ""
+
+#: box/core/models.py:42 box/core/models.py:158
+msgid "Активність"
+msgstr ""
+
+#: box/core/models.py:42
+msgid "Відображення на сайті"
+msgstr ""
+
+#: box/core/models.py:45
+msgid "Створено"
+msgstr ""
+
+#: box/core/models.py:48
+msgid "Оновлено"
+msgstr ""
+
+#: box/core/models.py:83
+msgid "Мета-заголовок"
+msgstr ""
+
+#: box/core/models.py:83
+msgid ""
+"Заголовок сторінки в браузері, який відображається у видачі пошукових систем"
+msgstr ""
+
+#: box/core/models.py:86
+msgid "Мета-опис"
+msgstr ""
+
+#: box/core/models.py:86
+msgid "__"
+msgstr ""
+
+#: box/core/models.py:89
+msgid "Ключові слова"
+msgstr ""
+
+#: box/core/models.py:89
+msgid "Список ключових слів"
+msgstr ""
+
+#: box/core/models.py:92 box/core/sw_content/abstract_models.py:75
+#: box/core/sw_content/abstract_models.py:111
+msgid "Посилання"
+msgstr ""
+
+#: box/core/models.py:96
+msgid "Альт до картинки"
+msgstr ""
+
+#: box/core/models.py:98 box/core/sw_content/abstract_models.py:119
+#: box/core/sw_content/admin/admin.py:207 box/core/sw_content/models.py:52
+msgid "Картинка"
+msgstr ""
+
+#: box/core/models.py:101 box/core/sw_auth/admin/admin.py:57
+#: box/core/sw_content/models.py:133 box/core/sw_content/models.py:199
+#: box/core/sw_content/models.py:245 box/core/sw_currency/models.py:23
+#: box/core/sw_global_config/models.py:174
+#: box/core/sw_global_config/models.py:218
+msgid "Назва"
+msgstr ""
+
+#: box/core/models.py:103
+msgid "Опис"
+msgstr ""
+
+#: box/core/models.py:157
+msgid "Емайл"
+msgstr ""
+
+#: box/core/sw_auth/__init__.py:6
+msgid "аккаунти"
+msgstr ""
+
+#: box/core/sw_auth/admin/admin.py:40
+msgid "Нова група буде застосована для наступних позиций:"
+msgstr ""
+
+#: box/core/sw_auth/admin/admin.py:41 box/core/sw_content/admin/admin.py:510
+msgid "Додавання маркерів"
+msgstr ""
+
+#: box/core/sw_auth/admin/admin.py:42
+#, python-brace-format
+msgid "Група {0} була застосована до {1} користувачів"
+msgstr ""
+
+#: box/core/sw_auth/admin/admin.py:58 box/core/sw_content/admin/admin.py:500
+msgid "Видалити"
+msgstr ""
+
+#: box/core/sw_auth/admin/admin.py:70
+msgid "Personal info"
+msgstr ""
+
+#: box/core/sw_auth/admin/admin.py:91
+msgid "Permissions"
+msgstr ""
+
+#: box/core/sw_auth/admin/admin.py:103
+msgid "Important dates"
+msgstr ""
+
+#: box/core/sw_auth/api/views.py:37 box/core/sw_auth/api/views.py:38
+#: box/core/sw_auth/api/views.py:94 box/core/sw_auth/api/views.py:95
+msgid "Паролі не співпадаюсь"
+msgstr ""
+
+#: box/core/sw_auth/api/views.py:44 box/core/sw_auth/api/views.py:132
+msgid "Неправильний старий пароль"
+msgstr ""
+
+#: box/core/sw_auth/api/views.py:103
+msgid "Цей емейл вже зайнятий"
+msgstr ""
+
+#: box/core/sw_auth/api/views.py:104 box/core/sw_auth/api/views.py:119
+msgid "Цей логін вже зайнятий"
+msgstr ""
+
+#: box/core/sw_auth/api/views.py:111
+msgid "Цей емайл вже зайнятий"
+msgstr ""
+
+#: box/core/sw_auth/api/views.py:176
+msgid "'Такого користувача не існує'"
+msgstr ""
+
+#: box/core/sw_auth/api/views.py:189
+msgid "Неправильний пароль"
+msgstr ""
+
+#: box/core/sw_auth/api/views.py:196
+msgid "Цей користувач неактивний"
+msgstr ""
+
+#: box/core/sw_auth/api/views.py:214
+msgid "Ви увійшли"
+msgstr ""
+
+#: box/core/sw_auth/models.py:25
+msgid "Невідомо"
+msgstr ""
+
+#: box/core/sw_auth/models.py:26
+msgid "Чоловік"
+msgstr ""
+
+#: box/core/sw_auth/models.py:27
+msgid "Жінка"
+msgstr ""
+
+#: box/core/sw_auth/models.py:31
+msgid "password"
+msgstr ""
+
+#: box/core/sw_auth/models.py:34
+msgid "Номер телефону"
+msgstr ""
+
+#: box/core/sw_auth/models.py:38
+msgid "Адреса"
+msgstr ""
+
+#: box/core/sw_auth/models.py:41
+msgid "Дата народження"
+msgstr ""
+
+#: box/core/sw_auth/models.py:44
+msgid "Стать"
+msgstr ""
+
+#: box/core/sw_auth/models.py:48
+msgid "first name"
+msgstr ""
+
+#: box/core/sw_auth/models.py:52
+msgid "last name"
+msgstr ""
+
+#: box/core/sw_auth/models.py:56
+msgid "email address"
+msgstr ""
+
+#: box/core/sw_auth/models.py:62
+msgid "Група"
+msgstr ""
+
+#: box/core/sw_auth/models.py:68
+msgid "username"
+msgstr ""
+
+#: box/core/sw_auth/models.py:71
+msgid "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+msgstr ""
+
+#: box/core/sw_auth/models.py:74
+msgid "A user with that username already exists."
+msgstr ""
+
+#: box/core/sw_auth/models.py:78
+msgid "staff status"
+msgstr ""
+
+#: box/core/sw_auth/models.py:80
+msgid "Designates whether the user can log into this admin site."
+msgstr ""
+
+#: box/core/sw_auth/models.py:83
+msgid "active"
+msgstr ""
+
+#: box/core/sw_auth/models.py:86
+msgid ""
+"Designates whether this user should be treated as active. Unselect this "
+"instead of deleting accounts."
+msgstr ""
+
+#: box/core/sw_auth/models.py:91
+msgid "superuser status"
+msgstr ""
+
+#: box/core/sw_auth/models.py:94
+msgid ""
+"Designates that this user has all permissions without explicitly assigning "
+"them."
+msgstr ""
+
+#: box/core/sw_auth/models.py:100
+msgid "groups"
+msgstr ""
+
+#: box/core/sw_auth/models.py:103
+msgid ""
+"The groups this user belongs to. A user will get all permissions granted to "
+"each of their groups."
+msgstr ""
+
+#: box/core/sw_auth/models.py:111
+msgid "user permissions"
+msgstr ""
+
+#: box/core/sw_auth/models.py:113
+msgid "Specific permissions for this user."
+msgstr ""
+
+#: box/core/sw_auth/models.py:117
+msgid "date joined"
+msgstr ""
+
+#: box/core/sw_auth/models.py:118
+msgid "last login"
+msgstr ""
+
+#: box/core/sw_auth/models.py:126
+msgid "user"
+msgstr ""
+
+#: box/core/sw_auth/models.py:127
+msgid "users"
+msgstr ""
+
+#: box/core/sw_contact_form/__init__.py:6
+msgid "Зворотній звязок"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:11
+msgid "Налаштування зворотнього звязку"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:17
+msgid "emails"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:22
+msgid "емейл для сповіщень про контактні форми"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:23
+msgid "емейли для сповіщень про контактні форми"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:28
+msgid "Імя"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:31
+msgid "Email"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:34
+msgid "Телефон"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:37
+#: box/core/sw_content/abstract_models.py:51
+#: box/core/sw_content/abstract_models.py:107 box/core/sw_content/models.py:136
+#: box/core/sw_global_config/models.py:194
+msgid "Текст"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:40
+msgid "Примітки адміністратора"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:43
+msgid "Ссилка"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:44
+msgid "Ссилка на сторінку, з якої було відправлено контактну форму"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:47
+msgid "Оброблено"
+msgstr ""
+
+#: box/core/sw_contact_form/models.py:54
+msgid "Зворотний звязок"
+msgstr ""
+
+#: box/core/sw_content/__init__.py:6
+msgid "Контент"
+msgstr ""
+
+#: box/core/sw_content/abstract_models.py:26
+#: box/core/sw_content/abstract_models.py:103 box/core/sw_content/models.py:130
+msgid "Сторінка"
+msgstr ""
+
+#: box/core/sw_content/abstract_models.py:43
+msgid "Загальна сторінка"
+msgstr ""
+
+#: box/core/sw_content/abstract_models.py:99
+msgid "Тип контенту"
+msgstr ""
+
+#: box/core/sw_content/abstract_models.py:115 box/core/sw_content/models.py:40
+msgid "iframe"
+msgstr ""
+
+#: box/core/sw_content/abstract_models.py:122 box/core/sw_content/models.py:53
+msgid "Альт"
+msgstr ""
+
+#: box/core/sw_content/admin/admin.py:501
+msgid "Посилання на слайдер"
+msgstr ""
+
+#: box/core/sw_content/admin/admin.py:509
+msgid "Новий слайдер буде застосований для наступних позиций:"
+msgstr ""
+
+#: box/core/sw_content/admin/admin.py:511
+#, python-brace-format
+msgid "Слайдер {0} був застосований до {1} слайдів"
+msgstr ""
+
+#: box/core/sw_content/admin/admin.py:515 box/core/sw_content/models.py:131
+msgid "Зображення"
+msgstr ""
+
+#: box/core/sw_content/admin/admin.py:516
+msgid "Перемістити в слайдер"
+msgstr ""
+
+#: box/core/sw_content/filters.py:14
+msgid "Є текст"
+msgstr ""
+
+#: box/core/sw_content/filters.py:15
+msgid "Немає тексту"
+msgstr ""
+
+#: box/core/sw_content/models.py:24
+msgid "Заголовок"
+msgstr ""
+
+#: box/core/sw_content/models.py:29
+msgid "cторінка"
+msgstr ""
+
+#: box/core/sw_content/models.py:30
+msgid "cторінки"
+msgstr ""
+
+#: box/core/sw_content/models.py:44
+msgid "карта"
+msgstr ""
+
+#: box/core/sw_content/models.py:45
+msgid "карти"
+msgstr ""
+
+#: box/core/sw_content/models.py:56
+msgid "картинка"
+msgstr ""
+
+#: box/core/sw_content/models.py:57
+msgid "картинки"
+msgstr ""
+
+#: box/core/sw_content/models.py:76
+msgid "переклад"
+msgstr ""
+
+#: box/core/sw_content/models.py:77
+msgid "переклади"
+msgstr ""
+
+#: box/core/sw_content/models.py:85
+msgid "адрес"
+msgstr ""
+
+#: box/core/sw_content/models.py:86
+msgid "адреса"
+msgstr ""
+
+#: box/core/sw_content/models.py:94
+msgid "телефонний номер"
+msgstr ""
+
+#: box/core/sw_content/models.py:95
+msgid "телефонні номера"
+msgstr ""
+
+#: box/core/sw_content/models.py:102
+msgid ""
+"Номер має бути без пробілів, без літер, без спецсимволів, починатися з + та "
+"містити в собі 13 символів. Приклад: +380957891234."
+msgstr ""
+
+#: box/core/sw_content/models.py:107
+msgid "емейл"
+msgstr ""
+
+#: box/core/sw_content/models.py:108
+msgid "емейли"
+msgstr ""
+
+#: box/core/sw_content/models.py:116 box/core/sw_content/models.py:117
+msgid "посилання"
+msgstr ""
+
+#: box/core/sw_content/models.py:132
+msgid "Слайдер"
+msgstr ""
+
+#: box/core/sw_content/models.py:134
+msgid "Назва зображення(alt)"
+msgstr ""
+
+#: box/core/sw_content/models.py:135
+msgid "Вспливаюча підказка(title)"
+msgstr ""
+
+#: box/core/sw_content/models.py:246
+msgid "Відповідь"
+msgstr ""
+
+#: box/core/sw_currency/__init__.py:7
+#: box/core/sw_currency/migrations/__init__.py:7
+msgid "Валюти"
+msgstr ""
+
+#: box/core/sw_currency/models.py:36
+msgid "Валюта для парсингу"
+msgstr ""
+
+#: box/core/sw_currency/models.py:37
+msgid "Валюти для парсингу"
+msgstr ""
+
+#: box/core/sw_currency/models.py:49
+msgid "Поле для конвертації"
+msgstr ""
+
+#: box/core/sw_currency/models.py:57
+msgid "Налаштування валют"
+msgstr ""
+
+#: box/core/sw_currency/models.py:67
+msgid "Символ"
+msgstr ""
+
+#: box/core/sw_currency/models.py:68
+msgid ""
+"Наприклад: грн., дол., $, руб., Є. Буде відображатись біля ціни в товарі."
+msgstr ""
+
+#: box/core/sw_currency/models.py:71
+msgid "Код ІSO"
+msgstr ""
+
+#: box/core/sw_currency/models.py:74
+msgid "Курс продажі"
+msgstr ""
+
+#: box/core/sw_currency/models.py:78
+msgid "Курс купівлі"
+msgstr ""
+
+#: box/core/sw_currency/models.py:82
+msgid "Головна"
+msgstr ""
+
+#: box/core/sw_currency/models.py:93
+msgid "валюта"
+msgstr ""
+
+#: box/core/sw_currency/models.py:94
+msgid "валюти"
+msgstr ""
+
+#: box/core/sw_global_config/__init__.py:8
+msgid "Налаштування сайту"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:19
+msgid "EMAIL_HOST"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:20
+msgid "Сервер"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:26
+msgid "EMAIL_PORT"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:27
+msgid "Порт"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:33
+msgid "DEFAULT_FROM_EMAIL"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:34
+msgid "Почта відправки листів"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:40
+msgid "EMAIL_HOST_USER"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:41
+msgid "Логін"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:47
+msgid "EMAIL_HOST_PASSWORD"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:48
+msgid "Пароль"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:53
+msgid "EMAIL_USE_TLS"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:54
+#: box/core/sw_global_config/models.py:60
+msgid " "
+msgstr ""
+
+#: box/core/sw_global_config/models.py:59
+msgid "EMAIL_USE_SSL"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:65
+msgid "fail_silently"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:66
+msgid "Помилка при невдалій відправці"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:71
+msgid "timeout"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:72
+msgid "Таймаут в секундах"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:78
+msgid ""
+"\"Use TLS\" and \"Use SSL\" are mutually exclusive, so only set one of those "
+"settings to True."
+msgstr ""
+
+#: box/core/sw_global_config/models.py:87
+msgid "Meta Robots"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:90
+msgid "robots.txt"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:92
+msgid "Фавікон сайту"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:97
+msgid "og:image квадрат"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:102
+msgid "og:image прямокутник"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:129
+#: box/core/sw_global_config/models.py:135
+#: box/core/sw_global_config/models.py:177
+msgid "Глобальні налаштування"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:139
+msgid "емейл для всіх сповіщень"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:140
+msgid "емейли для всіх сповіщень"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:154
+msgid "Код для вставлення"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:155
+msgid "Назва коду"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:157
+msgid "Положення коду на сторінці"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:171
+msgid "Колір"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:212
+msgid "мітка"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:213
+msgid "мітки"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:235
+msgid "маркер"
+msgstr ""
+
+#: box/core/sw_global_config/models.py:236
+msgid "маркери"
+msgstr ""
+
+#: box/core/sw_global_config/templates/sw_global_config/des/change_form.html:11
+#: box/core/sw_imp_exp/templates/default_templates/admin/500.html:6
+#: box/core/sw_imp_exp/templates/default_templates/admin/app_index.html:9
+#: box/core/sw_imp_exp/templates/default_templates/admin/auth/user/change_password.html:13
+#: box/core/sw_imp_exp/templates/default_templates/admin/base.html:61
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_form.html:18
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_list.html:31
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_confirmation.html:14
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_selected_confirmation.html:14
+#: box/core/sw_imp_exp/templates/default_templates/admin/invalid_setup.html:6
+#: box/core/sw_imp_exp/templates/default_templates/admin/object_history.html:6
+#: box/core/sw_imp_exp/templates/default_templates/registration/logged_out.html:4
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_done.html:6
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_form.html:7
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_complete.html:6
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_confirm.html:7
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_done.html:6
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_form.html:7
+#: box/core/sw_solo/templates/admin/solo/change_form.html:7
+#: box/core/sw_solo/templates/admin/solo/object_history.html:6
+msgid "Home"
+msgstr ""
+
+#: box/core/sw_global_config/templates/sw_global_config/des/change_form.html:18
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_form_object_tools.html:5
+#: box/core/sw_imp_exp/templates/default_templates/admin/object_history.html:10
+#: box/core/sw_solo/templates/admin/solo/change_form.html:14
+#: box/core/sw_solo/templates/admin/solo/object_history.html:9
+msgid "History"
+msgstr ""
+
+#: box/core/sw_global_config/templates/sw_global_config/des/change_form.html:23
+msgid "Send Test Email"
+msgstr ""
+
+#: box/core/sw_global_config/templates/sw_global_config/des/change_form.html:28
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_form_object_tools.html:7
+#: box/core/sw_imp_exp/templates/default_templates/admin/edit_inline/stacked.html:14
+#: box/core/sw_imp_exp/templates/default_templates/admin/edit_inline/tabular.html:36
+#: box/core/sw_solo/templates/admin/solo/change_form.html:15
+msgid "View on site"
+msgstr ""
+
+#: box/core/sw_global_config/views.py:11
+msgid "Test Email"
+msgstr ""
+
+#: box/core/sw_global_config/views.py:40
+msgid ""
+"Test email sent. Please check \"{}\" for a message with the subject \"{}\""
+msgstr ""
+
+#: box/core/sw_global_config/views.py:47
+msgid "Could not send email. {}"
+msgstr ""
+
+#: box/core/sw_global_config/views.py:49
+msgid "You must provide an email address to test with."
+msgstr ""
+
+#: box/core/sw_imp_exp/models.py:8
+msgid "Товаp"
+msgstr ""
+
+#: box/core/sw_imp_exp/models.py:9
+msgid "Статус"
+msgstr ""
+
+#: box/core/sw_imp_exp/models.py:13
+msgid "Журнал імпорту"
+msgstr ""
+
+#: box/core/sw_imp_exp/models.py:19
+msgid "Імпорт"
+msgstr ""
+
+#: box/core/sw_imp_exp/models.py:25
+msgid "Експорт"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/404.html:4
+#: box/core/sw_imp_exp/templates/default_templates/admin/404.html:8
+msgid "Page not found"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/404.html:10
+msgid "We’re sorry, but the requested page could not be found."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/500.html:7
+msgid "Server error"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/500.html:11
+msgid "Server error (500)"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/500.html:14
+msgid "Server Error <em>(500)</em>"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/500.html:15
+msgid ""
+"There’s been an error. It’s been reported to the site administrators via "
+"email and should be fixed shortly. Thanks for your patience."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/actions.html:8
+msgid "Run the selected action"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/actions.html:8
+msgid "Go"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/actions.html:16
+msgid "Click here to select the objects across all pages"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/actions.html:16
+#, python-format
+msgid "Select all %(total_count)s %(module_name)s"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/actions.html:18
+msgid "Clear selection"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/auth/user/add_form.html:6
+msgid ""
+"First, enter a username and password. Then, you’ll be able to edit more user "
+"options."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/auth/user/add_form.html:8
+msgid "Enter a username and password."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/auth/user/change_password.html:17
+#: box/core/sw_imp_exp/templates/default_templates/admin/auth/user/change_password.html:55
+#: box/core/sw_imp_exp/templates/default_templates/admin/base.html:49
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_done.html:3
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_form.html:4
+msgid "Change password"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/auth/user/change_password.html:28
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_form.html:47
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_list.html:51
+#: box/core/sw_imp_exp/templates/default_templates/admin/login.html:21
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_form.html:21
+msgid "Please correct the error below."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/auth/user/change_password.html:28
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_form.html:47
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_list.html:51
+#: box/core/sw_imp_exp/templates/default_templates/admin/login.html:21
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_form.html:21
+msgid "Please correct the errors below."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/auth/user/change_password.html:32
+#, python-format
+msgid "Enter a new password for the user <strong>%(username)s</strong>."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/base.html:35
+msgid "Welcome,"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/base.html:40
+msgid "View site"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/base.html:45
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_done.html:3
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_form.html:4
+msgid "Documentation"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/base.html:51
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_done.html:3
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_form.html:4
+msgid "Log out"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/base_site.html:3
+#: box/core/templates/django_templates/admin/base_site.html:3
+msgid "Django site admin"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/base_site.html:6
+#: box/core/templates/django_templates/admin/base_site.html:6
+msgid "Django administration"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_form.html:21
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_list_object_tools.html:8
+#, python-format
+msgid "Add %(name)s"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_list.html:62
+msgid "Filter"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_list_results.html:17
+msgid "Remove from sorting"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_list_results.html:18
+#, python-format
+msgid "Sorting priority: %(priority_number)s"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/change_list_results.html:19
+msgid "Toggle sorting"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_confirmation.html:18
+#: box/core/sw_imp_exp/templates/default_templates/admin/submit_line.html:7
+#: box/core/sw_imp_exp/templates/default_templates/admin/widgets/related_widget_wrapper.html:25
+msgid "Delete"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_confirmation.html:24
+#, python-format
+msgid ""
+"Deleting the %(object_name)s '%(escaped_object)s' would result in deleting "
+"related objects, but your account doesn't have permission to delete the "
+"following types of objects:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_confirmation.html:31
+#, python-format
+msgid ""
+"Deleting the %(object_name)s '%(escaped_object)s' would require deleting the "
+"following protected related objects:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_confirmation.html:38
+#, python-format
+msgid ""
+"Are you sure you want to delete the %(object_name)s \"%(escaped_object)s\"? "
+"All of the following related items will be deleted:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_confirmation.html:40
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_selected_confirmation.html:39
+msgid "Objects"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_confirmation.html:47
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_selected_confirmation.html:50
+msgid "Yes, I’m sure"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_confirmation.html:48
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_selected_confirmation.html:51
+msgid "No, take me back"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_selected_confirmation.html:17
+msgid "Delete multiple objects"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_selected_confirmation.html:23
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would result in deleting related "
+"objects, but your account doesn't have permission to delete the following "
+"types of objects:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_selected_confirmation.html:30
+#, python-format
+msgid ""
+"Deleting the selected %(objects_name)s would require deleting the following "
+"protected related objects:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/delete_selected_confirmation.html:37
+#, python-format
+msgid ""
+"Are you sure you want to delete the selected %(objects_name)s? All of the "
+"following objects and their related items will be deleted:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/edit_inline/stacked.html:12
+#: box/core/sw_imp_exp/templates/default_templates/admin/edit_inline/tabular.html:34
+#: box/core/sw_imp_exp/templates/default_templates/admin/index.html:40
+#: box/core/sw_imp_exp/templates/default_templates/admin/widgets/related_widget_wrapper.html:11
+msgid "Change"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/edit_inline/stacked.html:12
+#: box/core/sw_imp_exp/templates/default_templates/admin/edit_inline/tabular.html:34
+#: box/core/sw_imp_exp/templates/default_templates/admin/index.html:38
+msgid "View"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/edit_inline/tabular.html:20
+msgid "Delete?"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/filter.html:2
+#, python-format
+msgid " By %(filter_title)s "
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/includes/object_delete_summary.html:2
+msgid "Summary"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/index.html:20
+#, python-format
+msgid "Models in the %(name)s application"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/index.html:31
+#: box/core/sw_imp_exp/templates/default_templates/admin/widgets/related_widget_wrapper.html:18
+msgid "Add"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/index.html:51
+msgid "You don’t have permission to view or edit anything."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/index.html:59
+msgid "Recent actions"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/index.html:60
+msgid "My actions"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/index.html:64
+msgid "None available"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/index.html:78
+msgid "Unknown content"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/invalid_setup.html:12
+msgid ""
+"Something’s wrong with your database installation. Make sure the appropriate "
+"database tables have been created, and make sure the database is readable by "
+"the appropriate user."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/login.html:37
+#, python-format
+msgid ""
+"You are authenticated as %(username)s, but are not authorized to access this "
+"page. Would you like to login to a different account?"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/login.html:57
+msgid "Forgotten your password or username?"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/login.html:61
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_complete.html:18
+msgid "Log in"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/object_history.html:22
+msgid "Date/time"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/object_history.html:23
+msgid "User"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/object_history.html:24
+msgid "Action"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/object_history.html:38
+msgid ""
+"This object doesn’t have a change history. It probably wasn’t added via this "
+"admin site."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/pagination.html:10
+#: box/core/sw_imp_exp/templates/default_templates/admin/search_form.html:9
+msgid "Show all"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/pagination.html:11
+#: box/core/sw_imp_exp/templates/default_templates/admin/submit_line.html:4
+msgid "Save"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/popup_response.html:3
+msgid "Popup closing…"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/search_form.html:7
+msgid "Search"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/search_form.html:9
+#, python-format
+msgid "%(counter)s result"
+msgid_plural "%(counter)s results"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/search_form.html:9
+#, python-format
+msgid "%(full_result_count)s total"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/submit_line.html:9
+msgid "Save as new"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/submit_line.html:10
+msgid "Save and add another"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/submit_line.html:11
+msgid "Save and continue editing"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/submit_line.html:11
+msgid "Save and view"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/submit_line.html:12
+msgid "Close"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/widgets/related_widget_wrapper.html:10
+#, python-format
+msgid "Change selected %(model)s"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/widgets/related_widget_wrapper.html:17
+#, python-format
+msgid "Add another %(model)s"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/admin/widgets/related_widget_wrapper.html:24
+#, python-format
+msgid "Delete selected %(model)s"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/logged_out.html:8
+msgid "Thanks for spending some quality time with the Web site today."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/logged_out.html:10
+msgid "Log in again"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_done.html:7
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_form.html:8
+msgid "Password change"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_done.html:14
+msgid "Your password was changed."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_form.html:26
+msgid ""
+"Please enter your old password, for security’s sake, and then enter your new "
+"password twice so we can verify you typed it in correctly."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_change_form.html:54
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_confirm.html:32
+msgid "Change my password"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_complete.html:7
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_done.html:7
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_form.html:8
+msgid "Password reset"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_complete.html:16
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_confirm.html:8
+msgid "Password reset confirmation"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_confirm.html:18
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_confirm.html:24
+msgid "New password:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_confirm.html:29
+msgid "Confirm password:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_confirm.html:38
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_done.html:15
+msgid ""
+"We’ve emailed you instructions for setting your password, if an account "
+"exists with the email you entered. You should receive them shortly."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_done.html:17
+msgid ""
+"If you don’t receive an email, please make sure you’ve entered the address "
+"you registered with, and check your spam folder."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_email.html:2
+#, python-format
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at %(site_name)s."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_email.html:4
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_email.html:8
+msgid "Your username, in case you’ve forgotten:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_email.html:10
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_email.html:12
+#, python-format
+msgid "The %(site_name)s team"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_form.html:16
+msgid ""
+"Forgotten your password? Enter your email address below, and we’ll email "
+"instructions for setting a new one."
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_form.html:22
+msgid "Email address:"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/default_templates/registration/password_reset_form.html:25
+msgid "Reset my password"
+msgstr ""
+
+#: box/core/sw_imp_exp/templates/imp_exp/admin/import_change_list.html:10
+msgid "Завантажити зразок файлу"
+msgstr ""
+
+#: box/core/sw_project_boilerplate/project/apps.py:7
+msgid "Проект"
+msgstr ""
+
+#: box/core/sw_solo/admin.py:54
+#, python-format
+msgid "%(obj)s was changed successfully."
+msgstr ""
+
+#: box/core/sw_solo/admin.py:56
+msgid "You may edit it again below."
+msgstr ""
+
+#: box/core/sw_solo/templatetags/solo_tags.py:22
+#, python-format
+msgid ""
+"Templatetag requires the model dotted path: 'app_label.ModelName'. Received "
+"'%s'."
+msgstr ""
+
+#: box/core/sw_solo/templatetags/solo_tags.py:28
+#, python-format
+msgid ""
+"Could not get the model name '%(model)s' from the application named '%(app)s'"
+msgstr ""
+
+#: box/core/sw_watermarker/models.py:9
+msgid "name"
+msgstr ""
+
+#: box/core/sw_watermarker/models.py:10
+msgid "image"
+msgstr ""
+
+#: box/core/sw_watermarker/models.py:11
+msgid "is active"
+msgstr ""
+
+#: box/core/sw_watermarker/models.py:17
+msgid "watermark"
+msgstr ""
+
+#: box/core/sw_watermarker/models.py:18
+msgid "watermarks"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/account_inactive.html:5
+#: box/core/templates/allauth_templates/account/account_inactive.html:8
+msgid "Account Inactive"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/account_inactive.html:10
+msgid "This account is inactive."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:5
+#: box/core/templates/allauth_templates/account/email.html:8
+msgid "E-mail Addresses"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:10
+msgid "The following e-mail addresses are associated with your account:"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:24
+msgid "Verified"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:26
+msgid "Unverified"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:28
+msgid "Primary"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:34
+msgid "Make Primary"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:35
+msgid "Re-send Verification"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:36
+#: box/core/templates/allauth_templates/socialaccount/connections.html:35
+msgid "Remove"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:43
+msgid "Warning:"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:43
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:48
+msgid "Add E-mail Address"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:53
+msgid "Add E-mail"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email.html:62
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email/email_confirmation_message.txt:1
+#, python-format
+msgid ""
+"Hello from %(site_name)s!\n"
+"\n"
+"You're receiving this e-mail because user %(user_display)s has given yours "
+"as an e-mail address to connect their account.\n"
+"\n"
+"To confirm this is correct, go to %(activate_url)s\n"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email/email_confirmation_message.txt:7
+#, python-format
+msgid ""
+"Thank you from %(site_name)s!\n"
+"%(site_domain)s"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email/email_confirmation_subject.txt:3
+msgid "Please Confirm Your E-mail Address"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email/password_reset_key_message.txt:1
+#, python-format
+msgid ""
+"Hello from %(site_name)s!\n"
+"\n"
+"You're receiving this e-mail because you or someone else has requested a "
+"password for your user account.\n"
+"It can be safely ignored if you did not request a password reset. Click the "
+"link below to reset your password."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email/password_reset_key_message.txt:8
+#, python-format
+msgid "In case you forgot, your username is %(username)s."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email/password_reset_key_message.txt:10
+#, python-format
+msgid ""
+"Thank you for using %(site_name)s!\n"
+"%(site_domain)s"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email/password_reset_key_subject.txt:3
+msgid "Password Reset E-mail"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email_confirm.html:6
+#: box/core/templates/allauth_templates/account/email_confirm.html:10
+msgid "Confirm E-mail Address"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email_confirm.html:16
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email_confirm.html:20
+msgid "Confirm"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/email_confirm.html:27
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a href="
+"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/login.html:6
+#: box/core/templates/allauth_templates/account/login.html:10
+#: box/core/templates/allauth_templates/account/login.html:43
+msgid "Sign In"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/login.html:15
+#, python-format
+msgid ""
+"Please sign in with one\n"
+"of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign "
+"up</a>\n"
+"for a %(site_name)s account and sign in below:"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/login.html:25
+msgid "or"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/login.html:32
+#, python-format
+msgid ""
+"If you have not created an account yet, then please\n"
+"<a href=\"%(signup_url)s\">sign up</a> first."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/login.html:42
+msgid "Forgot Password?"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/logout.html:5
+#: box/core/templates/allauth_templates/account/logout.html:8
+#: box/core/templates/allauth_templates/account/logout.html:17
+msgid "Sign Out"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/logout.html:10
+msgid "Are you sure you want to sign out?"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/cannot_delete_primary_email.txt:2
+#, python-format
+msgid "You cannot remove your primary e-mail address (%(email)s)."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/email_confirmation_sent.txt:2
+#, python-format
+msgid "Confirmation e-mail sent to %(email)s."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/email_confirmed.txt:2
+#, python-format
+msgid "You have confirmed %(email)s."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/email_deleted.txt:2
+#, python-format
+msgid "Removed e-mail address %(email)s."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/logged_in.txt:4
+#, python-format
+msgid "Successfully signed in as %(name)s."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/logged_out.txt:2
+msgid "You have signed out."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/password_changed.txt:2
+msgid "Password successfully changed."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/password_set.txt:2
+msgid "Password successfully set."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/primary_email_set.txt:2
+msgid "Primary e-mail address set."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/messages/unverified_primary_email.txt:2
+msgid "Your primary e-mail address must be verified."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_change.html:5
+#: box/core/templates/allauth_templates/account/password_change.html:8
+#: box/core/templates/allauth_templates/account/password_change.html:13
+#: box/core/templates/allauth_templates/account/password_reset_from_key.html:4
+#: box/core/templates/allauth_templates/account/password_reset_from_key.html:7
+#: box/core/templates/allauth_templates/account/password_reset_from_key_done.html:4
+#: box/core/templates/allauth_templates/account/password_reset_from_key_done.html:7
+msgid "Change Password"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_reset.html:6
+#: box/core/templates/allauth_templates/account/password_reset.html:10
+#: box/core/templates/allauth_templates/account/password_reset_done.html:6
+#: box/core/templates/allauth_templates/account/password_reset_done.html:9
+msgid "Password Reset"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_reset.html:15
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_reset.html:20
+msgid "Reset My Password"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_reset.html:23
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_reset_done.html:15
+msgid ""
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_reset_from_key.html:7
+msgid "Bad Token"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_reset_from_key.html:11
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_reset_from_key.html:17
+msgid "change password"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_reset_from_key.html:20
+#: box/core/templates/allauth_templates/account/password_reset_from_key_done.html:8
+msgid "Your password is now changed."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/password_set.html:5
+#: box/core/templates/allauth_templates/account/password_set.html:8
+#: box/core/templates/allauth_templates/account/password_set.html:13
+msgid "Set Password"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/signup.html:5
+#: box/core/templates/allauth_templates/socialaccount/signup.html:5
+msgid "Signup"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/signup.html:8
+#: box/core/templates/allauth_templates/account/signup.html:18
+#: box/core/templates/allauth_templates/socialaccount/signup.html:8
+#: box/core/templates/allauth_templates/socialaccount/signup.html:19
+msgid "Sign Up"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/signup.html:10
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/signup_closed.html:5
+#: box/core/templates/allauth_templates/account/signup_closed.html:8
+msgid "Sign Up Closed"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/signup_closed.html:10
+msgid "We are sorry, but the sign up is currently closed."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/snippets/already_logged_in.html:5
+msgid "Note"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/snippets/already_logged_in.html:5
+#, python-format
+msgid "you are already logged in as %(user_display)s."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/verification_sent.html:5
+#: box/core/templates/allauth_templates/account/verification_sent.html:8
+#: box/core/templates/allauth_templates/account/verified_email_required.html:5
+#: box/core/templates/allauth_templates/account/verified_email_required.html:8
+msgid "Verify Your E-mail Address"
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/verification_sent.html:10
+msgid ""
+"We have sent an e-mail to you for verification. Follow the link provided to "
+"finalize the signup process. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/verified_email_required.html:12
+msgid ""
+"This part of the site requires us to verify that\n"
+"you are who you claim to be. For this purpose, we require that you\n"
+"verify ownership of your e-mail address. "
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/verified_email_required.html:16
+msgid ""
+"We have sent an e-mail to you for\n"
+"verification. Please click on the link inside this e-mail. Please\n"
+"contact us if you do not receive it within a few minutes."
+msgstr ""
+
+#: box/core/templates/allauth_templates/account/verified_email_required.html:20
+#, python-format
+msgid ""
+"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
+"mail address</a>."
+msgstr ""
+
+#: box/core/templates/allauth_templates/openid/login.html:9
+msgid "OpenID Sign In"
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/authentication_error.html:5
+#: box/core/templates/allauth_templates/socialaccount/authentication_error.html:8
+msgid "Social Network Login Failure"
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/authentication_error.html:10
+msgid ""
+"An error occurred while attempting to login via your social network account."
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/connections.html:5
+#: box/core/templates/allauth_templates/socialaccount/connections.html:8
+msgid "Account Connections"
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/connections.html:11
+msgid ""
+"You can sign in to your account using any of the following third party "
+"accounts:"
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/connections.html:43
+msgid ""
+"You currently have no social network accounts connected to this account."
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/connections.html:46
+msgid "Add a 3rd Party Account"
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/login_cancelled.html:5
+#: box/core/templates/allauth_templates/socialaccount/login_cancelled.html:9
+msgid "Login Cancelled"
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/login_cancelled.html:13
+#, python-format
+msgid ""
+"You decided to cancel logging in to our site using one of your existing "
+"accounts. If this was a mistake, please proceed to <a href=\"%(login_url)s"
+"\">sign in</a>."
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/messages/account_connected.txt:2
+msgid "The social account has been connected."
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/messages/account_connected_other.txt:2
+msgid "The social account is already connected to a different account."
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/messages/account_disconnected.txt:2
+msgid "The social account has been disconnected."
+msgstr ""
+
+#: box/core/templates/allauth_templates/socialaccount/signup.html:10
+#, python-format
+msgid ""
+"You are about to use your %(provider_name)s account to login to\n"
+"%(site_name)s. As a final step, please complete the following form:"
+msgstr ""
+
+#: box/core/templates/core/admin/move_to.html:10
+msgid "Зберегти"
+msgstr ""
+
+#: box/core/templates/core/snippets/lang.html:22
+msgid "Поточна мова"
+msgstr ""
+
+#: box/core/templates/core/snippets/lang.html:27
+msgid "доступні мови"
+msgstr ""
+
+#: box/core/utils.py:90
+msgid "SEO"
+msgstr ""
+
+#: box/core/utils.py:106
+msgid "ОСНОВНА ІНФОРМАЦІЯ"
+msgstr ""
+
+#: box/core/utils.py:146
+msgid "Показати на сайті"
+msgstr ""
+
+#: box/core/utils.py:149
+#, python-brace-format
+msgid "{obj._meta.verbose_name} не активний"
 msgstr ""

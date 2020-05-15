@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-03-12 17:20+0000\n"
+"POT-Creation-Date: 2020-05-14 15:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,90 +20,99 @@ msgstr ""
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n"
 "%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: attributes/__init__.py:8 attributes/models/attribute.py:113
+#: box/apps/sw_dev/attributes/__init__.py:8
+#: box/apps/sw_dev/attributes/models/attribute.py:173
 msgid "Attributes"
 msgstr "Атрибуты"
 
-#: attributes/admin/__init__.py:38 attributes/models/attribute.py:48
+#: box/apps/sw_dev/attributes/admin/__init__.py:43
+#: box/apps/sw_dev/attributes/models/attribute.py:50
 msgid "Categories"
 msgstr "Категории"
 
-#: attributes/admin/__init__.py:43 attributes/models/attribute.py:57
+#: box/apps/sw_dev/attributes/admin/__init__.py:48
+#: box/apps/sw_dev/attributes/models/attribute.py:68
 msgid "Type"
 msgstr "Тип"
 
-#: attributes/constants.py:11
+#: box/apps/sw_dev/attributes/constants.py:11
 msgid "Text"
 msgstr "Текст"
 
-#: attributes/constants.py:12
+#: box/apps/sw_dev/attributes/constants.py:12
 msgid "Integer"
 msgstr "Число"
 
-#: attributes/constants.py:13
+#: box/apps/sw_dev/attributes/constants.py:13
 msgid "True / False"
 msgstr "Да / Нет"
 
-#: attributes/constants.py:14
+#: box/apps/sw_dev/attributes/constants.py:14
 msgid "Options"
 msgstr "Опции"
 
-#: attributes/forms.py:111
+#: box/apps/sw_dev/attributes/fields.py:22
+msgid "Form is invalid."
+msgstr ""
+
+#: box/apps/sw_dev/attributes/forms.py:150
 msgid "{} is required"
 msgstr "{} бязательное"
 
-#: attributes/forms.py:143
-msgid " [New value]"
-msgstr " [Новое значение]"
-
-#: attributes/models/attribute.py:50 attributes/models/attribute_option.py:14
+#: box/apps/sw_dev/attributes/models/attribute.py:54
+#: box/apps/sw_dev/attributes/models/attribute_option.py:14
 msgid "Name"
 msgstr "Имя"
 
-#: attributes/models/attribute.py:52
+#: box/apps/sw_dev/attributes/models/attribute.py:58
 msgid "Code"
 msgstr "Код"
 
-#: attributes/models/attribute.py:60
+#: box/apps/sw_dev/attributes/models/attribute.py:71
 msgid "Required"
 msgstr "Обязательное"
 
-#: attributes/models/attribute.py:61
+#: box/apps/sw_dev/attributes/models/attribute.py:73
 msgid "You will not be able to update record without filling this field"
 msgstr "Вы не сможете оновить запись не заполнив это поле"
 
-#: attributes/models/attribute.py:65
+#: box/apps/sw_dev/attributes/models/attribute.py:77
 msgid "Is visible"
 msgstr "Видимость"
 
-#: attributes/models/attribute.py:66
+#: box/apps/sw_dev/attributes/models/attribute.py:79
 msgid "Display this attribute for users"
 msgstr "Отображать етот аттрибут для пользователей"
 
-#: attributes/models/attribute.py:69
+#: box/apps/sw_dev/attributes/models/attribute.py:82
 msgid "Is filter"
 msgstr "Фильтр"
 
-#: attributes/models/attribute.py:70
+#: box/apps/sw_dev/attributes/models/attribute.py:84
 msgid "Display this attribute in records filter"
 msgstr "Отображать этот аттрибут в фильтре записей"
 
-#: attributes/models/attribute.py:112 attributes/models/attribute_option.py:11
+#: box/apps/sw_dev/attributes/models/attribute.py:142
+msgid " [New value]"
+msgstr " [Новое значение]"
+
+#: box/apps/sw_dev/attributes/models/attribute.py:172
+#: box/apps/sw_dev/attributes/models/attribute_option.py:11
 msgid "Attribute"
 msgstr "Атрибут"
 
-#: attributes/models/attribute_option.py:21
+#: box/apps/sw_dev/attributes/models/attribute_option.py:21
 msgid "Attribute option"
 msgstr "Опция атрибута"
 
-#: attributes/models/attribute_option.py:22
+#: box/apps/sw_dev/attributes/models/attribute_option.py:22
 msgid "Attribute options"
 msgstr "Опции атрибутов"
 
-#: attributes/models/attribute_value.py:85
+#: box/apps/sw_dev/attributes/models/attribute_value.py:89
 msgid "Yes"
 msgstr "Да"
 
-#: attributes/models/attribute_value.py:85
+#: box/apps/sw_dev/attributes/models/attribute_value.py:89
 msgid "No"
 msgstr "Нет"
