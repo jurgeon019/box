@@ -113,7 +113,7 @@ urlpatterns = [
   # path('sitemap.xml/',     cache_page(60)(sitemap), {'sitemaps': sitemaps}, name='cached-sitemap'),
   # path('robots.txt/',      include('robots.urls')),
   path('i18n/',            include('django.conf.urls.i18n')),
-  path('set_lang/<lang>/', set_lang,         name="set_lang"),
+  path('set_lang/<new_lang>/', set_lang,         name="set_lang"),
   path('jsi18n/',          js_cat.as_view(), name='javascript-catalog'),
   path('admin_tools/',     include('admin_tools.urls')),
   path('grappelli/',       include('grappelli.urls')),
