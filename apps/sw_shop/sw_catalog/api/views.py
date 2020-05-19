@@ -139,14 +139,12 @@ def create_review(request):
       "is_active":review.is_active,
     }
     box_send_mail(
-      subject=GlobalConfig.get_colo().get_data('review')['subject'],
-      recipient_list=GlobalConfig.get_colo().get_data('review')['emails'],
+      subject=_(f"Отримано відгук до товару {item.title}"),
+      template='sw_catalog/item_review_mail.html', 
+      email_config=CatalogRecipientEmail,
       model=review,
     )
     return JsonResponse(response)
-
-
-
 
 
 

@@ -149,7 +149,7 @@ class Order(models.Model):
 
   def __str__(self):
     return f'{self.phone}|{self.name}|{self.email}|{self.address}' 
-  
+
   @property
   def currency(self):
     return self.cart.currency

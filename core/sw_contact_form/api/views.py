@@ -24,7 +24,7 @@ def sw_contact(request):
         url=url
     )
     box_send_mail(
-      subject      = 'Отримано контактну форму',
+      subject      = _('Отримано контактну форму'),
       template     = 'sw_contact_form/mail.html', 
       email_config = ContactRecipientEmail, 
       model        = model, 
@@ -32,9 +32,9 @@ def sw_contact(request):
     )
     return JsonResponse({
         'status':'OK',
-        # 'url':'/'
-        # 'redirect':reverse('index'),
     })
+
+
 
 
 

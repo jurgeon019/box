@@ -40,12 +40,24 @@ class Command(BaseCommand):
         '''
 
     def handle(self, *args, **kwargs):
-        limit       = kwargs.get('limit', 150)
-        page        = kwargs.get('page', 1)
-        pages_limit = kwargs.get('pages_limit', None)
-        action      = kwargs.get('action','refresh')
-        content     = kwargs.get('content','warehouses')
-        type        = kwargs.get('type','from_json')
+        limit       = kwargs.get('limit')
+        page        = kwargs.get('page')
+        pages_limit = kwargs.get('pages_limit')
+        action      = kwargs.get('action')
+        content     = kwargs.get('content')
+        type        = kwargs.get('type')
+        if not limit:
+            limit =  150
+        if not page:
+            page =  1
+        if not pages_limit:
+            pages_limit =  None
+        if not action:
+            action = 'refresh'
+        if not content:
+            content = 'warehouses'
+        if not type:
+            type = 'from_json'
         query = {
             "limit":limit,
             "page":page,

@@ -105,12 +105,21 @@ def create_comment(request):
         comment.save()
     data = config.get_data('comment')
     box_send_mail(
-        model=comment,
         subject=data['subject'],
         recipients_list=data['emails'],
     )
+    box_send_mail(
+      subject      = f'Отримано коментар до блогу',
+      template     = 'sw_blog/mail.html', 
+      email_config = BlogRecipientEmail, 
+      model        = comment,
+    )
+
+
     response = {
         'status':'OK',
         'is_active':comment.is_active,
     }
     return JsonResponse(response)
+
+

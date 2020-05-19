@@ -55,7 +55,9 @@ class ItemDetailSerializer(serializers.ModelSerializer):
   
   is_in_cart = serializers.SerializerMethodField()
   def get_is_in_cart(self, obj):
-    return obj.is_in_cart(self.context['request'])
+    request = self.context.get('request')
+    if request:
+      return obj.is_in_cart(request)
 
   def get_absolute_url(self, obj):
       return obj.get_absolute_url()

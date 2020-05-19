@@ -15,6 +15,7 @@ def handle_np(query={}, action='refresh', content='warehouses', type='from_json'
     limit       = query.get('limit', 150)
     page        = query.get('page', 1)
     pages_limit = query.get('pages_limit', None)
+
     if content == 'warehouses':
         method   = 'getWarehouses'
         model    = "AddressGeneral"
@@ -28,6 +29,7 @@ def handle_np(query={}, action='refresh', content='warehouses', type='from_json'
         filename = 'settlements.json'
         func     = create_settlements
     if action == 'refresh':
+        print('refresh')
         if type == 'gen_json':
             response = get_full_response(model, method,
                 limit=limit,
